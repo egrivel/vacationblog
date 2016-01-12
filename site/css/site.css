@@ -1,0 +1,510 @@
+body {
+  background-color: #666;
+  color: #fff;
+  /* establish fixed basis for font sizes */
+  font-size: 16px;
+  font-family: 'Droid Serif', Georgia, 'Times New Roman', Times, serif;
+}
+
+div#body {
+  background-color: #fff;
+  color: #000;
+  max-width: 50em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+a {
+  text-decoration: none;
+}
+
+em {
+  font-style: italic;
+}
+
+strong {
+  font-weight: bold;
+}
+
+.clear {
+  display: block;
+  clear: both;
+  height: 0;
+}
+
+div.header, div.footer {
+  background-color: #679;
+  color: #fff;
+}
+
+div.header {
+}
+
+div.footer {
+  padding-left: 2em;
+  padding-right: 2em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  text-align: center;
+}
+
+div.header h1 {
+  font-size: 200%;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  padding-left: 1em;
+  padding-right: 1em;
+  font-family: Roboto, sans-serif;
+  font-weight: 300;
+  letter-spacing: 8px;
+}
+
+div.header img {
+  width: 100%;
+}
+
+div.header div.dummy-banner {
+  width: 100%;
+  padding-top: 10%;
+  padding-bottom: 15%;
+  background-color: #999;
+  background: radial-gradient(at bottom left, #666, #999);
+  text-align: center;
+}
+
+div.header div.dummy-banner span {
+  font-family: Roboto, sans-serif;
+  letter-spacing: 4px;
+  display: block;
+  color: #333;
+  height: 0;
+  overflow-y: display;
+}
+
+div.footer p {
+  font-size: 70%;
+  font-family: 'Merriweather Sans', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+.main-menu, .main-menu ul {
+  position: relative;
+  line-height: 1.8em;
+  font-family: 'Merriweather Sans', sans-serif;
+}
+
+.main-menu li.first {
+  margin-left: 1em;
+  height: 1.8em;
+  padding: 0;
+}
+
+.main-menu li {
+  display: block;
+  border: 1px solid #679;
+  background-color: #679;
+  color: #fff;
+}
+
+/* if the <li> element does not contain <a>, add padding to the <li>,
+ * otherwise padding will be added to the <a> element. */
+.main-menu li.nolink {
+  padding: 0 1em;
+}
+
+.main-menu li a {
+  padding: 0 1em;
+}
+
+.main-menu li:hover, .main-menu li.selected {
+  background-color: #fff;
+  color: #333b4b;
+}
+
+.main-menu li {
+  float: left;
+  position: relative;
+}
+
+.main-menu ul {
+  position: absolute;
+  width: 15em;
+  top: 1.8em;
+  left: 0em;
+  padding: 0;
+  margin: 0;
+}
+
+.main-menu li ul li {
+  width: 15em;
+  float: left;
+  padding: 0;
+  margin: 0;
+}
+
+.main-menu li ul li.nolink,
+.main-menu li ul li a {
+  display: inline-block;
+  width: 13em;
+  margin: 0;
+  padding: 0 1em;
+}
+
+.main-menu ul ul {
+  top: auto;
+}
+
+.main-menu li ul ul {
+  left: 15em;
+  margin: 0 0 0 10px;
+}
+
+.main-menu a,
+.main-menu a:hover,
+.main-menu a:active,
+.main-menu a:visited {
+  display: inline-block;
+  color: inherit;
+  background-color: inherit;
+}
+
+/* end of multi-level CSS menu */
+
+div.trip,
+div.journalitem {
+  margin-left: 2em;
+  margin-right: 2em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+div.trip h3,
+div.journalitem h3 {
+  font-size: 120%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  color: #003;
+}
+
+div.trip p,
+div.journalitem p {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  clear: both;
+  letter-spacing: 1px;
+  line-height: 130%;
+  font-size: 125%;
+  text-align: justify;
+}
+
+div.journalitem .subtitle {
+  display: block;
+  font-size: 80%;
+  padding-top: 0.25em;
+}
+
+div.journalitem .lastupdate {
+  display: none;
+}
+
+div.journalitem p.text span.label,
+div.journalitem p.img-text span.label {
+  display: block;
+  float: left;
+  width: 30%;
+  font-family: Lato, serif;
+  font-weight: bold;
+  font-size: 160%;
+  line-height: 120%;
+  /* margin-top: -0.4em; */
+}
+
+div.journalitem p.text span.value,
+div.journalitem p.img-text span.value {
+  display: block;
+  float: right;
+  width: 68%;
+}
+
+div.journalitem p.text img.landscape,
+div.journalitem p.img-text img.landscape {
+  width: 100%;
+  padding-right: 1em;
+  padding-bottom: 0.5em;
+  padding-top: 0.15em;
+}
+
+div.journalitem p.text img.portrait,
+div.journalitem p.img-text img.portrait {
+  float: right;
+  width: 66%;
+  padding-right: 1em;
+  padding-bottom: 0.5em;
+  padding-top: 0.15em;
+}
+
+div.journalitem p.images {
+  /* background-color: #ffb; */
+  text-align: center;
+  padding-top: 0;
+  padding-bottom: 0.5em;
+  line-height: 1;
+}
+
+div.journalitem p.images img.img3 {
+  display: inline-block;
+  float: left;
+  width: 31%;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  padding-left: 1%;
+  padding-right: 1%;
+}
+
+div.journalitem p.images img.img2 {
+  display: inline-block;
+  float: left;
+  width: 47.5%;
+  padding-top: 0.5em;
+  padding-left: 1%;
+  padding-right: 1%;
+}
+
+div.journalitem p.images img.img1 {
+  width: 99%;
+  padding-top: 0.5em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+
+/* different variations of three on a line */
+div.journalitem p.hhh img.landscape,
+div.journalitem p.vvv img.portrait {
+  width: 31%;
+}
+
+div.journalitem p.hhv img.landscape {
+  width: 38%;
+}
+div.journalitem p.hhv img.portrait {
+  width: 17%;
+}
+
+div.journalitem p.hvv img.landscape {
+  width: 49.25%;
+}
+div.journalitem p.hvv img.portrait {
+  width: 21.875%;
+}
+
+/* different variations of two on a line */
+div.journalitem p.hh img.landscape,
+div.journalitem p.vv img.portrait {
+  width: 48%;
+}
+
+div.journalitem p.hv img.landscape {
+  width: 66%;
+}
+div.journalitem p.hv img.portrait {
+  width: 29.5%;
+}
+
+
+div.journalitem p.banner {
+  margin-left: -2em;
+  margin-right: -2em;
+  text-align: center;
+  font-family: 'Merriweather Sans', sans-serif;
+  font-size: 90%;
+  color: #444;  
+}
+
+div.journalitem p.banner img {
+  width: 100%;
+}
+
+div.journalitem p.prevnext {
+  font-size: 100%;
+  text-align: center;
+  font-family: 'Meriweather Sans', sans-serif;
+}
+
+.prevlink {
+  float: left;
+}
+
+.nextlink {
+  float: right;
+}
+
+div.commentBlock {
+  border-left: solid 15px;
+  margin-left: 0.25em;
+  margin-top: 0.25em;
+  padding-left: 0;
+  font-family: Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+div.commentBlock h3 {
+  margin: 0;
+  margin-bottom: 0.25em;
+  padding-left: 0.5em;
+  font-family: 'Meriweather Sans', sans-serif;
+  font-size: 100%;
+  padding: 0.5em;
+}
+
+div.commentBlock h3 span.commentId {
+  float: right;
+  font-size: 60%;
+}
+
+div.commentBlock p {
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  font-size: 90%;
+}
+
+
+div.commentBlock {
+  border-left-color: #bcf;
+  background-color: #eef2ff;
+  color: #333;
+}
+
+div.commentBlock h3 {
+  background-color: #bcf;
+}
+
+div.commentBlock
+div.commentBlock {
+  border-left-color: #cfb;
+  background-color: #f2ffee;
+}
+
+div.commentBlock
+div.commentBlock h3 {
+  background-color: #cfb;
+}
+
+div.commentBlock
+div.commentBlock
+div.commentBlock {
+  border-left-color: #feb;
+  background-color: #fffaee;
+}
+
+div.commentBlock
+div.commentBlock
+div.commentBlock h3 {
+  background-color: #feb;
+}
+
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock {
+  border-left-color: #efa;
+  background-color: #faffe7;
+}
+
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock h3 {
+  background-color: #efa;
+}
+
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock {
+  border-left-color: #eae;
+  background-color: #fae7fa;
+}
+
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock h3 {
+  background-color: #eae;
+}
+
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock {
+  border-left-color: #aee;
+  background-color: #e7fafa;
+}
+
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock h3 {
+  background-color: #aee;
+}
+
+span.nested-paragraph {
+  display: block;
+}
+
+div.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  text-align: center;
+  color: #eee;
+  background-color: rgba(30, 30, 30, 0.75);
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+}
+
+div.modal-content {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+div.modal img {
+  max-height: 75%;
+}
+
+div.modal-image-caption {
+  font-family: 'Merriweather Sans', sans-serif;
+  font-size: 20px;
+  background-color: #333;
+  padding: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 760px;
+  letter-spacing: 0.5px;
+}
+
+div.modal div.commentBlock {
+  max-width: 750px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+div.feedback {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  padding-left: 0.55em;
+  font-size: 90%;
+  color: #336;
+  background-color: rgba(127, 127, 127, 0.1);
+  letter-spacing: 1px;
+}

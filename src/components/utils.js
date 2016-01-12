@@ -1,0 +1,213 @@
+'use strict';
+
+var React = require('react');
+var moment = require('moment-timezone');
+
+/**
+ * Recursively get all the nodes from a string of text.
+ * This function will parse a string (text) into a series of React elements
+ * and return the array of React elements representing the original text.
+ * The following parts are recognized:
+ * <ul>
+ * <li>[EM] for emphasized (italic) text.</li>
+ * <li>[B] for bold text (rendered as emphasized unless legacy).</li>
+ * <li>[U] for underlined text (rendered as emphasized unless legacy).</li>
+ * <li>[LINK] for a link.</li>
+ * </ul>
+ * @param {string} text - text to parse.
+ * @param {boolean} isLegacy - indicator whether in legacy mode.
+ * @return {array} list of React elements.
+ * @private
+ */
+function _recursivelyGetNodes(text, isLegacy) {
+  var nodes = [];
+  var end;
+
+  if (text.indexOf('[') < 0) {
+    // no markup, that's easy
+    nodes.push(text);
+    return nodes;
+  }
+
+  if (text.indexOf('[') > 0) {
+    nodes.push(text.substring(0, text.indexOf('[')));
+    text = text.substring(text.indexOf('['));
+  }
+
+  if (text.substring(0, 4) === '[EM]') {
+    end = text.indexOf('[/EM]');
+    if (end > 0) {
+      nodes.push(React.DOM.em(null,
+                              _recursivelyGetNodes(text.substring(4, end),
+                                                 isLegacy)));
+      nodes.push(_recursivelyGetNodes(text.substring(end + 5),
+                                    isLegacy));
+    } else {
+      nodes.push(React.DOM.em(null,
+                              _recursivelyGetNodes(text.substring(4),
+                                                 isLegacy)));
+    }
+  } else if (text.substring(0, 3) === '[B]') {
+    end = text.indexOf('[/B]');
+    if (end > 0) {
+      if (isLegacy) {
+        nodes.push(React.DOM.strong(null,
+                                    _recursivelyGetNodes(text.substring(3, end),
+                                                        isLegacy)));
+      } else {
+        nodes.push(React.DOM.em(null,
+                                _recursivelyGetNodes(text.substring(3, end),
+                                                   isLegacy)));
+      }
+      nodes.push(_recursivelyGetNodes(text.substring(end + 4),
+                                    isLegacy));
+    } else if (isLegacy) {
+      nodes.push(React.DOM.strong(null,
+                                  _recursivelyGetNodes(text.substring(3),
+                                                       isLegacy)));
+    } else {
+      nodes.push(React.DOM.em(null,
+                              _recursivelyGetNodes(text.substring(3),
+                                                   isLegacy)));
+    }
+  } else if (text.substring(0, 3) === '[U]') {
+    end = text.indexOf('[/U]');
+    if (end > 0) {
+      if (isLegacy) {
+        nodes.push(React.DOM.u(null,
+                               _recursivelyGetNodes(text.substring(3, end),
+                                                  isLegacy)));
+      } else {
+        nodes.push(React.DOM.em(null,
+                               _recursivelyGetNodes(text.substring(3, end),
+                                                  isLegacy)));
+      }
+      nodes.push(_recursivelyGetNodes(text.substring(end + 4),
+                                    isLegacy));
+    } else if (isLegacy) {
+      nodes.push(React.DOM.u(null,
+                             _recursivelyGetNodes(text.substring(3),
+                                                  isLegacy)));
+    } else {
+      nodes.push(React.DOM.em(null,
+                              _recursivelyGetNodes(text.substring(3),
+                                                   isLegacy)));
+    }
+  } else if (text.substring(0, 6) === '[LINK ') {
+    var endOpen = text.indexOf(']');
+    var open = '';
+    if (endOpen > 0) {
+      open = text.substring(6, endOpen);
+      text = text.substring(endOpen + 1);
+    }
+    var href = open;
+    end = text.indexOf('[/LINK]');
+    if (end > 0) {
+      nodes.push(React.DOM.a({href: href, target: '_blank'},
+                             _recursivelyGetNodes(text.substring(0, end),
+                                                isLegacy)));
+      nodes.push(_recursivelyGetNodes(text.substring(end + 7),
+                                     isLegacy));
+    } else {
+      nodes.push(React.DOM.a({href: href, target: '_blank'},
+                             _recursivelyGetNodes(text, isLegacy)));
+    }
+  } else {
+    nodes.push(text);
+  }
+  return nodes;
+}
+
+var utils = {
+  replaceEntities: function replaceEntities(text) {
+    text = text.replace(/&aacute;/g, '\u00e1');
+    text = text.replace(/&agrave;/g, '\u00e0');
+
+    text = text.replace(/&ccedil;/g, '\u00e7');
+
+    text = text.replace(/&eacute;/g, '\u00e9');
+    text = text.replace(/&ecirc;/g, '\u00ea');
+    text = text.replace(/&egrave;/g, '\u00e8');
+    text = text.replace(/&euml;/g, '\u00eb');
+
+    text = text.replace(/&iacute;/g, '\u00ed');
+
+    text = text.replace(/&ntilde;/g, '\u00f1');
+
+    text = text.replace(/&ocirc;/g, '\u00f4');
+    text = text.replace(/&omacron;/g, '\u014d');
+    text = text.replace(/&ouml;/g, '\u00f6');
+
+    text = text.replace(/&uuml;/g, '\u00fc');
+
+    text = text.replace(/&mdash;/g, '\u2014');
+    text = text.replace(/&frac12;/g, '\u00bd');
+    text = text.replace(/&frac14;/g, '\u00bc');
+    text = text.replace(/&sup2;/g, '\u00b9');
+    text = text.replace(/&deg;/g, '\u00b0');
+
+    text = text.replace(/&ldquo;/g, '\u201c');
+    text = text.replace(/&rdquo;/g, '\u201d');
+    text = text.replace(/&lsquo;/g, '\u2018');
+    text = text.replace(/&rsquo;/g, '\u2019');
+    text = text.replace(/&apos;/g, '\u2019');
+
+    text = text.replace(/&amp;/g, '&');
+    text = text.replace(/&quot;/g, '"');
+    text = text.replace(/&lf;/g, ' ');
+    text = text.replace(/&nl;/g, ' ');
+    /* eslint no-regex-spaces: 0 */
+    text = text.replace(/  +/g, ' ');
+
+    return text;
+  },
+
+  buildTextNode: function buildTextNode(type, className, key, text) {
+    var nodes = _recursivelyGetNodes(text, true);
+    if (type === 'p') {
+      return React.DOM.p(
+        {
+          className: className,
+          key: key
+        },
+        nodes
+      );
+    } else if (type === 'span') {
+      return React.DOM.span(
+        {
+          className: className,
+          key: key
+        },
+        nodes
+      );
+    }
+  },
+
+  /**
+   * Provide consistent display for all date and date-time in the app.
+   * @param {date} date - date-time in internal format.
+   * @return {string} human-readable representation of the date or date-time.
+   */
+  formatDate: function formatDate(date) {
+    if (date.length === 8) {
+      // date in yyyymmdd format
+      return moment(date, 'YYYYMMDD').format('dddd MMMM D YYYY');
+    } else if (date.length === 10) {
+      // date in yyyy-mm-dd format
+      return moment(date).format('dddd MMMM D YYYY');
+    } else if (date.length === 26) {
+      // date in yyyy-mm-dd hh:mm:ss.mmmmmm microsecond format
+      // In this format, the date is in UTC and needs to be converted
+      // to Eastern time (the moment library will take care of DST)
+      // Note: default to the American 12-hour time format. Allow
+      // users to select a 24-hour time format in the future.
+      var m = moment.tz(date, 'UTC');
+      return moment.tz(m, 'America/New_York')
+        .format('dddd MMMM D YYYY h:mm:ssa z');
+    }
+    console.log(' - unknown format');
+    return date;
+  }
+};
+
+module.exports = utils;

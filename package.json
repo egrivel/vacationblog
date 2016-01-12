@@ -1,0 +1,49 @@
+{
+  "name": "vacationsite",
+  "version": "0.1.0",
+  "description": "Website for vacation blog",
+  "main": "index.js",
+  "repository": "cvs",
+  "dependencies": {
+    "flux": "^2.1.1",
+    "lodash": "^3.10.1",
+    "moment": "^2.10.6",
+    "moment-timezone": "^0.4.1",
+    "object-assign": "^4.0.1",
+    "react": "^0.14.3",
+    "react-dom": "^0.14.3",
+    "react-router": "^1.0.2"
+  },
+  "devDependencies": {
+    "browserify": "^11.2.0",
+    "browserify-istanbul": "^0.2.1",
+    "chai": "^3.4.1",
+    "eslint": "^1.10.3",
+    "eslint-config-google": "^0.3.0",
+    "istanbul": "^0.4.1",
+    "karma": "^0.13.15",
+    "karma-browserify": "^4.4.2",
+    "karma-coverage": "^0.5.3",
+    "karma-coverage-allsources": "0.0.3",
+    "karma-mocha": "^0.2.1",
+    "karma-phantomjs-launcher": "^0.2.1",
+    "karma-phantomjs-shim": "^1.1.2",
+    "mocha": "^2.3.3",
+    "phantomjs": "^1.9.19",
+    "react-addons-test-utils": "^0.14.3",
+    "rewire": "^2.4.0",
+    "sinon": "^1.17.2",
+    "sinon-chai": "^2.8.0"
+  },
+  "scripts": {
+    "test": "istanbul cover --include-all-sources -x \"site/**\" -x \"jstest/**\" -x src/boot.js node_modules/.bin/_mocha -- --recursive jstest/stores jstest/actions",
+    "test-components": "karma start",
+    "jstest": "mocha --recursive jstest",
+    "coverage": "istanbul cover --include-all-sources -x \"site/**\" -x \"jstest/**\" -x src/boot.js node_modules/.bin/_mocha -- --recursive jstest",
+    "eslint": "eslint src/**/*.js jstest/**/*.js",
+    "browserify": "browserify src/boot.js -o site/js/boot.js",
+    "browserify-prod": "NODE_ENV=production browserify src/boot.js -o site/js/boot.js"
+  },
+  "author": "Eric Grivel",
+  "license": "ISC"
+}

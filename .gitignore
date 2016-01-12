@@ -1,0 +1,5 @@
+CVS
+node_modules
+coverage
+.git
+.cvsignore
