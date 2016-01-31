@@ -38,8 +38,6 @@
   "scripts": {
     "test": "istanbul cover --include-all-sources -x \"site/**\" -x \"jstest/**\" -x src/boot.js node_modules/.bin/_mocha -- --recursive jstest/stores jstest/actions",
     "test-components": "karma start",
-    "jstest": "mocha --recursive jstest",
-    "coverage": "istanbul cover --include-all-sources -x \"site/**\" -x \"jstest/**\" -x src/boot.js node_modules/.bin/_mocha -- --recursive jstest",
     "eslint": "eslint src/**/*.js jstest/**/*.js",
     "browserify": "browserify src/boot.js -o site/js/boot.js",
     "browserify-prod": "NODE_ENV=production browserify src/boot.js -o site/js/boot.js"
