@@ -22,12 +22,14 @@ var Header = React.createClass({
   _getStateFromStores: function _getStateFromStores() {
     var tripData = TripStore.getTripData();
     var name = tripData.name;
+    var img = tripData.bannerImg;
     if (!name) {
       name = 'Vacation Website';
+      img = 'default-banner.png';
     }
     return {
       name: name,
-      bannerImg: tripData.bannerImg,
+      bannerImg: img,
       menuData: MenuStore.getData()
     };
   },
