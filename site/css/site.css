@@ -171,7 +171,8 @@ div.footer p {
 /* end of multi-level CSS menu */
 
 div.trip,
-div.journalitem {
+div.journalitem,
+div.form {
   margin-left: 2em;
   margin-right: 2em;
   margin-top: 1em;
@@ -507,4 +508,37 @@ div.feedback {
   color: #336;
   background-color: rgba(127, 127, 127, 0.1);
   letter-spacing: 1px;
+}
+
+div.login {
+  max-width: 25em;
+  margin-left: auto;
+  margin-right: auto;
+  border: solid 1px #666;
+  padding: 1em;
+  line-height: 125%;
+}
+
+div.login h3 {
+  font-size: 125%;
+  font-weight: bold;
+  margin-top: 0.25em;
+  margin-bottom: 0.5em;
+}
+
+div.input-element {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+label {
+  font-weight: bold;
+  width: 25%;
+  text-align: right;
+  display: inline-block;
+  margin-right: 1em;
+}
+
+div.buttonbar input {
+  margin-right: 1em;
 }
