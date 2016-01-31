@@ -1,1 +1,13 @@
-# Vacationsite Stuff
+# Vacationblog Stuff
+
+This vacation blog is a personal project of mine. The purpose is to create
+a custom way for me to keep a blog while I'm traveling on vacation.
+
+The reason standard blogs don't work for me is:
+
+ - I want to run the same blog on multiple servers: my home Linux system, my Linux laptop that I am traveling with, and my public website. I want to be able to synchronize between those different servers.
+
+ - I want to connect the blog directly to my photo archive while writing the blog entries. The typical workflow consists of first uploading the day's photos to the local copy of the photo archive, doing any labelling and post-processing in the photo archive, and then write the blog entry with references to the photos in the archive.
+
+For this vacation blog project, I intend to make the photo archive connection a plugin, so that otherw will be able to create plugins to other photo repositories.
+
