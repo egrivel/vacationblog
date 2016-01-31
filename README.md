@@ -21,3 +21,6 @@ The vacation blog consists of three major pieces:
 
 3. Client-side functionality, written in JavaScript using React.js technology.
 
+## Attributions
+
+Default site banner: Silver Bay, New York. Photographed July 11, 2014 by Eric Grivel. To the extent possible under law, Eric Grivel has waived all copyright and related or neighboring rights to this Photo #20140711-123441. This work is published from: United States.
