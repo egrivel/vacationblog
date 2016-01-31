@@ -115,7 +115,7 @@ CommentList = React.createClass({
 
   stores: [CommentStore, UserStore],
 
-  _recursivelyGetData: function(tripId, commentId) {
+  _recursivelyGetData: function _recursivelyGetData(tripId, commentId) {
     var data = CommentStore.getData(tripId, commentId);
     if (data) {
       for (var i = 0; i < data.count; i++) {
