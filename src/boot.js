@@ -11,6 +11,9 @@ var TripDescription = require('./components/TripDescription');
 var TripAction = require('./actions/TripAction');
 var TripStore = require('./stores/TripStore');
 var JournalEntry = require('./components/JournalEntry');
+var Search = require('./components/Search');
+var Login = require('./components/Login');
+var About = require('./components/About');
 
 /**
  * The application object renders the framework of the application, which
@@ -42,7 +45,10 @@ const routes = {
     { path: '/trip', component: TripDescription },
     { path: '/trip/:tripId', component: TripDescription },
     { path: '/journal/:tripId', component: JournalEntry },
-    { path: '/journal/:tripId/:journalId', component: JournalEntry }
+    { path: '/journal/:tripId/:journalId', component: JournalEntry },
+    { path: '/search', component: Search },
+    { path: '/login', component: Login },
+    { path: '/about', component: About }
   ]
 };
 
