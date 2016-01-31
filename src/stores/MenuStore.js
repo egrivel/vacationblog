@@ -93,17 +93,21 @@ function _visibleMenuItem(list, id, isVisible) {
  * @private
  */
 function _updateTripMenu(newList) {
-  var submenu = [];
   var i;
-  for (i = 0; newList[i]; i++) {
-    submenu[i] = {
-      id: 'm1.' + i,
-      label: newList[i].name,
-      selected: false,
-      target: '#/trip/' + newList[i].tripId
-    };
+  if (newList) {
+    var submenu = [];
+    for (i = 0; newList[i]; i++) {
+      submenu[i] = {
+        id: 'm1.' + i,
+        label: newList[i].name,
+        selected: false,
+        target: '#/trip/' + newList[i].tripId
+      };
+    }
+    _menuData[0].submenu = submenu;
+  } else {
+    _menuData[0].target = '#/trip';
   }
-  _menuData[0].submenu = submenu;
 }
 
 var MenuStore = assign({}, GenericStore, {

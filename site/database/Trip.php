@@ -596,7 +596,6 @@ class Trip {
       }
       if (mysql_num_rows($result) <= 0) {
          // Trip does not exist
-         //print "Doesn't exist\n";
          return false;
       }
 
@@ -639,7 +638,6 @@ class Trip {
       }
       if (mysql_num_rows($result) <= 0) {
          // Trip does not exist
-         print "Doesn't exist\n";
          return false;
       }
 
