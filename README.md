@@ -9,5 +9,15 @@ The reason standard blogs don't work for me is:
 
  - I want to connect the blog directly to my photo archive while writing the blog entries. The typical workflow consists of first uploading the day's photos to the local copy of the photo archive, doing any labelling and post-processing in the photo archive, and then write the blog entry with references to the photos in the archive.
 
-For this vacation blog project, I intend to make the photo archive connection a plugin, so that otherw will be able to create plugins to other photo repositories.
+For this vacation blog project, I intend to make the photo archive connection a plugin, so that others will be able to create plugins to other photo repositories.
+
+## Major Parts of the Vacation Blog
+
+The vacation blog consists of three major pieces:
+
+1. Database, which is assumed to be a mySQL database.
+
+2. Server-side functionality, written in PHP. The server-side functionality mostly consists of a series of APIs available to the client-side code.
+
+3. Client-side functionality, written in JavaScript using React.js technology.
 
