@@ -10,6 +10,8 @@ var MenuStore = require('../../src/stores/MenuStore');
 var Header = require('../../src/components/Header');
 
 describe('Header component', function() {
+  var defaultBanner = 'default-banner.png';
+
   describe('#render with name and banner', function() {
     var tripDataStub;
     var menuDataStub;
@@ -128,14 +130,15 @@ describe('Header component', function() {
       expect(h1.textContent).to.contain('Vacation Website');
     });
 
-    it('includes trip banner', function() {
+    it('includes default trip banner', function() {
       var header = TestUtils.renderIntoDocument(
         React.createElement(Header, null));
 
       var imgList = TestUtils.scryRenderedDOMComponentsWithTag(header, 'img');
       expect(imgList.length).to.be.equal(1);
       expect(imgList[0].src).to.not.be.null;
-      expect(imgList[0].src).to.contain(testBanner);
+      expect(imgList[0].src).to.not.contain(testBanner);
+      expect(imgList[0].src).to.contain(defaultBanner);
 
       var divList =
         TestUtils.scryRenderedDOMComponentsWithClass(header, 'dummy-banner');
@@ -170,17 +173,14 @@ describe('Header component', function() {
       expect(h1.textContent).to.contain('Vacation Website');
     });
 
-    it('does not include trip banner', function() {
+    it('includes default banner', function() {
       var header = TestUtils.renderIntoDocument(
         React.createElement(Header, null));
 
       var imgList = TestUtils.scryRenderedDOMComponentsWithTag(header, 'img');
-      expect(imgList.length).to.be.equal(0);
-
-      var divList =
-        TestUtils.scryRenderedDOMComponentsWithClass(header, 'dummy-banner');
-      expect(divList.length).to.be.equal(1);
-      expect(divList[0].textContent).to.contain('trip banner image is missing');
+      expect(imgList.length).to.be.equal(1);
+      expect(imgList[0].src).to.not.be.null;
+      expect(imgList[0].src).to.contain(defaultBanner);
     });
   });
 });
