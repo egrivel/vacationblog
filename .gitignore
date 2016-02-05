@@ -1,5 +1,7 @@
 CVS
 node_modules
 coverage
+cover-components
+cover-other
 .git
 .cvsignore
