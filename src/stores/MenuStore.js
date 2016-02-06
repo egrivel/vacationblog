@@ -105,8 +105,10 @@ function _updateTripMenu(newList) {
       };
     }
     _menuData[0].submenu = submenu;
+    delete _menuData[0].target;
   } else {
     _menuData[0].target = '#/trip';
+    delete _menuData[0].submenu;
   }
 }
 

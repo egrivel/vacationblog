@@ -240,168 +240,206 @@ describe('MenuStore', function() {
   });
 
   describe('load trips', function() {
-    var tripList = [
-      {
-        tripId: 'trip-1',
-        name: 'Test Trip 1'
-      },
-      {
-        tripId: 'trip-2',
-        name: 'Test Trip 2'
-      }
-    ];
-    beforeEach(function() {
-      this.storeCallback({
-        type: TripActionTypes.TRIP_LOAD_LIST,
-        data: tripList
-      });
-    });
-
-    it('Menu contains first trip', function() {
-      var data = this.MenuStore.getData();
-
-      expect(data.length).to.be.at.least(1);
-      expect(data[0].submenu).to.exist;
-      expect(data[0].submenu.length).to.be.at.least(1);
-      expect(data[0].submenu[0].id).to.exist;
-      expect(data[0].submenu[0].id).to.not.equal('');
-      expect(data[0].submenu[0].label).to.exist;
-      expect(data[0].submenu[0].label).to.equal(tripList[0].name);
-      expect(data[0].submenu[0].selected).to.exist;
-      expect(data[0].submenu[0].selected).to.equal(false);
-      expect(data[0].submenu[0].target).to.exist;
-      expect(data[0].submenu[0].target).to.equal('#/trip/' +
-                                                 tripList[0].tripId);
-    });
-
-    it('Menu contains second trip', function() {
-      var data = this.MenuStore.getData();
-
-      expect(data.length).to.be.at.least(1);
-      expect(data[0].submenu).to.exist;
-      expect(data[0].submenu.length).to.be.at.least(2);
-      expect(data[0].submenu[1].id).to.exist;
-      expect(data[0].submenu[1].id).to.not.equal('');
-      expect(data[0].submenu[1].label).to.exist;
-      expect(data[0].submenu[1].label).to.equal(tripList[1].name);
-      expect(data[0].submenu[1].selected).to.exist;
-      expect(data[0].submenu[1].selected).to.equal(false);
-      expect(data[0].submenu[1].target).to.exist;
-      expect(data[0].submenu[1].target).to.equal('#/trip/' +
-                                                 tripList[1].tripId);
-    });
-
-    it('selects indicated item', function() {
-      var data = this.MenuStore.getData();
-
-      // select the first trip
-      var id = data[0].submenu[0].id;
-      this.storeCallback({
-        type: MenuActionTypes.MENU_SELECT,
-        data: {id: id}
+    describe('without trip data', function() {
+      beforeEach(function() {
+        this.storeCallback({
+          type: TripActionTypes.TRIP_LOAD_LIST,
+          data: null
+        });
       });
 
-      data = this.MenuStore.getData();
-      expect(data[0].selected).to.equal(true);
-      expect(data[0].submenu[0].selected).to.equal(true);
-      expect(data[0].submenu[1].selected).to.equal(false);
+      it('Menu contains dummy trip', function() {
+        var data = this.MenuStore.getData();
 
-      // select the second trip
-      id = data[0].submenu[1].id;
-      this.storeCallback({
-        type: MenuActionTypes.MENU_SELECT,
-        data: {id: id}
-      });
-
-      data = this.MenuStore.getData();
-      expect(data[0].selected).to.equal(true);
-      expect(data[0].submenu[0].selected).to.equal(false);
-      expect(data[0].submenu[1].selected).to.equal(true);
+        // all four items on the top-level should still be there.
+        expect(data.length).to.be.equal(4);
+        expect(data[0].submenu).to.not.exist;
+        expect(data[0].target).to.be.equal('#/trip');
+      });      
     });
 
-    it('select non-trip item', function() {
-      var data = this.MenuStore.getData();
-
-      // select the first trip
-      var id = data[1].id;
-      this.storeCallback({
-        type: MenuActionTypes.MENU_SELECT,
-        data: {id: id}
-      });
-
-      data = this.MenuStore.getData();
-      expect(data[1].selected).to.equal(true);
-    });
-
-    it('make visible indicated item', function() {
-      var data = this.MenuStore.getData();
-
-      // select the first trip
-      var id = data[0].submenu[0].id;
-      this.storeCallback({
-        type: MenuActionTypes.MENU_VISIBLE,
-        data: {
-          id: id,
-          visible: true
+    describe('with trip data', function() {
+      var tripList = [
+        {
+          tripId: 'trip-1',
+          name: 'Test Trip 1'
+        },
+        {
+          tripId: 'trip-2',
+          name: 'Test Trip 2'
         }
+      ];
+      beforeEach(function() {
+        this.storeCallback({
+          type: TripActionTypes.TRIP_LOAD_LIST,
+          data: tripList
+        });
       });
 
-      data = this.MenuStore.getData();
-      expect(data[0].visible).to.equal(true);
-      expect(data[0].submenu[0].visible).to.equal(true);
-      expect(data[0].submenu[1].visible).to.equal(false);
+      it('Menu contains first trip', function() {
+        var data = this.MenuStore.getData();
 
-      // select the second trip
-      id = data[0].submenu[1].id;
-      this.storeCallback({
-        type: MenuActionTypes.MENU_VISIBLE,
-        data: {
-          id: id,
-          visible: true
-        }
+        expect(data.length).to.be.at.least(1);
+        expect(data[0].submenu).to.exist;
+        expect(data[0].submenu.length).to.be.at.least(1);
+        expect(data[0].submenu[0].id).to.exist;
+        expect(data[0].submenu[0].id).to.not.equal('');
+        expect(data[0].submenu[0].label).to.exist;
+        expect(data[0].submenu[0].label).to.equal(tripList[0].name);
+        expect(data[0].submenu[0].selected).to.exist;
+        expect(data[0].submenu[0].selected).to.equal(false);
+        expect(data[0].submenu[0].target).to.exist;
+        expect(data[0].submenu[0].target).to.equal('#/trip/' +
+                                                   tripList[0].tripId);
       });
 
-      data = this.MenuStore.getData();
-      expect(data[0].visible).to.equal(true);
-      expect(data[0].submenu[0].visible).to.equal(false);
-      expect(data[0].submenu[1].visible).to.equal(true);
-    });
+      it('Menu contains second trip', function() {
+        var data = this.MenuStore.getData();
 
-    it('make visible non-trip item', function() {
-      var data = this.MenuStore.getData();
-
-      // select the first trip
-      var id = data[1].id;
-      this.storeCallback({
-        type: MenuActionTypes.MENU_VISIBLE,
-        data: {
-          id: id,
-          visible: true
-        }
+        expect(data.length).to.be.at.least(1);
+        expect(data[0].submenu).to.exist;
+        expect(data[0].submenu.length).to.be.at.least(2);
+        expect(data[0].submenu[1].id).to.exist;
+        expect(data[0].submenu[1].id).to.not.equal('');
+        expect(data[0].submenu[1].label).to.exist;
+        expect(data[0].submenu[1].label).to.equal(tripList[1].name);
+        expect(data[0].submenu[1].selected).to.exist;
+        expect(data[0].submenu[1].selected).to.equal(false);
+        expect(data[0].submenu[1].target).to.exist;
+        expect(data[0].submenu[1].target).to.equal('#/trip/' +
+                                                   tripList[1].tripId);
       });
 
-      data = this.MenuStore.getData();
-      expect(data[0].visible).to.equal(false);
-      expect(data[1].visible).to.equal(true);
-    });
+      it('selects indicated item', function() {
+        var data = this.MenuStore.getData();
 
-    it('making visible item emits change', function() {
-      var cb = sinon.spy();
-      this.MenuStore.addChangeListener(cb);
+        // select the first trip
+        var id = data[0].submenu[0].id;
+        this.storeCallback({
+          type: MenuActionTypes.MENU_SELECT,
+          data: {id: id}
+        });
 
-      var data = this.MenuStore.getData();
-      var id = data[0].id;
+        data = this.MenuStore.getData();
+        expect(data[0].selected).to.equal(true);
+        expect(data[0].submenu[0].selected).to.equal(true);
+        expect(data[0].submenu[1].selected).to.equal(false);
 
-      expect(cb.callCount).to.be.equal(0);
-      this.storeCallback({
-        type: MenuActionTypes.MENU_VISIBLE,
-        data: {
-          id: id,
-          visible: true
-        }
+        // select the second trip
+        id = data[0].submenu[1].id;
+        this.storeCallback({
+          type: MenuActionTypes.MENU_SELECT,
+          data: {id: id}
+        });
+
+        data = this.MenuStore.getData();
+        expect(data[0].selected).to.equal(true);
+        expect(data[0].submenu[0].selected).to.equal(false);
+        expect(data[0].submenu[1].selected).to.equal(true);
       });
-      expect(cb.callCount).to.be.equal(1);
-      this.MenuStore.removeChangeListener(cb);
+
+      it('select non-trip item', function() {
+        var data = this.MenuStore.getData();
+
+        // select the first trip
+        var id = data[1].id;
+        this.storeCallback({
+          type: MenuActionTypes.MENU_SELECT,
+          data: {id: id}
+        });
+
+        data = this.MenuStore.getData();
+        expect(data[1].selected).to.equal(true);
+      });
+
+      it('make visible indicated item', function() {
+        var data = this.MenuStore.getData();
+
+        // select the first trip
+        var id = data[0].submenu[0].id;
+        this.storeCallback({
+          type: MenuActionTypes.MENU_VISIBLE,
+          data: {
+            id: id,
+            visible: true
+          }
+        });
+
+        data = this.MenuStore.getData();
+        expect(data[0].visible).to.equal(true);
+        expect(data[0].submenu[0].visible).to.equal(true);
+        expect(data[0].submenu[1].visible).to.equal(false);
+
+        // select the second trip
+        id = data[0].submenu[1].id;
+        this.storeCallback({
+          type: MenuActionTypes.MENU_VISIBLE,
+          data: {
+            id: id,
+            visible: true
+          }
+        });
+
+        data = this.MenuStore.getData();
+        expect(data[0].visible).to.equal(true);
+        expect(data[0].submenu[0].visible).to.equal(false);
+        expect(data[0].submenu[1].visible).to.equal(true);
+      });
+
+      it('make visible non-trip item', function() {
+        var data = this.MenuStore.getData();
+
+        // select the first trip
+        var id = data[1].id;
+        this.storeCallback({
+          type: MenuActionTypes.MENU_VISIBLE,
+          data: {
+            id: id,
+            visible: true
+          }
+        });
+
+        data = this.MenuStore.getData();
+        expect(data[0].visible).to.equal(false);
+        expect(data[1].visible).to.equal(true);
+      });
+
+      it('making visible item emits change', function() {
+        var cb = sinon.spy();
+        this.MenuStore.addChangeListener(cb);
+
+        var data = this.MenuStore.getData();
+        var id = data[0].id;
+
+        expect(cb.callCount).to.be.equal(0);
+        this.storeCallback({
+          type: MenuActionTypes.MENU_VISIBLE,
+          data: {
+            id: id,
+            visible: true
+          }
+        });
+        expect(cb.callCount).to.be.equal(1);
+        this.MenuStore.removeChangeListener(cb);
+      });
+
+      describe('removing trip data', function() {
+        beforeEach(function() {
+          this.storeCallback({
+            type: TripActionTypes.TRIP_LOAD_LIST,
+            data: null
+          });
+        });
+
+        it('Menu contains dummy trip', function() {
+          var data = this.MenuStore.getData();
+
+          // all four items on the top-level should still be there.
+          expect(data.length).to.be.equal(4);
+          expect(data[0].submenu).to.not.exist;
+          expect(data[0].target).to.be.equal('#/trip');
+        });      
+      });
     });
   });
 
