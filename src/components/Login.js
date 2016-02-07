@@ -19,7 +19,7 @@ var Login = React.createClass({
         'Please enter your user name and password to log into the site.'
       ),
       React.DOM.div(
-        { className: 'input-element' },
+        {className: 'input-element'},
         React.DOM.label(
           null,
           'User name:'
@@ -33,7 +33,7 @@ var Login = React.createClass({
         )
       ),
       React.DOM.div(
-        { className: 'input-element' },
+        {className: 'input-element'},
         React.DOM.label(
           null,
           'Password:'
@@ -48,7 +48,7 @@ var Login = React.createClass({
       ),
 
       React.DOM.div(
-        { className: 'buttonbar' },
+        {className: 'buttonbar'},
         React.DOM.input(
           {
             type: 'submit',

@@ -255,7 +255,7 @@ describe('MenuStore', function() {
         expect(data.length).to.be.equal(4);
         expect(data[0].submenu).to.not.exist;
         expect(data[0].target).to.be.equal('#/trip');
-      });      
+      });
     });
 
     describe('with trip data', function() {
@@ -438,7 +438,7 @@ describe('MenuStore', function() {
           expect(data.length).to.be.equal(4);
           expect(data[0].submenu).to.not.exist;
           expect(data[0].target).to.be.equal('#/trip');
-        });      
+        });
       });
     });
   });
