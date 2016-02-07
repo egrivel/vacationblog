@@ -1,11 +1,18 @@
 'use strict';
 
+/**
+ * Single paragraph (block) of text. The paragraph contains formatted
+ * text and/or media.
+ */
+
 var React = require('react');
 
 var MediaStore = require('../stores/MediaStore');
 var CommentList = require('./CommentList');
+var Image = require('./Image');
 
 var utils = require('./utils');
+var Orientation = utils.orientation;
 
 /**
  * Get the media info for a media element.
@@ -16,7 +23,7 @@ var utils = require('./utils');
  */
 function _getMediaInfo(tripId, mediaId) {
   var result = {
-    orientation: 'landscape',
+    orientation: Orientation.LANDSCAPE,
     caption: ''
   };
 
@@ -24,7 +31,7 @@ function _getMediaInfo(tripId, mediaId) {
   if (mediaInfo) {
     result.caption = mediaInfo.caption;
     if (mediaInfo.height > mediaInfo.width) {
-      result.orientation = 'portrait';
+      result.orientation = Orientation.PORTRAIT;
     }
   }
 
@@ -43,21 +50,26 @@ function _getMediaInfo(tripId, mediaId) {
  * @return {object} React element for the image.
  * @private
  */
-function _imgWithModal(parent, tripId, mediaId, className, key) {
+function _imgWithModal(parent, tripId, mediaId, className) {
+  if (!mediaId) {
+    return null;
+  }
+
   var mediaInfo = _getMediaInfo(tripId, mediaId);
 
-  return React.DOM.img(
-    {
-      className: mediaInfo.orientation + ' ' + className,
-      key: key,
-      titel: mediaInfo.caption,
-      src: '/cgi-bin/photos/phimg?large=' + mediaId,
-      onClick: function() {
-        if (parent) {
-          parent.clickImg(mediaId);
-        }
+  return React.createElement(Image, {
+    tripId: tripId,
+    imageId: mediaId,
+    format: mediaInfo.orientation,
+    size: className,
+    key: mediaId,
+    caption: mediaInfo.caption,
+    onClick: function() {
+      if (parent) {
+        parent.clickImg(mediaId);
       }
-    });
+    }
+  });
 }
 
 /**
@@ -78,7 +90,7 @@ function _standardParagraph(parent, tripId, text, mediaId, key) {
       key: 'label',
       className: 'label'
     },
-    _imgWithModal(parent, tripId, mediaId, '', '')
+    _imgWithModal(parent, tripId, mediaId, '')
   );
   var value = utils.buildTextNode('span', 'value', 'value', text);
   var clear = React.DOM.span(
@@ -186,9 +198,9 @@ function _lineThreeImages(parent, tripId, images,
       className: 'images three ' + className,
       key: key
     },
-    _imgWithModal(parent, tripId, img1, 'img3', 'img-1'),
-    _imgWithModal(parent, tripId, img2, 'img3', 'img-2'),
-    _imgWithModal(parent, tripId, img3, 'img3', 'img-3'),
+    _imgWithModal(parent, tripId, img1, 'img3'),
+    _imgWithModal(parent, tripId, img2, 'img3'),
+    _imgWithModal(parent, tripId, img3, 'img3'),
     React.DOM.span(
       {
         key: 'clear',
@@ -263,8 +275,8 @@ function _lineTwoImages(parent, tripId, images,
       className: 'images two ' + className,
       key: key
     },
-    _imgWithModal(parent, tripId, img1, 'img2', 'img-1'),
-    _imgWithModal(parent, tripId, img2, 'img2', 'img-2'),
+    _imgWithModal(parent, tripId, img1, 'img2'),
+    _imgWithModal(parent, tripId, img2, 'img2'),
     React.DOM.span(
       {className: 'clear'}
     )
@@ -377,7 +389,7 @@ function _paragraphSingleImage(parent, tripId, mediaId, key) {
         className: 'images',
         key: key
       },
-      _imgWithModal(parent, tripId, mediaId, 'img1', ''),
+      _imgWithModal(parent, tripId, mediaId, 'img1'),
       React.DOM.span(
         {
           className: 'clear'

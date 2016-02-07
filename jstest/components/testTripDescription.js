@@ -1,5 +1,7 @@
 'use strict';
 
+/* global document */
+
 var expect = require('chai').expect;
 var sinon = require('sinon');
 var React = require('react');
@@ -10,20 +12,34 @@ var TripDescription = require('../../src/components/TripDescription');
 var TripStore = require('../../src/stores/TripStore');
 var TripAction = require('../../src/actions/TripAction');
 
+/**
+ * Create a trip description element.
+ * @param {string} tripId - unique ID of the trip to get.
+ * @return {object} React element for the trip description.
+ */
 function getTripDescription(tripId) {
-  return React.createElement(TripDescription,
-                             {
-                               params: {
-                                 tripId: tripId
-                               }
-                             });
+  return React.createElement(TripDescription, {
+    params: {
+      tripId: tripId
+    }
+  });
 }
 
+/**
+ * Render a trip description into HTML.
+ * @param {string} tripId - ID of the trip description to render.
+ * @return {string} HTML representation of the rendered trip description.
+ */
 function getHtmlMarkup(tripId) {
   var element = getTripDescription(tripId);
   return React.renderToStaticMarkup(element);
 }
 
+/**
+ * Render an trip description into the document.
+ * @param {string} tripId - ID of the trip description to render.
+ * @return {object} DOM node corresponding to the trip description element.
+ */
 function getDomElement(tripId) {
   var element = getTripDescription(tripId);
   var component = TestUtils.renderIntoDocument(element);
@@ -75,8 +91,8 @@ describe('TripDescription component', function() {
   describe('#render', function() {
     it('render trip class', function() {
       var markup = getHtmlMarkup(tripId);
-      var tripDescr = '<div class="trip"><p class="">'
-        + tripData.description + '</p><p class="readJournal">';
+      var tripDescr = '<div class="trip"><p class="text">' +
+        tripData.description + '</p><p class="readJournal">';
       expect(markup).to.contain(tripDescr);
     });
 
@@ -87,8 +103,8 @@ describe('TripDescription component', function() {
 
     it('render description if no trip ID', function() {
       var markup = getHtmlMarkup(null);
-      var tripDescr = '<div class="trip"><p class="">'
-        + tripData.description + '</p><p class="readJournal">';
+      var tripDescr = '<div class="trip"><p class="text">' +
+        tripData.description + '</p><p class="readJournal">';
       expect(markup).to.contain(tripDescr);
     });
 
@@ -100,9 +116,10 @@ describe('TripDescription component', function() {
     });
 
     it('render multiple-line description in multiple paragraphs', function() {
-      tripData.description = 'paragraph 1\n\nparagraph 2';
+      tripData.description = 'paragraph 1&lf;paragraph 2';
       var markup = getHtmlMarkup(tripId);
-      var tripDescr = '<div class="trip"><p class="">paragraph 1</p><p class="">paragraph 2</p><p class="readJournal">';
+      var tripDescr = '<div class="trip"><p class="text">paragraph 1</p>' +
+        '<p class="text">paragraph 2</p><p class="readJournal">';
       expect(markup).to.contain(tripDescr);
     });
 
@@ -126,25 +143,25 @@ describe('TripDescription component', function() {
 
     it('does not call initialLoadTrip', function() {
       expect(initialLoadTripStub.callCount).to.be.equal(0);
-      var element = getDomElement(tripId);
+      getDomElement(tripId);
       expect(initialLoadTripStub.callCount).to.be.equal(0);
     });
 
     it('does not call setCurrentTrip', function() {
       expect(setCurrentTripStub.callCount).to.be.equal(0);
-      var element = getDomElement(tripId);
+      getDomElement(tripId);
       expect(setCurrentTripStub.callCount).to.be.equal(0);
     });
 
     it('calls getCurrentTripId', function() {
       expect(getCurrentTripIdStub.callCount).to.be.equal(0);
-      var element = getDomElement(tripId);
+      getDomElement(tripId);
       expect(getCurrentTripIdStub.callCount).to.be.equal(1);
     });
 
     it('calls getTripData', function() {
       expect(getTripDataStub.callCount).to.be.equal(0);
-      var element = getDomElement(tripId);
+      getDomElement(tripId);
       expect(getTripDataStub.callCount).to.be.equal(1);
     });
   });
@@ -167,25 +184,25 @@ describe('TripDescription component', function() {
 
     it('does not call initialLoadTrip', function() {
       expect(initialLoadTripStub.callCount).to.be.equal(0);
-      var element = getDomElement(otherTripId);
+      getDomElement(otherTripId);
       expect(initialLoadTripStub.callCount).to.be.equal(0);
     });
 
     it('calls setCurrentTrip', function() {
       expect(setCurrentTripStub.callCount).to.be.equal(0);
-      var element = getDomElement(otherTripId);
+      getDomElement(otherTripId);
       expect(setCurrentTripStub.callCount).to.be.equal(1);
     });
 
     it('calls getCurrentTripId', function() {
       expect(getCurrentTripIdStub.callCount).to.be.equal(0);
-      var element = getDomElement(otherTripId);
+      getDomElement(otherTripId);
       expect(getCurrentTripIdStub.callCount).to.be.equal(1);
     });
 
     it('calls getTripData', function() {
       expect(getTripDataStub.callCount).to.be.equal(0);
-      var element = getDomElement(otherTripId);
+      getDomElement(otherTripId);
       expect(getTripDataStub.callCount).to.be.equal(1);
     });
   });
@@ -195,25 +212,25 @@ describe('TripDescription component', function() {
 
     it('calls initialLoadTrip', function() {
       expect(initialLoadTripStub.callCount).to.be.equal(0);
-      var element = getDomElement(otherTripId);
+      getDomElement(otherTripId);
       expect(initialLoadTripStub.callCount).to.be.equal(1);
     });
 
     it('does not call setCurrentTrip', function() {
       expect(setCurrentTripStub.callCount).to.be.equal(0);
-      var element = getDomElement(otherTripId);
+      getDomElement(otherTripId);
       expect(setCurrentTripStub.callCount).to.be.equal(0);
     });
 
     it('calls getCurrentTripId', function() {
       expect(getCurrentTripIdStub.callCount).to.be.equal(0);
-      var element = getDomElement(otherTripId);
+      getDomElement(otherTripId);
       expect(getCurrentTripIdStub.callCount).to.be.equal(1);
     });
 
     it('calls getTripData', function() {
       expect(getTripDataStub.callCount).to.be.equal(0);
-      var element = getDomElement(otherTripId);
+      getDomElement(otherTripId);
       expect(getTripDataStub.callCount).to.be.equal(1);
     });
   });
@@ -225,25 +242,25 @@ describe('TripDescription component', function() {
 
     it('does not call initialLoadTrip', function() {
       expect(initialLoadTripStub.callCount).to.be.equal(0);
-      var element = getDomElement(tripId);
+      getDomElement(tripId);
       expect(initialLoadTripStub.callCount).to.be.equal(0);
     });
 
     it('does not call setCurrentTrip', function() {
       expect(setCurrentTripStub.callCount).to.be.equal(0);
-      var element = getDomElement(tripId);
+      getDomElement(tripId);
       expect(setCurrentTripStub.callCount).to.be.equal(0);
     });
 
     it('calls getCurrentTripId', function() {
       expect(getCurrentTripIdStub.callCount).to.be.equal(0);
-      var element = getDomElement(tripId);
+      getDomElement(tripId);
       expect(getCurrentTripIdStub.callCount).to.be.equal(1);
     });
 
     it('calls getTripData', function() {
       expect(getTripDataStub.callCount).to.be.equal(0);
-      var element = getDomElement(tripId);
+      getDomElement(tripId);
       expect(getTripDataStub.callCount).to.be.equal(1);
     });
   });
@@ -297,10 +314,9 @@ describe('TripDescription component', function() {
       // Get the _onChange function
       var func = addChangeListenerStub.firstCall.args[0];
 
-      expect(getTripDataStub.callCount).to.be.equal(1); 
+      expect(getTripDataStub.callCount).to.be.equal(1);
       func();
       expect(getTripDataStub.callCount).to.be.equal(2);
     });
-    
   });
 });

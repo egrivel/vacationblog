@@ -71,10 +71,7 @@ var Comment = React.createClass({
         },
         '[id: ' + commentId + ']'));
 
-    var parList = null;
-    if (commentText) {
-      parList = commentText.split('&lf;');
-    }
+    var parList = utils.splitText(commentText);
 
     var parCount = 0;
 
@@ -93,8 +90,7 @@ var Comment = React.createClass({
       parList.map(function(par) {
         if (par) {
           parCount++;
-          var key = tripId + commentId;
-          key += '-p' + parCount;
+          var key = 'p-' + parCount;
           return React.createElement(CommentParagraph, {
             tripId: tripId,
             key: key,

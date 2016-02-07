@@ -6,6 +6,7 @@ var Link = require('react-router').Link;
 var TripStore = require('../stores/TripStore');
 var TripAction = require('../actions/TripAction');
 
+var Paragraph = require('./Paragraph');
 var utils = require('./utils');
 
 /**
@@ -95,27 +96,26 @@ var TripDescription = React.createClass({
   },
 
   render: function() {
-    var parList = [];
     var parCount = 0;
     var tripId = this.state.tripId;
 
     if (!tripId) {
       tripId = 'trip';
     }
-    if (this.state.description) {
-      parList = this.state.description.split('\n\n');
-    }
+
+    var parList = utils.splitText(this.state.description);
 
     return (
       React.DOM.div({className: 'trip'},
         parList.map(function(par) {
           parCount++;
-          var key = tripId;
-          key += '-p' + parCount;
-          return utils.buildTextNode('p', '', key,
-                                     utils.replaceEntities(par));
+          return React.createElement(Paragraph, {
+            tripId: tripId,
+            key: 'p-' + parCount,
+            text: par
+          });
         }),
-        _startReadingLink(this.state.tripId, this.state.firstJournalId)
+        _startReadingLink(tripId, this.state.firstJournalId)
       )
     );
   }

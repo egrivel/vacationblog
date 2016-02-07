@@ -303,7 +303,6 @@ var JournalEntry = React.createClass({
   },
 
   render: function render() {
-    var parList = [];
     var parCount = 0;
     var tripId = this.state.tripId;
     var journalId = this.state.journalId;
@@ -314,9 +313,8 @@ var JournalEntry = React.createClass({
     if (!journalId) {
       return null;
     }
-    if (this.state.journalText) {
-      parList = this.state.journalText.split('&lf;');
-    }
+
+    var parList = utils.splitText(this.state.journalText);
 
     var comment = null;
     if (this.state.tripId && this.state.journalId) {
@@ -345,7 +343,7 @@ var JournalEntry = React.createClass({
                        1),
       parList.map(function(par) {
         parCount++;
-        var parKey = '-p' + parCount;
+        var parKey = 'p-' + parCount;
         return React.createElement(Paragraph, {
           tripId: tripId,
           key: parKey,

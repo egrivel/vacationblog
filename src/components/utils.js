@@ -1,5 +1,16 @@
 'use strict';
 
+/**
+ * Common display utilities. These utilities can be used to render
+ * all the different types of text that comes from the database.
+ *
+ * The following utility functions are provided:
+ *  - splitText: take a text blob and split it in a series of
+ *    objects representing individual blocks (paragraphs) in the text.
+ *  - renderBlock: take a block object and return the React representation
+ *    of that object.
+ */
+
 var React = require('react');
 var moment = require('moment-timezone');
 
@@ -16,10 +27,11 @@ var moment = require('moment-timezone');
  * </ul>
  * @param {string} text - text to parse.
  * @param {boolean} isLegacy - indicator whether in legacy mode.
+ * @param {int} count - counter to create unique key attributes.
  * @return {array} list of React elements.
  * @private
  */
-function _recursivelyGetNodes(text, isLegacy) {
+function _recursivelyGetNodes(text, isLegacy, count) {
   var nodes = [];
   var end;
 
@@ -37,61 +49,61 @@ function _recursivelyGetNodes(text, isLegacy) {
   if (text.substring(0, 4) === '[EM]') {
     end = text.indexOf('[/EM]');
     if (end > 0) {
-      nodes.push(React.DOM.em(null,
+      nodes.push(React.DOM.em({key: count},
                               _recursivelyGetNodes(text.substring(4, end),
-                                                 isLegacy)));
+                                                 isLegacy, count + 1)));
       nodes.push(_recursivelyGetNodes(text.substring(end + 5),
-                                    isLegacy));
+                                    isLegacy, count + 1));
     } else {
-      nodes.push(React.DOM.em(null,
+      nodes.push(React.DOM.em({key: count},
                               _recursivelyGetNodes(text.substring(4),
-                                                 isLegacy)));
+                                                 isLegacy, count + 1)));
     }
   } else if (text.substring(0, 3) === '[B]') {
     end = text.indexOf('[/B]');
     if (end > 0) {
       if (isLegacy) {
-        nodes.push(React.DOM.strong(null,
+        nodes.push(React.DOM.strong({key: count},
                                     _recursivelyGetNodes(text.substring(3, end),
-                                                        isLegacy)));
+                                                        isLegacy, count + 1)));
       } else {
-        nodes.push(React.DOM.em(null,
+        nodes.push(React.DOM.em({key: count},
                                 _recursivelyGetNodes(text.substring(3, end),
-                                                   isLegacy)));
+                                                   isLegacy, count + 1)));
       }
       nodes.push(_recursivelyGetNodes(text.substring(end + 4),
-                                    isLegacy));
+                                    isLegacy, count + 1));
     } else if (isLegacy) {
-      nodes.push(React.DOM.strong(null,
+      nodes.push(React.DOM.strong({key: count},
                                   _recursivelyGetNodes(text.substring(3),
-                                                       isLegacy)));
+                                                       isLegacy, count + 1)));
     } else {
-      nodes.push(React.DOM.em(null,
+      nodes.push(React.DOM.em({key: count},
                               _recursivelyGetNodes(text.substring(3),
-                                                   isLegacy)));
+                                                   isLegacy, count + 1)));
     }
   } else if (text.substring(0, 3) === '[U]') {
     end = text.indexOf('[/U]');
     if (end > 0) {
       if (isLegacy) {
-        nodes.push(React.DOM.u(null,
+        nodes.push(React.DOM.u({key: count},
                                _recursivelyGetNodes(text.substring(3, end),
-                                                  isLegacy)));
+                                                  isLegacy, count + 1)));
       } else {
-        nodes.push(React.DOM.em(null,
+        nodes.push(React.DOM.em({key: count},
                                _recursivelyGetNodes(text.substring(3, end),
-                                                  isLegacy)));
+                                                  isLegacy, count + 1)));
       }
       nodes.push(_recursivelyGetNodes(text.substring(end + 4),
-                                    isLegacy));
+                                    isLegacy, count + 1));
     } else if (isLegacy) {
-      nodes.push(React.DOM.u(null,
+      nodes.push(React.DOM.u({key: count},
                              _recursivelyGetNodes(text.substring(3),
-                                                  isLegacy)));
+                                                  isLegacy, count + 1)));
     } else {
-      nodes.push(React.DOM.em(null,
+      nodes.push(React.DOM.em({key: count},
                               _recursivelyGetNodes(text.substring(3),
-                                                   isLegacy)));
+                                                   isLegacy, count + 1)));
     }
   } else if (text.substring(0, 6) === '[LINK ') {
     var endOpen = text.indexOf(']');
@@ -103,14 +115,14 @@ function _recursivelyGetNodes(text, isLegacy) {
     var href = open;
     end = text.indexOf('[/LINK]');
     if (end > 0) {
-      nodes.push(React.DOM.a({href: href, target: '_blank'},
+      nodes.push(React.DOM.a({href: href, target: '_blank', key: count},
                              _recursivelyGetNodes(text.substring(0, end),
-                                                isLegacy)));
+                                                isLegacy, count + 1)));
       nodes.push(_recursivelyGetNodes(text.substring(end + 7),
-                                     isLegacy));
+                                     isLegacy, count + 1));
     } else {
-      nodes.push(React.DOM.a({href: href, target: '_blank'},
-                             _recursivelyGetNodes(text, isLegacy)));
+      nodes.push(React.DOM.a({href: href, target: '_blank', key: count},
+                             _recursivelyGetNodes(text, isLegacy, count + 1)));
     }
   } else {
     nodes.push(text);
@@ -119,6 +131,11 @@ function _recursivelyGetNodes(text, isLegacy) {
 }
 
 var utils = {
+  orientation: {
+    PORTRAIT: 'portrait',
+    LANDSCAPE: 'landscape'
+  },
+
   replaceEntities: function replaceEntities(text) {
     text = text.replace(/&aacute;/g, '\u00e1');
     text = text.replace(/&agrave;/g, '\u00e0');
@@ -163,7 +180,7 @@ var utils = {
   },
 
   buildTextNode: function buildTextNode(type, className, key, text) {
-    var nodes = _recursivelyGetNodes(text, true);
+    var nodes = _recursivelyGetNodes(text, true, 0);
     if (type === 'p') {
       return React.DOM.p(
         {
@@ -207,6 +224,14 @@ var utils = {
     }
     console.log(' - unknown format');
     return date;
+  },
+
+  splitText: function(text) {
+    if (text) {
+      return text.split('&lf;');
+    }
+
+    return [];
   }
 };
 
