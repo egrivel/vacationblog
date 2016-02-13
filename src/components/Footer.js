@@ -69,7 +69,7 @@ var Footer = React.createClass({
           className: 'footer'
         },
         React.DOM.p(null, footerText +
-                    ' Website design \u00A92015 by Eric Grivel.' +
+                    ' Website design \u00A92015-16 by Eric Grivel.' +
                     ' All rights reserved.')
       )
     );
