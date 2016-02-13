@@ -10,7 +10,6 @@ var React = require('react');
 var CommentStore = require('../stores/CommentStore');
 var UserStore = require('../stores/UserStore');
 
-var CommentAction = require('../actions/CommentAction');
 var UserAction = require('../actions/UserAction');
 
 var utils = require('./utils');
@@ -111,6 +110,7 @@ CommentList = React.createClass({
 
   stores: [CommentStore, UserStore],
 
+/*
   _recursivelyGetData: function _recursivelyGetData(tripId, commentId) {
     var data = CommentStore.getData(tripId, commentId);
     if (data) {
@@ -130,6 +130,7 @@ CommentList = React.createClass({
       return data;
     }
   },
+*/
 
   _getStateFromStores: function _getStateFromStores() {
     var commentData = CommentStore.getData(this.props.tripId,
@@ -154,8 +155,6 @@ CommentList = React.createClass({
       };
     }
 
-    // No data returned; try loading
-    CommentAction.loadComments(this.props.tripId, this.props.referenceId);
     return {
       referenceId: this.props.referenceId,
       count: 0

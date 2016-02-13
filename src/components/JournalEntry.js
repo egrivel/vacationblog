@@ -25,10 +25,8 @@ var MediaStore = require('../stores/MediaStore');
 var UserStore = require('../stores/UserStore');
 var CommentStore = require('../stores/CommentStore');
 
-// var JournalAction = require('../actions/JournalAction');
 var UserAction = require('../actions/UserAction');
 var MediaAction = require('../actions/MediaAction');
-var CommentAction = require('../actions/CommentAction');
 
 var Paragraph = require('./Paragraph');
 var CommentList = require('./CommentList');
@@ -67,27 +65,6 @@ function _checkImagesLoad(tripId, text) {
 }
 
 /**
- * Recursively heck to see if all comments have been loaded, and make
- * additional comments be loaded if needed.
- * @param {id} tripId - unique trip ID.
- * @param {id} referenceId - unique ID of the item to which comments are
- * loaded.
- * @private
- */
-function _checkCommentsLoad(tripId, referenceId) {
-  var data = CommentStore.getData(tripId, referenceId);
-  if (data) {
-    if (data.count) {
-      for (var i = 0; i < data.count; i++) {
-        _checkCommentsLoad(tripId, data.list[i].commentId);
-      }
-    }
-  } else {
-    CommentAction.loadComments(tripId, referenceId);
-  }
-}
-
-/**
  * Get the state from the stores.
  * @return {object} new state.
  * @private
@@ -95,6 +72,8 @@ function _checkCommentsLoad(tripId, referenceId) {
 function _getStateFromStores() {
   var journalData = JournalStore.getData();
   var userName = '';
+  var comments = null;
+
   if (journalData && journalData.userId) {
     var userData = UserStore.getData(journalData.userId);
     if (userData) {
@@ -102,12 +81,13 @@ function _getStateFromStores() {
     }
   }
 
-  if (journalData.tripId && journalData.journalId) {
-    _checkCommentsLoad(journalData.tripId, journalData.journalId);
-  }
   if (journalData.tripId && journalData.journalText) {
     _checkImagesLoad(journalData.tripId, journalData.journalText);
   }
+
+  if (journalData.tripId && journalData.commentId) {
+    comments = CommentStore.recursiveGetComments(JournalData.tripId, JournalData.commentId);
+}
 
   return {
     tripId: journalData.tripId,
@@ -119,7 +99,8 @@ function _getStateFromStores() {
     userId: journalData.userId,
     userName: userName,
     nextId: journalData.nextId,
-    prevId: journalData.prevId
+    prevId: journalData.prevId,
+    comments: comments
   };
 }
 
