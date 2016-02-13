@@ -9,6 +9,8 @@ var TripStore = require('../../src/stores/TripStore');
 var Footer = require('../../src/components/Footer');
 
 describe('Footer component', function() {
+  var standardFooter = 'Website design \u00a92015-16 by Eric Grivel.';
+
   describe('render with different start and end date', function() {
     var testYear1 = '2012';
     var testYear2 = '2013';
@@ -46,7 +48,7 @@ describe('Footer component', function() {
           React.createElement(Footer, null));
         var text = TestUtils.findRenderedDOMComponentWithTag(footer, 'div');
         var text2 = text.textContent;
-        expect(text2).to.contain('Website design \u00a92015 by Eric Grivel.');
+        expect(text2).to.contain(standardFooter);
         expect(text2).to.contain('All rights reserved.');
       });
     });
@@ -89,7 +91,7 @@ describe('Footer component', function() {
           React.createElement(Footer, null));
         var text = TestUtils.findRenderedDOMComponentWithTag(footer, 'div');
         var text2 = text.textContent;
-        expect(text2).to.contain('Website design \u00a92015 by Eric Grivel.');
+        expect(text2).to.contain(standardFooter);
         expect(text2).to.contain('All rights reserved.');
       });
     });
@@ -130,7 +132,7 @@ describe('Footer component', function() {
           React.createElement(Footer, null));
         var text = TestUtils.findRenderedDOMComponentWithTag(footer, 'div');
         var text2 = text.textContent;
-        expect(text2).to.contain('Website design \u00a92015 by Eric Grivel.');
+        expect(text2).to.contain(standardFooter);
         expect(text2).to.contain('All rights reserved.');
       });
     });
@@ -171,7 +173,7 @@ describe('Footer component', function() {
           React.createElement(Footer, null));
         var text = TestUtils.findRenderedDOMComponentWithTag(footer, 'div');
         var text2 = text.textContent;
-        expect(text2).to.contain('Website design \u00a92015 by Eric Grivel.');
+        expect(text2).to.contain(standardFooter);
         expect(text2).to.contain('All rights reserved.');
       });
     });
@@ -209,7 +211,7 @@ describe('Footer component', function() {
           React.createElement(Footer, null));
         var text = TestUtils.findRenderedDOMComponentWithTag(footer, 'div');
         var text2 = text.textContent;
-        expect(text2).to.contain('Website design \u00a92015 by Eric Grivel.');
+        expect(text2).to.contain(standardFooter);
         expect(text2).to.contain('All rights reserved.');
       });
     });
