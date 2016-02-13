@@ -10,7 +10,7 @@ var Footer = require('./components/Footer');
 var TripDescription = require('./components/TripDescription');
 var TripAction = require('./actions/TripAction');
 var TripStore = require('./stores/TripStore');
-var JournalEntry = require('./components/JournalEntry');
+var JournalWrapper = require('./components/JournalWrapper.jsx');
 var Search = require('./components/Search');
 var Login = require('./components/Login');
 var About = require('./components/About');
@@ -44,8 +44,8 @@ const routes = {
     { path: '/', component: TripDescription },
     { path: '/trip', component: TripDescription },
     { path: '/trip/:tripId', component: TripDescription },
-    { path: '/journal/:tripId', component: JournalEntry },
-    { path: '/journal/:tripId/:journalId', component: JournalEntry },
+    { path: '/journal/:tripId', component: JournalWrapper },
+    { path: '/journal/:tripId/:journalId', component: JournalWrapper },
     { path: '/search', component: Search },
     { path: '/login', component: Login },
     { path: '/about', component: About }

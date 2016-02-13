@@ -1,5 +1,19 @@
 'use strict';
 
+/**
+ * Display an entire journal entry.
+ *
+ * This is the major entry point to display the journal entry, which
+ * in turn is the backbone of the vacation blog website.
+ *
+ * The journal entry is the component that participates in the flux
+ * cycle. It will retrieve all the information needed to display the
+ * content, and pass them on as props to the various child components.
+ *
+ * This component does not load data, it only displays data that has
+ * already been loaded.
+ */
+
 // Add 'window' to the eslint globals for this file.
 /* global window */
 
@@ -11,7 +25,7 @@ var MediaStore = require('../stores/MediaStore');
 var UserStore = require('../stores/UserStore');
 var CommentStore = require('../stores/CommentStore');
 
-var JournalAction = require('../actions/JournalAction');
+// var JournalAction = require('../actions/JournalAction');
 var UserAction = require('../actions/UserAction');
 var MediaAction = require('../actions/MediaAction');
 var CommentAction = require('../actions/CommentAction');
@@ -267,12 +281,16 @@ var JournalEntry = React.createClass({
     this.setState(_getStateFromStores());
   },
 
+  /**
+   * React lifecycle function. Called when the component is first
+   * mounted. Not called on updates; the componentWillReceiveProps is
+   * called on updates.
+   */
   componentDidMount: function() {
     JournalStore.addChangeListener(this._onChange);
     MediaStore.addChangeListener(this._onChange);
     UserStore.addChangeListener(this._onChange);
     CommentStore.addChangeListener(this._onChange);
-    this.getDataIfNeeded(this.props);
   },
 
   componentWillUnmount: function() {
@@ -282,25 +300,20 @@ var JournalEntry = React.createClass({
     JournalStore.removeChangeListener(this._onChange);
   },
 
+  /**
+   * React lifecycle function. Called when the components is already
+   * mounted and there are new props passed in.
+   * @param {object} nextProps - new properties that are passed to this
+   * component as part of the update.
+   */
+  // standard lifecyle parameter is not used - this is not a problem
+  /* eslint-disable no-unused-vars */
   componentWillReceiveProps: function(nextProps) {
-    // When initially loaded, allways scroll to the top of the page
+    // When the page is loaded with new parameters (i.e. a new journal
+    // entry is displayed), scroll to the top of the page.
     window.scrollTo(0, 0);
-    this.getDataIfNeeded(nextProps);
   },
-
-  getDataIfNeeded: function(props) {
-    var data = JournalStore.getData();
-    var tripId = '';
-    var journalId = '';
-    if (props && props.params) {
-      tripId = props.params.tripId;
-      journalId = props.params.journalId;
-    }
-    if ((tripId !== data.tripId) ||
-        (journalId !== data.journalId)) {
-      JournalAction.loadJournal(tripId, journalId);
-    }
-  },
+  /* eslint-enable no-unused-vars */
 
   render: function render() {
     var parCount = 0;
