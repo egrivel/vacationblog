@@ -1,6 +1,7 @@
 'use strict';
 
 var AppDispatcher = require('../AppDispatcher');
+var UserAction = require('./UserAction');
 var utils = require('./utils');
 
 var CommentAction = {
@@ -47,7 +48,7 @@ var CommentAction = {
    * Load comments recursively, that is, include comments on comments
    * in the load.
    * @param {ID} tripId - unique trip ID;
-   * @param {ID} referenceid - reference ID for item to load
+   * @param {ID} referenceId - reference ID for item to load
    */
   recursivelyLoadComments: function(tripId, referenceId) {
     var url = 'api/getComment.php?tripId=' + tripId +
@@ -77,8 +78,11 @@ var CommentAction = {
         list: data.list
       }
     });
-    var i;
-    for (i = 0; i < data.count; i++) {
+
+    for (var i = 0; i < data.count; i++) {
+      if (data.list[i].userId) {
+        UserAction.smartLoadUser(data.list[i].userId);
+      }
       this.recursivelyLoadComments(tripId, data.list[i].commentId);
     }
   }

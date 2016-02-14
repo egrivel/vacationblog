@@ -68,6 +68,24 @@ var CommentStore = assign({}, GenericStore, {
    */
   getData: function(tripId, referenceId) {
     return _commentData[_makeIndex(tripId, referenceId)];
+  },
+
+  /**
+   * Get a recursive structure with the comment information.
+   * @param {id} tripId - unique trip ID.
+   * @param {id} referenceId - unique reference ID.
+   * @return {array} list of comments on the indicated item, where each
+   * comment element has its own 'comments' list.
+   */
+  getRecursiveData: function(tripId, referenceId) {
+    var result = this.getData(tripId, referenceId);
+    if (result) {
+      for (var i = 0; i < result.count; i++) {
+        result.list[i].comments =
+          this.getRecursiveData(tripId, result.list[i].commentId);
+      }
+    }
+    return result;
   }
 });
 

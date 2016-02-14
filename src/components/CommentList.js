@@ -7,14 +7,12 @@
 
 var React = require('react');
 
-var CommentStore = require('../stores/CommentStore');
 var UserStore = require('../stores/UserStore');
 
 var UserAction = require('../actions/UserAction');
 
 var utils = require('./utils');
 var Feedback = require('./Feedback');
-var storeMixin = require('./StoreMixin');
 
 // Declare variables that will be used later
 var CommentList;
@@ -50,6 +48,7 @@ var Comment = React.createClass({
     var commentText = this.props.commentText;
     var deleted = this.props.deleted;
     var userName = this.props.userName;
+    var comments = this.props.comments;
 
     var feedback = React.createElement(Feedback, null);
 
@@ -78,7 +77,8 @@ var Comment = React.createClass({
       CommentList,
       {
         tripId: tripId,
-        referenceId: commentId
+        referenceId: commentId,
+        comments: comments
       });
 
     return React.DOM.div(
@@ -106,87 +106,40 @@ var Comment = React.createClass({
 CommentList = React.createClass({
   displayName: 'CommentList',
 
-  mixins: [storeMixin()],
-
-  stores: [CommentStore, UserStore],
-
-/*
-  _recursivelyGetData: function _recursivelyGetData(tripId, commentId) {
-    var data = CommentStore.getData(tripId, commentId);
-    if (data) {
-      for (var i = 0; i < data.count; i++) {
-        var userData = UserStore.getData(data.list[i].userId);
-        var userName = '';
-        if (userData) {
-          userName = userData.name;
-        } else {
-          UserAction.loadUser(data.list[i].userId);
-          userName = data.list[i].userId;
-        }
-        data.list[i].userName = userName;
-        data.list[i].subComment = _recursivelyGetData(tripId,
-                                                      data.list[i].commentId);
-      }
-      return data;
-    }
-  },
-*/
-
-  _getStateFromStores: function _getStateFromStores() {
-    var commentData = CommentStore.getData(this.props.tripId,
-                                           this.props.referenceId);
-    if (commentData) {
-      for (var i = 0; i < commentData.count; i++) {
-        var userData = UserStore.getData(commentData.list[i].userId);
-
-        var userName = '';
-        if (userData) {
-          userName = userData.name;
-        } else {
-          UserAction.loadUser(commentData.list[i].userId);
-          userName = commentData.list[i].userId;
-        }
-        commentData.list[i].userName = userName;
-      }
-      return {
-        referenceId: this.props.referenceId,
-        count: commentData.count,
-        list: commentData.list
-      };
-    }
-
-    return {
-      referenceId: this.props.referenceId,
-      count: 0
-    };
-  },
-
   render: function() {
-    if (this.state.count) {
-      var commentList = [];
-      for (var i = 0; i < this.state.count; i++) {
-        commentList[i] = React.createElement(
-          Comment,
-          {
-            tripId: this.props.tripId,
-            commentId: this.state.list[i].commentId,
-            userId: this.state.list[i].userId,
-            userName: this.state.list[i].userName,
-            created: this.state.list[i].created,
-            commentText: this.state.list[i].commentText,
-            deleted: this.state.list[i].deleted,
-            key: 'comment-' + this.state.referenceId + '-' + i
-          }
-        );
-      }
-      return React.DOM.div(
-        {
-          className: 'comments',
-          key: 'comment-list-' + this.state.referenceId
-        },
-        commentList);
+    if (!this.props.comments || !this.props.comments.count) {
+      return null;
     }
-    return null;
+
+    var commentList = [];
+    for (var i = 0; i < this.props.comments.count; i++) {
+      var userId = this.props.comments.list[i].userId;
+      var userData = UserStore.getData(userId);
+      var userName = '';
+      if (userData) {
+        userName = userData.name;
+      }
+      commentList[i] = React.createElement(
+        Comment,
+        {
+          tripId: this.props.tripId,
+          commentId: this.props.comments.list[i].commentId,
+          userId: userId,
+          userName: userName,
+          created: this.props.comments.list[i].created,
+          commentText: this.props.comments.list[i].commentText,
+          deleted: this.props.comments.list[i].deleted,
+          comments: this.props.comments.list[i].comments,
+          key: this.props.comments.list[i].commentId
+        }
+      );
+    }
+    return React.DOM.div(
+      {
+        className: 'comments',
+        key: 'comment-list-' + this.props.referenceId
+      },
+      commentList);
   }
 });
 

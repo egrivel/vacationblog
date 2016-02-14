@@ -85,9 +85,10 @@ function _getStateFromStores() {
     _checkImagesLoad(journalData.tripId, journalData.journalText);
   }
 
-  if (journalData.tripId && journalData.commentId) {
-    comments = CommentStore.recursiveGetComments(JournalData.tripId, JournalData.commentId);
-}
+  if (journalData.tripId && journalData.journalId) {
+    comments = CommentStore.getRecursiveData(journalData.tripId,
+                                             journalData.journalId);
+  }
 
   return {
     tripId: journalData.tripId,
@@ -314,7 +315,9 @@ var JournalEntry = React.createClass({
     if (this.state.tripId && this.state.journalId) {
       comment = React.createElement(CommentList, {
         tripId: this.state.tripId,
-        referenceId: this.state.journalId});
+        referenceId: this.state.journalId,
+        comments: this.state.comments
+      });
     }
 
     // Unique key for this journal item. Since the journal item has this

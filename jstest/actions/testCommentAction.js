@@ -89,10 +89,11 @@ describe('CommentAction stuff', function() {
     var count;
 
     beforeEach(function() {
-      recursivelyLoadedStub = sinon.stub(CommentAction, '_recursiveCommentsLoaded');
+      recursivelyLoadedStub =
+        sinon.stub(CommentAction, '_recursiveCommentsLoaded');
       asyncStub = sinon.stub(utils, 'getAsync', function(url, callback) {
         if (this.count < 10) {
-          this.count++
+          this.count++;
           testData.commentId = 'comment-' + count;
         } else {
           delete testData.commentId;
@@ -144,7 +145,7 @@ describe('CommentAction stuff', function() {
     beforeEach(function() {
       asyncStub = sinon.stub(utils, 'getAsync', function(url, callback) {
         if (count < 10) {
-          count++
+          count++;
           testData.count = 1;
           testData.list = [];
           testData.list[0] = {
