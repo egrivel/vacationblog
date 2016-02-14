@@ -6,7 +6,7 @@ This vacation blog is a personal project of mine. The purpose is to create
 a custom way for me to keep a blog while my wife and I are traveling on
 vacation.
 
-The reason standard blogs don't work for me is:
+The reasons standard blogs don't work for me are:
 
  - I want to run the same blog on multiple servers: my home Linux system,
    my Linux laptop that I am traveling with, and my public website. I want
@@ -107,12 +107,12 @@ As the project matures, these steps may get cleaned up a bit.
    does not exist; this is expected. This script will ask for the information
    of the user who will be the administrator of the vacation blog system.
    The username and password provided here will be used to create a user
-   into the vacation blog databases who will be able to administer the
+   in the vacation blog database who will be able to administer the
    vacation blog system.
 
    Note: once the CreateTables script successfully initializes the database,
    it won't ask for the administrator information again. On subsequent
-   runs, the script will check if there database structure is up-to-date
+   runs, the script will check if the database structure is up-to-date
    with the application source code, and update the database if needed.
 
 At this point, the vacation blog site has been initialized and is ready for
@@ -142,7 +142,8 @@ should run all the server-side tests, using the `phpunit` tool. The command:
     npm run test
 
 should run all the client-side tests, using `mocha`, and collect code coverage
-for the client-side testing using `istanbul`.
+for the client-side testing using `istanbul`. Code coverage is collected in
+HTML format in the `coverage/lcov-report' folder.
 
 ## Attributions
 
