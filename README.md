@@ -28,8 +28,11 @@ The vacation blog consists of three major pieces:
 The following must be installed and running in order to run the vacation blog:
 
  - Web server (I use Apache's httpd server).
+
  - PHP enabled on the Web server.
+
  - A mySQL database.
+
  - NPM, to build and package the client-side part of the website.
 
 The following are needed to do development work on the website:
@@ -42,10 +45,15 @@ To get started using the vacation blog:
 
  - Obtain the source from GitHub (obviously). The GitHub project contains
    both the server-side and client-side code.
+
  - Obtain all the NPM modules by running the command
+
    ```vacationblog> npm install```
+
  - Build the client-side part of the application by running the command
+
    ```vacationblog> npm run browserify```
+
  - Make the content of the `site/` folder accessible from the web server.
    This will be the on-line address of the vacation blog.
 
