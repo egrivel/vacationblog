@@ -65,10 +65,10 @@ To get started using the vacation blog:
    since it contains the username and password for connecting to the
    database. The following example shows the format of the file:
 
-   ```hostname = 'localhost'```
-   ```username = 'dbuser'```
-   ```password = 'secret'```
-   ```dbname = 'blog'```
+    ```hostname = 'localhost'```
+    ```username = 'dbuser'```
+    ```password = 'secret'```
+    ```dbname = 'blog'```
 
  - Update the file `site/database/database.php` to point to the location
    that was chosen for the `vacationblog.ini` file. This is the line that
@@ -82,7 +82,7 @@ To get started using the vacation blog:
  - Navigate in a browser to the following location (assuming the `site/`
    folder has been mounted on the website as `.../site/`):
 
-   ```http://.../site/api/CreateTables.php```
+   ```http\://.../site/api/CreateTables.php```
 
    to run the script that creates the tables in the database. The first time
    this script is run, it will show an error that the blogSettings table
@@ -98,7 +98,7 @@ To get started using the vacation blog:
    with the application source code, and update the database if needed.
 
 At this point, the vacation blog site has been initialized and is ready for
-use. Navigate to the site's URL (`http://.../site/`) to see the home page.
+use. Navigate to the site's URL (`http\://.../site/`) to see the home page.
 It should now be possible to login as the user created above and start
 creating trips, adding content etc.
 
