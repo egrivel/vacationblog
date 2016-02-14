@@ -33,7 +33,8 @@ The following must be installed and running in order to run the vacation blog:
 
  - A mySQL database.
 
- - NPM, to build and package the client-side part of the website.
+ - Node (version 4 or higher), which includes NPM to build and package
+   the client-side part of the website.
 
 The following are needed to do development work on the website:
 
@@ -41,7 +42,8 @@ The following are needed to do development work on the website:
 
 ## Getting Started
 
-To get started using the vacation blog:
+The following steps explain how to get started using the vacation blog.
+As the project matures, these steps may get cleaned up a bit.
 
  - Obtain the source from GitHub (obviously). The GitHub project contains
    both the server-side and client-side code.
@@ -101,6 +103,26 @@ At this point, the vacation blog site has been initialized and is ready for
 use. Navigate to the site's URL (`http://.../site/`) to see the home page.
 It should now be possible to login as the user created above and start
 creating trips, adding content etc.
+
+## Start Developing
+
+In order to start developing, first make sure that the local copy of the
+vacation blog works, by following the above steps.
+
+To prepare for server-side unit testing, the test scripts need to know the
+location of the server-side code. The `unittest/common.php` file must be
+updated to provide the correct location in the `$gl_api_root` variable.
+
+Next, make sure that all unit testing works. The command:
+
+    phpunit unittest/
+
+should run all the server-side tests, using the `phpunit` too. The command:
+
+    npm run test
+
+should run all the client-side tests, using `mocha`, and collect code coverage
+for the client-side testing using `istanbul`.
 
 ## Attributions
 
