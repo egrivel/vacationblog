@@ -13,22 +13,6 @@ The reason standard blogs don't work for me is:
 
 For this vacation blog project, I intend to make the photo archive connection a plugin, so that others will be able to create plugins to other photo repositories.
 
-## Prerequisites
-
-The following must be installed and running in order to run the vacation blog:
-
- - Web server (I use Apache's httpd server).
-
- - PHP enabled on the Web server.
-
- - A mySQL database.
-
- - NPM, to build and package the client-side part of the website.
-
-The following are needed to do development work on the website:
-
- - phpunit to run server-side unit tests.
-
 ## Major Parts of the Vacation Blog
 
 The vacation blog consists of three major pieces:
@@ -38,6 +22,32 @@ The vacation blog consists of three major pieces:
 2. Server-side functionality, written in PHP. The server-side functionality mostly consists of a series of APIs available to the client-side code.
 
 3. Client-side functionality, written in JavaScript using React.js technology.
+
+## Prerequisites
+
+The following must be installed and running in order to run the vacation blog:
+
+ - Web server (I use Apache's httpd server).
+ - PHP enabled on the Web server.
+ - A mySQL database.
+ - NPM, to build and package the client-side part of the website.
+
+The following are needed to do development work on the website:
+
+ - phpunit to run server-side unit tests.
+
+## Getting Started
+
+To get started using the vacation blog:
+
+ - Obtain the source from GitHub (obviously). The GitHub project contains
+   both the server-side and client-side code.
+ - Obtain all the NPM modules by running the command
+   ```vacationblog> npm install```
+ - Build the client-side part of the application by running the command
+   ```vacationblog> npm run browserify```
+ - Make the content of the `site/` folder accessible from the web server.
+   This will be the on-line address of the vacation blog.
 
 ## Attributions
 
