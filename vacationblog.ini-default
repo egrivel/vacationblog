@@ -1,0 +1,5 @@
+hostname = 'localhost'
+username = 'admin'
+password = 'secret'
+dbname = 'blog'
+apiroot = 'http://localhost/vacationblog/site/api/'

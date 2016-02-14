@@ -1,7 +1,6 @@
 CVS
 node_modules
 coverage
-cover-components
-cover-other
+vacationblog.ini
 .git
 .cvsignore

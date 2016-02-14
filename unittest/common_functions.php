@@ -20,6 +20,7 @@ function getApi($service, $data) {
    curl_setopt($curl, CURLOPT_HTTPGET, 1);
    $result = curl_exec($curl);
    curl_close($curl);
+
    return json_decode($result, true);
 }
 
