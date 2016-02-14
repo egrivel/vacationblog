@@ -4,8 +4,6 @@
   /* module prefix: "db_".                                        */
   /* ============================================================ */
   // Prerequisites
-include_once(dirname(__FILE__) . "/../common/common.php");
-
 $gl_db_init = false;
 
 function db_init() {
