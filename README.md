@@ -1,3 +1,5 @@
+![banner](site/media/default-banner.png)
+
 # Vacationblog Stuff
 
 This vacation blog is a personal project of mine. The purpose is to create
@@ -10,6 +12,22 @@ The reason standard blogs don't work for me is:
  - I want to connect the blog directly to my photo archive while writing the blog entries. The typical workflow consists of first uploading the day's photos to the local copy of the photo archive, doing any labelling and post-processing in the photo archive, and then write the blog entry with references to the photos in the archive.
 
 For this vacation blog project, I intend to make the photo archive connection a plugin, so that others will be able to create plugins to other photo repositories.
+
+## Prerequisites
+
+The following must be installed and running in order to run the vacation blog:
+
+ - Web server (I use Apache's httpd server).
+
+ - PHP enabled on the Web server.
+
+ - A mySQL database.
+
+ - NPM, to build and package the client-side part of the website.
+
+The following are needed to do development work on the website:
+
+ - phpunit to run server-side unit tests.
 
 ## Major Parts of the Vacation Blog
 
