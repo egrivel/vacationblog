@@ -48,16 +48,16 @@ To get started using the vacation blog:
 
  - Obtain all the NPM modules by running the command
 
-   ```vacationblog> npm install```
+   `vacationblog> npm install`
 
  - Build the client-side part of the application by running the command
 
-   ```vacationblog> npm run browserify```
+   `vacationblog> npm run browserify`
 
  - Create a MySQL database that will house the vacation blog. The following
    example creates a database named "blog":
 
-   ```mysql> CREATE DATABASE blog;```
+   `mysql> CREATE DATABASE blog;`
 
  - Create a `vacationblog.ini` file that contains the connection details
    for the database. This file should be placed in a location where it can
@@ -65,16 +65,16 @@ To get started using the vacation blog:
    since it contains the username and password for connecting to the
    database. The following example shows the format of the file:
 
-       ```hostname = 'localhost'```
-       ```username = 'dbuser'```
-       ```password = 'secret'```
-       ```dbname = 'blog'```
+       `hostname = 'localhost'`
+       `username = 'dbuser'`
+       `password = 'secret'`
+       `dbname = 'blog'`
 
  - Update the file `site/database/database.php` to point to the location
    that was chosen for the `vacationblog.ini` file. This is the line that
    should be updated:
 
-   ```$config = parse_ini_file('./vacationblog.ini');```
+   `$config = parse_ini_file('./vacationblog.ini');`
 
  - Make the content of the `site/` folder accessible from the web server.
    This will be the on-line address of the vacation blog.
@@ -82,7 +82,7 @@ To get started using the vacation blog:
  - Navigate in a browser to the following location (assuming the `site/`
    folder has been mounted on the website as `.../site/`):
 
-   ```http\://.../site/api/CreateTables.php```
+       `http\://.../site/api/CreateTables.php`
 
    to run the script that creates the tables in the database. The first time
    this script is run, it will show an error that the blogSettings table
