@@ -1,0 +1,4 @@
+<Files "./vacationblog.ini">
+Order Allow,Deny
+Deny from all
+</Files>

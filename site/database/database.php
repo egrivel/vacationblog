@@ -4,19 +4,13 @@
   /* module prefix: "db_".                                        */
   /* ============================================================ */
   // Prerequisites
-include_once(dirname(__FILE__) . "/../common/common.php");
-
 $gl_db_init = false;
 
 function db_init() {
    global $gl_db_init;
    global $gl_db_system;
    if (!$gl_db_init) {
-      if (co_get_system() === CO_SYSTEM_PUBLIC) {
-         $config = parse_ini_file('./vacationblog.ini');
-      } else {
-         $config = parse_ini_file('/mnt/data/vacationblog.ini');
-      }
+      $config = parse_ini_file(dirname(__FILE__) . '/../../vacationblog.ini');
       mysql_connect($config['hostname'], $config['username'],
                     $config['password']);
       mysql_selectdb($config['dbname']);
