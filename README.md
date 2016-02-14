@@ -3,23 +3,34 @@
 # Vacationblog Stuff
 
 This vacation blog is a personal project of mine. The purpose is to create
-a custom way for me to keep a blog while I'm traveling on vacation.
+a custom way for me to keep a blog while my wife and I are traveling on
+vacation.
 
 The reason standard blogs don't work for me is:
 
- - I want to run the same blog on multiple servers: my home Linux system, my Linux laptop that I am traveling with, and my public website. I want to be able to synchronize between those different servers.
+ - I want to run the same blog on multiple servers: my home Linux system,
+   my Linux laptop that I am traveling with, and my public website. I want
+   to be able to synchronize between those different servers.
 
- - I want to connect the blog directly to my photo archive while writing the blog entries. The typical workflow consists of first uploading the day's photos to the local copy of the photo archive, doing any labelling and post-processing in the photo archive, and then write the blog entry with references to the photos in the archive.
+ - I want to connect the blog directly to my photo archive while writing
+   the blog entries. The typical workflow consists of first uploading the
+   day's photos to the local copy of the photo archive, doing any
+   labelling and post-processing in the photo archive, and then write
+   the blog entry with references to the photos in the archive.
 
-For this vacation blog project, I intend to make the photo archive connection a plugin, so that others will be able to create plugins to other photo repositories.
+For this vacation blog project, I intend to make the photo archive connection
+a plugin, so that others will be able to create plugins to other photo
+repositories.
 
 ## Major Parts of the Vacation Blog
 
 The vacation blog consists of three major pieces:
 
-1. Database, which is assumed to be a mySQL database.
+1. The database, which is assumed to be a mySQL database. It should be
+   relatively easy to modify the blog to use other SQL databases.
 
-2. Server-side functionality, written in PHP. The server-side functionality mostly consists of a series of APIs available to the client-side code.
+2. Server-side functionality, written in PHP. The server-side functionality
+   mostly consists of a series of APIs available to the client-side code.
 
 3. Client-side functionality, written in JavaScript using React.js technology.
 
@@ -50,33 +61,38 @@ As the project matures, these steps may get cleaned up a bit.
 
  - Obtain all the NPM modules by running the command
 
-   `vacationblog> npm install`
+   `$ npm install`
 
  - Build the client-side part of the application by running the command
 
-   `vacationblog> npm run browserify`
+   `$ npm run browserify`
 
  - Create a MySQL database that will house the vacation blog. The following
    example creates a database named "blog":
 
    `mysql> CREATE DATABASE blog;`
 
- - Create a `vacationblog.ini` file that contains the connection details
-   for the database. This file should be placed in a location where it can
-   only be read by the web server, not by any other user on the system,
-   since it contains the username and password for connecting to the
-   database. The following example shows the format of the file:
+ - Create a `vacationblog.ini` file in the root of the vacationblog
+   directory structure that contains the setup for the project. The
+   `vacationblog.ini-default` can be used as a starting point.
+
+   Note: the `vacationblog.ini` file should be configured so that it can
+   only be read by the web server, and cannot be accessed over the web.
+   The `.htaccess` file in the vacationblog project prevents access through
+   the web on systems that are configured to check htaccess files.
+
+   Update the following four entries to match the database configuration:
 
         hostname = 'localhost'
         username = 'dbuser'
         password = 'secret'
         dbname = 'blog'
 
- - Update the file `site/database/database.php` to point to the location
-   that was chosen for the `vacationblog.ini` file. This is the line that
-   should be updated:
+   Note: the following source files need to be updated if the location of
+   the `vacationblog.ini` file is changed:
 
-        $config = parse_ini_file('./vacationblog.ini');
+        site/database/database.php
+        unittest/common.php
 
  - Make the content of the `site/` folder accessible from the web server.
    This will be the on-line address of the vacation blog.
@@ -109,15 +125,19 @@ creating trips, adding content etc.
 In order to start developing, first make sure that the local copy of the
 vacation blog works, by following the above steps.
 
-To prepare for server-side unit testing, the test scripts need to know the
-location of the server-side code. The `unittest/common.php` file must be
-updated to provide the correct location in the `$gl_api_root` variable.
+To prepare for server-side unit testing, the test scripts need to know how
+to connect to the server. The `apiroot` entry in the `vacationblog.ini`
+file should be updated to match URL for the API functions
 
-Next, make sure that all unit testing works. The command:
+    apiroot = 'http://localhost/vacationblog/site/api/'
+
+(note the trailing slash).
+
+Make sure that all unit testing works. The command:
 
     phpunit unittest/
 
-should run all the server-side tests, using the `phpunit` too. The command:
+should run all the server-side tests, using the `phpunit` tool. The command:
 
     npm run test
 
