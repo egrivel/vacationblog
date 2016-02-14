@@ -54,8 +54,53 @@ To get started using the vacation blog:
 
    ```vacationblog> npm run browserify```
 
+ - Create a MySQL database that will house the vacation blog. The following
+   example creates a database named "blog":
+
+   ```mysql> CREATE DATABASE blog;```
+
+ - Create a `vacationblog.ini` file that contains the connection details
+   for the database. This file should be placed in a location where it can
+   only be read by the web server, not by any other user on the system,
+   since it contains the username and password for connecting to the
+   database. The following example shows the format of the file:
+
+   ```hostname = 'localhost'```
+   ```username = 'dbuser'```
+   ```password = 'secret'```
+   ```dbname = 'blog'```
+
+ - Update the file `site/database/database.php` to point to the location
+   that was chosen for the `vacationblog.ini` file. This is the line that
+   should be updated:
+
+   ```$config = parse_ini_file('./vacationblog.ini');```
+
  - Make the content of the `site/` folder accessible from the web server.
    This will be the on-line address of the vacation blog.
+
+ - Navigate in a browser to the following location (assuming the `site/`
+   folder has been mounted on the website as `.../site/`):
+
+   ```http://.../site/api/CreateTables.php```
+
+   to run the script that creates the tables in the database. The first time
+   this script is run, it will show an error that the blogSettings table
+   does not exist; this is expected. This script will ask for the information
+   of the user who will be the administrator of the vacation blog system.
+   The username and password provided here will be used to create a user
+   into the vacation blog databases who will be able to administer the
+   vacation blog system.
+
+   Note: once the CreateTables script successfully initializes the database,
+   it won't ask for the administrator information again. On subsequent
+   runs, the script will check if there database structure is up-to-date
+   with the application source code, and update the database if needed.
+
+At this point, the vacation blog site has been initialized and is ready for
+use. Navigate to the site's URL (`http://.../site/`) to see the home page.
+It should now be possible to login as the user created above and start
+creating trips, adding content etc.
 
 ## Attributions
 
