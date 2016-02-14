@@ -143,7 +143,7 @@ should run all the server-side tests, using the `phpunit` tool. The command:
 
 should run all the client-side tests, using `mocha`, and collect code coverage
 for the client-side testing using `istanbul`. Code coverage is collected in
-HTML format in the `coverage/lcov-report' folder.
+HTML format in the `coverage/lcov-report` folder.
 
 ## Attributions
 
