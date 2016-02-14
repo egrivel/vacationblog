@@ -81,7 +81,7 @@ var CommentAction = {
 
     for (var i = 0; i < data.count; i++) {
       if (data.list[i].userId) {
-        UserAction.smartLoadUser(data.list[i].userId);
+        UserAction.loadUser(data.list[i].userId);
       }
       this.recursivelyLoadComments(tripId, data.list[i].commentId);
     }
