@@ -65,10 +65,10 @@ To get started using the vacation blog:
    since it contains the username and password for connecting to the
    database. The following example shows the format of the file:
 
-    ```hostname = 'localhost'```
-    ```username = 'dbuser'```
-    ```password = 'secret'```
-    ```dbname = 'blog'```
+       ```hostname = 'localhost'```
+       ```username = 'dbuser'```
+       ```password = 'secret'```
+       ```dbname = 'blog'```
 
  - Update the file `site/database/database.php` to point to the location
    that was chosen for the `vacationblog.ini` file. This is the line that
