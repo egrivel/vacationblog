@@ -6,6 +6,7 @@ var expect = require('chai').expect;
 var sinon = require('sinon');
 var React = require('react');
 var ReactDOM = require('react-dom');
+var ReactDOMServer = require('react-dom/server');
 var TestUtils = require('react-addons-test-utils');
 
 var TripDescription = require('../../src/components/TripDescription');
@@ -32,7 +33,7 @@ function getTripDescription(tripId) {
  */
 function getHtmlMarkup(tripId) {
   var element = getTripDescription(tripId);
-  return React.renderToStaticMarkup(element);
+  return ReactDOMServer.renderToStaticMarkup(element);
 }
 
 /**
