@@ -9,8 +9,6 @@ var React = require('react');
 
 var UserStore = require('../stores/UserStore');
 
-var UserAction = require('../actions/UserAction');
-
 var utils = require('./utils');
 var Feedback = require('./Feedback');
 

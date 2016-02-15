@@ -9,7 +9,7 @@ var React = require('react');
 
 var MediaStore = require('../stores/MediaStore');
 var CommentList = require('./CommentList');
-var Image = require('./Image');
+var Image = require('./Image.jsx');
 
 var utils = require('./utils');
 var Orientation = utils.orientation;
@@ -61,7 +61,7 @@ function _imgWithModal(parent, tripId, mediaId, className) {
     tripId: tripId,
     imageId: mediaId,
     format: mediaInfo.orientation,
-    size: className,
+    className: className,
     key: mediaId,
     caption: mediaInfo.caption,
     onClick: function() {

@@ -2,5 +2,6 @@ CVS
 node_modules
 coverage
 vacationblog.ini
+*.sublime-*
 .git
 .cvsignore
