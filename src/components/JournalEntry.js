@@ -26,11 +26,10 @@ var MediaStore = require('../stores/MediaStore');
 var UserStore = require('../stores/UserStore');
 var CommentStore = require('../stores/CommentStore');
 
-var UserAction = require('../actions/UserAction');
-
 var Paragraph = require('./Paragraph');
 var CommentList = require('./CommentList');
 var Feedback = require('./Feedback');
+var JournalEntryHeader = require('./JournalEntryHeader.jsx');
 var utils = require('./utils');
 
 /**
@@ -43,10 +42,30 @@ function _getStateFromStores() {
   var userName = '';
   var comments = null;
 
+  if (!journalData || !journalData.tripId) {
+    // There is no actual journal item. Clear out the state.
+    return {
+      tripId: null,
+      journalId: null,
+      journalTitle: 'Not Found',
+      journalText: 'The requested journal item was not found.',
+      journalDate: null,
+      created: null,
+      userId: null,
+      userName: null,
+      nextId: null,
+      prevId: null,
+      comments: null
+    };
+  }
+
   if (journalData && journalData.userId) {
     var userData = UserStore.getData(journalData.userId);
     if (userData) {
       userName = userData.name;
+    } else {
+      // If no user name can be retrieved, default to the user ID.
+      userName = journalData.userId;
     }
   }
 
@@ -133,6 +152,9 @@ function _getPrevNextPart(tripId, targetId, icon, className,
  * @private
  */
 function _getPrevNextLine(tripId, prevId, nextId, nr) {
+  if (!tripId) {
+    return null;
+  }
   var prevPart =
     _getPrevNextPart(tripId, prevId, 'fa-chevron-left', 'prevlink',
                      'Previous Post', '(no previous post)');
@@ -159,62 +181,15 @@ function _getPrevNextLine(tripId, prevId, nextId, nr) {
  * @private
  */
 function _getHeader(journalTitle, journalDate, userId, userName, created) {
-  var titleText = '';
-  if (journalDate) {
-    titleText += utils.formatDate(journalDate);
-    if (journalTitle) {
-      titleText += ': ' + utils.replaceEntities(journalTitle);
-    }
-  } else if (journalTitle) {
-    titleText = utils.replaceEntities(journalTitle);
-  } else {
-    titleText = '(Untitled)';
-  }
-
-  // a created of zeros is not created at all
-  if (created === '0000-00-00 00:00:00.000000') {
-    created = '';
-  }
-
-  var title = React.DOM.span(
+  return React.createElement(
+    JournalEntryHeader,
     {
-      className: 'title'
-    },
-    titleText);
-  var subtitle = null;
-  if (userId && !userName) {
-    // if the user name isn't available yet, fire off an action to
-    // get it loaded
-    UserAction.loadUser(userId);
-  } else if (!userName) {
-    userName = userId;
-  }
-  if (userName || created) {
-    if (userId && created) {
-      subtitle = React.DOM.span(
-        {
-          className: 'subtitle'
-        },
-        React.DOM.em({}, 'by')
-        , ' ' + userName,
-        ' (' + utils.formatDate(created) + ')');
-    } else if (userName) {
-      subtitle = React.DOM.span(
-        {
-          className: 'subtitle'
-        },
-        React.DOM.em({}, 'by'),
-        ' ' + userName);
-    } else {
-      subtitle = React.DOM.span(
-        {
-          className: 'subtitle'
-        },
-        ' (' + utils.formatDate(created) + ')');
+      title: journalTitle,
+      date: journalDate,
+      userName: userName,
+      created: created
     }
-  }
-
-  return React.DOM.h3({}, title, subtitle);
+  );
 }
 
 var JournalEntry = React.createClass({
@@ -267,17 +242,10 @@ var JournalEntry = React.createClass({
     var tripId = this.state.tripId;
     var journalId = this.state.journalId;
 
-    if (!tripId) {
-      return null;
-    }
-    if (!journalId) {
-      return null;
-    }
-
     var parList = utils.splitText(this.state.journalText);
 
     var comment = null;
-    if (this.state.tripId && this.state.journalId) {
+    if (tripId && journalId) {
       comment = React.createElement(CommentList, {
         tripId: this.state.tripId,
         referenceId: this.state.journalId,
@@ -285,14 +253,14 @@ var JournalEntry = React.createClass({
       });
     }
 
-    // Unique key for this journal item. Since the journal item has this
-    // unique key, the sub items can have simple sequential keys.
-    var key = this.state.tripId + '-' + this.state.journalId;
-    var feedback = React.createElement(Feedback, null);
-    var val =
-      React.DOM.div({
-        className: 'journalitem',
-        key: key
+    var feedback = null;
+    if (tripId && journalId) {
+      feedback = React.createElement(Feedback, null);
+    }
+
+    return React.DOM.div(
+      {
+        className: 'journalitem'
       },
       _getHeader(this.state.journalTitle,
                  this.state.journalDate,
@@ -318,8 +286,7 @@ var JournalEntry = React.createClass({
                        this.state.prevId,
                        this.state.nextId,
                        2)
-      );
-    return val;
+    );
   }
 });
 

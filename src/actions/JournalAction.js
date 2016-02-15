@@ -6,6 +6,7 @@ var utils = require('./utils');
 var TripAction = require('./TripAction');
 var CommentAction = require('./CommentAction');
 var MediaAction = require('./MediaAction');
+var UserAction = require('./UserAction');
 
 var JournalAction = {
   Types: {
@@ -44,6 +45,10 @@ var JournalAction = {
     var journalId = data.journalId;
     if (tripId && journalId) {
       CommentAction.recursivelyLoadComments(tripId, journalId);
+    }
+
+    if (data.userId) {
+      UserAction.loadUser(data.userId);
     }
 
     var journalText = data.journalText;
