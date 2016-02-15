@@ -11,7 +11,8 @@
  * content, and pass them on as props to the various child components.
  *
  * This component does not load data, it only displays data that has
- * already been loaded.
+ * already been loaded. Loading data happens in the JournalWrapper
+ * component.
  */
 
 // Add 'window' to the eslint globals for this file.
@@ -26,43 +27,11 @@ var UserStore = require('../stores/UserStore');
 var CommentStore = require('../stores/CommentStore');
 
 var UserAction = require('../actions/UserAction');
-var MediaAction = require('../actions/MediaAction');
 
 var Paragraph = require('./Paragraph');
 var CommentList = require('./CommentList');
 var Feedback = require('./Feedback');
 var utils = require('./utils');
-
-/**
- * Check if images are already available and if not, request for them to
- * be loaded.
- * @param {id} tripId - unique trip ID.
- * @param {string} text - journal entry content to parse for images.
- * @private
- */
-function _checkImagesLoad(tripId, text) {
-  var images = [];
-  var imageCount = 0;
-
-  var list = text.split('[IMG ');
-  for (var i = 0; i < list.length; i++) {
-    var item = list[i];
-    if (item.indexOf(']') > 0) {
-      var img = item.substring(0, item.indexOf(']'));
-      if (img.match(/^[\d\-abc]+$/)) {
-        // this is a valid image ID; extract it and remove the image reference
-        // from the string
-        var mediaInfo = MediaStore.getData(tripId, img);
-        if (!mediaInfo) {
-          images[imageCount++] = img;
-        }
-      }
-    }
-  }
-  if (imageCount) {
-    MediaAction.bulkLoadMedia(tripId, images);
-  }
-}
 
 /**
  * Get the state from the stores.
@@ -79,10 +48,6 @@ function _getStateFromStores() {
     if (userData) {
       userName = userData.name;
     }
-  }
-
-  if (journalData.tripId && journalData.journalText) {
-    _checkImagesLoad(journalData.tripId, journalData.journalText);
   }
 
   if (journalData.tripId && journalData.journalId) {
