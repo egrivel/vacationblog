@@ -407,7 +407,7 @@ var Paragraph = React.createClass({
     if (this.state && this.state.modal && this.state.modal !== '') {
       var clickImg = this.clickImg;
       var mediaId = this.state.modal;
-      var mediaInfo = MediaStore.getData(this.props.tripId, mediaId);
+      var mediaInfo = _getMediaInfo(this.props.tripId, mediaId);
       var comment = React.createElement(CommentList, {
         tripId: this.props.tripId,
         referenceId: mediaId
@@ -425,10 +425,13 @@ var Paragraph = React.createClass({
           {
             className: 'modal-content'
           },
-          React.DOM.img(
+          React.createElement(
+            Image,
             {
-              key: 'modal-img',
-              src: '/cgi-bin/photos/phimg?large=' + mediaId
+              tripId: this.props.tripId,
+              imageId: mediaId,
+              format: mediaInfo.orientation,
+              caption: utils.replaceEntities(mediaInfo.caption)
             }
           ),
           React.DOM.div(
