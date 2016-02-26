@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>DCPS Client Tests</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link rel='stylesheet' href='../lib/mocha/mocha.css'></link>
+    <script type='text/javascript'>
+      // Used to make sure Ajax is properly stubbed in client tests
+      var env = {
+        TEST_NO_AJAX: true
+      };
+      window.__env = env;
+    </script>
+  </head>
+  <body>
+    <div id="mocha"></div>
+
+    <script type='text/javascript' src='../lib/mocha/mocha.js'></script>
+    <script type='text/javascript' src='../lib/mocha/mocha-setup.js'></script>
+
+    <script type='text/javascript' src='../temp/test.js'></script>
+    <script type='text/javascript' src='../lib/mocha/mocha-run.js'></script>
+  </body>
+</html>

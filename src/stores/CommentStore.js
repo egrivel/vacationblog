@@ -25,7 +25,10 @@ var GenericStore = require('./GenericStore');
 var CommentActionTypes = require('../actions/CommentAction').Types;
 
 // ---
-// All the data about the comments.
+// All the data about the comments. Data structure:
+// _commentData is an array indexed by trip ID and reference ID. Each item
+// in the array is an object with comment ID properties. Each of those
+// properties is a whole comment object.
 // ---
 var _commentData = [];
 
@@ -45,21 +48,30 @@ function _makeIndex(tripId, referenceId) {
  * @return {boolean} true if any data was changed.
  */
 function _setData(data) {
-  var tripId = data.tripId;
-  var referenceId = data.referenceId;
-  var isChanged = false;
-
-  var index = _makeIndex(tripId, referenceId);
-  if (!_commentData[index] || !_.isEqual(_commentData[index], data)) {
-    // only if the data wasn't there yet, or is different, should we
-    // set the data and emit a change.
-    _commentData[index] = data;
-    isChanged = true;
+  var index = _makeIndex(data.tripId, data.referenceId);
+  if (_commentData[index]) {
+    if (_commentData[index][data.commentId]) {
+      if (_.isEqual(_commentData[index][data.commentId], data)) {
+        // data is already there
+        return false;
+      }
+    }
+  } else {
+    _commentData[index] = {};
   }
-  return isChanged;
+
+  _commentData[index][data.commentId] = _.cloneDeep(data);
+  return true;
 }
 
 var CommentStore = assign({}, GenericStore, {
+  /**
+   * Reset store contents for testing.
+   */
+  _reset: function() {
+    _commentData = [];
+  },
+
   /**
    * Obtain all the attributes of the requested comment[s]
    * @param {id} tripId - unique trip ID.
@@ -67,7 +79,15 @@ var CommentStore = assign({}, GenericStore, {
    * @return {array} list of comments on the indicated item.
    */
   getData: function(tripId, referenceId) {
-    return _commentData[_makeIndex(tripId, referenceId)];
+    var result;
+    var obj = _commentData[_makeIndex(tripId, referenceId)];
+    if (obj) {
+      result = [];
+      _.forEach(obj, function(item) {
+        result.push(item);
+      });
+    }
+    return result;
   },
 
   /**
@@ -86,21 +106,23 @@ var CommentStore = assign({}, GenericStore, {
       }
     }
     return result;
+  },
+
+  _storeCallback: function(action) {
+    switch (action.type) {
+      case CommentActionTypes.COMMENT_DATA:
+        if (_setData(action.data)) {
+          CommentStore.emitChange();
+        }
+        break;
+      default:
+        // do nothing
+    }
   }
+
 });
 
-const storeCallback = function(action) {
-  switch (action.type) {
-    case CommentActionTypes.COMMENT_DATA:
-      if (_setData(action.data)) {
-        CommentStore.emitChange();
-      }
-      break;
-    default:
-      // do nothing
-  }
-};
-
-CommentStore.dispatchToken = AppDispatcher.register(storeCallback);
+CommentStore.dispatchToken =
+  AppDispatcher.register(CommentStore._storeCallback);
 
 module.exports = CommentStore;
