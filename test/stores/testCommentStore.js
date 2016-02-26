@@ -60,8 +60,16 @@ var testComment6 = {
   commentText: 'comment text 6'
 };
 
+/**
+ * Find the object with a specific property.
+ * @param {object} obj - object to search.
+ * @param {string} key - key to search for.
+ * @param {string} value - value to search for.
+ * @return {object} object found, or null if none was found.
+ */
 function findObjectWithProperty(obj, key, value) {
-  console.log('finding ' + key + ' with value ' + value + ' in ' + JSON.stringify(obj));
+  console.log('finding ' + key + ' with value ' + value +
+    ' in ' + JSON.stringify(obj));
   if (obj && obj[key] && obj[key] === value) {
     return obj;
   }

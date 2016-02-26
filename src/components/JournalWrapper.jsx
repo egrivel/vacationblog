@@ -1,7 +1,6 @@
 'use strict';
 
 var React = require('react');
-var JournalEntry = require('./JournalEntry');
 
 var JournalStore = require('../stores/JournalStore');
 var JournalAction = require('../actions/JournalAction');

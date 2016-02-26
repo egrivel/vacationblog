@@ -16,14 +16,14 @@ var setupBrowserify = function(grunt) {
     },
     test: {
       src: [
-        'jstest/00-test-setup.js',
-        'jstest/**/*.js',
-        '!jstest/components/testTripDescription.js',
+        'test/00-test-setup.js',
+        'test/**/*.js',
+        '!test/components/testTripDescription.js',
 
-        '!jstest/stores/testCommentStore.js',
-        '!jstest/stores/testMenuStore.js',
-        '!jstest/stores/testTripStore.js',
-        '!jstest/stores/testUserStore.js'
+        '!test/stores/testCommentStore.js',
+        '!test/stores/testMenuStore.js',
+        '!test/stores/testTripStore.js',
+        '!test/stores/testUserStore.js'
       ],
       dest: 'temp/test.js',
       options: {
@@ -56,7 +56,7 @@ var setupCoverage = function(grunt) {
 var setupMochaPhantomJs = function(grunt) {
   grunt.loadNpmTasks('grunt-mocha-phantomjs');
   grunt.config('mocha_phantomjs', {
-    all: ['jstest/test.html'],
+    all: ['test/test.html'],
     options: {
       config: {
         grep: grunt.option('grep')
@@ -88,7 +88,7 @@ var setupBuild = function(grunt) {
 var setupEslint = function(grunt) {
   grunt.loadNpmTasks('grunt-eslint');
   grunt.config('eslint', {
-    src: ['src/**/*.jsx', 'src/**/*.js', 'jstest/**/*.js']
+    src: ['src/**/*.jsx', 'src/**/*.js', 'test/**/*.js']
   });
 };
 

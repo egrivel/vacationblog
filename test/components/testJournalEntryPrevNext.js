@@ -3,20 +3,21 @@
 var sinon = require('sinon');
 var expect = require('chai').expect;
 var React = require('react');
-var ReactDOMServer = require('react-dom/server');
+// var ReactDOMServer = require('react-dom/server');
 var TestUtils = require('react-addons-test-utils');
 
-var JournalEntryPrevNext = require('../../src/components/JournalEntryPrevNext.jsx');
+var JournalEntryPrevNext =
+  require('../../src/components/JournalEntryPrevNext.jsx');
 
 describe('JournalEntryPrevNext component', function() {
   var testTripId1 = 'test-trip-1';
-  var testTripId2 = 'test-trip-2';
+  // var testTripId2 = 'test-trip-2';
   var testPrevId1 = 'test-prev-1';
-  var testPrevId2 = 'test-prev-2';
+  // var testPrevId2 = 'test-prev-2';
   var testNextId1 = 'test-next-1';
-  var testNextId2 = 'test-next-2';
+  // var testNextId2 = 'test-next-2';
   var testNr1 = 1454;
-  var testNr2 = 1455;
+  // var testNr2 = 1455;
   var props;
 
   beforeEach(function() {

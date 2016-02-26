@@ -38,10 +38,10 @@
   },
   "scripts": {
     "test": "grunt test",
-    "test2": "istanbul cover -i \"src/**/*.js\" -i \"src/**/*.jsx\" -x src/boot.js _mocha -- --compilers .jsx:jstest/compiler.js jstest/**",
-    "test3": "istanbul cover  --include-all-sources -x \"gruntfile.js\" -x \"dcps-gruntfile.js\" -x \"coverage/**\" -x \"jstest/**\" -x \"site/**\" -x src/boot.js _mocha -- --compilers .jsx:jstest/compiler.js jstest/00-test-setup.js jstest/actions/*.js jstest/components/*.js jstest/stores/*.js",
-    "test4": "istanbul cover -i \"src/**/*.js\" -i \"src/**/*.jsx\" -x src/boot.js  _mocha -- --compilers .jsx:jstest/compiler.js jstest/00-test-setup.js jstest/actions/*.js jstest/components/*.js jstest/stores/*.js",
-    "eslint": "eslint src/**/*.js eslint src/**/*.jsx jstest/**/*.js jstest/**/*.jsx",
+    "coverage": "grunt coverage",
+    "eslint": "grunt eslint",
+    "check-files": "grunt check-files",
+    "all": "grunt all",
     "browserify": "grunt build",
     "browserify-prod": "NODE_ENV=production browserify -t reactify src/boot.js -o site/js/boot.js"
   },
