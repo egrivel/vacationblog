@@ -7,7 +7,7 @@
 
 var React = require('react');
 
-var UserStore = require('../stores/UserStore');
+// var UserStore = require('../stores/UserStore');
 
 var utils = require('./utils');
 var Feedback = require('./Feedback');

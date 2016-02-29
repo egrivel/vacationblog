@@ -115,36 +115,31 @@ function _updateTripMenu(newList) {
 var MenuStore = assign({}, GenericStore, {
   getData: function() {
     return _menuData;
+  },
+
+  _storeCallback: function(action) {
+    switch (action.type) {
+      case TripActionTypes.TRIP_LOAD_LIST:
+        _updateTripMenu(action.data);
+        MenuStore.emitChange();
+        break;
+
+      case MenuActionTypes.MENU_SELECT:
+        _selectMenuItem(_menuData, action.data.id);
+        MenuStore.emitChange();
+        break;
+
+      case MenuActionTypes.MENU_VISIBLE:
+        _visibleMenuItem(_menuData, action.data.id, action.data.visible);
+        MenuStore.emitChange();
+        break;
+
+      default:
+        // do nothing
+    }
   }
 });
 
-var storeCallback = function(action) {
-  switch (action.type) {
-    case TripActionTypes.TRIP_LOAD_LIST:
-/*
-      AppDispatcher.waitFor([
-        TripStore.dispatchToken
-      ]);
-*/
-      _updateTripMenu(action.data);
-      MenuStore.emitChange();
-      break;
-
-    case MenuActionTypes.MENU_SELECT:
-      _selectMenuItem(_menuData, action.data.id);
-      MenuStore.emitChange();
-      break;
-
-    case MenuActionTypes.MENU_VISIBLE:
-      _visibleMenuItem(_menuData, action.data.id, action.data.visible);
-      MenuStore.emitChange();
-      break;
-
-    default:
-      // do nothing
-  }
-};
-
-MenuStore.dispatchToken = AppDispatcher.register(storeCallback);
+MenuStore.dispatchToken = AppDispatcher.register(MenuStore._storeCallback);
 
 module.exports = MenuStore;

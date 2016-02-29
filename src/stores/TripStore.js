@@ -34,13 +34,19 @@ var _currentTripId = '';
 // ---
 // All the data about the current trip.
 // ---
-var _tripData = {
-};
+var _tripData = {};
 
 /**
  * Trip store maintains information about the current trip.
  */
 var TripStore = assign({}, GenericStore, {
+  /**
+   * Reset the trip store (for testing only).
+   */
+  _reset: function() {
+    _currentTripId = '';
+    _tripData = {};
+  },
 
   /**
    * Obtain the ID of the currently displayed trip.
@@ -64,38 +70,38 @@ var TripStore = assign({}, GenericStore, {
    */
   getTripList: function() {
     return _tripList;
+  },
+
+  _storeCallback: function(action) {
+    switch (action.type) {
+      case TripActionTypes.TRIP_LOAD_DATA:
+        if (action.data.tripId === _currentTripId) {
+          if (!_.isEqual(_tripData, action.data)) {
+            // Only emit change if different
+            _tripData = action.data;
+            TripStore.emitChange();
+          }
+        }
+        break;
+      case TripActionTypes.TRIP_LOAD_LIST:
+        if (!_.isEqual(_tripList, action.data)) {
+          // Only emit change if different
+          _tripList = action.data;
+          TripStore.emitChange();
+        }
+        break;
+      case TripActionTypes.TRIP_SET_CURRENT:
+        if (action.data !== _currentTripId) {
+          _currentTripId = action.data;
+          TripStore.emitChange();
+        }
+        break;
+      default:
+        // do nothing
+    }
   }
 });
 
-var storeCallback = function(action) {
-  switch (action.type) {
-    case TripActionTypes.TRIP_LOAD_DATA:
-      if (action.data.tripId === _currentTripId) {
-        if (!_.isEqual(_tripData, action.data)) {
-          // Only emit change if different
-          _tripData = action.data;
-          TripStore.emitChange();
-        }
-      }
-      break;
-    case TripActionTypes.TRIP_LOAD_LIST:
-      if (!_.isEqual(_tripList, action.data)) {
-        // Only emit change if different
-        _tripList = action.data;
-        TripStore.emitChange();
-      }
-      break;
-    case TripActionTypes.TRIP_SET_CURRENT:
-      if (action.data !== _currentTripId) {
-        _currentTripId = action.data;
-        TripStore.emitChange();
-      }
-      break;
-    default:
-      // do nothing
-  }
-};
-
-TripStore.dispatchToken = AppDispatcher.register(storeCallback);
+TripStore.dispatchToken = AppDispatcher.register(TripStore._storeCallback);
 
 module.exports = TripStore;

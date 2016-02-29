@@ -9,9 +9,9 @@ var ReactDOM = require('react-dom');
 var ReactDOMServer = require('react-dom/server');
 var TestUtils = require('react-addons-test-utils');
 
-var TripDescription = require('../../src/components/TripDescription');
 var TripStore = require('../../src/stores/TripStore');
 var TripAction = require('../../src/actions/TripAction');
+var TripDescription = require('../../src/components/TripDescription');
 
 /**
  * Create a trip description element.
@@ -96,7 +96,6 @@ describe('TripDescription component', function() {
         tripData.description + '</p><p class="readJournal">';
       expect(markup).to.contain(tripDescr);
     });
-
     it('render read journal link', function() {
       var markup = getHtmlMarkup(tripId);
       expect(markup).to.match(/<a.*?>Start reading journal.*?<\/a>/);

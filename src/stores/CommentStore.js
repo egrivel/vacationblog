@@ -100,9 +100,9 @@ var CommentStore = assign({}, GenericStore, {
   getRecursiveData: function(tripId, referenceId) {
     var result = this.getData(tripId, referenceId);
     if (result) {
-      for (var i = 0; i < result.count; i++) {
-        result.list[i].comments =
-          this.getRecursiveData(tripId, result.list[i].commentId);
+      for (var i = 0; i < result.length; i++) {
+        result[i].comments =
+          this.getRecursiveData(tripId, result[i].commentId);
       }
     }
     return result;

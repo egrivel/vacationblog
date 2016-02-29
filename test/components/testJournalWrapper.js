@@ -5,9 +5,9 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var TestUtils = require('react-addons-test-utils');
 
-var CommentList = require('../../src/components/CommentList');
+var JournalWrapper = require('../../src/components/JournalWrapper.jsx');
 
-describe('CommentList component', function() {
+describe('JournalWrapper component', function() {
   it('dummy', function() {
     expect(1).to.be.equal(1);
   });

@@ -4,6 +4,7 @@ var React = require('react');
 
 var JournalStore = require('../stores/JournalStore');
 var JournalAction = require('../actions/JournalAction');
+var JournalEntry = require('./JournalEntry');
 
 /**
  * Journal wrapper component. This component wraps a journal entry and
@@ -37,14 +38,15 @@ var JournalWrapper = React.createClass({
     this.getDataIfNeeded(nextProps);
   },
 
-  /**
+  /*
    * Determine if new data needs to be loaded.
    * @param {object} props - props to use in the comparison.
    */
-  getDataIfNeeded(props) {
+  getDataIfNeeded: function(props) {
     var data = JournalStore.getData();
     var tripId = '';
     var journalId = '';
+
     if (props && props.params) {
       tripId = props.params.tripId;
       journalId = props.params.journalId;
@@ -60,7 +62,7 @@ var JournalWrapper = React.createClass({
    * @return {React} JournalEntry element.
    */
   render: function() {
-    return <JournalEntry params={this.props.params} />;
+    return <JournalEntry params={this.props.params}></JournalEntry>;
   }
 });
 

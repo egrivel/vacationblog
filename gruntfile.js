@@ -17,13 +17,7 @@ var setupBrowserify = function(grunt) {
     test: {
       src: [
         'test/00-test-setup.js',
-        'test/**/*.js',
-        '!test/components/testTripDescription.js',
-
-        '!test/stores/testCommentStore.js',
-        '!test/stores/testMenuStore.js',
-        '!test/stores/testTripStore.js',
-        '!test/stores/testUserStore.js'
+        'test/**/*.js'
       ],
       dest: 'temp/test.js',
       options: {

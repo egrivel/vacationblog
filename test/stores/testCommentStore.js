@@ -68,20 +68,20 @@ var testComment6 = {
  * @return {object} object found, or null if none was found.
  */
 function findObjectWithProperty(obj, key, value) {
-  console.log('finding ' + key + ' with value ' + value +
-    ' in ' + JSON.stringify(obj));
   if (obj && obj[key] && obj[key] === value) {
     return obj;
   }
 
+  var returnValue = null;
   _.forEach(obj, function(item) {
     if (typeof item === 'object') {
       if (findObjectWithProperty(item, key, value)) {
-        return item;
+        returnValue = item;
       }
     }
   });
-  return null;
+
+  return returnValue;
 }
 
 describe('CommentStore', function() {
@@ -179,13 +179,116 @@ describe('CommentStore', function() {
         });
       });
 
-      it('get recursive structure', function() {
-        var result =
-          CommentStore.getRecursiveData(testTripId1, testReferenceId1);
-        expect(result).to.exist;
-        var obj =
-          findObjectWithProperty(result, 'commentText', 'comment text 1');
-        expect(obj).to.not.be.null;
+      describe('using reference id 1', function() {
+        var result;
+        beforeEach(function() {
+          result =
+            CommentStore.getRecursiveData(testTripId1, testReferenceId1);
+        });
+
+        it('should get comment 1', function() {
+          expect(result).to.exist;
+          var obj =
+            findObjectWithProperty(result, 'commentText',
+              testComment1.commentText);
+          expect(obj).to.not.be.null;
+        });
+
+        it('should not get comment 2', function() {
+          expect(result).to.exist;
+          var obj =
+            findObjectWithProperty(result, 'commentText',
+              testComment2.commentText);
+          expect(obj).to.be.null;
+        });
+
+        it('should get comment 3', function() {
+          expect(result).to.exist;
+          var obj =
+            findObjectWithProperty(result, 'commentText',
+              testComment3.commentText);
+          expect(obj).to.not.be.null;
+        });
+
+        it('should get comment 4', function() {
+          expect(result).to.exist;
+          var obj =
+            findObjectWithProperty(result, 'commentText',
+              testComment4.commentText);
+          expect(obj).to.not.be.null;
+        });
+
+        it('should get comment 5', function() {
+          expect(result).to.exist;
+          var obj =
+            findObjectWithProperty(result, 'commentText',
+              testComment5.commentText);
+          expect(obj).to.not.be.null;
+        });
+
+        it('should get comment 6', function() {
+          expect(result).to.exist;
+          var obj =
+            findObjectWithProperty(result, 'commentText',
+              testComment6.commentText);
+          expect(obj).to.not.be.null;
+        });
+      });
+
+      describe('using reference id 2', function() {
+        var result;
+        beforeEach(function() {
+          result =
+            CommentStore.getRecursiveData(testTripId1, testReferenceId2);
+        });
+
+        it('should not get comment 1', function() {
+          expect(result).to.exist;
+          var obj =
+            findObjectWithProperty(result, 'commentText',
+              testComment1.commentText);
+          expect(obj).to.be.null;
+        });
+
+        it('should get comment 2', function() {
+          expect(result).to.exist;
+          var obj =
+            findObjectWithProperty(result, 'commentText',
+              testComment2.commentText);
+          expect(obj).to.not.be.null;
+        });
+
+        it('should not get comment 3', function() {
+          expect(result).to.exist;
+          var obj =
+            findObjectWithProperty(result, 'commentText',
+              testComment3.commentText);
+          expect(obj).to.be.null;
+        });
+
+        it('should not get comment 4', function() {
+          expect(result).to.exist;
+          var obj =
+            findObjectWithProperty(result, 'commentText',
+              testComment4.commentText);
+          expect(obj).to.be.null;
+        });
+
+        it('should not get comment 5', function() {
+          expect(result).to.exist;
+          var obj =
+            findObjectWithProperty(result, 'commentText',
+              testComment5.commentText);
+          expect(obj).to.be.null;
+        });
+
+        it('should not get comment 6', function() {
+          expect(result).to.exist;
+          var obj =
+            findObjectWithProperty(result, 'commentText',
+              testComment6.commentText);
+          expect(obj).to.be.null;
+        });
       });
     });
 
