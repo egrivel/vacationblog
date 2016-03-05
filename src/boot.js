@@ -22,6 +22,10 @@ var About = require('./components/About');
  * view when someone enters the site.
  */
 var App = React.createClass({
+  propTypes: {
+    children: React.PropTypes.array
+  },
+
   render: function() {
     var children = this.props.children;
     if (!children || children.length === 0) {

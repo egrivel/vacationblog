@@ -15,6 +15,10 @@ var Menu = React.createClass({
 
   mixins: [History],
 
+  propTypes: {
+    menuData: React.PropTypes.array
+  },
+
   handleSelect: function(id, target) {
     // console.log('Selected item ' + id + ', target=' + target);
     MenuAction.selectItem(id);

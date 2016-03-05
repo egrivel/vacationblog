@@ -8,6 +8,18 @@ var MenuList;
 var MenuItem = React.createClass({
   displayName: 'MenuItem',
 
+  propTypes: {
+    id: React.PropTypes.string.isRequired,
+    handleHover: React.PropTypes.func.isRequired,
+    handleSelect: React.PropTypes.func,
+    submenu: React.PropTypes.array,
+    className: React.PropTypes.string,
+    selected: React.PropTypes.bool,
+    target: React.PropTypes.string,
+    visible: React.PropTypes.bool,
+    label: React.PropTypes.string
+  },
+
   mouseOver: function() {
     this.props.handleHover(this.props.id, true);
   },
@@ -63,6 +75,14 @@ var MenuItem = React.createClass({
 
 MenuList = React.createClass({
   displayName: 'MenuList',
+
+  propTypes: {
+    topLevel: React.PropTypes.bool,
+    list: React.PropTypes.array,
+    handleHover: React.PropTypes.func,
+    handleSelect: React.PropTypes.func
+  },
+
   render: function() {
     var children = [];
     var childCount = 0;

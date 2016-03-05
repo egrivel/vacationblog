@@ -7,7 +7,7 @@
 
 var React = require('react');
 
-// var UserStore = require('../stores/UserStore');
+var UserStore = require('../stores/UserStore');
 
 var utils = require('./utils');
 var Feedback = require('./Feedback');
@@ -17,6 +17,11 @@ var CommentList;
 
 var CommentParagraph = React.createClass({
   displayName: 'CommentParagraph',
+
+  propTypes: {
+    text: React.PropTypes.string,
+    key: React.PropTypes.string
+  },
 
   render: function() {
     if (!this.props.text) {
@@ -38,6 +43,16 @@ var CommentParagraph = React.createClass({
 
 var Comment = React.createClass({
   displayName: 'Comment',
+
+  propTypes: {
+    tripId: React.PropTypes.string,
+    commentId: React.PropTypes.string,
+    created: React.PropTypes.string,
+    commentText: React.PropTypes.string,
+    deleted: React.PropTypes.string,
+    userName: React.PropTypes.string,
+    comments: React.PropTypes.array
+  },
 
   render: function render() {
     var tripId = this.props.tripId;
@@ -103,6 +118,12 @@ var Comment = React.createClass({
 
 CommentList = React.createClass({
   displayName: 'CommentList',
+
+  propTypes: {
+    comments: React.PropTypes.array,
+    tripId: React.PropTypes.string,
+    referenceId: React.PropTypes.string
+  },
 
   render: function() {
     if (!this.props.comments || !this.props.comments.count) {

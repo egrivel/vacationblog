@@ -4,6 +4,7 @@ var React = require('react');
 
 var JournalStore = require('../stores/JournalStore');
 var JournalAction = require('../actions/JournalAction');
+var CommentAction = require('../actions/CommentAction');
 var JournalEntry = require('./JournalEntry');
 
 /**
@@ -18,6 +19,10 @@ var JournalEntry = require('./JournalEntry');
 
 var JournalWrapper = React.createClass({
   displayName: 'JournalWrapper',
+
+  propTypes: {
+    params: React.PropTypes.array
+  },
 
   /**
    * React lifecycle function. Called when the component is first
@@ -54,6 +59,7 @@ var JournalWrapper = React.createClass({
     if ((tripId !== data.tripId) ||
         (journalId !== data.journalId)) {
       JournalAction.loadJournal(tripId, journalId);
+      CommentAction.recursivelyLoadComments(tripId, journalId);
     }
   },
 

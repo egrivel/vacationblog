@@ -403,6 +403,12 @@ function _paragraphSingleImage(parent, tripId, mediaId, key) {
 var Paragraph = React.createClass({
   displayName: 'Paragraph',
 
+  propTypes: {
+    tripId: React.PropTypes.string.isRequired,
+    key: React.PropTypes.string.isRequired,
+    text: React.PropTypes.string.isRequired
+  },
+
   buildModal: function buildModal() {
     if (this.state && this.state.modal && this.state.modal !== '') {
       var clickImg = this.clickImg;
