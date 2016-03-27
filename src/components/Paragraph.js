@@ -405,7 +405,7 @@ var Paragraph = React.createClass({
 
   propTypes: {
     tripId: React.PropTypes.string.isRequired,
-    key: React.PropTypes.string.isRequired,
+    parNr: React.PropTypes.number.isRequired,
     text: React.PropTypes.string.isRequired
   },
 
@@ -499,14 +499,14 @@ var Paragraph = React.createClass({
     }
 
     if ((images.length === 1) && text) {
-      return _standardParagraph(this, tripId, text, images[0], this.props.key);
+      return _standardParagraph(this, tripId, text, images[0], this.props.parNr);
     } else if (images.length > 1) {
       return _paragraphMultipleImages(this, tripId, text,
-                                     images, this.props.key);
+                                     images, this.props.parNr);
     } else if (text) {
-      return _paragraphTextOnly(this, text, this.props.key);
+      return _paragraphTextOnly(this, text, this.props.parNr);
     } else if (images.length === 1) {
-      return _paragraphSingleImage(this, tripId, images[0], this.props.key);
+      return _paragraphSingleImage(this, tripId, images[0], this.props.parNr);
     }
     // default if nothing applies
     return null;

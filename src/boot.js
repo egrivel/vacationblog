@@ -23,7 +23,7 @@ var About = require('./components/About');
  */
 var App = React.createClass({
   propTypes: {
-    children: React.PropTypes.array
+    children: React.PropTypes.object
   },
 
   render: function() {

@@ -126,32 +126,35 @@ CommentList = React.createClass({
   },
 
   render: function() {
-    if (!this.props.comments || !this.props.comments.count) {
+    if (!this.props.comments || !this.props.comments.length) {
       return null;
     }
 
     var commentList = [];
-    for (var i = 0; i < this.props.comments.count; i++) {
-      var userId = this.props.comments.list[i].userId;
-      var userData = UserStore.getData(userId);
-      var userName = '';
-      if (userData) {
-        userName = userData.name;
-      }
-      commentList[i] = React.createElement(
-        Comment,
-        {
-          tripId: this.props.tripId,
-          commentId: this.props.comments.list[i].commentId,
-          userId: userId,
-          userName: userName,
-          created: this.props.comments.list[i].created,
-          commentText: this.props.comments.list[i].commentText,
-          deleted: this.props.comments.list[i].deleted,
-          comments: this.props.comments.list[i].comments,
-          key: this.props.comments.list[i].commentId
+    var count = 0;
+    for (var i = 0; i < this.props.comments.length; i++) {
+      for (var j = 0; j < this.props.comments[i].list.length; j++) {
+        var userId = this.props.comments[i].list[j].userId;
+        var userData = UserStore.getData(userId);
+        var userName = '';
+        if (userData) {
+          userName = userData.name;
         }
-      );
+        commentList[count++] = React.createElement(
+          Comment,
+          {
+            tripId: this.props.tripId,
+            commentId: this.props.comments[i].list[j].commentId,
+            userId: userId,
+            userName: userName,
+            created: this.props.comments[i].list[j].created,
+            commentText: this.props.comments[i].list[j].commentText,
+            deleted: this.props.comments[i].list[j].deleted,
+            comments: this.props.comments[i].list[j].comments,
+            key: this.props.comments[i].list[j].commentId
+          }
+        );
+      }
     }
     return React.DOM.div(
       {

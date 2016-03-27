@@ -206,7 +206,9 @@ var utils = {
    * @return {string} human-readable representation of the date or date-time.
    */
   formatDate: function formatDate(date) {
-    if (date.length === 8) {
+    if (!date) {
+      return null;
+    } else if (date.length === 8) {
       // date in yyyymmdd format
       return moment(date, 'YYYYMMDD').format('dddd MMMM D YYYY');
     } else if (date.length === 10) {

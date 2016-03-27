@@ -111,19 +111,26 @@ var JournalEntry = React.createClass({
   },
 
   render: function render() {
-    var parCount = 0;
+    var nr = 0;
     var tripId = this.state.tripId;
     var journalId = this.state.journalId;
 
     var parList = utils.splitText(this.state.journalText);
 
-    var comment = null;
+    var paragraphs = null;
     if (tripId && journalId) {
-      comment = React.createElement(CommentList, {
-        tripId: this.state.tripId,
-        referenceId: this.state.journalId,
-        comments: this.state.comments
+      paragraphs = parList.map(function(par) {
+        nr++;
+        var key = 'p-' + nr;
+        return <Paragraph tripId={tripId} key={key} parNr={nr} text={par} />;
       });
+    }
+    var comments = null;
+    if (tripId && journalId) {
+      comments = (
+        <CommentList tripId={tripId} referenceId={journalId}
+          comments={this.state.comments}/>
+      );
     }
 
     var feedback = null;
@@ -131,46 +138,35 @@ var JournalEntry = React.createClass({
       feedback = React.createElement(Feedback, null);
     }
 
-    return React.DOM.div(
-      {
-        className: 'journalitem'
-      },
-      React.createElement(
-        JournalEntryHeader,
-        {
-          title: this.state.journalTitle,
-          date: this.state.journalDate,
-          userName: this.state.userName,
-          created: this.state.created
-        }
-      ),
-      React.createElement(JournalEntryPrevNext,
-        {
-          tripId: tripId,
-          prevId: this.state.prevId,
-          nextId: this.state.nextId,
-          nr: 1
-        }
-      ),
-      parList.map(function(par) {
-        parCount++;
-        var parKey = 'p-' + parCount;
-        return React.createElement(Paragraph, {
-          tripId: tripId,
-          key: parKey,
-          text: par
-        });
-      }),
-      feedback,
-      comment,
-      React.createElement(JournalEntryPrevNext,
-        {
-          tripId: tripId,
-          prevId: this.state.prevId,
-          nextId: this.state.nextId,
-          nr: 2
-        }
-      )
+    var prevNext1 = null;
+    var prevNext2 = null;
+    if (tripId) {
+      prevNext1 = (
+        <JournalEntryPrevNext tripId={tripId}
+          prevId={this.state.prevId}
+          nextId={this.state.nextId}
+          nr={1}/>
+      );
+      prevNext2 = (
+        <JournalEntryPrevNext tripId={tripId}
+          prevId={this.state.prevId}
+          nextId={this.state.nextId}
+          nr={2}/>
+      );
+    }
+
+    return (
+      <div className="journalitem">
+        <JournalEntryHeader title={this.state.journalTitle}
+          date={this.state.journalDate}
+          userName={this.state.userName}
+          created={this.state.created}/>
+        {prevNext1}
+        {paragraphs}
+        {feedback}
+        {comments}
+        {prevNext2}
+      </div>
     );
   }
 });

@@ -5,7 +5,7 @@ var expect = require('chai').expect;
 // var ReactDOM = require('react-dom');
 // var TestUtils = require('react-addons-test-utils');
 
-var JournalEntry = require('../../src/components/JournalEntry');
+var JournalEntry = require('../../src/components/JournalEntry.jsx');
 
 describe('JournalEntry component', function() {
   it('dummy', function() {

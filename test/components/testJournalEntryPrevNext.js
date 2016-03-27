@@ -67,15 +67,15 @@ describe('JournalEntryPrevNext component', function() {
       expect(logStub.args[0][0]).to.contain('`tripId`');
     });
 
-    it('error on missing prevId', function() {
+    it('no error on missing prevId', function() {
       delete props.prevId;
       React.createElement(JournalEntryPrevNext, props);
-      expect(logStub.callCount).to.be.equal(1);
-      expect(logStub.args[0].length).to.be.equal(1);
-      // check that the error message about a required prop is given
-      expect(logStub.args[0][0]).to.contain('Required prop');
-      // check that the error message is actually about this prop
-      expect(logStub.args[0][0]).to.contain('`prevId`');
+      expect(logStub.callCount).to.be.equal(0);
+      // expect(logStub.args[0].length).to.be.equal(1);
+      // // check that the error message about a required prop is given
+      // expect(logStub.args[0][0]).to.contain('Required prop');
+      // // check that the error message is actually about this prop
+      // expect(logStub.args[0][0]).to.contain('`prevId`');
     });
 
     it('error on non-string prevId', function() {
@@ -87,15 +87,15 @@ describe('JournalEntryPrevNext component', function() {
       expect(logStub.args[0][0]).to.contain('`prevId`');
     });
 
-    it('error on missing nextId', function() {
+    it('no error on missing nextId', function() {
       delete props.nextId;
       React.createElement(JournalEntryPrevNext, props);
-      expect(logStub.callCount).to.be.equal(1);
-      expect(logStub.args[0].length).to.be.equal(1);
-      // check that the error message about a required prop is given
-      expect(logStub.args[0][0]).to.contain('Required prop');
-      // check that the error message is actually about this prop
-      expect(logStub.args[0][0]).to.contain('`nextId`');
+      expect(logStub.callCount).to.be.equal(0);
+      // expect(logStub.args[0].length).to.be.equal(1);
+      // // check that the error message about a required prop is given
+      // expect(logStub.args[0][0]).to.contain('Required prop');
+      // // check that the error message is actually about this prop
+      // expect(logStub.args[0][0]).to.contain('`nextId`');
     });
 
     it('error on non-string nextId', function() {

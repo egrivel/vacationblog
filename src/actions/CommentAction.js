@@ -53,7 +53,6 @@ var CommentAction = {
   recursivelyLoadComments: function(tripId, referenceId) {
     var url = 'api/getComment.php?tripId=' + tripId +
       '&referenceId=' + referenceId;
-
     utils.getAsync(url, function(response) {
       var data = JSON.parse(response);
       CommentAction._recursiveCommentsLoaded(tripId, referenceId, data);

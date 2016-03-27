@@ -64,8 +64,8 @@ var JournalEntryPrevNext = React.createClass({
 
   propTypes: {
     tripId: React.PropTypes.string.isRequired,
-    prevId: React.PropTypes.string.isRequired,
-    nextId: React.PropTypes.string.isRequired,
+    prevId: React.PropTypes.string,
+    nextId: React.PropTypes.string,
     nr: React.PropTypes.number.isRequired
   },
 

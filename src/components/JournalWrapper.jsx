@@ -5,7 +5,7 @@ var React = require('react');
 var JournalStore = require('../stores/JournalStore');
 var JournalAction = require('../actions/JournalAction');
 var CommentAction = require('../actions/CommentAction');
-var JournalEntry = require('./JournalEntry');
+var JournalEntry = require('./JournalEntry.jsx');
 
 /**
  * Journal wrapper component. This component wraps a journal entry and
@@ -21,7 +21,7 @@ var JournalWrapper = React.createClass({
   displayName: 'JournalWrapper',
 
   propTypes: {
-    params: React.PropTypes.array
+    params: React.PropTypes.object
   },
 
   /**
