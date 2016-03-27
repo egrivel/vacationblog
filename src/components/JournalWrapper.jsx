@@ -55,11 +55,11 @@ var JournalWrapper = React.createClass({
     if (props && props.params) {
       tripId = props.params.tripId;
       journalId = props.params.journalId;
-    }
-    if ((tripId !== data.tripId) ||
-        (journalId !== data.journalId)) {
-      JournalAction.loadJournal(tripId, journalId);
-      CommentAction.recursivelyLoadComments(tripId, journalId);
+      if ((tripId !== data.tripId) ||
+          (journalId !== data.journalId)) {
+        JournalAction.loadJournal(tripId, journalId);
+        CommentAction.recursivelyLoadComments(tripId, journalId);
+      }
     }
   },
 
@@ -68,7 +68,18 @@ var JournalWrapper = React.createClass({
    * @return {React} JournalEntry element.
    */
   render: function() {
-    return <JournalEntry params={this.props.params}></JournalEntry>;
+    var tripId;
+    var journalId;
+
+    if (this.props && this.props.params) {
+      if (this.props.params.tripId) {
+        tripId = this.props.params.tripId;
+      }
+      if (this.props.params.journalId) {
+        journalId = this.props.params.journalId;
+      }
+    }
+    return <JournalEntry tripId={tripId} journalId={journalId}></JournalEntry>;
   }
 });
 
