@@ -3,6 +3,7 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var Router = require('react-router').Router;
+var hashHistory = require('react-router').hashHistory;
 
 var Header = require('./components/Header');
 var Footer = require('./components/Footer');
@@ -57,7 +58,12 @@ const routes = {
 
 /* global document */
 ReactDOM.render(
-  React.createElement(Router, {routes: routes}),
+  React.createElement(Router,
+    {
+      routes: routes,
+      history: hashHistory
+    }
+  ),
   document.getElementById('body')
 );
 
