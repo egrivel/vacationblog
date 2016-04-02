@@ -53,7 +53,6 @@ var CommentAction = {
   recursivelyLoadComments: function(tripId, referenceId) {
     var url = 'api/getComment.php?tripId=' + tripId +
       '&referenceId=' + referenceId;
-
     utils.getAsync(url, function(response) {
       var data = JSON.parse(response);
       CommentAction._recursiveCommentsLoaded(tripId, referenceId, data);
@@ -81,7 +80,7 @@ var CommentAction = {
 
     for (var i = 0; i < data.count; i++) {
       if (data.list[i].userId) {
-        UserAction.smartLoadUser(data.list[i].userId);
+        UserAction.loadUser(data.list[i].userId);
       }
       this.recursivelyLoadComments(tripId, data.list[i].commentId);
     }

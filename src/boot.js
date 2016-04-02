@@ -1,16 +1,16 @@
-// main.js
+'use strict';
+
 var React = require('react');
 var ReactDOM = require('react-dom');
 var Router = require('react-router').Router;
-var Route = require('react-router').Route;
-var Link = require('react-router').Link;
-var createBrowserHistory = require('history/lib/createBrowserHistory');
+var hashHistory = require('react-router').hashHistory;
+
 var Header = require('./components/Header');
 var Footer = require('./components/Footer');
 var TripDescription = require('./components/TripDescription');
-var TripAction = require('./actions/TripAction');
-var TripStore = require('./stores/TripStore');
 var JournalWrapper = require('./components/JournalWrapper.jsx');
+var TripAction = require('./actions/TripAction');
+
 var Search = require('./components/Search');
 var Login = require('./components/Login');
 var About = require('./components/About');
@@ -23,6 +23,10 @@ var About = require('./components/About');
  * view when someone enters the site.
  */
 var App = React.createClass({
+  propTypes: {
+    children: React.PropTypes.object
+  },
+
   render: function() {
     var children = this.props.children;
     if (!children || children.length === 0) {
@@ -33,27 +37,33 @@ var App = React.createClass({
       React.createElement(Header, null),
       children,
       React.createElement(Footer, null)
-    )
+    );
   }
 });
- 
+
 const routes = {
   path: '/',
   component: App,
   childRoutes: [
-    { path: '/', component: TripDescription },
-    { path: '/trip', component: TripDescription },
-    { path: '/trip/:tripId', component: TripDescription },
-    { path: '/journal/:tripId', component: JournalWrapper },
-    { path: '/journal/:tripId/:journalId', component: JournalWrapper },
-    { path: '/search', component: Search },
-    { path: '/login', component: Login },
-    { path: '/about', component: About }
+    {path: '/', component: TripDescription},
+    {path: '/trip', component: TripDescription},
+    {path: '/trip/:tripId', component: TripDescription},
+    {path: '/journal/:tripId', component: JournalWrapper},
+    {path: '/journal/:tripId/:journalId', component: JournalWrapper},
+    {path: '/search', component: Search},
+    {path: '/login', component: Login},
+    {path: '/about', component: About}
   ]
 };
 
+/* global document */
 ReactDOM.render(
-  React.createElement(Router, {routes: routes}),
+  React.createElement(Router,
+    {
+      routes: routes,
+      history: hashHistory
+    }
+  ),
   document.getElementById('body')
 );
 

@@ -4,7 +4,6 @@
 /* global window */
 
 var React = require('react');
-var History = require('react-router').History;
 var MenuAction = require('../actions/MenuAction');
 var MenuList = require('./MenuList');
 
@@ -13,12 +12,12 @@ var inHover = false;
 var Menu = React.createClass({
   displayName: 'Menu',
 
-  mixins: [History],
+  propTypes: {
+    menuData: React.PropTypes.array
+  },
 
   handleSelect: function(id, target) {
-    // console.log('Selected item ' + id + ', target=' + target);
     MenuAction.selectItem(id);
-    // MenuAction.visibleItem(id, false);
     window.location.href = target;
   },
 

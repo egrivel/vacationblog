@@ -3,10 +3,10 @@
 var React = require('react');
 var Link = require('react-router').Link;
 
-var TripStore = require('../stores/TripStore');
 var TripAction = require('../actions/TripAction');
+var TripStore = require('../stores/TripStore');
 
-var Paragraph = require('./Paragraph');
+// var Paragraph = require('./Paragraph');
 var utils = require('./utils');
 
 /**
@@ -109,11 +109,7 @@ var TripDescription = React.createClass({
       React.DOM.div({className: 'trip'},
         parList.map(function(par) {
           parCount++;
-          return React.createElement(Paragraph, {
-            tripId: tripId,
-            key: 'p-' + parCount,
-            text: par
-          });
+          return utils.buildTextNode('p', 'text', 'p-' + parCount, par);
         }),
         _startReadingLink(tripId, this.state.firstJournalId)
       )

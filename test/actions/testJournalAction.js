@@ -8,8 +8,19 @@ var AppDispatcher = require('../../src/AppDispatcher');
 var JournalAction = require('../../src/actions/JournalAction');
 var CommentAction = require('../../src/actions/CommentAction');
 var MediaAction = require('../../src/actions/MediaAction');
+var UserAction = require('../../src/actions/UserAction');
 
 describe('JournalAction stuff', function() {
+  var loadUserStub;
+
+  beforeEach(function() {
+    loadUserStub = sinon.stub(UserAction, 'loadUser');
+  });
+
+  afterEach(function() {
+    loadUserStub.restore();
+  });
+
   describe('#loadJournal', function() {
     var asyncStub;
     var journalLoadedStub;
@@ -134,6 +145,32 @@ describe('JournalAction stuff', function() {
         };
         JournalAction._journalLoaded(data);
         expect(commentLoadStub.callCount).to.be.equal(0);
+      });
+    });
+
+    describe('loadUser', function() {
+      it('is called with the right info', function() {
+        var testUser1 = 'test-user-1';
+        var data = {
+          userId: testUser1,
+          tripId: testTripId1,
+          journalId: testJournalId1,
+          journalText: testJournalText1
+        };
+        JournalAction._journalLoaded(data);
+        expect(loadUserStub.callCount).to.be.equal(1);
+        expect(loadUserStub.args[0].length).to.be.equal(1);
+        expect(loadUserStub.args[0][0]).to.be.equal(testUser1);
+      });
+
+      it('is not called without user ID', function() {
+        var data = {
+          tripId: testTripId1,
+          journalId: testJournalId1,
+          journalText: testJournalText1
+        };
+        JournalAction._journalLoaded(data);
+        expect(loadUserStub.callCount).to.be.equal(0);
       });
     });
 

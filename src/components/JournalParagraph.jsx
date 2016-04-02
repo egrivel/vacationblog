@@ -9,7 +9,7 @@ var React = require('react');
 
 var MediaStore = require('../stores/MediaStore');
 var CommentList = require('./CommentList');
-var Image = require('./Image');
+var Image = require('./Image.jsx');
 
 var utils = require('./utils');
 var Orientation = utils.orientation;
@@ -61,7 +61,7 @@ function _imgWithModal(parent, tripId, mediaId, className) {
     tripId: tripId,
     imageId: mediaId,
     format: mediaInfo.orientation,
-    size: className,
+    className: className,
     key: mediaId,
     caption: mediaInfo.caption,
     onClick: function() {
@@ -400,14 +400,20 @@ function _paragraphSingleImage(parent, tripId, mediaId, key) {
   );
 }
 
-var Paragraph = React.createClass({
-  displayName: 'Paragraph',
+var JournalParagraph = React.createClass({
+  displayName: 'JournalParagraph',
+
+  propTypes: {
+    tripId: React.PropTypes.string.isRequired,
+    parNr: React.PropTypes.number.isRequired,
+    text: React.PropTypes.string.isRequired
+  },
 
   buildModal: function buildModal() {
     if (this.state && this.state.modal && this.state.modal !== '') {
       var clickImg = this.clickImg;
       var mediaId = this.state.modal;
-      var mediaInfo = MediaStore.getData(this.props.tripId, mediaId);
+      var mediaInfo = _getMediaInfo(this.props.tripId, mediaId);
       var comment = React.createElement(CommentList, {
         tripId: this.props.tripId,
         referenceId: mediaId
@@ -425,10 +431,13 @@ var Paragraph = React.createClass({
           {
             className: 'modal-content'
           },
-          React.DOM.img(
+          React.createElement(
+            Image,
             {
-              key: 'modal-img',
-              src: '/cgi-bin/photos/phimg?large=' + mediaId
+              tripId: this.props.tripId,
+              imageId: mediaId,
+              format: mediaInfo.orientation,
+              caption: utils.replaceEntities(mediaInfo.caption)
             }
           ),
           React.DOM.div(
@@ -490,18 +499,19 @@ var Paragraph = React.createClass({
     }
 
     if ((images.length === 1) && text) {
-      return _standardParagraph(this, tripId, text, images[0], this.props.key);
+      return _standardParagraph(this, tripId, text,
+        images[0], this.props.parNr);
     } else if (images.length > 1) {
       return _paragraphMultipleImages(this, tripId, text,
-                                     images, this.props.key);
+                                     images, this.props.parNr);
     } else if (text) {
-      return _paragraphTextOnly(this, text, this.props.key);
+      return _paragraphTextOnly(this, text, this.props.parNr);
     } else if (images.length === 1) {
-      return _paragraphSingleImage(this, tripId, images[0], this.props.key);
+      return _paragraphSingleImage(this, tripId, images[0], this.props.parNr);
     }
     // default if nothing applies
     return null;
   }
 });
 
-module.exports = Paragraph;
+module.exports = JournalParagraph;

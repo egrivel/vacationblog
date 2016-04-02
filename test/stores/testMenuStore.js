@@ -2,22 +2,24 @@
 
 var expect = require('chai').expect;
 var sinon = require('sinon');
-var rewire = require('rewire');
 
+var MenuStore = require('../../src/stores/MenuStore');
 var MenuActionTypes = require('../../src/actions/MenuAction').Types;
 var TripActionTypes = require('../../src/actions/TripAction').Types;
 
 describe('MenuStore', function() {
-  // Always have the menu store available
   beforeEach(function() {
-    this.MenuStore = rewire('../../src/stores/MenuStore');
-    this.storeCallback = this.MenuStore.__get__('storeCallback');
+    MenuStore.removeAllListeners();
+  });
+
+  afterEach(function() {
+    MenuStore.removeAllListeners();
   });
 
   describe('without trips loaded', function() {
     describe('#getData', function() {
       it('returns Trip top-level item', function() {
-        var data = this.MenuStore.getData();
+        var data = MenuStore.getData();
 
         expect(data.length).to.be.at.least(1);
         expect(data[0].id).to.exist;
@@ -29,7 +31,7 @@ describe('MenuStore', function() {
       });
 
       it('returns Search top-level item', function() {
-        var data = this.MenuStore.getData();
+        var data = MenuStore.getData();
 
         expect(data.length).to.be.at.least(2);
         expect(data[1].id).to.exist;
@@ -41,7 +43,7 @@ describe('MenuStore', function() {
       });
 
       it('returns Login top-level item', function() {
-        var data = this.MenuStore.getData();
+        var data = MenuStore.getData();
 
         expect(data.length).to.be.at.least(3);
         expect(data[2].id).to.exist;
@@ -53,7 +55,7 @@ describe('MenuStore', function() {
       });
 
       it('returns About top-level item', function() {
-        var data = this.MenuStore.getData();
+        var data = MenuStore.getData();
 
         expect(data.length).to.be.at.least(4);
         expect(data[3].id).to.exist;
@@ -67,76 +69,76 @@ describe('MenuStore', function() {
 
     describe('select action', function() {
       it('selects indicated item', function() {
-        var data = this.MenuStore.getData();
+        var data = MenuStore.getData();
         var id = data[0].id;
 
-        this.storeCallback({
+        MenuStore._storeCallback({
           type: MenuActionTypes.MENU_SELECT,
           data: {id: id}
         });
 
-        data = this.MenuStore.getData();
+        data = MenuStore.getData();
         expect(data[0].selected).to.equal(true);
       });
 
       it('deselects previously selected item', function() {
-        var data = this.MenuStore.getData();
+        var data = MenuStore.getData();
         var id1 = data[0].id;
         var id2 = data[1].id;
 
         // select the first menu item and make sure it is 'selected'
-        this.storeCallback({
+        MenuStore._storeCallback({
           type: MenuActionTypes.MENU_SELECT,
           data: {id: id1}
         });
-        data = this.MenuStore.getData();
+        data = MenuStore.getData();
         expect(data[0].selected).to.equal(true);
 
         // select the second menu item and make sure the first item is
         // no longer 'selected'
-        this.storeCallback({
+        MenuStore._storeCallback({
           type: MenuActionTypes.MENU_SELECT,
           data: {id: id2}
         });
 
-        data = this.MenuStore.getData();
+        data = MenuStore.getData();
         expect(data[0].selected).to.equal(false);
       });
 
       it('selecting unselected item emits change', function() {
         var cb = sinon.spy();
-        this.MenuStore.addChangeListener(cb);
+        MenuStore.addChangeListener(cb);
 
-        var data = this.MenuStore.getData();
+        var data = MenuStore.getData();
         var id = data[0].id;
 
         expect(cb.callCount).to.be.equal(0);
-        this.storeCallback({
+        MenuStore._storeCallback({
           type: MenuActionTypes.MENU_SELECT,
           data: {id: id}
         });
         expect(cb.callCount).to.be.equal(1);
-        this.MenuStore.removeChangeListener(cb);
+        MenuStore.removeChangeListener(cb);
       });
 
       it('selecting selected item DOES emit change', function() {
         var cb = sinon.spy();
-        this.MenuStore.addChangeListener(cb);
+        MenuStore.addChangeListener(cb);
 
-        var data = this.MenuStore.getData();
+        var data = MenuStore.getData();
         var id = data[0].id;
 
         expect(cb.callCount).to.be.equal(0);
 
         // first time emits change
-        this.storeCallback({
+        MenuStore._storeCallback({
           type: MenuActionTypes.MENU_SELECT,
           data: {id: id}
         });
         expect(cb.callCount).to.be.equal(1);
 
         // second time emits change again
-        this.storeCallback({
+        MenuStore._storeCallback({
           type: MenuActionTypes.MENU_SELECT,
           data: {id: id}
         });
@@ -146,10 +148,10 @@ describe('MenuStore', function() {
 
     describe('visible action', function() {
       it('make visible indicated item', function() {
-        var data = this.MenuStore.getData();
+        var data = MenuStore.getData();
         var id = data[0].id;
 
-        this.storeCallback({
+        MenuStore._storeCallback({
           type: MenuActionTypes.MENU_VISIBLE,
           data: {
             id: id,
@@ -157,48 +159,18 @@ describe('MenuStore', function() {
           }
         });
 
-        data = this.MenuStore.getData();
+        data = MenuStore.getData();
         expect(data[0].visible).to.equal(true);
-      });
-
-      it('make invisible previously visible item', function() {
-        var data = this.MenuStore.getData();
-        var id1 = data[0].id;
-        var id2 = data[1].id;
-
-        // select the first menu item and make sure it is 'selected'
-        this.storeCallback({
-          type: MenuActionTypes.MENU_VISIBLE,
-          data: {
-            id: id1,
-            visible: true
-          }
-        });
-        data = this.MenuStore.getData();
-        expect(data[0].visible).to.equal(true);
-
-        // select the second menu item and make sure the first item is
-        // no longer 'selected'
-        this.storeCallback({
-          type: MenuActionTypes.MENU_VISIBLE,
-          data: {
-            id: id2,
-            visible: true
-          }
-        });
-
-        data = this.MenuStore.getData();
-        expect(data[0].selected).to.equal(false);
       });
 
       it('make visible invisible item emits change', function() {
         var cb = sinon.spy();
-        this.MenuStore.addChangeListener(cb);
+        MenuStore.addChangeListener(cb);
 
-        var data = this.MenuStore.getData();
+        var data = MenuStore.getData();
         var id = data[0].id;
 
-        this.storeCallback({
+        MenuStore._storeCallback({
           type: MenuActionTypes.MENU_VISIBLE,
           data: {
             id: id,
@@ -206,18 +178,18 @@ describe('MenuStore', function() {
           }
         });
         expect(cb.callCount).to.be.equal(1);
-        this.MenuStore.removeChangeListener(cb);
+        MenuStore.removeChangeListener(cb);
       });
 
       it('make visible visible item does not emit change', function() {
         var cb = sinon.spy();
-        this.MenuStore.addChangeListener(cb);
+        MenuStore.addChangeListener(cb);
 
-        var data = this.MenuStore.getData();
+        var data = MenuStore.getData();
         var id = data[0].id;
 
         // first time emits change
-        this.storeCallback({
+        MenuStore._storeCallback({
           type: MenuActionTypes.MENU_VISIBLE,
           data: {
             id: id,
@@ -227,7 +199,7 @@ describe('MenuStore', function() {
         expect(cb.callCount).to.be.equal(1);
 
         // second time does not emit change
-        this.storeCallback({
+        MenuStore._storeCallback({
           type: MenuActionTypes.MENU_VISIBLE,
           data: {
             id: id,
@@ -242,14 +214,14 @@ describe('MenuStore', function() {
   describe('load trips', function() {
     describe('without trip data', function() {
       beforeEach(function() {
-        this.storeCallback({
+        MenuStore._storeCallback({
           type: TripActionTypes.TRIP_LOAD_LIST,
           data: null
         });
       });
 
       it('Menu contains dummy trip', function() {
-        var data = this.MenuStore.getData();
+        var data = MenuStore.getData();
 
         // all four items on the top-level should still be there.
         expect(data.length).to.be.equal(4);
@@ -270,14 +242,14 @@ describe('MenuStore', function() {
         }
       ];
       beforeEach(function() {
-        this.storeCallback({
+        MenuStore._storeCallback({
           type: TripActionTypes.TRIP_LOAD_LIST,
           data: tripList
         });
       });
 
       it('Menu contains first trip', function() {
-        var data = this.MenuStore.getData();
+        var data = MenuStore.getData();
 
         expect(data.length).to.be.at.least(1);
         expect(data[0].submenu).to.exist;
@@ -294,7 +266,7 @@ describe('MenuStore', function() {
       });
 
       it('Menu contains second trip', function() {
-        var data = this.MenuStore.getData();
+        var data = MenuStore.getData();
 
         expect(data.length).to.be.at.least(1);
         expect(data[0].submenu).to.exist;
@@ -311,53 +283,53 @@ describe('MenuStore', function() {
       });
 
       it('selects indicated item', function() {
-        var data = this.MenuStore.getData();
+        var data = MenuStore.getData();
 
         // select the first trip
         var id = data[0].submenu[0].id;
-        this.storeCallback({
+        MenuStore._storeCallback({
           type: MenuActionTypes.MENU_SELECT,
           data: {id: id}
         });
 
-        data = this.MenuStore.getData();
+        data = MenuStore.getData();
         expect(data[0].selected).to.equal(true);
         expect(data[0].submenu[0].selected).to.equal(true);
         expect(data[0].submenu[1].selected).to.equal(false);
 
         // select the second trip
         id = data[0].submenu[1].id;
-        this.storeCallback({
+        MenuStore._storeCallback({
           type: MenuActionTypes.MENU_SELECT,
           data: {id: id}
         });
 
-        data = this.MenuStore.getData();
+        data = MenuStore.getData();
         expect(data[0].selected).to.equal(true);
         expect(data[0].submenu[0].selected).to.equal(false);
         expect(data[0].submenu[1].selected).to.equal(true);
       });
 
       it('select non-trip item', function() {
-        var data = this.MenuStore.getData();
+        var data = MenuStore.getData();
 
         // select the first trip
         var id = data[1].id;
-        this.storeCallback({
+        MenuStore._storeCallback({
           type: MenuActionTypes.MENU_SELECT,
           data: {id: id}
         });
 
-        data = this.MenuStore.getData();
+        data = MenuStore.getData();
         expect(data[1].selected).to.equal(true);
       });
 
       it('make visible indicated item', function() {
-        var data = this.MenuStore.getData();
+        var data = MenuStore.getData();
 
         // select the first trip
         var id = data[0].submenu[0].id;
-        this.storeCallback({
+        MenuStore._storeCallback({
           type: MenuActionTypes.MENU_VISIBLE,
           data: {
             id: id,
@@ -365,14 +337,14 @@ describe('MenuStore', function() {
           }
         });
 
-        data = this.MenuStore.getData();
+        data = MenuStore.getData();
         expect(data[0].visible).to.equal(true);
         expect(data[0].submenu[0].visible).to.equal(true);
         expect(data[0].submenu[1].visible).to.equal(false);
 
         // select the second trip
         id = data[0].submenu[1].id;
-        this.storeCallback({
+        MenuStore._storeCallback({
           type: MenuActionTypes.MENU_VISIBLE,
           data: {
             id: id,
@@ -380,18 +352,18 @@ describe('MenuStore', function() {
           }
         });
 
-        data = this.MenuStore.getData();
+        data = MenuStore.getData();
         expect(data[0].visible).to.equal(true);
         expect(data[0].submenu[0].visible).to.equal(false);
         expect(data[0].submenu[1].visible).to.equal(true);
       });
 
       it('make visible non-trip item', function() {
-        var data = this.MenuStore.getData();
+        var data = MenuStore.getData();
 
         // select the first trip
         var id = data[1].id;
-        this.storeCallback({
+        MenuStore._storeCallback({
           type: MenuActionTypes.MENU_VISIBLE,
           data: {
             id: id,
@@ -399,20 +371,20 @@ describe('MenuStore', function() {
           }
         });
 
-        data = this.MenuStore.getData();
+        data = MenuStore.getData();
         expect(data[0].visible).to.equal(false);
         expect(data[1].visible).to.equal(true);
       });
 
       it('making visible item emits change', function() {
         var cb = sinon.spy();
-        this.MenuStore.addChangeListener(cb);
+        MenuStore.addChangeListener(cb);
 
-        var data = this.MenuStore.getData();
+        var data = MenuStore.getData();
         var id = data[0].id;
 
         expect(cb.callCount).to.be.equal(0);
-        this.storeCallback({
+        MenuStore._storeCallback({
           type: MenuActionTypes.MENU_VISIBLE,
           data: {
             id: id,
@@ -420,19 +392,19 @@ describe('MenuStore', function() {
           }
         });
         expect(cb.callCount).to.be.equal(1);
-        this.MenuStore.removeChangeListener(cb);
+        MenuStore.removeChangeListener(cb);
       });
 
       describe('removing trip data', function() {
         beforeEach(function() {
-          this.storeCallback({
+          MenuStore._storeCallback({
             type: TripActionTypes.TRIP_LOAD_LIST,
             data: null
           });
         });
 
         it('Menu contains dummy trip', function() {
-          var data = this.MenuStore.getData();
+          var data = MenuStore.getData();
 
           // all four items on the top-level should still be there.
           expect(data.length).to.be.equal(4);
@@ -445,17 +417,17 @@ describe('MenuStore', function() {
 
   it('random action does not emit change', function() {
     var cb = sinon.spy();
-    this.MenuStore.addChangeListener(cb);
+    MenuStore.addChangeListener(cb);
 
-    var data = this.MenuStore.getData();
+    var data = MenuStore.getData();
     var id = data[0].id;
 
     expect(cb.callCount).to.be.equal(0);
-    this.storeCallback({
+    MenuStore._storeCallback({
       type: 'foo',
       data: {id: id}
     });
     expect(cb.callCount).to.be.equal(0);
-    this.MenuStore.removeChangeListener(cb);
+    MenuStore.removeChangeListener(cb);
   });
 });

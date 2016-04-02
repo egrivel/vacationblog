@@ -9,8 +9,6 @@ var React = require('react');
 
 var UserStore = require('../stores/UserStore');
 
-var UserAction = require('../actions/UserAction');
-
 var utils = require('./utils');
 var Feedback = require('./Feedback');
 
@@ -19,6 +17,11 @@ var CommentList;
 
 var CommentParagraph = React.createClass({
   displayName: 'CommentParagraph',
+
+  propTypes: {
+    text: React.PropTypes.string,
+    key: React.PropTypes.string
+  },
 
   render: function() {
     if (!this.props.text) {
@@ -40,6 +43,16 @@ var CommentParagraph = React.createClass({
 
 var Comment = React.createClass({
   displayName: 'Comment',
+
+  propTypes: {
+    tripId: React.PropTypes.string,
+    commentId: React.PropTypes.string,
+    created: React.PropTypes.string,
+    commentText: React.PropTypes.string,
+    deleted: React.PropTypes.string,
+    userName: React.PropTypes.string,
+    comments: React.PropTypes.array
+  },
 
   render: function render() {
     var tripId = this.props.tripId;
@@ -106,31 +119,38 @@ var Comment = React.createClass({
 CommentList = React.createClass({
   displayName: 'CommentList',
 
+  propTypes: {
+    comments: React.PropTypes.array,
+    tripId: React.PropTypes.string,
+    referenceId: React.PropTypes.string
+  },
+
   render: function() {
-    if (!this.props.comments || !this.props.comments.count) {
+    if (!this.props.comments || !this.props.comments.length) {
       return null;
     }
 
     var commentList = [];
-    for (var i = 0; i < this.props.comments.count; i++) {
-      var userId = this.props.comments.list[i].userId;
+    var count = 0;
+    for (var i = 0; i < this.props.comments.length; i++) {
+      var userId = this.props.comments[i].userId;
       var userData = UserStore.getData(userId);
       var userName = '';
       if (userData) {
         userName = userData.name;
       }
-      commentList[i] = React.createElement(
+      commentList[count++] = React.createElement(
         Comment,
         {
-          tripId: this.props.tripId,
-          commentId: this.props.comments.list[i].commentId,
+          tripId: this.props.comments[i].tripId,
+          commentId: this.props.comments[i].commentId,
           userId: userId,
           userName: userName,
-          created: this.props.comments.list[i].created,
-          commentText: this.props.comments.list[i].commentText,
-          deleted: this.props.comments.list[i].deleted,
-          comments: this.props.comments.list[i].comments,
-          key: this.props.comments.list[i].commentId
+          created: this.props.comments[i].created,
+          commentText: this.props.comments[i].commentText,
+          deleted: this.props.comments[i].deleted,
+          comments: this.props.comments[i].childComments,
+          key: this.props.comments[i].commentId
         }
       );
     }
@@ -139,7 +159,8 @@ CommentList = React.createClass({
         className: 'comments',
         key: 'comment-list-' + this.props.referenceId
       },
-      commentList);
+      commentList
+    );
   }
 });
 

@@ -1,10 +1,11 @@
 'use strict';
 
 var React = require('react');
-var JournalEntry = require('./JournalEntry');
 
 var JournalStore = require('../stores/JournalStore');
 var JournalAction = require('../actions/JournalAction');
+var CommentAction = require('../actions/CommentAction');
+var JournalEntry = require('./JournalEntry.jsx');
 
 /**
  * Journal wrapper component. This component wraps a journal entry and
@@ -18,6 +19,10 @@ var JournalAction = require('../actions/JournalAction');
 
 var JournalWrapper = React.createClass({
   displayName: 'JournalWrapper',
+
+  propTypes: {
+    params: React.PropTypes.object
+  },
 
   /**
    * React lifecycle function. Called when the component is first
@@ -38,21 +43,23 @@ var JournalWrapper = React.createClass({
     this.getDataIfNeeded(nextProps);
   },
 
-  /**
+  /*
    * Determine if new data needs to be loaded.
    * @param {object} props - props to use in the comparison.
    */
-  getDataIfNeeded(props) {
+  getDataIfNeeded: function(props) {
     var data = JournalStore.getData();
     var tripId = '';
     var journalId = '';
+
     if (props && props.params) {
       tripId = props.params.tripId;
       journalId = props.params.journalId;
-    }
-    if ((tripId !== data.tripId) ||
-        (journalId !== data.journalId)) {
-      JournalAction.loadJournal(tripId, journalId);
+      if ((tripId !== data.tripId) ||
+          (journalId !== data.journalId)) {
+        JournalAction.loadJournal(tripId, journalId);
+        CommentAction.recursivelyLoadComments(tripId, journalId);
+      }
     }
   },
 
@@ -61,7 +68,18 @@ var JournalWrapper = React.createClass({
    * @return {React} JournalEntry element.
    */
   render: function() {
-    return <JournalEntry params={this.props.params} />;
+    var tripId;
+    var journalId;
+
+    if (this.props && this.props.params) {
+      if (this.props.params.tripId) {
+        tripId = this.props.params.tripId;
+      }
+      if (this.props.params.journalId) {
+        journalId = this.props.params.journalId;
+      }
+    }
+    return <JournalEntry tripId={tripId} journalId={journalId}></JournalEntry>;
   }
 });
 

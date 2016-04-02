@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Component to display a single image. This is an atomic component which
+ * Component to display an image. This is an atomic component which
  * focuses on the display of a single image.
  */
 
@@ -24,8 +24,8 @@ var Image = React.createClass({
       Orientation.PORTRAIT,
       Orientation.LANDSCAPE
     ]).isRequired,
-    // Size indicator, which is used as part of the class name
-    size: React.PropTypes.string,
+    // CSS class name
+    className: React.PropTypes.string,
     // Caption, if available
     caption: React.PropTypes.string,
     // Callback when clicked on the image
@@ -34,7 +34,7 @@ var Image = React.createClass({
 
   getDefaultProps: function() {
     return {
-      size: '',
+      className: '',
       caption: '',
       onClick: _.noop
     };
@@ -43,9 +43,9 @@ var Image = React.createClass({
   render: function() {
     return React.DOM.img(
       {
-        className: this.props.format + ' ' + this.props.size,
+        className: this.props.format + ' ' + this.props.className,
         title: this.props.caption,
-        src: '/cgi-bin/photos/phimg?large=' + this.props.imageId,
+        src: 'http://washington/cgi-bin/photos/phimg?large=' + this.props.imageId,
         onClick: this.props.onClick
       }
     );

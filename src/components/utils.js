@@ -206,7 +206,9 @@ var utils = {
    * @return {string} human-readable representation of the date or date-time.
    */
   formatDate: function formatDate(date) {
-    if (date.length === 8) {
+    if (!date) {
+      return null;
+    } else if (date.length === 8) {
       // date in yyyymmdd format
       return moment(date, 'YYYYMMDD').format('dddd MMMM D YYYY');
     } else if (date.length === 10) {
@@ -222,8 +224,13 @@ var utils = {
       return moment.tz(m, 'America/New_York')
         .format('dddd MMMM D YYYY h:mm:ssa z');
     }
-    console.log(' - unknown format');
+    utils.warning('formatDate(' + JSON.stringify(date) + '): - unknown format');
     return date;
+  },
+
+  warning: function(text) {
+    console
+      .log(text);
   },
 
   splitText: function(text) {

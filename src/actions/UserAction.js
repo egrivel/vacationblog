@@ -8,13 +8,6 @@ var UserAction = {
     USER_DATA: 'USER_DATA'
   },
 
-  smartLoadUser: function(userId) {
-    var UserStore = require('../stores/UserStore');
-    if (!UserStore.getData(userId)) {
-      this.loadUser(userId);
-    }
-  },
-
   loadUser: function loadUser(userId) {
     var url = 'api/getUser.php?userId=' + userId;
     utils.getAsync(url, function(response) {

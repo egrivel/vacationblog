@@ -2,9 +2,9 @@
 
 var expect = require('chai').expect;
 var sinon = require('sinon');
-var rewire = require('rewire');
 
 var UserActionTypes = require('../../src/actions/UserAction').Types;
+var UserStore = require('../../src/stores/UserStore');
 
 var testUserId1 = 'test-user-1';
 var testUserId2 = 'test-user-2';
@@ -21,17 +21,20 @@ var testUser2 = {
 };
 
 describe('UserStore', function() {
-  // Always have the user store available
   beforeEach(function() {
-    this.UserStore = rewire('../../src/stores/UserStore');
-    this.storeCallback = this.UserStore.__get__('storeCallback');
+    UserStore.removeAllListeners();
+    UserStore._reset();
+  });
+
+  afterEach(function() {
+    UserStore.removeAllListeners();
   });
 
   // Behavior of an uninitialized user store
   describe('without users loaded', function() {
     describe('#getData', function() {
       it('returns undefined when uninitialized', function() {
-        expect(this.UserStore.getData()).to.equal(undefined);
+        expect(UserStore.getData()).to.equal(undefined);
       });
     });
   });
@@ -54,55 +57,55 @@ describe('UserStore', function() {
 
     beforeEach(function() {
       cb = sinon.spy();
-      this.UserStore.addChangeListener(cb);
+      UserStore.addChangeListener(cb);
     });
 
     afterEach(function() {
-      this.UserStore.removeChangeListener(cb);
+      UserStore.removeChangeListener(cb);
     });
 
     it('Loaded user data is returned', function() {
-      this.storeCallback(userAction1);
-      expect(this.UserStore.getData(testUserId1)).to.deep.eql(testUser1);
+      UserStore._storeCallback(userAction1);
+      expect(UserStore.getData(testUserId1)).to.deep.eql(testUser1);
     });
 
     it('Other than loaded user is undefined', function() {
-      this.storeCallback(userAction1);
-      expect(this.UserStore.getData(testUserId2)).to.equal(undefined);
+      UserStore._storeCallback(userAction1);
+      expect(UserStore.getData(testUserId2)).to.equal(undefined);
     });
 
     it('Multiple users are kept separate', function() {
-      this.storeCallback(userAction1);
-      this.storeCallback(userAction2);
-      expect(this.UserStore.getData(testUserId1)).to.deep.eql(testUser1);
-      expect(this.UserStore.getData(testUserId2)).to.deep.eql(testUser2);
+      UserStore._storeCallback(userAction1);
+      UserStore._storeCallback(userAction2);
+      expect(UserStore.getData(testUserId1)).to.deep.eql(testUser1);
+      expect(UserStore.getData(testUserId2)).to.deep.eql(testUser2);
     });
 
     it('Loading user for the first time emits change', function() {
       expect(cb.callCount).to.be.equal(0);
-      this.storeCallback(userAction1);
+      UserStore._storeCallback(userAction1);
       expect(cb.callCount).to.be.equal(1);
     });
 
     it('Re-loading user does not emit change', function() {
       expect(cb.callCount).to.be.equal(0);
-      this.storeCallback(userAction1);
+      UserStore._storeCallback(userAction1);
       expect(cb.callCount).to.be.equal(1);
-      this.storeCallback(userAction1);
+      UserStore._storeCallback(userAction1);
       expect(cb.callCount).to.be.equal(1);
     });
 
     it('Loading second user emits change', function() {
       expect(cb.callCount).to.be.equal(0);
-      this.storeCallback(userAction1);
+      UserStore._storeCallback(userAction1);
       expect(cb.callCount).to.be.equal(1);
-      this.storeCallback(userAction2);
+      UserStore._storeCallback(userAction2);
       expect(cb.callCount).to.be.equal(2);
     });
 
     it('Random action does not emit change', function() {
       expect(cb.callCount).to.be.equal(0);
-      this.storeCallback(randomAction);
+      UserStore._storeCallback(randomAction);
       expect(cb.callCount).to.be.equal(0);
     });
   });
