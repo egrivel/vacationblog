@@ -125,6 +125,9 @@ var setupCheckFiles = function(grunt) {
         'but will match any exec method. It is more secure to use ' +
         'child_process.execFile instead. If this is a custom method ' +
         'please change name'
+    }, {
+      pattern: /console\.log/,
+      resolution: 'Remove console logging'
     }]
   });
 };

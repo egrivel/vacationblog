@@ -5,10 +5,10 @@ var expect = require('chai').expect;
 // var ReactDOM = require('react-dom');
 // var TestUtils = require('react-addons-test-utils');
 
-var Paragraph = require('../../src/components/Paragraph');
+var JournalParagraph = require('../../src/components/JournalParagraph.jsx');
 
-describe('Paragraph component', function() {
+describe('JournalParagraph component', function() {
   it('dummy', function() {
-    expect(Paragraph).to.be.ok;
+    expect(JournalParagraph).to.be.ok;
   });
 });

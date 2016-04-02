@@ -59,8 +59,8 @@ function getPrevNextPart(tripId, targetId, icon, className,
   );
 }
 
-var JournalEntryPrevNext = React.createClass({
-  displayName: 'JournalEntryPrevNext',
+var JournalPrevNext = React.createClass({
+  displayName: 'JournalPrevNext',
 
   propTypes: {
     tripId: React.PropTypes.string.isRequired,
@@ -87,4 +87,4 @@ var JournalEntryPrevNext = React.createClass({
   }
 });
 
-module.exports = JournalEntryPrevNext;
+module.exports = JournalPrevNext;

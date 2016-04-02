@@ -20,9 +20,7 @@ var Menu = React.createClass({
   },
 
   handleSelect: function(id, target) {
-    // console.log('Selected item ' + id + ', target=' + target);
     MenuAction.selectItem(id);
-    // MenuAction.visibleItem(id, false);
     window.location.href = target;
   },
 

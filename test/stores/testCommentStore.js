@@ -107,7 +107,9 @@ describe('CommentStore', function() {
     beforeEach(function() {
       CommentStore._storeCallback({
         type: CommentActionTypes.COMMENT_DATA,
-        data: testComment1
+        data: {
+          list: [testComment1]
+        }
       });
     });
 
@@ -142,7 +144,9 @@ describe('CommentStore', function() {
         // action to load comment 2
         CommentStore._storeCallback({
           type: CommentActionTypes.COMMENT_DATA,
-          data: testComment2
+          data: {
+            list: [testComment2]
+          }
         });
 
         // comment 2 is now there
@@ -155,27 +159,39 @@ describe('CommentStore', function() {
       beforeEach(function() {
         CommentStore._storeCallback({
           type: CommentActionTypes.COMMENT_DATA,
-          data: testComment1
+          data: {
+            list: [testComment1]
+          }
         });
         CommentStore._storeCallback({
           type: CommentActionTypes.COMMENT_DATA,
-          data: testComment2
+          data: {
+            list: [testComment2]
+          }
         });
         CommentStore._storeCallback({
           type: CommentActionTypes.COMMENT_DATA,
-          data: testComment3
+          data: {
+            list: [testComment3]
+          }
         });
         CommentStore._storeCallback({
           type: CommentActionTypes.COMMENT_DATA,
-          data: testComment4
+          data: {
+            list: [testComment4]
+          }
         });
         CommentStore._storeCallback({
           type: CommentActionTypes.COMMENT_DATA,
-          data: testComment5
+          data: {
+            list: [testComment5]
+          }
         });
         CommentStore._storeCallback({
           type: CommentActionTypes.COMMENT_DATA,
-          data: testComment6
+          data: {
+            list: [testComment6]
+          }
         });
       });
 
@@ -300,7 +316,9 @@ describe('CommentStore', function() {
         expect(cb.callCount).to.be.equal(0);
         CommentStore._storeCallback({
           type: CommentActionTypes.COMMENT_DATA,
-          data: testComment1
+          data: {
+            list: [testComment1]
+          }
         });
         expect(cb.callCount).to.be.equal(0);
       });
@@ -313,7 +331,9 @@ describe('CommentStore', function() {
         testComment1.commentText = 'some other text';
         CommentStore._storeCallback({
           type: CommentActionTypes.COMMENT_DATA,
-          data: testComment1
+          data: {
+            list: [testComment1]
+          }
         });
         expect(cb.callCount).to.be.equal(1);
       });
@@ -325,7 +345,9 @@ describe('CommentStore', function() {
         expect(cb.callCount).to.be.equal(0);
         CommentStore._storeCallback({
           type: CommentActionTypes.COMMENT_DATA,
-          data: testComment2
+          data: {
+            list: [testComment2]
+          }
         });
         expect(cb.callCount).to.be.equal(1);
       });
@@ -337,7 +359,9 @@ describe('CommentStore', function() {
         expect(cb.callCount).to.be.equal(0);
         CommentStore._storeCallback({
           type: 'foo',
-          data: testComment2
+          data: {
+            list: [testComment2]
+          }
         });
         expect(cb.callCount).to.be.equal(0);
       });

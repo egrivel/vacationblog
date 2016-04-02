@@ -42,7 +42,6 @@ var TripAction = {
   loadTripList: function() {
     var url = 'api/findTrip.php';
     utils.getAsync(url, function(response) {
-      // console.log('Response: ' + response);
       var data = JSON.parse(response);
       TripAction._tripListLoaded(data.resultSet);
     });

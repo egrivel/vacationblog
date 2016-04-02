@@ -6,9 +6,9 @@ var React = require('react');
 var ReactDOMServer = require('react-dom/server');
 var TestUtils = require('react-addons-test-utils');
 
-var JournalEntryHeader = require('../../src/components/JournalEntryHeader.jsx');
+var JournalHeader = require('../../src/components/JournalHeader.jsx');
 
-describe('JournalEntryHeader component', function() {
+describe('JournalHeader component', function() {
   var testTitle1 = 'test title 1';
   var testTitle2 = 'test title 2';
   var testDate1 = '2015-01-01';
@@ -42,19 +42,19 @@ describe('JournalEntryHeader component', function() {
     });
 
     it('accepts valid props', function() {
-      React.createElement(JournalEntryHeader, props);
+      React.createElement(JournalHeader, props);
       expect(logStub.callCount).to.be.equal(0);
     });
 
     it('no error on missing title', function() {
       delete props.title;
-      React.createElement(JournalEntryHeader, props);
+      React.createElement(JournalHeader, props);
       expect(logStub.callCount).to.be.equal(0);
     });
 
     it('error on non-string title', function() {
       props.title = true;
-      React.createElement(JournalEntryHeader, props);
+      React.createElement(JournalHeader, props);
       expect(logStub.callCount).to.be.equal(1);
       expect(logStub.args[0].length).to.be.equal(1);
       expect(logStub.args[0][0]).to.contain('Invalid prop');
@@ -63,13 +63,13 @@ describe('JournalEntryHeader component', function() {
 
     it('no error on missing date', function() {
       delete props.date;
-      React.createElement(JournalEntryHeader, props);
+      React.createElement(JournalHeader, props);
       expect(logStub.callCount).to.be.equal(0);
     });
 
     it('error on non-string date', function() {
       props.date = true;
-      React.createElement(JournalEntryHeader, props);
+      React.createElement(JournalHeader, props);
       expect(logStub.callCount).to.be.equal(1);
       expect(logStub.args[0].length).to.be.equal(1);
       expect(logStub.args[0][0]).to.contain('Invalid prop');
@@ -78,13 +78,13 @@ describe('JournalEntryHeader component', function() {
 
     it('no error on missing userName', function() {
       delete props.userName;
-      React.createElement(JournalEntryHeader, props);
+      React.createElement(JournalHeader, props);
       expect(logStub.callCount).to.be.equal(0);
     });
 
     it('error on non-string userName', function() {
       props.userName = true;
-      React.createElement(JournalEntryHeader, props);
+      React.createElement(JournalHeader, props);
       expect(logStub.callCount).to.be.equal(1);
       expect(logStub.args[0].length).to.be.equal(1);
       expect(logStub.args[0][0]).to.contain('Invalid prop');
@@ -93,13 +93,13 @@ describe('JournalEntryHeader component', function() {
 
     it('no error on missing created', function() {
       delete props.created;
-      React.createElement(JournalEntryHeader, props);
+      React.createElement(JournalHeader, props);
       expect(logStub.callCount).to.be.equal(0);
     });
 
     it('error on non-string created', function() {
       props.created = true;
-      React.createElement(JournalEntryHeader, props);
+      React.createElement(JournalHeader, props);
       expect(logStub.callCount).to.be.equal(1);
       expect(logStub.args[0].length).to.be.equal(1);
       expect(logStub.args[0][0]).to.contain('Invalid prop');
@@ -111,7 +111,7 @@ describe('JournalEntryHeader component', function() {
     it('renders an <h3> element', function() {
       var component =
         TestUtils.renderIntoDocument(
-          React.createElement(JournalEntryHeader, props));
+          React.createElement(JournalHeader, props));
       var h3 = TestUtils.findRenderedDOMComponentWithTag(
         component,
         'h3'
@@ -121,7 +121,7 @@ describe('JournalEntryHeader component', function() {
 
     it('includes the title if given (1)', function() {
       var markup = ReactDOMServer.renderToStaticMarkup(
-        React.createElement(JournalEntryHeader, props));
+        React.createElement(JournalHeader, props));
       expect(markup).to.contain(testTitle1);
       expect(markup).to.not.contain(testTitle2);
     });
@@ -129,7 +129,7 @@ describe('JournalEntryHeader component', function() {
     it('includes the title if given (2)', function() {
       props.title = testTitle2;
       var markup = ReactDOMServer.renderToStaticMarkup(
-        React.createElement(JournalEntryHeader, props));
+        React.createElement(JournalHeader, props));
       expect(markup).to.not.contain(testTitle1);
       expect(markup).to.contain(testTitle2);
     });
@@ -137,13 +137,13 @@ describe('JournalEntryHeader component', function() {
     it('includes (Untitled) if no title is given', function() {
       delete props.title;
       var markup = ReactDOMServer.renderToStaticMarkup(
-        React.createElement(JournalEntryHeader, props));
+        React.createElement(JournalHeader, props));
       expect(markup).to.contain('(Untitled)');
     });
 
     it('includes the date if given (1)', function() {
       var markup = ReactDOMServer.renderToStaticMarkup(
-        React.createElement(JournalEntryHeader, props));
+        React.createElement(JournalHeader, props));
       expect(markup).to.contain('Thursday January 1 2015: ');
       expect(markup).to.not.contain('Friday January 2 2015: ');
     });
@@ -151,7 +151,7 @@ describe('JournalEntryHeader component', function() {
     it('includes the date if given (2)', function() {
       props.date = testDate2;
       var markup = ReactDOMServer.renderToStaticMarkup(
-        React.createElement(JournalEntryHeader, props));
+        React.createElement(JournalHeader, props));
       expect(markup).to.not.contain('Thursday January 1 2015: ');
       expect(markup).to.contain('Friday January 2 2015: ');
     });
@@ -159,19 +159,19 @@ describe('JournalEntryHeader component', function() {
     it('does not include a date if no date is given', function() {
       delete props.date;
       var markup = ReactDOMServer.renderToStaticMarkup(
-        React.createElement(JournalEntryHeader, props));
+        React.createElement(JournalHeader, props));
       expect(markup).to.contain('>' + testTitle1 + '<');
     });
 
     it('includes subtitle span', function() {
       var markup = ReactDOMServer.renderToStaticMarkup(
-        React.createElement(JournalEntryHeader, props));
+        React.createElement(JournalHeader, props));
       expect(markup).to.contain('"subtitle"');
     });
 
     it('includes "by username" if given (1)', function() {
       var markup = ReactDOMServer.renderToStaticMarkup(
-        React.createElement(JournalEntryHeader, props));
+        React.createElement(JournalHeader, props));
       expect(markup).to.contain('<em>by</em> ' + testUserName1);
       expect(markup).to.not.contain('<em>by</em> ' + testUserName2);
     });
@@ -179,7 +179,7 @@ describe('JournalEntryHeader component', function() {
     it('includes "by username" if given (2)', function() {
       props.userName = testUserName2;
       var markup = ReactDOMServer.renderToStaticMarkup(
-        React.createElement(JournalEntryHeader, props));
+        React.createElement(JournalHeader, props));
       expect(markup).to.not.contain('<em>by</em> ' + testUserName1);
       expect(markup).to.contain('<em>by</em> ' + testUserName2);
     });
@@ -187,13 +187,13 @@ describe('JournalEntryHeader component', function() {
     it('not include "by" if no username is given', function() {
       delete props.userName;
       var markup = ReactDOMServer.renderToStaticMarkup(
-        React.createElement(JournalEntryHeader, props));
+        React.createElement(JournalHeader, props));
       expect(markup).to.not.contain('<em>by</em>');
     });
 
     it('includes created if given (1)', function() {
       var markup = ReactDOMServer.renderToStaticMarkup(
-        React.createElement(JournalEntryHeader, props));
+        React.createElement(JournalHeader, props));
       expect(markup).to.contain(
         ' (Sunday February 1 2015 4:00:00am EST)</span>');
       expect(markup).to.not.contain(
@@ -203,7 +203,7 @@ describe('JournalEntryHeader component', function() {
     it('includes created if given (2)', function() {
       props.created = testCreated2;
       var markup = ReactDOMServer.renderToStaticMarkup(
-        React.createElement(JournalEntryHeader, props));
+        React.createElement(JournalHeader, props));
       expect(markup).to.not.contain(
         ' (Sunday February 1 2015 4:00:00am EST)</span>');
       expect(markup).to.contain(
@@ -213,14 +213,14 @@ describe('JournalEntryHeader component', function() {
     it('not includes created if not given (1)', function() {
       delete props.created;
       var markup = ReactDOMServer.renderToStaticMarkup(
-        React.createElement(JournalEntryHeader, props));
+        React.createElement(JournalHeader, props));
       expect(markup).to.contain(testUserName1 + '</span>');
     });
 
     it('not includes created if not given (2)', function() {
       props.created = testCreated0;
       var markup = ReactDOMServer.renderToStaticMarkup(
-        React.createElement(JournalEntryHeader, props));
+        React.createElement(JournalHeader, props));
       expect(markup).to.contain(testUserName1 + '</span>');
     });
 
@@ -229,7 +229,7 @@ describe('JournalEntryHeader component', function() {
         delete props.userName;
         delete props.created;
         var markup = ReactDOMServer.renderToStaticMarkup(
-          React.createElement(JournalEntryHeader, props));
+          React.createElement(JournalHeader, props));
         expect(markup).to.not.contain('"subtitle"');
       }
     );

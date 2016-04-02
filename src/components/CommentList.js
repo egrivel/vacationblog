@@ -133,35 +133,34 @@ CommentList = React.createClass({
     var commentList = [];
     var count = 0;
     for (var i = 0; i < this.props.comments.length; i++) {
-      for (var j = 0; j < this.props.comments[i].list.length; j++) {
-        var userId = this.props.comments[i].list[j].userId;
-        var userData = UserStore.getData(userId);
-        var userName = '';
-        if (userData) {
-          userName = userData.name;
-        }
-        commentList[count++] = React.createElement(
-          Comment,
-          {
-            tripId: this.props.tripId,
-            commentId: this.props.comments[i].list[j].commentId,
-            userId: userId,
-            userName: userName,
-            created: this.props.comments[i].list[j].created,
-            commentText: this.props.comments[i].list[j].commentText,
-            deleted: this.props.comments[i].list[j].deleted,
-            comments: this.props.comments[i].list[j].comments,
-            key: this.props.comments[i].list[j].commentId
-          }
-        );
+      var userId = this.props.comments[i].userId;
+      var userData = UserStore.getData(userId);
+      var userName = '';
+      if (userData) {
+        userName = userData.name;
       }
+      commentList[count++] = React.createElement(
+        Comment,
+        {
+          tripId: this.props.comments[i].tripId,
+          commentId: this.props.comments[i].commentId,
+          userId: userId,
+          userName: userName,
+          created: this.props.comments[i].created,
+          commentText: this.props.comments[i].commentText,
+          deleted: this.props.comments[i].deleted,
+          comments: this.props.comments[i].childComments,
+          key: this.props.comments[i].commentId
+        }
+      );
     }
     return React.DOM.div(
       {
         className: 'comments',
         key: 'comment-list-' + this.props.referenceId
       },
-      commentList);
+      commentList
+    );
   }
 });
 

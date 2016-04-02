@@ -400,8 +400,8 @@ function _paragraphSingleImage(parent, tripId, mediaId, key) {
   );
 }
 
-var Paragraph = React.createClass({
-  displayName: 'Paragraph',
+var JournalParagraph = React.createClass({
+  displayName: 'JournalParagraph',
 
   propTypes: {
     tripId: React.PropTypes.string.isRequired,
@@ -499,7 +499,8 @@ var Paragraph = React.createClass({
     }
 
     if ((images.length === 1) && text) {
-      return _standardParagraph(this, tripId, text, images[0], this.props.parNr);
+      return _standardParagraph(this, tripId, text,
+        images[0], this.props.parNr);
     } else if (images.length > 1) {
       return _paragraphMultipleImages(this, tripId, text,
                                      images, this.props.parNr);
@@ -513,4 +514,4 @@ var Paragraph = React.createClass({
   }
 });
 
-module.exports = Paragraph;
+module.exports = JournalParagraph;

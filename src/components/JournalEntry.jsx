@@ -26,11 +26,11 @@ var UserStore = require('../stores/UserStore');
 var CommentStore = require('../stores/CommentStore');
 var storeMixin = require('./StoreMixin');
 
-var Paragraph = require('./Paragraph');
+var JournalParagraph = require('./JournalParagraph.jsx');
 var CommentList = require('./CommentList');
 var Feedback = require('./Feedback');
-var JournalEntryHeader = require('./JournalEntryHeader.jsx');
-var JournalEntryPrevNext = require('./JournalEntryPrevNext.jsx');
+var JournalHeader = require('./JournalHeader.jsx');
+var JournalPrevNext = require('./JournalPrevNext.jsx');
 var utils = require('./utils');
 
 var JournalEntry = React.createClass({
@@ -122,7 +122,9 @@ var JournalEntry = React.createClass({
       paragraphs = parList.map(function(par) {
         nr++;
         var key = 'p-' + nr;
-        return <Paragraph tripId={tripId} key={key} parNr={nr} text={par} />;
+        return (
+          <JournalParagraph tripId={tripId} key={key} parNr={nr} text={par} />
+        );
       });
     }
     var comments = null;
@@ -142,13 +144,13 @@ var JournalEntry = React.createClass({
     var prevNext2 = null;
     if (tripId) {
       prevNext1 = (
-        <JournalEntryPrevNext tripId={tripId}
+        <JournalPrevNext tripId={tripId}
           prevId={this.state.prevId}
           nextId={this.state.nextId}
           nr={1}/>
       );
       prevNext2 = (
-        <JournalEntryPrevNext tripId={tripId}
+        <JournalPrevNext tripId={tripId}
           prevId={this.state.prevId}
           nextId={this.state.nextId}
           nr={2}/>
@@ -157,7 +159,7 @@ var JournalEntry = React.createClass({
 
     return (
       <div className="journalitem">
-        <JournalEntryHeader title={this.state.journalTitle}
+        <JournalHeader title={this.state.journalTitle}
           date={this.state.journalDate}
           userName={this.state.userName}
           created={this.state.created}/>

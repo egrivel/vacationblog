@@ -39,7 +39,6 @@ var scanner = function(grunt, source, messages) {
       grunt.file.recurse(file, function(f) {
         messages = scanner(grunt, f, messages);
       });
-
     } else {
       var fileAsString = grunt.file.read(file);
       _badPatterns.forEach(function(itm) {
@@ -59,10 +58,8 @@ var scanner = function(grunt, source, messages) {
 };
 
 module.exports = function(grunt) {
-
   var div = '----------------------------------------------------------------';
   grunt.registerTask('check-files', function() {
-
     // If bad-pattern-no-fail is truthy warn and do not fail build
     var warnOnlyMode = grunt.option('bad-pattern-no-fail');
 
@@ -92,7 +89,6 @@ module.exports = function(grunt) {
         'Remove bad-pattern-no-fail flag or set to false to fail build'));
     }
     if (messages && messages.length) {
-
       messages.forEach(function(m) {
         grunt.log.writeln(chalk.red('\nIssue:'), m.issue);
         grunt.log.writeln(chalk.blue('Resolution:'), m.resolution);
@@ -102,13 +98,11 @@ module.exports = function(grunt) {
       grunt.log.writeln(chalk.red(messages.length + ' matches found.'));
 
       if (!warnOnlyMode) {
-        grunt.fail.warn('Scan failed due to DCPS custom file scan rules', 3);
+        grunt.fail.warn('Scan failed due to custom file scan rules', 3);
       }
-
     } else {
       grunt.log.writeln(chalk.yellow('No problems found.'));
     }
     grunt.log.writeln(chalk.yellow(div));
-
   });
 };

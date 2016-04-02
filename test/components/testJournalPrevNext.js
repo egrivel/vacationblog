@@ -6,10 +6,10 @@ var React = require('react');
 // var ReactDOMServer = require('react-dom/server');
 var TestUtils = require('react-addons-test-utils');
 
-var JournalEntryPrevNext =
-  require('../../src/components/JournalEntryPrevNext.jsx');
+var JournalPrevNext =
+  require('../../src/components/JournalPrevNext.jsx');
 
-describe('JournalEntryPrevNext component', function() {
+describe('JournalPrevNext component', function() {
   var testTripId1 = 'test-trip-1';
   // var testTripId2 = 'test-trip-2';
   var testPrevId1 = 'test-prev-1';
@@ -43,13 +43,13 @@ describe('JournalEntryPrevNext component', function() {
     });
 
     it('accepts valid props', function() {
-      React.createElement(JournalEntryPrevNext, props);
+      React.createElement(JournalPrevNext, props);
       expect(logStub.callCount).to.be.equal(0);
     });
 
     it('error on missing tripId', function() {
       delete props.tripId;
-      React.createElement(JournalEntryPrevNext, props);
+      React.createElement(JournalPrevNext, props);
       expect(logStub.callCount).to.be.equal(1);
       expect(logStub.args[0].length).to.be.equal(1);
       // check that the error message about a required prop is given
@@ -60,7 +60,7 @@ describe('JournalEntryPrevNext component', function() {
 
     it('error on non-string tripId', function() {
       props.tripId = true;
-      React.createElement(JournalEntryPrevNext, props);
+      React.createElement(JournalPrevNext, props);
       expect(logStub.callCount).to.be.equal(1);
       expect(logStub.args[0].length).to.be.equal(1);
       expect(logStub.args[0][0]).to.contain('Invalid prop');
@@ -69,7 +69,7 @@ describe('JournalEntryPrevNext component', function() {
 
     it('no error on missing prevId', function() {
       delete props.prevId;
-      React.createElement(JournalEntryPrevNext, props);
+      React.createElement(JournalPrevNext, props);
       expect(logStub.callCount).to.be.equal(0);
       // expect(logStub.args[0].length).to.be.equal(1);
       // // check that the error message about a required prop is given
@@ -80,7 +80,7 @@ describe('JournalEntryPrevNext component', function() {
 
     it('error on non-string prevId', function() {
       props.prevId = true;
-      React.createElement(JournalEntryPrevNext, props);
+      React.createElement(JournalPrevNext, props);
       expect(logStub.callCount).to.be.equal(1);
       expect(logStub.args[0].length).to.be.equal(1);
       expect(logStub.args[0][0]).to.contain('Invalid prop');
@@ -89,7 +89,7 @@ describe('JournalEntryPrevNext component', function() {
 
     it('no error on missing nextId', function() {
       delete props.nextId;
-      React.createElement(JournalEntryPrevNext, props);
+      React.createElement(JournalPrevNext, props);
       expect(logStub.callCount).to.be.equal(0);
       // expect(logStub.args[0].length).to.be.equal(1);
       // // check that the error message about a required prop is given
@@ -100,7 +100,7 @@ describe('JournalEntryPrevNext component', function() {
 
     it('error on non-string nextId', function() {
       props.nextId = true;
-      React.createElement(JournalEntryPrevNext, props);
+      React.createElement(JournalPrevNext, props);
       expect(logStub.callCount).to.be.equal(1);
       expect(logStub.args[0].length).to.be.equal(1);
       expect(logStub.args[0][0]).to.contain('Invalid prop');
@@ -109,7 +109,7 @@ describe('JournalEntryPrevNext component', function() {
 
     it('error on missing nr', function() {
       delete props.nr;
-      React.createElement(JournalEntryPrevNext, props);
+      React.createElement(JournalPrevNext, props);
       expect(logStub.callCount).to.be.equal(1);
       expect(logStub.args[0].length).to.be.equal(1);
       // check that the error message about a required prop is given
@@ -120,7 +120,7 @@ describe('JournalEntryPrevNext component', function() {
 
     it('error on non-number nr', function() {
       props.nr = '12345';
-      React.createElement(JournalEntryPrevNext, props);
+      React.createElement(JournalPrevNext, props);
       expect(logStub.callCount).to.be.equal(1);
       expect(logStub.args[0].length).to.be.equal(1);
       expect(logStub.args[0][0]).to.contain('Invalid prop');
@@ -132,7 +132,7 @@ describe('JournalEntryPrevNext component', function() {
     it('renders a prevnext paragraph', function() {
       var component =
         TestUtils.renderIntoDocument(
-          React.createElement(JournalEntryPrevNext, props));
+          React.createElement(JournalPrevNext, props));
       var p = TestUtils.findRenderedDOMComponentWithTag(
         component,
         'p'

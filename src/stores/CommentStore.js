@@ -84,7 +84,7 @@ var CommentStore = assign({}, GenericStore, {
     if (obj) {
       result = [];
       _.forEach(obj, function(item) {
-        result.push(item);
+        result.push(JSON.parse(JSON.stringify(item)));
       });
     }
     return result;
@@ -103,7 +103,7 @@ var CommentStore = assign({}, GenericStore, {
       for (var i = 0; i < result.length; i++) {
         var list = CommentStore.getRecursiveData(tripId, result[i].commentId);
         if (list) {
-          result[i].list = list;
+          result[i].childComments = list;
         }
       }
     }
@@ -113,7 +113,13 @@ var CommentStore = assign({}, GenericStore, {
   _storeCallback: function(action) {
     switch (action.type) {
       case CommentActionTypes.COMMENT_DATA:
-        if (_setData(action.data)) {
+        var isChanged = false;
+        if (action.data && action.data.list) {
+          for (var i = 0; action.data.list[i]; i++) {
+            isChanged |= _setData(action.data.list[i]);
+          }
+        }
+        if (isChanged) {
           CommentStore.emitChange();
         }
         break;

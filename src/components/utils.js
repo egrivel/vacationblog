@@ -224,8 +224,13 @@ var utils = {
       return moment.tz(m, 'America/New_York')
         .format('dddd MMMM D YYYY h:mm:ssa z');
     }
-    console.log(' - unknown format');
+    utils.warning('formatDate(' + JSON.stringify(date) + '): - unknown format');
     return date;
+  },
+
+  warning: function(text) {
+    console
+      .log(text);
   },
 
   splitText: function(text) {

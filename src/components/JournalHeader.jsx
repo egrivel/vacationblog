@@ -66,8 +66,8 @@ function _constructSubtitle(created, userName) {
   return null;
 }
 
-var JournalEntryHeader = React.createClass({
-  displayName: 'JournalEntryHeader',
+var JournalHeader = React.createClass({
+  displayName: 'JournalHeader',
 
   propTypes: {
     title: React.PropTypes.string,
@@ -89,4 +89,4 @@ var JournalEntryHeader = React.createClass({
   }
 });
 
-module.exports = JournalEntryHeader;
+module.exports = JournalHeader;
