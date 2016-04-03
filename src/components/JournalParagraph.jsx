@@ -402,8 +402,8 @@ var JournalParagraph = React.createClass({
   displayName: 'JournalParagraph',
 
   propTypes: {
+    // need trip ID to get media info
     tripId: React.PropTypes.string.isRequired,
-    journalId: React.PropTypes.string.isRequired,
     text: React.PropTypes.string.isRequired
   },
 

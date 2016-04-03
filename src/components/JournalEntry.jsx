@@ -123,7 +123,7 @@ var JournalEntry = React.createClass({
         nr++;
         var key = 'p-' + nr;
         return (
-          <JournalParagraph tripId={tripId} key={key} parNr={nr} text={par} />
+          <JournalParagraph tripId={tripId} key={key} text={par}/>
         );
       });
     }
