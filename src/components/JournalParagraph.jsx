@@ -45,17 +45,16 @@ function _getMediaInfo(tripId, mediaId) {
  * modal window with the image.
  * @param {id} tripId - unique trip ID.
  * @param {id} mediaId - unique media ID.
+ * @param {object} mediaInfo - info about the media.
  * @param {string} className - className to apply to the image.
  * @param {string} key - React key to use for the image.
  * @return {object} React element for the image.
  * @private
  */
-function _imgWithModal(parent, tripId, mediaId, className) {
-  if (!mediaId) {
-    return null;
+function _imgWithModal(parent, tripId, mediaId, mediaInfo, className) {
+  if (!mediaInfo) {
+    mediaInfo = _getMediaInfo(tripId, mediaId);
   }
-
-  var mediaInfo = _getMediaInfo(tripId, mediaId);
 
   return React.createElement(Image, {
     tripId: tripId,
@@ -65,9 +64,7 @@ function _imgWithModal(parent, tripId, mediaId, className) {
     key: mediaId,
     caption: mediaInfo.caption,
     onClick: function() {
-      if (parent) {
-        parent.clickImg(mediaId);
-      }
+      parent.clickImg(mediaId);
     }
   });
 }
@@ -79,18 +76,19 @@ function _imgWithModal(parent, tripId, mediaId, className) {
  * @param {id} tripId - unique trip ID.
  * @param {string} text - paragraph text.
  * @param {id} mediaId - unique media ID.
+ * @param {object} mediaInfo - info about the media.
  * @param {string} key - React key to use for the image.
  * @return {object} React element for the standard paragraph.
  * @private
  */
-function _standardParagraph(parent, tripId, text, mediaId) {
+function _standardParagraph(parent, tripId, text, mediaId, mediaInfo) {
   // standard text paragraph with a single image
   var label = React.DOM.span(
     {
       key: 'label',
       className: 'label'
     },
-    _imgWithModal(parent, tripId, mediaId, '')
+    _imgWithModal(parent, tripId, mediaId, mediaInfo, '')
   );
   var value = utils.buildTextNode('span', 'value', 'value', text);
   var clear = React.DOM.span(
@@ -99,10 +97,8 @@ function _standardParagraph(parent, tripId, text, mediaId) {
       className: 'clear'
     }
   );
-  var modal = null;
-  if (parent) {
-    modal = parent.buildModal();
-  }
+  var modal = parent.buildModal();
+
   return React.DOM.div(
     null,
     React.DOM.p(
@@ -197,9 +193,9 @@ function _lineThreeImages(parent, tripId, images,
       className: 'images three ' + className,
       key: 'p-' + start
     },
-    _imgWithModal(parent, tripId, img1, 'img3'),
-    _imgWithModal(parent, tripId, img2, 'img3'),
-    _imgWithModal(parent, tripId, img3, 'img3'),
+    _imgWithModal(parent, tripId, img1, mediaInfo[start], 'img3'),
+    _imgWithModal(parent, tripId, img2, mediaInfo[start + 1], 'img3'),
+    _imgWithModal(parent, tripId, img3, mediaInfo[start + 2], 'img3'),
     React.DOM.span(
       {
         key: 'clear',
@@ -274,8 +270,8 @@ function _lineTwoImages(parent, tripId, images,
       className: 'images two ' + className,
       key: 'p-' + start
     },
-    _imgWithModal(parent, tripId, img1, 'img2'),
-    _imgWithModal(parent, tripId, img2, 'img2'),
+    _imgWithModal(parent, tripId, img1, mediaInfo[start], 'img2'),
+    _imgWithModal(parent, tripId, img2, mediaInfo[start + 1], 'img2'),
     React.DOM.span(
       {className: 'clear'}
     )
@@ -296,7 +292,7 @@ function _paragraphTextOnly(parent, text) {
 }
 
 /**
- * Display a paragraph with multiple images.
+ * Display a paragraph with multiple (two or more) images.
  * @param {object} parent - object that handles the click to display a
  * modal window with the image.
  * @param {id} tripId - unique trip ID.
@@ -312,20 +308,14 @@ function _paragraphMultipleImages(parent, tripId, text, images) {
 
   var mediaInfo = [];
   var i;
-  var orientationMap = '';
   for (i = 0; i < images.length; i++) {
     mediaInfo[i] = _getMediaInfo(tripId, images[i]);
-    if (mediaInfo[i] === 'portrait') {
-      orientationMap += 'v';
-    } else {
-      orientationMap += 'h';
-    }
   }
 
+  var textPart = null;
   // if there is text, handle that
   if (text) {
-    result[resultCount] = _paragraphTextOnly(parent, text, 'textline');
-    resultCount++;
+    textPart = _paragraphTextOnly(parent, text, 'textline');
   }
 
   // handle the different image length options
@@ -355,7 +345,8 @@ function _paragraphMultipleImages(parent, tripId, text, images) {
                                            currentImg, 'line-' + resultCount);
     resultCount++;
     currentImg += 3;
-  } else if ((images.length - currentImg) === 4) {
+  } else {
+    // (images.length - currentImg) must be 4
     result[resultCount] = _lineTwoImages(parent, tripId, images, mediaInfo,
                                          currentImg, 'line-' + resultCount);
     resultCount++;
@@ -365,9 +356,9 @@ function _paragraphMultipleImages(parent, tripId, text, images) {
     resultCount++;
     currentImg += 2;
   }
-  result[resultCount++] = parent.buildModal();
 
-  return React.DOM.div({}, result);
+  var realResult = React.DOM.div({className: 'result'}, textPart, result);
+  return realResult;
 }
 
 /**
@@ -376,18 +367,19 @@ function _paragraphMultipleImages(parent, tripId, text, images) {
  * modal window with the image.
  * @param {id} tripId - unique trip ID.
  * @param {id} mediaId - unique media ID.
+ * @param {object} mediaInfo - info about the media.
  * @param {string} key - React key to use for the image.
  * @return {object} React element for the line with three images
  * @private
  */
-function _paragraphSingleImage(parent, tripId, mediaId) {
+function _paragraphSingleImage(parent, tripId, mediaId, mediaInfo) {
   return React.DOM.div(
     null,
     React.DOM.p(
       {
         className: 'images'
       },
-      _imgWithModal(parent, tripId, mediaId, 'img1'),
+      _imgWithModal(parent, tripId, mediaId, mediaInfo, 'img1'),
       React.DOM.span(
         {
           className: 'clear'
@@ -488,6 +480,7 @@ var JournalParagraph = React.createClass({
         outtext += '[IMG ' + item;
       }
     }
+
     text = outtext;
     text = text.replace(/\s\s+/g, ' ');
 
@@ -497,14 +490,14 @@ var JournalParagraph = React.createClass({
     }
 
     if ((images.length === 1) && text) {
-      return _standardParagraph(this, tripId, text, images[0]);
+      return _standardParagraph(this, tripId, text, images[0], null);
     } else if (images.length > 1) {
       return _paragraphMultipleImages(this, tripId, text,
                                      images);
     } else if (text) {
       return _paragraphTextOnly(this, text);
     } else if (images.length === 1) {
-      return _paragraphSingleImage(this, tripId, images[0]);
+      return _paragraphSingleImage(this, tripId, images[0], null);
     }
     // default if nothing applies
     return null;
