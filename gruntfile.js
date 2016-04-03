@@ -54,6 +54,9 @@ var setupMochaPhantomJs = function(grunt) {
     options: {
       config: {
         grep: grunt.option('grep')
+      },
+      phantomConfig: {
+        '--load-images': false
       }
     }
   });
