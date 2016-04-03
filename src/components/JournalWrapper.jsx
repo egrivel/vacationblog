@@ -4,7 +4,6 @@ var React = require('react');
 
 var JournalStore = require('../stores/JournalStore');
 var JournalAction = require('../actions/JournalAction');
-var CommentAction = require('../actions/CommentAction');
 var JournalEntry = require('./JournalEntry.jsx');
 
 /**
