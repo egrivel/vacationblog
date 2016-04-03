@@ -41,9 +41,10 @@ var Image = React.createClass({
   },
 
   render: function() {
+    var fullClassname = _.trim(this.props.format + ' ' + this.props.className);
     return React.DOM.img(
       {
-        className: this.props.format + ' ' + this.props.className,
+        className: fullClassname,
         title: this.props.caption,
         src: 'http://washington/cgi-bin/photos/phimg?large=' + this.props.imageId,
         onClick: this.props.onClick
