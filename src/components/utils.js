@@ -160,7 +160,7 @@ var utils = {
     text = text.replace(/&mdash;/g, '\u2014');
     text = text.replace(/&frac12;/g, '\u00bd');
     text = text.replace(/&frac14;/g, '\u00bc');
-    text = text.replace(/&sup2;/g, '\u00b9');
+    text = text.replace(/&sup2;/g, '\u00b2');
     text = text.replace(/&deg;/g, '\u00b0');
 
     text = text.replace(/&ldquo;/g, '\u201c');
