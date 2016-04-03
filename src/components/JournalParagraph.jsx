@@ -83,7 +83,7 @@ function _imgWithModal(parent, tripId, mediaId, className) {
  * @return {object} React element for the standard paragraph.
  * @private
  */
-function _standardParagraph(parent, tripId, text, mediaId, key) {
+function _standardParagraph(parent, tripId, text, mediaId) {
   // standard text paragraph with a single image
   var label = React.DOM.span(
     {
@@ -107,7 +107,6 @@ function _standardParagraph(parent, tripId, text, mediaId, key) {
     null,
     React.DOM.p(
       {
-        key: key,
         className: 'img-text'
       },
       label,
@@ -131,7 +130,7 @@ function _standardParagraph(parent, tripId, text, mediaId, key) {
  * @private
  */
 function _lineThreeImages(parent, tripId, images,
-                         mediaInfo, start, key) {
+                         mediaInfo, start) {
   var img1 = images[start];
   var img2 = images[start + 1];
   var img3 = images[start + 2];
@@ -196,7 +195,7 @@ function _lineThreeImages(parent, tripId, images,
   return React.DOM.p(
     {
       className: 'images three ' + className,
-      key: key
+      key: 'p-' + start
     },
     _imgWithModal(parent, tripId, img1, 'img3'),
     _imgWithModal(parent, tripId, img2, 'img3'),
@@ -223,7 +222,7 @@ function _lineThreeImages(parent, tripId, images,
  * @private
  */
 function _lineTwoImages(parent, tripId, images,
-                       mediaInfo, start, key) {
+                       mediaInfo, start) {
   var img1 = images[start];
   var img2 = images[start + 1];
 
@@ -273,7 +272,7 @@ function _lineTwoImages(parent, tripId, images,
   return React.DOM.p(
     {
       className: 'images two ' + className,
-      key: key
+      key: 'p-' + start
     },
     _imgWithModal(parent, tripId, img1, 'img2'),
     _imgWithModal(parent, tripId, img2, 'img2'),
@@ -292,8 +291,8 @@ function _lineTwoImages(parent, tripId, images,
  * @return {object} React element for the text paragraph.
  * @private
  */
-function _paragraphTextOnly(parent, text, key) {
-  return utils.buildTextNode('p', 'text', key, text);
+function _paragraphTextOnly(parent, text) {
+  return utils.buildTextNode('p', 'text', 'p-0', text);
 }
 
 /**
@@ -307,7 +306,7 @@ function _paragraphTextOnly(parent, text, key) {
  * @return {object} React element for the line with three images
  * @private
  */
-function _paragraphMultipleImages(parent, tripId, text, images, key) {
+function _paragraphMultipleImages(parent, tripId, text, images) {
   var result = [];
   var resultCount = 0;
 
@@ -368,7 +367,7 @@ function _paragraphMultipleImages(parent, tripId, text, images, key) {
   }
   result[resultCount++] = parent.buildModal();
 
-  return React.DOM.div({key: key}, result);
+  return React.DOM.div({}, result);
 }
 
 /**
@@ -381,13 +380,12 @@ function _paragraphMultipleImages(parent, tripId, text, images, key) {
  * @return {object} React element for the line with three images
  * @private
  */
-function _paragraphSingleImage(parent, tripId, mediaId, key) {
+function _paragraphSingleImage(parent, tripId, mediaId) {
   return React.DOM.div(
     null,
     React.DOM.p(
       {
-        className: 'images',
-        key: key
+        className: 'images'
       },
       _imgWithModal(parent, tripId, mediaId, 'img1'),
       React.DOM.span(
@@ -405,7 +403,7 @@ var JournalParagraph = React.createClass({
 
   propTypes: {
     tripId: React.PropTypes.string.isRequired,
-    parNr: React.PropTypes.number.isRequired,
+    journalId: React.PropTypes.string.isRequired,
     text: React.PropTypes.string.isRequired
   },
 
@@ -499,15 +497,14 @@ var JournalParagraph = React.createClass({
     }
 
     if ((images.length === 1) && text) {
-      return _standardParagraph(this, tripId, text,
-        images[0], this.props.parNr);
+      return _standardParagraph(this, tripId, text, images[0]);
     } else if (images.length > 1) {
       return _paragraphMultipleImages(this, tripId, text,
-                                     images, this.props.parNr);
+                                     images);
     } else if (text) {
-      return _paragraphTextOnly(this, text, this.props.parNr);
+      return _paragraphTextOnly(this, text);
     } else if (images.length === 1) {
-      return _paragraphSingleImage(this, tripId, images[0], this.props.parNr);
+      return _paragraphSingleImage(this, tripId, images[0]);
     }
     // default if nothing applies
     return null;
