@@ -21,7 +21,6 @@
 var React = require('react');
 
 var JournalStore = require('../stores/JournalStore');
-var MediaStore = require('../stores/MediaStore');
 var UserStore = require('../stores/UserStore');
 var CommentStore = require('../stores/CommentStore');
 var storeMixin = require('./StoreMixin');
@@ -36,7 +35,7 @@ var utils = require('./utils');
 var JournalEntry = React.createClass({
   displayName: 'JournalEntry',
 
-  stores: [JournalStore, MediaStore, UserStore, CommentStore],
+  stores: [JournalStore, UserStore, CommentStore],
 
   mixins: [storeMixin()],
 
@@ -65,7 +64,7 @@ var JournalEntry = React.createClass({
     var userName = '';
     var comments = null;
 
-    if (!journalData || !journalData.tripId) {
+    if (!journalData || !journalData.tripId || !journalData.journalId) {
       // There is no actual journal item. Clear out the state.
       return {
         tripId: null,
@@ -81,7 +80,7 @@ var JournalEntry = React.createClass({
       };
     }
 
-    if (journalData && journalData.userId) {
+    if (journalData.userId) {
       var userData = UserStore.getData(journalData.userId);
       if (userData) {
         userName = userData.name;
@@ -91,10 +90,8 @@ var JournalEntry = React.createClass({
       }
     }
 
-    if (journalData.tripId && journalData.journalId) {
-      comments = CommentStore.getRecursiveData(journalData.tripId,
-                                               journalData.journalId);
-    }
+    comments = CommentStore.getRecursiveData(journalData.tripId,
+                                             journalData.journalId);
 
     return {
       tripId: journalData.tripId,
