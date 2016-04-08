@@ -309,6 +309,17 @@ describe('CommentStore', function() {
     });
 
     describe('#emitChange', function() {
+      it('setting without data does not emit change', function() {
+        var cb = sinon.spy();
+        CommentStore.addChangeListener(cb);
+
+        expect(cb.callCount).to.be.equal(0);
+        CommentStore._storeCallback({
+          type: CommentActionTypes.COMMENT_DATA
+        });
+        expect(cb.callCount).to.be.equal(0);
+      });
+
       it('setting existing comment does not emit change', function() {
         var cb = sinon.spy();
         CommentStore.addChangeListener(cb);
