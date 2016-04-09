@@ -3,17 +3,14 @@
 var expect = require('chai').expect;
 var sinon = require('sinon');
 var React = require('react');
-// var ReactDOM = require('react-dom');
 var TestUtils = require('react-addons-test-utils');
 
 var JournalWrapper = require('../../src/components/JournalWrapper.jsx');
 var JournalAction = require('../../src/actions/JournalAction');
-var CommentAction = require('../../src/actions/CommentAction');
 var JournalStore = require('../../src/stores/JournalStore');
 
 describe('src/components/JournalWrapper', function() {
   var loadJournalStub;
-  var loadCommentsStub;
   var journalGetDataStub;
   var dummyData;
 
@@ -21,7 +18,6 @@ describe('src/components/JournalWrapper', function() {
     dummyData = {};
     JournalStore.removeAllListeners();
     loadJournalStub = sinon.stub(JournalAction, 'loadJournal');
-    loadCommentsStub = sinon.stub(CommentAction, 'recursivelyLoadComments');
     journalGetDataStub = sinon.stub(JournalStore, 'getData',
       function() {
         return dummyData;
@@ -30,7 +26,6 @@ describe('src/components/JournalWrapper', function() {
 
   afterEach(function() {
     journalGetDataStub.restore();
-    loadCommentsStub.restore();
     loadJournalStub.restore();
     JournalStore.removeAllListeners();
   });
@@ -40,11 +35,6 @@ describe('src/components/JournalWrapper', function() {
       TestUtils.renderIntoDocument(
         React.createElement(JournalWrapper, null));
       expect(loadJournalStub.callCount).to.be.equal(0);
-    });
-    it('load comments is not called', function() {
-      TestUtils.renderIntoDocument(
-        React.createElement(JournalWrapper, null));
-      expect(loadCommentsStub.callCount).to.be.equal(0);
     });
   });
 
@@ -64,11 +54,6 @@ describe('src/components/JournalWrapper', function() {
         React.createElement(JournalWrapper, null));
       expect(loadJournalStub.callCount).to.be.equal(0);
     });
-    it('load comments is not called', function() {
-      TestUtils.renderIntoDocument(
-        React.createElement(JournalWrapper, null));
-      expect(loadCommentsStub.callCount).to.be.equal(0);
-    });
   });
 
   describe('render without data, with incomplete props', function() {
@@ -82,12 +67,6 @@ describe('src/components/JournalWrapper', function() {
       TestUtils.renderIntoDocument(
         React.createElement(JournalWrapper, props));
       expect(loadJournalStub.callCount).to.be.equal(0);
-    });
-
-    it('load comments is not called', function() {
-      TestUtils.renderIntoDocument(
-        React.createElement(JournalWrapper, props));
-      expect(loadCommentsStub.callCount).to.be.equal(0);
     });
   });
 
@@ -115,19 +94,6 @@ describe('src/components/JournalWrapper', function() {
       expect(loadJournalStub.args[0][0]).to.be.equal(testTripId);
       expect(loadJournalStub.args[0][1]).to.be.equal(testJournalId);
     });
-
-    it('load comments is called', function() {
-      TestUtils.renderIntoDocument(
-        React.createElement(JournalWrapper, props));
-      expect(loadCommentsStub.callCount).to.be.equal(1);
-    });
-
-    it('load comments has correct parametesr', function() {
-      TestUtils.renderIntoDocument(
-        React.createElement(JournalWrapper, props));
-      expect(loadCommentsStub.args[0][0]).to.be.equal(testTripId);
-      expect(loadCommentsStub.args[0][1]).to.be.equal(testJournalId);
-    });
   });
 
   describe('render with different data, and props', function() {
@@ -151,12 +117,6 @@ describe('src/components/JournalWrapper', function() {
         React.createElement(JournalWrapper, props));
       expect(loadJournalStub.callCount).to.be.equal(1);
     });
-
-    it('load comments is called', function() {
-      TestUtils.renderIntoDocument(
-        React.createElement(JournalWrapper, props));
-      expect(loadCommentsStub.callCount).to.be.equal(1);
-    });
   });
 
   describe('render with same data, and props', function() {
@@ -179,12 +139,6 @@ describe('src/components/JournalWrapper', function() {
       TestUtils.renderIntoDocument(
         React.createElement(JournalWrapper, props));
       expect(loadJournalStub.callCount).to.be.equal(0);
-    });
-
-    it('load comments is not called', function() {
-      TestUtils.renderIntoDocument(
-        React.createElement(JournalWrapper, props));
-      expect(loadCommentsStub.callCount).to.be.equal(0);
     });
   });
 
@@ -212,14 +166,6 @@ describe('src/components/JournalWrapper', function() {
       expect(loadJournalStub.callCount).to.be.equal(1);
       component.setProps(props);
       expect(loadJournalStub.callCount).to.be.equal(2);
-    });
-
-    it('load comments is called twice', function() {
-      var component = TestUtils.renderIntoDocument(
-        React.createElement(JournalWrapper, props));
-      expect(loadCommentsStub.callCount).to.be.equal(1);
-      component.setProps(props);
-      expect(loadCommentsStub.callCount).to.be.equal(2);
     });
   });
 });

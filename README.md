@@ -1,6 +1,6 @@
 ![banner](site/media/default-banner.png)
 
-# Vacationblog Stuff
+# Vacation Blog
 
 This vacation blog is a personal project of mine. The purpose is to create
 a custom way for me to keep a blog while my wife and I are traveling on
@@ -32,7 +32,7 @@ The vacation blog consists of three major pieces:
 2. Server-side functionality, written in PHP. The server-side functionality
    mostly consists of a series of APIs available to the client-side code.
 
-3. Client-side functionality, written in JavaScript using React.js technology.
+3. Client-side functionality, written in JavaScript using React.js technology. See [documentation/datastructure.md].
 
 ## Prerequisites
 

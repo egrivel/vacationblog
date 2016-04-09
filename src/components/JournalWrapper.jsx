@@ -4,7 +4,6 @@ var React = require('react');
 
 var JournalStore = require('../stores/JournalStore');
 var JournalAction = require('../actions/JournalAction');
-var CommentAction = require('../actions/CommentAction');
 var JournalEntry = require('./JournalEntry.jsx');
 
 /**
@@ -57,8 +56,9 @@ var JournalWrapper = React.createClass({
       journalId = props.params.journalId;
       if ((tripId !== data.tripId) ||
           (journalId !== data.journalId)) {
+        // loading the journal will also load comments, media, and all
+        // associated user information.
         JournalAction.loadJournal(tripId, journalId);
-        CommentAction.recursivelyLoadComments(tripId, journalId);
       }
     }
   },

@@ -77,6 +77,8 @@ var CommentStore = assign({}, GenericStore, {
    * @param {id} tripId - unique trip ID.
    * @param {id} referenceId - unique reference ID.
    * @return {array} list of comments on the indicated item.
+   * The array returned by this function consists of _cloned_
+   * versions of the actual data.
    */
   getData: function(tripId, referenceId) {
     var result;
@@ -95,7 +97,7 @@ var CommentStore = assign({}, GenericStore, {
    * @param {id} tripId - unique trip ID.
    * @param {id} referenceId - unique reference ID.
    * @return {array} list of comments on the indicated item, where each
-   * comment element has its own 'comments' list.
+   * comment element has its own 'comments' list. This
    */
   getRecursiveData: function(tripId, referenceId) {
     var result = this.getData(tripId, referenceId);

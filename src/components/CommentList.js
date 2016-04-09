@@ -19,22 +19,18 @@ var CommentParagraph = React.createClass({
   displayName: 'CommentParagraph',
 
   propTypes: {
-    text: React.PropTypes.string,
+    text: React.PropTypes.string.isRequired,
     key: React.PropTypes.string
   },
 
   render: function() {
-    if (!this.props.text) {
-      return null;
-    }
-
     var text = utils.replaceEntities(this.props.text);
 
     text = text.replace(/\s\s+/g, ' ');
 
     if ((text === '') || (text === ' ')) {
       // no text left
-      text = null;
+      return null;
     }
 
     return utils.buildTextNode('p', 'text', this.props.key, text);
@@ -50,6 +46,7 @@ var Comment = React.createClass({
     created: React.PropTypes.string,
     commentText: React.PropTypes.string,
     deleted: React.PropTypes.string,
+    userId: React.PropTypes.string,
     userName: React.PropTypes.string,
     comments: React.PropTypes.array
   },
@@ -60,8 +57,16 @@ var Comment = React.createClass({
     var created = this.props.created;
     var commentText = this.props.commentText;
     var deleted = this.props.deleted;
+    var userId = this.props.userId;
     var userName = this.props.userName;
     var comments = this.props.comments;
+
+    if (!userName) {
+      userName = userId;
+    }
+    if (!userName) {
+      userName = '(unknown)';
+    }
 
     var feedback = React.createElement(Feedback, null);
 
@@ -100,16 +105,13 @@ var Comment = React.createClass({
       },
       header,
       parList.map(function(par) {
-        if (par) {
-          parCount++;
-          var key = 'p-' + parCount;
-          return React.createElement(CommentParagraph, {
-            tripId: tripId,
-            key: key,
-            text: par
-          });
-        }
-        return null;
+        parCount++;
+        var key = 'p-' + parCount;
+        return React.createElement(CommentParagraph, {
+          tripId: tripId,
+          key: key,
+          text: par
+        });
       }),
       feedback,
       list);
