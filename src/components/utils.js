@@ -31,7 +31,7 @@ var moment = require('moment-timezone');
  * @return {array} list of React elements.
  * @private
  */
-function _recursivelyGetNodes(text, isLegacy, count) {
+function _recursivelyGetNodes(text, count) {
   var nodes = [];
   var end;
 
@@ -51,59 +51,39 @@ function _recursivelyGetNodes(text, isLegacy, count) {
     if (end > 0) {
       nodes.push(React.DOM.em({key: count},
                               _recursivelyGetNodes(text.substring(4, end),
-                                                 isLegacy, count + 1)));
+                                                 count + 1)));
       nodes.push(_recursivelyGetNodes(text.substring(end + 5),
-                                    isLegacy, count + 1));
+                                    count + 1));
     } else {
       nodes.push(React.DOM.em({key: count},
                               _recursivelyGetNodes(text.substring(4),
-                                                 isLegacy, count + 1)));
+                                                 count + 1)));
     }
   } else if (text.substring(0, 3) === '[B]') {
     end = text.indexOf('[/B]');
     if (end > 0) {
-      if (isLegacy) {
-        nodes.push(React.DOM.strong({key: count},
-                                    _recursivelyGetNodes(text.substring(3, end),
-                                                        isLegacy, count + 1)));
-      } else {
-        nodes.push(React.DOM.em({key: count},
-                                _recursivelyGetNodes(text.substring(3, end),
-                                                   isLegacy, count + 1)));
-      }
+      nodes.push(React.DOM.strong({key: count},
+                                  _recursivelyGetNodes(text.substring(3, end),
+                                                      count + 1)));
       nodes.push(_recursivelyGetNodes(text.substring(end + 4),
-                                    isLegacy, count + 1));
-    } else if (isLegacy) {
+                                    count + 1));
+    } else {
       nodes.push(React.DOM.strong({key: count},
                                   _recursivelyGetNodes(text.substring(3),
-                                                       isLegacy, count + 1)));
-    } else {
-      nodes.push(React.DOM.em({key: count},
-                              _recursivelyGetNodes(text.substring(3),
-                                                   isLegacy, count + 1)));
+                                                       count + 1)));
     }
   } else if (text.substring(0, 3) === '[U]') {
     end = text.indexOf('[/U]');
     if (end > 0) {
-      if (isLegacy) {
-        nodes.push(React.DOM.u({key: count},
-                               _recursivelyGetNodes(text.substring(3, end),
-                                                  isLegacy, count + 1)));
-      } else {
-        nodes.push(React.DOM.em({key: count},
-                               _recursivelyGetNodes(text.substring(3, end),
-                                                  isLegacy, count + 1)));
-      }
+      nodes.push(React.DOM.u({key: count},
+                             _recursivelyGetNodes(text.substring(3, end),
+                                                  count + 1)));
       nodes.push(_recursivelyGetNodes(text.substring(end + 4),
-                                    isLegacy, count + 1));
-    } else if (isLegacy) {
+                                    count + 1));
+    } else {
       nodes.push(React.DOM.u({key: count},
                              _recursivelyGetNodes(text.substring(3),
-                                                  isLegacy, count + 1)));
-    } else {
-      nodes.push(React.DOM.em({key: count},
-                              _recursivelyGetNodes(text.substring(3),
-                                                   isLegacy, count + 1)));
+                                                  count + 1)));
     }
   } else if (text.substring(0, 6) === '[LINK ') {
     var endOpen = text.indexOf(']');
@@ -111,18 +91,26 @@ function _recursivelyGetNodes(text, isLegacy, count) {
     if (endOpen > 0) {
       open = text.substring(6, endOpen);
       text = text.substring(endOpen + 1);
-    }
-    var href = open;
-    end = text.indexOf('[/LINK]');
-    if (end > 0) {
-      nodes.push(React.DOM.a({href: href, target: '_blank', key: count},
-                             _recursivelyGetNodes(text.substring(0, end),
-                                                isLegacy, count + 1)));
-      nodes.push(_recursivelyGetNodes(text.substring(end + 7),
-                                     isLegacy, count + 1));
     } else {
-      nodes.push(React.DOM.a({href: href, target: '_blank', key: count},
-                             _recursivelyGetNodes(text, isLegacy, count + 1)));
+      // open tag doesn't end; just remove open tag and keep rest of
+      // the text
+      text = text.substring(6);
+    }
+    if (open) {
+      var href = open;
+      end = text.indexOf('[/LINK]');
+      if (end > 0) {
+        nodes.push(React.DOM.a({href: href, target: '_blank', key: count},
+                               _recursivelyGetNodes(text.substring(0, end),
+                                                  count + 1)));
+        nodes.push(_recursivelyGetNodes(text.substring(end + 7),
+                                       count + 1));
+      } else {
+        nodes.push(React.DOM.a({href: href, target: '_blank', key: count},
+          _recursivelyGetNodes(text, count + 1)));
+      }
+    } else {
+      nodes.push(_recursivelyGetNodes(text, count + 1));
     }
   } else {
     nodes.push(text);
@@ -180,7 +168,10 @@ var utils = {
   },
 
   buildTextNode: function buildTextNode(type, className, key, text) {
-    var nodes = _recursivelyGetNodes(text, true, 0);
+    var nodes = _recursivelyGetNodes(text, 0);
+    if (className === '') {
+      className = null;
+    }
     if (type === 'p') {
       return React.DOM.p(
         {
