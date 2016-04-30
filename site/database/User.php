@@ -60,7 +60,7 @@ class User {
          // row. However, by defining the "created" field with a default value
          // of zero time, and pasing null in when creating the first row,
          // it automatically gets set to the current time as well. Obviously,
-         // when creating subsequent rows, the originally created timestamp 
+         // when creating subsequent rows, the originally created timestamp
          // has to be passed in anyway.
          // Note 2: use TIMESTAMP(6) rather than TIMESTAMP to get a
          // microsecond-precision for the timestamp. This will allow the
@@ -214,7 +214,7 @@ class User {
     * be loaded. If the user ID does not exist, all fields except for the
     * user ID field will be blanked.
     * @param $userId the user ID to load. This must be a valid non-empty
-    * user ID. 
+    * user ID.
     * @return true when data is successfully loaded, false if no user data
     * is loaded (object will be empty except for userID).
     */
@@ -367,7 +367,7 @@ class User {
    /* Check the password to see if it matches.
     *
     * Note: if this function returns success, it should be followed by a
-    * call to updatePasswordHash() to allow the system to update the 
+    * call to updatePasswordHash() to allow the system to update the
     * password hash value in the database using a newer (better) algorithm.
     */
    public function checkPassword($value) {
@@ -405,7 +405,7 @@ class User {
             $this->save();
             return true;
          } else {
-            if (password_need_rehash($this->password, PASSWORD_DEFAULT)) {
+            if (password_needs_rehash($this->password, PASSWORD_DEFAULT)) {
                $this->password = password_hash($value, PASSWORD_DEFAULT);
                // Note: need to save to database and re-load to get the new
                // 'updated' and 'hash' fields
@@ -554,7 +554,7 @@ class User {
       }
 
       // Create an instance with a special ID '-' to bypass the
-      // checks on empty ID. The ID value will be overwritten by the 
+      // checks on empty ID. The ID value will be overwritten by the
       // value coming back from the database anyway.
       $object = new User('-');
       if ($object->loadFromResult($result)) {

@@ -178,7 +178,7 @@ class UserTest extends PHPUnit_Framework_TestCase {
     * test #5.
     * Save an empty object results in a row being added to the database
     * and the created, updated and hash fields getting a value. Since
-    * this is the first instance, the created and updated both have the 
+    * this is the first instance, the created and updated both have the
     * same value.
     * @depends testCreateGivesEmptyObject
     */
@@ -507,7 +507,7 @@ class UserTest extends PHPUnit_Framework_TestCase {
 
    /**
     * test #11.
-    * Automatically computed attributes (created, updated, hash) are 
+    * Automatically computed attributes (created, updated, hash) are
     * properly set on the first save, and when appropriate changed on
     * subsequent saves.
     * @depends testSaveEmptyObject
@@ -685,7 +685,7 @@ class UserTest extends PHPUnit_Framework_TestCase {
       // past date for the Created and Updated fields.
       // values after first save are unchanged
       $object->setCreated('2000-01-01 10:10:10.000000');
-      $object->setUpdated('2000-01-01 10:10:11.000000');        
+      $object->setUpdated('2000-01-01 10:10:11.000000');
       $object->setName('Test User 2');
       $object->setExternalType('externaltype 2');
       $object->setExternalId('externalid 2');
@@ -859,7 +859,7 @@ class UserTest extends PHPUnit_Framework_TestCase {
       $object->setDeleted('Y');
       $this->assertTrue($object->save());
       $this->assertEquals(1, $this->countTestRows());
-      
+
       $object = Trip::findByHash('non-existent hash');
       $this->assertNull($object);
       $this->assertEquals(1, $this->countTestRows());
@@ -1042,20 +1042,22 @@ class UserTest extends PHPUnit_Framework_TestCase {
     */
    public function testPasswordMigration() {
       global $testUserId1;
-      $oldPassword = '$0$6cc7c5a5a21978e5587a59186cadb5e3';
+      $password = 'applepie';
+      $oldPasswordHash = '$0$6cc7c5a5a21978e5587a59186cadb5e3';
       $object = new User($testUserId1);
       $object->save();
 
       // Update the database and check for match
       $query = "UPDATE blogUser "
-         . "SET password='$oldPassword' "
+         . "SET password='$oldPasswordHash' "
          . "WHERE userId='$testUserId1'";
       mysql_query($query);
       $object->load($testUserId1);
 
       $rows = $this->countTestRows();
 
-      $object->updatePasswordHash("applepie");
+      $this->assertTrue($object->checkPassword($password));
+      $object->updatePasswordHash($password);
 
       // make sure a new row has been inserted
       $this->assertEquals($rows + 1, $this->countTestRows());
@@ -1072,11 +1074,17 @@ class UserTest extends PHPUnit_Framework_TestCase {
       if ($result) {
          $this->assertTrue(mysql_num_rows($result) === 1);
          $line = mysql_fetch_array($result);
-         $password = db_sql_decode($line[0]);
-         $this->assertNotEquals($oldPassword, $password);
+         $newPasswordHash = db_sql_decode($line[0]);
+         $this->assertNotEquals($oldPasswordHash, $newPasswordHash);
       } else {
          $this->assertFalse(true, "Got error in mySQL query '$query'");
       }
+
+      // After the password has been re-encoded, make sure it still matches
+      $this->assertTrue($object->checkPassword($password));
+
+      // Make sure repeated calls to updatePasswordHash succeed
+      $object->updatePasswordHash($password);
    }
 
    private function createEmailUsers() {
