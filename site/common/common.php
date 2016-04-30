@@ -64,6 +64,7 @@ function createResponse($code, $message) {
 define("RESPONSE_SUCCESS", '200');
 define("RESPONSE_INVALID_PARAM", '401');
 define("RESPONSE_NOT_ALLOWED", '403');
+define("RESPONSE_NOT_AUTHORIZED", '403');
 define("RESPONSE_NOT_FOUND", '404');
 define("RESPONSE_INTERNAL_ERROR", '500');
 
@@ -72,8 +73,8 @@ function errorResponse($code, $info = '') {
       $info = ': ' . $info;
    }
    switch ($code) {
-   case RESPONSE_NOT_ALLOWED:
-      return createResponse($code, 'Not Allowed' . $info);
+   case RESPONSE_NOT_AUTHORIZED:
+      return createResponse($code, 'Not Authorized' . $info);
    case RESPONSE_NOT_FOUND:
       return createResponse($code, 'Not found' . $info);
    case RESPONSE_INVALID_PARAM:
