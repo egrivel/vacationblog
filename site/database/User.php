@@ -2,7 +2,7 @@
 include_once(dirname(__FILE__) . "/database.php");
 // Include the compatibility pibrary with PHP 5.5's simplified password
 // hashing API
-include_once(dirname(__FILE__) . "/password.php");
+include_once(dirname(__FILE__) . "/../lib/password/password.php");
 
 class User {
 
