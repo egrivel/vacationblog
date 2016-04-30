@@ -3,9 +3,26 @@ include(dirname(__FILE__) . "/../common.php");
 include_once("$gl_site_root/common/common.php");
 
 class CommonTest extends PHPUnit_Framework_TestCase {
-   public function testGetSystemReturnsWashington() {
+   public function testGetSystemReturnsActualSystem() {
+      // Note: this tests reproduces much of the co_get_system()
+      // functionality. Not sure if there's any point in this any more
+      $actualSystem = '';
+      if (file_exists("/etc/system/jefferson")) {
+         // On the "Jefferson" laptop
+         $actualSystem = CO_SYSTEM_JEFFERSON;
+      } else if (file_exists("/etc/system/washington")) {
+         // On the "Washington" server at home
+         $actualSystem = CO_SYSTEM_WASHINGTON;
+      } else if (file_exists("/etc/system/lincoln")) {
+         // On the "Lincoln" laptop
+         $actualSystem = CO_SYSTEM_LINCOLN;
+      } else {
+         // Connect to the database on the public system
+         $actualSystem = CO_SYSTEM_PUBLIC;
+      }
+
       $system = co_get_system();
-      $this->assertEquals(CO_SYSTEM_WASHINGTON, $system);
+      $this->assertEquals($actualSystem, $system);
    }
 
    public function testGetUid() {
