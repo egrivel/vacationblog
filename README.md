@@ -32,7 +32,9 @@ The vacation blog consists of three major pieces:
 2. Server-side functionality, written in PHP. The server-side functionality
    mostly consists of a series of APIs available to the client-side code.
 
-3. Client-side functionality, written in JavaScript using React.js technology. See  the [datastructure documentation](documentation/datastructure.md).
+3. Client-side functionality, written in JavaScript using React.js technology.
+
+For more information, see the [technical documentation](documentation/index.md).
 
 ## Prerequisites
 
