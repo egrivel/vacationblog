@@ -293,16 +293,17 @@ class UserApiTest extends PHPUnit_Framework_TestCase {
     * @depends testDataWipedBeforeTest
     */
    public function testSynchGetInvalid() {
+      global $synchAuthToken;
       $data = array();
-      $result = getApi('synchUser.php', $data);
+      $result = getApi('synchUser.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('hash'=>'');
-      $result = getApi('synchUser.php', $data);
+      $result = getApi('synchUser.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('hash'=>'non-existent');
-      $result = getApi('synchUser.php', $data);
+      $result = getApi('synchUser.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_NOT_FOUND, $result['resultCode']);
    }
 
@@ -313,6 +314,7 @@ class UserApiTest extends PHPUnit_Framework_TestCase {
     */
    public function testSynchGet() {
       global $testUserId1;
+      global $synchAuthToken;
 
       $object = new User($testUserId1);
       $object->setName("Test User");
@@ -328,7 +330,7 @@ class UserApiTest extends PHPUnit_Framework_TestCase {
       $hash = $object->getHash();
 
       $data = array('hash'=>$hash);
-      $result = getApi('synchUser.php', $data);
+      $result = getApi('synchUser.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertTrue(isset($result['userId']));
@@ -362,14 +364,15 @@ class UserApiTest extends PHPUnit_Framework_TestCase {
     * Test #12. SYNCH put request without data.
     */
    public function testSynchPutInvalid() {
+      global $synchAuthToken;
       $this->assertEquals(0, $this->countTestRows());
 
       $data = array();
-      $result = putApi('synchUser.php', $data);
+      $result = putApi('synchUser.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('userId'=>'');
-      $result = getApi('synchUser.php', $data);
+      $result = getApi('synchUser.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $this->assertEquals(0, $this->countTestRows());
@@ -380,6 +383,7 @@ class UserApiTest extends PHPUnit_Framework_TestCase {
     */
    public function testSynchPut() {
       global $testUserId1;
+      global $synchAuthToken;
 
       $this->assertEquals(0, $this->countTestRows());
 
@@ -395,7 +399,7 @@ class UserApiTest extends PHPUnit_Framework_TestCase {
                     'tempCode'=>'tempcode',
                     'deleted'=>'Y',
                     'hash'=>'forced hash');
-      $result = putApi('synchUser.php', $data);
+      $result = putApi('synchUser.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertEquals(1, $this->countTestRows());

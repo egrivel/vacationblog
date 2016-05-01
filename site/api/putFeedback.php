@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../database/Feedback.php');
 
 $auth = new AuthB();
 if (!$auth->canGetFeedback()) {
-   $response = errorResponse(REPONSE_UNAUTHORIZED);
+   $response = errorResponse(RESPONSE_UNAUTHORIZED);
 } else if (isPutMethod()) {
    $data = json_decode(file_get_contents('php://input'), true);
    $tripId = '';

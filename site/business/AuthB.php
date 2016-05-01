@@ -16,6 +16,7 @@ class AuthB {
       }
       return null;
    }
+
    public function canGetComment($tripId = '', $commentId = '') {
       // everyone can get comments
       return true;
@@ -40,6 +41,7 @@ class AuthB {
       }
       return false;
    }
+
    public function canGetFeedback($userId = '',
                                   $referenceId = '',
                                   $userId = '') {
@@ -53,17 +55,32 @@ class AuthB {
    public function canSynchFeedback($userId = '',
                                     $referenceId = '',
                                     $userId = '') {
-      return true;
+      $user = $this->getUser();
+      if ($user) {
+         // only synch user can synch
+         $access = $user->getAccess();
+         return ($access === LEVEL_SYNCH);
+      }
+      return false;
    }
+
    public function canGetJournal($tripId = '', $journalId = '') {
+      // everyone can get journals
       return true;
    }
    public function canPutJournal($tripId = '', $journalId = '') {
       return true;
    }
    public function canSynchJournal($tripId = '', $journalId = '') {
-      return true;
+      $user = $this->getUser();
+      if ($user) {
+         // only synch user can synch
+         $access = $user->getAccess();
+         return ($access === LEVEL_SYNCH);
+      }
+      return false;
    }
+
    public function canGetMedia($tripId = '', $mediaId = '') {
       return true;
    }
@@ -71,8 +88,15 @@ class AuthB {
       return true;
    }
    public function canSynchMedia($tripId = '', $mediaId = '') {
-      return true;
+      $user = $this->getUser();
+      if ($user) {
+         // only synch user can synch
+         $access = $user->getAccess();
+         return ($access === LEVEL_SYNCH);
+      }
+      return false;
    }
+
    public function canGetTrip($tripId = '') {
       return true;
    }
@@ -80,8 +104,15 @@ class AuthB {
       return true;
    }
    public function canSynchTrip($tripId = '') {
-      return true;
+      $user = $this->getUser();
+      if ($user) {
+         // only synch user can synch
+         $access = $user->getAccess();
+         return ($access === LEVEL_SYNCH);
+      }
+      return false;
    }
+
    public function canGetTripAttribute($tripId = '', $name = '') {
       return true;
    }
@@ -89,8 +120,15 @@ class AuthB {
       return true;
    }
    public function canSynchTripAttribute($tripId = '', $name = '') {
-      return true;
+      $user = $this->getUser();
+      if ($user) {
+         // only synch user can synch
+         $access = $user->getAccess();
+         return ($access === LEVEL_SYNCH);
+      }
+      return false;
    }
+
    public function canGetTripUser($tripId = '', $userId = '') {
       return true;
    }
@@ -98,8 +136,15 @@ class AuthB {
       return true;
    }
    public function canSynchTripUser($tripId = '', $userId = '') {
-      return true;
+      $user = $this->getUser();
+      if ($user) {
+         // only synch user can synch
+         $access = $user->getAccess();
+         return ($access === LEVEL_SYNCH);
+      }
+      return false;
    }
+
    public function canGetUserBaseInfo($userId = '') {
       // everybody can get a user's base info
       return true;
@@ -132,7 +177,13 @@ class AuthB {
       return false;
    }
    public function canSynchUser($userId = '') {
-      return true;
+      $user = $this->getUser();
+      if ($user) {
+         // only synch user can synch
+         $access = $user->getAccess();
+         return ($access === LEVEL_SYNCH);
+      }
+      return false;
    }
 }
 ?>

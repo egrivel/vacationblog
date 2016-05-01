@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../database/TripAttribute.php');
 
 $auth = new AuthB();
 if (!$auth->canSynchTripAttribute()) {
-   $response = errorResponse(REPONSE_UNAUTHORIZED);
+   $response = errorResponse(RESPONSE_UNAUTHORIZED);
 } else if (isGetMethod()) {
    if (isset($_GET['hash'])) {
       $hash = $_GET['hash'];

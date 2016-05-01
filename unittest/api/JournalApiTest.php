@@ -430,16 +430,18 @@ class JournalApiTest extends PHPUnit_Framework_TestCase {
     * @depends testDataWipedBeforeTest
     */
    public function testSynchGetInvalid() {
+      global $synchAuthToken;
+
       $data = array();
-      $result = getApi('synchJournal.php', $data);
+      $result = getApi('synchJournal.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('hash'=>'');
-      $result = getApi('synchJournal.php', $data);
+      $result = getApi('synchJournal.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('hash'=>'non-existent');
-      $result = getApi('synchJournal.php', $data);
+      $result = getApi('synchJournal.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_NOT_FOUND, $result['resultCode']);
    }
 
@@ -451,6 +453,7 @@ class JournalApiTest extends PHPUnit_Framework_TestCase {
    public function testSynchGet() {
       global $testTripId1;
       global $testJournalId1;
+      global $synchAuthToken;
 
       // Create the object and set attributes
       $object = new Journal($testTripId1, $testJournalId1);
@@ -465,7 +468,7 @@ class JournalApiTest extends PHPUnit_Framework_TestCase {
       $this->assertEquals(1, $this->countTestRows());
 
       $data = array('hash'=>$object->getHash());
-      $result = getApi('synchJournal.php', $data);
+      $result = getApi('synchJournal.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertTrue(isset($result['tripId']));
@@ -497,37 +500,38 @@ class JournalApiTest extends PHPUnit_Framework_TestCase {
    public function testSynchPutInvalid() {
       global $testTripId1;
       global $testJournalId1;
+      global $synchAuthToken;
 
       $this->assertEquals(0, $this->countTestRows());
 
       $data = array();
-      $result = putApi('synchJournal.php', $data);
+      $result = putApi('synchJournal.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>'');
-      $result = putApi('synchJournal.php', $data);
+      $result = putApi('synchJournal.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('journalId'=>'');
-      $result = putApi('synchJournal.php', $data);
+      $result = putApi('synchJournal.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>$testTripId1);
-      $result = putApi('synchJournal.php', $data);
+      $result = putApi('synchJournal.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('journalId'=>$testJournalId1);
-      $result = putApi('synchJournal.php', $data);
+      $result = putApi('synchJournal.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>$testTripId1,
                     'journalId'=>'');
-      $result = putApi('synchJournal.php', $data);
+      $result = putApi('synchJournal.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>'',
                     'journalId'=>$testJournalId1);
-      $result = putApi('synchJournal.php', $data);
+      $result = putApi('synchJournal.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $this->assertEquals(0, $this->countTestRows());
@@ -538,6 +542,7 @@ class JournalApiTest extends PHPUnit_Framework_TestCase {
     */
    public function testSynchPut() {
       global $testTripId1, $testJournalId1;
+      global $synchAuthToken;
 
       $this->assertEquals(0, $this->countTestRows());
 
@@ -551,7 +556,7 @@ class JournalApiTest extends PHPUnit_Framework_TestCase {
                     'journalText'=>'Journal Text',
                     'deleted'=>'Y',
                     'hash'=>'forced hash');
-      $result = putApi('synchJournal.php', $data);
+      $result = putApi('synchJournal.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertEquals(1, $this->countTestRows());
@@ -582,6 +587,7 @@ class JournalApiTest extends PHPUnit_Framework_TestCase {
     */
    public function testSynchPutLarge() {
       global $testTripId1, $testJournalId1;
+      global $synchAuthToken;
 
       $largeText = $this->getLargeText(15000);
 
@@ -597,7 +603,7 @@ class JournalApiTest extends PHPUnit_Framework_TestCase {
                     'journalText'=>$largeText,
                     'deleted'=>'Y',
                     'hash'=>'forced hash');
-      $result = putApi('synchJournal.php', $data);
+      $result = putApi('synchJournal.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertEquals(1, $this->countTestRows());

@@ -6,7 +6,7 @@ include_once(dirname(__FILE__) . '/../database/Journal.php');
 
 $auth = new AuthB();
 if (!$auth->canGetTrip()) {
-   $response = errorResponse(REPONSE_UNAUTHORIZED);
+   $response = errorResponse(RESPONSE_UNAUTHORIZED);
 } else {
    $tripId = '';
    if (isset($_GET['current'])) {

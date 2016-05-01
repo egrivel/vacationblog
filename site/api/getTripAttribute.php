@@ -6,7 +6,7 @@ include_once(dirname(__FILE__) . '/../database/TripAttribute.php');
 
 $auth = new AuthB();
 if (!$auth->canGetTripAttribute()) {
-   $response = errorResponse(REPONSE_UNAUTHORIZED);
+   $response = errorResponse(RESPONSE_UNAUTHORIZED);
 } else {
    $tripId = '';
    if (isset($_GET['tripId'])) {

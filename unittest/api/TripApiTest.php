@@ -282,16 +282,18 @@ class TripApiTest extends PHPUnit_Framework_TestCase {
     * @depends testDataWipedBeforeTest
     */
    public function testSynchGetInvalid() {
+      global $synchAuthToken;
+
       $data = array();
-      $result = getApi('synchTrip.php', $data);
+      $result = getApi('synchTrip.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('hash'=>'');
-      $result = getApi('synchTrip.php', $data);
+      $result = getApi('synchTrip.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('hash'=>'non-existent');
-      $result = getApi('synchTrip.php', $data);
+      $result = getApi('synchTrip.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_NOT_FOUND, $result['resultCode']);
    }
 
@@ -302,6 +304,7 @@ class TripApiTest extends PHPUnit_Framework_TestCase {
     */
    public function testSynchGet() {
       global $testTripId1;
+      global $synchAuthToken;
 
       $object = new Trip($testTripId1);
       $object->setName("Trip 1");
@@ -316,7 +319,7 @@ class TripApiTest extends PHPUnit_Framework_TestCase {
       $hash = $object->getHash();
 
       $data = array('hash'=>$hash);
-      $result = getApi('synchTrip.php', $data);
+      $result = getApi('synchTrip.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertTrue(isset($result['tripId']));
@@ -348,14 +351,16 @@ class TripApiTest extends PHPUnit_Framework_TestCase {
     * Test #12. SYNCH put request without data.
     */
    public function testSynchPutInvalid() {
+      global $synchAuthToken;
+
       $this->assertEquals(0, $this->countTestRows());
 
       $data = array();
-      $result = putApi('synchTrip.php', $data);
+      $result = putApi('synchTrip.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>'');
-      $result = getApi('synchTrip.php', $data);
+      $result = getApi('synchTrip.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $this->assertEquals(0, $this->countTestRows());
@@ -366,6 +371,7 @@ class TripApiTest extends PHPUnit_Framework_TestCase {
     */
    public function testSynchPut() {
       global $testTripId1;
+      global $synchAuthToken;
 
       $this->assertEquals(0, $this->countTestRows());
 
@@ -380,7 +386,7 @@ class TripApiTest extends PHPUnit_Framework_TestCase {
                     'active'=>'Y',
                     'deleted'=>'Y',
                     'hash'=>'forced hash');
-      $result = putApi('synchTrip.php', $data);
+      $result = putApi('synchTrip.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertEquals(1, $this->countTestRows());
@@ -403,6 +409,7 @@ class TripApiTest extends PHPUnit_Framework_TestCase {
     */
    public function testFindAll() {
       global $testTripId1, $testTripId2;
+      global $synchAuthToken;
 
       $object = new Trip($testTripId1);
       $object->setName("Trip 1");
@@ -413,7 +420,7 @@ class TripApiTest extends PHPUnit_Framework_TestCase {
       $this->assertTrue($object->save());
 
       $data = array();
-      $result = getApi('findTrip.php', $data);
+      $result = getApi('findTrip.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
       $this->assertTrue(isset($result['resultSet']));
       $resultSet = $result['resultSet'];
@@ -451,6 +458,7 @@ class TripApiTest extends PHPUnit_Framework_TestCase {
     */
    public function testSynchPutLarge() {
       global $testTripId1;
+      global $synchAuthToken;
 
       $largeText = $this->getLargeText(15000);
 
@@ -467,7 +475,7 @@ class TripApiTest extends PHPUnit_Framework_TestCase {
                     'active'=>'Y',
                     'deleted'=>'Y',
                     'hash'=>'forced hash');
-      $result = putApi('synchTrip.php', $data);
+      $result = putApi('synchTrip.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertEquals(1, $this->countTestRows());
@@ -491,6 +499,7 @@ class TripApiTest extends PHPUnit_Framework_TestCase {
     */
    function testGetLatest() {
       global $testTripId1, $testTripId2;
+      global $synchAuthToken;
 
       // use the timezone where we do our testing :-)
       date_default_timezone_set("America/New_York");
@@ -518,7 +527,7 @@ class TripApiTest extends PHPUnit_Framework_TestCase {
       $testTrip2->setEndDate($future);
       $this->assertTrue($testTrip2->save());
 
-      $result = getApi('getTrip.php', $data);
+      $result = getApi('getTrip.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
       $this->assertTrue(isset($result['tripId']));
       $this->assertEquals($testTripId1, $result['tripId']);
@@ -532,7 +541,7 @@ class TripApiTest extends PHPUnit_Framework_TestCase {
       $testTrip2->setEndDate($tomorrow);
       $this->assertTrue($testTrip2->save());
 
-      $result = getApi('getTrip.php', $data);
+      $result = getApi('getTrip.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
       $this->assertTrue(isset($result['tripId']));
       $this->assertEquals($testTripId2, $result['tripId']);
@@ -546,7 +555,7 @@ class TripApiTest extends PHPUnit_Framework_TestCase {
       $testTrip2->setEndDate($past);
       $this->assertTrue($testTrip2->save());
 
-      $result = getApi('getTrip.php', $data);
+      $result = getApi('getTrip.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
       $this->assertTrue(isset($result['tripId']));
       $this->assertEquals($testTripId1, $result['tripId']);
@@ -560,7 +569,7 @@ class TripApiTest extends PHPUnit_Framework_TestCase {
       $testTrip2->setEndDate($future);
       $this->assertTrue($testTrip2->save());
 
-      $result = getApi('getTrip.php', $data);
+      $result = getApi('getTrip.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
       $this->assertTrue(isset($result['tripId']));
       $this->assertEquals($testTripId1, $result['tripId']);
@@ -574,7 +583,7 @@ class TripApiTest extends PHPUnit_Framework_TestCase {
       $testTrip2->setEndDate($future);
       $this->assertTrue($testTrip2->save());
 
-      $result = getApi('getTrip.php', $data);
+      $result = getApi('getTrip.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
       $this->assertTrue(isset($result['tripId']));
       $this->assertEquals($testTripId1, $result['tripId']);
@@ -588,7 +597,7 @@ class TripApiTest extends PHPUnit_Framework_TestCase {
       $testTrip2->setEndDate($future);
       $this->assertTrue($testTrip2->save());
 
-      $result = getApi('getTrip.php', $data);
+      $result = getApi('getTrip.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
       $this->assertTrue(isset($result['tripId']));
       $this->assertEquals($testTripId2, $result['tripId']);

@@ -316,16 +316,18 @@ class FeedbackApiTest extends PHPUnit_Framework_TestCase {
     * @depends testDataWipedBeforeTest
     */
    public function testSynchGetInvalid() {
+      global $synchAuthToken;
+
       $data = array();
-      $result = getApi('synchFeedback.php', $data);
+      $result = getApi('synchFeedback.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('hash'=>'');
-      $result = getApi('synchFeedback.php', $data);
+      $result = getApi('synchFeedback.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('hash'=>'non-existent');
-      $result = getApi('synchFeedback.php', $data);
+      $result = getApi('synchFeedback.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_NOT_FOUND, $result['resultCode']);
    }
 
@@ -338,6 +340,7 @@ class FeedbackApiTest extends PHPUnit_Framework_TestCase {
       global $testTripId1;
       global $testReferenceId1;
       global $testUserId1;
+      global $synchAuthToken;
 
       // Create the object and set attributes
       $object = new Feedback($testTripId1, $testReferenceId1, $testUserId1);
@@ -349,7 +352,7 @@ class FeedbackApiTest extends PHPUnit_Framework_TestCase {
       $this->assertEquals(1, $this->countTestRows());
 
       $data = array('hash'=>$object->getHash());
-      $result = getApi('synchFeedback.php', $data);
+      $result = getApi('synchFeedback.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertTrue(isset($result['tripId']));
@@ -378,53 +381,54 @@ class FeedbackApiTest extends PHPUnit_Framework_TestCase {
       global $testTripId1;
       global $testReferenceId1;
       global $testUserId1;
+      global $synchAuthToken;
 
       $this->assertEquals(0, $this->countTestRows());
 
       $data = array();
-      $result = putApi('synchFeedback.php', $data);
+      $result = putApi('synchFeedback.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>'');
-      $result = getApi('synchFeedback.php', $data);
+      $result = getApi('synchFeedback.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('referenceId'=>'');
-      $result = getApi('synchFeedback.php', $data);
+      $result = getApi('synchFeedback.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('userId'=>'');
-      $result = getApi('synchFeedback.php', $data);
+      $result = getApi('synchFeedback.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>$testTripId1);
-      $result = getApi('synchFeedback.php', $data);
+      $result = getApi('synchFeedback.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('referenceId'=>$testReferenceId1);
-      $result = getApi('synchFeedback.php', $data);
+      $result = getApi('synchFeedback.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('userId'=>$testUserId1);
-      $result = getApi('synchFeedback.php', $data);
+      $result = getApi('synchFeedback.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>$testTripId1,
                     'referenceId'=>'',
                     'userId'=>'');
-      $result = getApi('synchFeedback.php', $data);
+      $result = getApi('synchFeedback.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>'',
                     'referenceId'=>$testReferenceId1,
                     'userId'=>'');
-      $result = getApi('synchFeedback.php', $data);
+      $result = getApi('synchFeedback.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>'',
                     'referenceId'=>'',
                     'userId'=>$testUserId1);
-      $result = getApi('synchFeedback.php', $data);
+      $result = getApi('synchFeedback.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $this->assertEquals(0, $this->countTestRows());
@@ -435,6 +439,7 @@ class FeedbackApiTest extends PHPUnit_Framework_TestCase {
     */
    public function testSynchPut() {
       global $testTripId1, $testReferenceId1, $testUserId1;
+      global $synchAuthToken;
 
       $this->assertEquals(0, $this->countTestRows());
 
@@ -446,7 +451,7 @@ class FeedbackApiTest extends PHPUnit_Framework_TestCase {
                     'type'=>'-type-1',
                     'deleted'=>'Y',
                     'hash'=>'forced hash');
-      $result = putApi('synchFeedback.php', $data);
+      $result = putApi('synchFeedback.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertEquals(1, $this->countTestRows());

@@ -21,7 +21,7 @@ function fillItem($item, $object) {
 
 $auth = new AuthB();
 if (!$auth->canGetMedia()) {
-   $response = errorResponse(REPONSE_UNAUTHORIZED);
+   $response = errorResponse(RESPONSE_UNAUTHORIZED);
 } else {
    $tripId = '';
    if (isset($_GET['tripId'])) {

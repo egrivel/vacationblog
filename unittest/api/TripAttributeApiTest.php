@@ -286,16 +286,17 @@ class TripAttributeApiTest extends PHPUnit_Framework_TestCase {
     * @depends testDataWipedBeforeTest
     */
    public function testSynchGetInvalid() {
+      global $synchAuthToken;
       $data = array();
-      $result = getApi('synchTripAttribute.php', $data);
+      $result = getApi('synchTripAttribute.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('hash'=>'');
-      $result = getApi('synchTripAttribute.php', $data);
+      $result = getApi('synchTripAttribute.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('hash'=>'non-existent');
-      $result = getApi('synchTripAttribute.php', $data);
+      $result = getApi('synchTripAttribute.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_NOT_FOUND, $result['resultCode']);
    }
 
@@ -307,6 +308,7 @@ class TripAttributeApiTest extends PHPUnit_Framework_TestCase {
    public function testSynchGet() {
       global $testTripId1;
       global $testName1;
+      global $synchAuthToken;
 
       // Create the object and set Attributes
       $object = new TripAttribute($testTripId1, $testName1);
@@ -318,7 +320,7 @@ class TripAttributeApiTest extends PHPUnit_Framework_TestCase {
       $this->assertEquals(1, $this->countTestRows());
 
       $data = array('hash'=>$object->getHash());
-      $result = getApi('synchTripAttribute.php', $data);
+      $result = getApi('synchTripAttribute.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertTrue(isset($result['tripId']));
@@ -344,37 +346,38 @@ class TripAttributeApiTest extends PHPUnit_Framework_TestCase {
    public function testSynchPutInvalid() {
       global $testTripId1;
       global $testName1;
+      global $synchAuthToken;
 
       $this->assertEquals(0, $this->countTestRows());
 
       $data = array();
-      $result = putApi('synchTripAttribute.php', $data);
+      $result = putApi('synchTripAttribute.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>'');
-      $result = getApi('synchTripAttribute.php', $data);
+      $result = getApi('synchTripAttribute.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('name'=>'');
-      $result = getApi('synchTripAttribute.php', $data);
+      $result = getApi('synchTripAttribute.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>$testTripId1);
-      $result = getApi('synchTripAttribute.php', $data);
+      $result = getApi('synchTripAttribute.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('name'=>$testName1);
-      $result = getApi('synchTripAttribute.php', $data);
+      $result = getApi('synchTripAttribute.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>$testTripId1,
                     'name'=>'');
-      $result = getApi('synchTripAttribute.php', $data);
+      $result = getApi('synchTripAttribute.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>'',
                     'name'=>$testName1);
-      $result = getApi('synchTripAttribute.php', $data);
+      $result = getApi('synchTripAttribute.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $this->assertEquals(0, $this->countTestRows());
@@ -385,6 +388,7 @@ class TripAttributeApiTest extends PHPUnit_Framework_TestCase {
     */
    public function testSynchPut() {
       global $testTripId1, $testName1;
+      global $synchAuthToken;
 
       $this->assertEquals(0, $this->countTestRows());
 
@@ -395,7 +399,7 @@ class TripAttributeApiTest extends PHPUnit_Framework_TestCase {
                     'value'=>'value',
                     'deleted'=>'Y',
                     'hash'=>'forced hash');
-      $result = putApi('synchTripAttribute.php', $data);
+      $result = putApi('synchTripAttribute.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertEquals(1, $this->countTestRows());

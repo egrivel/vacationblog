@@ -471,16 +471,18 @@ class MediaApiTest extends PHPUnit_Framework_TestCase {
     * @depends testDataWipedBeforeTest
     */
    public function testSynchGetInvalid() {
+      global $synchAuthToken;
+
       $data = array();
-      $result = getApi('synchMedia.php', $data);
+      $result = getApi('synchMedia.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('hash'=>'');
-      $result = getApi('synchMedia.php', $data);
+      $result = getApi('synchMedia.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('hash'=>'non-existent');
-      $result = getApi('synchMedia.php', $data);
+      $result = getApi('synchMedia.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_NOT_FOUND, $result['resultCode']);
    }
 
@@ -492,6 +494,7 @@ class MediaApiTest extends PHPUnit_Framework_TestCase {
    public function testSynchGet() {
       global $testTripId1;
       global $testMediaId1;
+      global $synchAuthToken;
 
       // Create the object and set attributes
       $object = new Media($testTripId1, $testMediaId1);
@@ -508,7 +511,7 @@ class MediaApiTest extends PHPUnit_Framework_TestCase {
       $this->assertEquals(1, $this->countTestRows());
 
       $data = array('hash'=>$object->getHash());
-      $result = getApi('synchMedia.php', $data);
+      $result = getApi('synchMedia.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertTrue(isset($result['tripId']));
@@ -544,37 +547,38 @@ class MediaApiTest extends PHPUnit_Framework_TestCase {
    public function testSynchPutInvalid() {
       global $testTripId1;
       global $testMediaId1;
+      global $synchAuthToken;
 
       $this->assertEquals(0, $this->countTestRows());
 
       $data = array();
-      $result = putApi('synchMedia.php', $data);
+      $result = putApi('synchMedia.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>'');
-      $result = getApi('synchMedia.php', $data);
+      $result = getApi('synchMedia.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('mediaId'=>'');
-      $result = getApi('synchMedia.php', $data);
+      $result = getApi('synchMedia.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>$testTripId1);
-      $result = getApi('synchMedia.php', $data);
+      $result = getApi('synchMedia.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('mediaId'=>$testMediaId1);
-      $result = getApi('synchMedia.php', $data);
+      $result = getApi('synchMedia.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>$testTripId1,
                     'mediaId'=>'');
-      $result = getApi('synchMedia.php', $data);
+      $result = getApi('synchMedia.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>'',
                     'mediaId'=>$testMediaId1);
-      $result = getApi('synchMedia.php', $data);
+      $result = getApi('synchMedia.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $this->assertEquals(0, $this->countTestRows());
@@ -585,6 +589,7 @@ class MediaApiTest extends PHPUnit_Framework_TestCase {
     */
    public function testSynchPut() {
       global $testTripId1, $testMediaId1;
+      global $synchAuthToken;
 
       $this->assertEquals(0, $this->countTestRows());
 
@@ -600,7 +605,7 @@ class MediaApiTest extends PHPUnit_Framework_TestCase {
                     'height'=>'600',
                     'deleted'=>'Y',
                     'hash'=>'forced hash');
-      $result = putApi('synchMedia.php', $data);
+      $result = putApi('synchMedia.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertEquals(1, $this->countTestRows());
