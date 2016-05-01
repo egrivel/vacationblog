@@ -61,6 +61,14 @@ function createResponse($code, $message) {
    return array('resultCode'=>$code, 'resultMessage'=>$message);
 }
 
+function getPostData() {
+   if (count($_POST)) {
+      return $_POST;
+   } else {
+      return json_decode(file_get_contents('php://input'), true);
+   }
+}
+
 define("RESPONSE_SUCCESS", '200');
 define("RESPONSE_BAD_REQUEST", '400');
 define("RESPONSE_UNAUTHORIZED", '401');

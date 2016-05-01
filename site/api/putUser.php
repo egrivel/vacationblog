@@ -6,7 +6,7 @@ include_once(dirname(__FILE__) . '/../database/User.php');
 $auth = new AuthB();
 
 if (isPutMethod()) {
-   $data = json_decode(file_get_contents('php://input'), true);
+   $data = getPostData();
    $userId = '';
    if (isset($data['userId'])) {
       $userId = $data['userId'];

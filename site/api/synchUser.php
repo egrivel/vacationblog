@@ -36,7 +36,7 @@ if (!$auth->canSynchUser()) {
       $response = errorResponse(RESPONSE_BAD_REQUEST, 'Need hash');
    }
 } else if (isPutMethod()) {
-   $data = json_decode(file_get_contents('php://input'), true);
+   $data = getPostData();
    if (isset($data['userId']) && ($data['userId'] !== '')) {
       $userId = $data['userId'];
       $object = new User($userId);

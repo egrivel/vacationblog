@@ -31,7 +31,7 @@ if (!$auth->canSynchFeedback()) {
       $response = errorResponse(RESPONSE_BAD_REQUEST);
    }
 } else if (isPutMethod()) {
-   $data = json_decode(file_get_contents('php://input'), true);
+   $data = getPostData();
    if (isset($data['tripId']) && ($data['tripId'] !== '')
        && isset($data['referenceId']) && ($data['referenceId'] !== '')
        && isset($data['userId']) && ($data['userId'] !== '')) {

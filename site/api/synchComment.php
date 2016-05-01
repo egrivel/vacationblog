@@ -32,7 +32,7 @@ if (!$auth->canSynchComment()) {
       $response = errorResponse(RESPONSE_BAD_REQUEST, 'need hash');
    }
 } else if (isPutMethod()) {
-   $data = json_decode(file_get_contents('php://input'), true);
+   $data = getPostData();
    if (isset($data['tripId']) && isset($data['commentId'])
        && ($data['tripId'] !== '') && ($data['commentId'] !== '')) {
       $tripId = $data['tripId'];

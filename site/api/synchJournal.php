@@ -33,8 +33,7 @@ if (!$auth->canSynchJournal()) {
       $response = errorResponse(RESPONSE_BAD_REQUEST, 'hash not set');
    }
 } else if (isPutMethod()) {
-   $contents = file_get_contents('php://input');
-   $data = json_decode($contents, true);
+   $data = getPostData();
    if (isset($data['tripId']) && isset($data['journalId'])
        && ($data['tripId'] !== '') && ($data['journalId'] !== '')) {
       $tripId = $data['tripId'];

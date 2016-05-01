@@ -31,6 +31,8 @@ class FeedbackApiTest extends PHPUnit_Framework_TestCase {
       $object = new Trip($testTripId2);
       $object = new User($testUserId1);
       $object = new User($testUserId2);
+
+      setupTokens();
    }
 
    public static function tearDownAfterClass() {

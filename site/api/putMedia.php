@@ -8,7 +8,7 @@ $auth = new AuthB();
 if (!$auth->canGetMedia()) {
    $response = errorResponse(RESPONSE_UNAUTHORIZED);
 } else if (isPutMethod()) {
-   $data = json_decode(file_get_contents('php://input'), true);
+   $data = getPostData();
    $tripId = '';
    if (isset($data['tripId'])) {
       $tripId = $data['tripId'];

@@ -3,21 +3,7 @@ include_once(dirname(__FILE__) . "/../common/common.php");
 include_once(dirname(__FILE__) . '/../business/AuthB.php');
 include_once(dirname(__FILE__) . '/../database/Trip.php');
 include_once(dirname(__FILE__) . '/../database/Media.php');
-
-function fillItem($item, $object) {
-   $item['tripId'] = $object->getTripId();
-   $item['mediaId'] = $object->getMediaId();
-   $item['created'] = $object->getCreated();
-   $item['updated'] = $object->getUpdated();
-   $item['type'] = $object->getType();
-   $item['caption'] = $object->getCaption();
-   $item['timestamp'] = $object->getTimestamp();
-   $item['location'] = $object->getLocation();
-   $item['width'] = $object->getWidth();
-   $item['height'] = $object->getHeight();
-   $item['deleted'] = $object->getDeleted();
-   return $item;
-}
+include_once(dirname(__FILE__) . '/functions.php');
 
 $auth = new AuthB();
 if (!$auth->canGetMedia()) {
@@ -45,7 +31,7 @@ if (!$auth->canGetMedia()) {
             $response = errorResponse(RESPONSE_NOT_FOUND);
          } else {
             $response = successResponse();
-            $response = fillItem($response, $object);
+            $response = fillMediaItem($response, $object);
          }
       } else {
          $array = split(',', $list);
@@ -55,7 +41,7 @@ if (!$auth->canGetMedia()) {
             $object = new Media($tripId, $array[$i]);
             if ($object->getCreated() !== null) {
                $item = Array();
-               $item = fillItem($item, $object);
+               $item = fillMediaItem($item, $object);
                $resultArray[$resultArrayCount++] = $item;
             }
          }

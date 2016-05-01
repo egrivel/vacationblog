@@ -1,7 +1,8 @@
 <?php
+require_once(dirname(__FILE__) . "/../site/database/Auth.php");
 
 /* invoke a GET API function */
-function getApi($service, $data, $authToken = '') {
+function oldGetApi($service, $data, $authToken = '') {
    global $gl_api_root;
    $url = $gl_api_root . $service;
    $isFirst = true;
@@ -28,8 +29,30 @@ function getApi($service, $data, $authToken = '') {
    return json_decode($result, true);
 }
 
+function getApi($service, $data, $authToken = '') {
+   $_GET = [];
+   if ($data) {
+      foreach ($data as $key=>$value) {
+         $_GET[$key] = $value;
+      }
+   }
+
+   $_COOKIE = [];
+   if ($authToken !== '') {
+      $_COOKIE['blogAuthId'] = $authToken;
+   }
+
+   $_SERVER['REQUEST_METHOD'] = 'GET';
+
+   ob_start();
+   include(dirname(__FILE__) . "/../site/api/" . $service);
+   $output = ob_get_clean();
+
+   return json_decode($output, true);
+}
+
 /* invoke a PUT API function */
-function putApi($service, $data, $authToken = '') {
+function oldPutApi($service, $data, $authToken = '') {
    global $gl_api_root;
    $url = $gl_api_root . $service;
 
@@ -57,6 +80,28 @@ function putApi($service, $data, $authToken = '') {
    $result = curl_exec($curl);
    curl_close($curl);
    return json_decode($result, true);
+}
+
+function putApi($service, $data, $authToken = '') {
+   $_POST = [];
+   if ($data) {
+      foreach ($data as $key=>$value) {
+         $_POST[$key] = $value;
+      }
+   }
+
+   $_COOKIE = [];
+   if ($authToken !== '') {
+      $_COOKIE['blogAuthId'] = $authToken;
+   }
+
+   $_SERVER['REQUEST_METHOD'] = 'PUT';
+
+   ob_start();
+   include(dirname(__FILE__) . "/../site/api/" . $service);
+   $output = ob_get_clean();
+
+   return json_decode($output, true);
 }
 
 function setupOneToken($userId, $level, $token) {

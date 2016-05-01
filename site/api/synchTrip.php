@@ -34,8 +34,7 @@ if (!$auth->canSynchTrip()) {
       $response = errorResponse(RESPONSE_BAD_REQUEST, 'Missing hash');
    }
 } else if (isPutMethod()) {
-   $contents = file_get_contents('php://input');
-   $data = json_decode($contents, true);
+   $data = getPostData();
    if (isset($data['tripId']) && ($data['tripId'] !== '')) {
       $tripId = $data['tripId'];
       $trip = new Trip($tripId);

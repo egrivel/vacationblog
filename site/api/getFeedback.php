@@ -40,5 +40,6 @@ if (!$auth->canGetFeedback()) {
       }
    }
 }
+
 echo json_encode($response);
 ?>

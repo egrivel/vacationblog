@@ -30,7 +30,7 @@ if (!$auth->canSynchTripAttribute()) {
       $response = errorResponse(RESPONSE_BAD_REQUEST);
    }
 } else if (isPutMethod()) {
-   $data = json_decode(file_get_contents('php://input'), true);
+   $data = getPostData();
    if (isset($data['tripId']) && isset($data['name'])
        && ($data['tripId'] !== '') && ($data['name'] !== '')) {
       $tripId = $data['tripId'];
