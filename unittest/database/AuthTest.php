@@ -171,7 +171,7 @@ class AuthTest extends PHPUnit_Framework_TestCase {
     * test #5.
     * Save an empty object results in a row being added to the database
     * and the created and updated fields getting a value. Since
-    * this is the first instance, the created and updated both have the 
+    * this is the first instance, the created and updated both have the
     * same value.
     * @depends testCreateGivesEmptyObject
     */
@@ -406,7 +406,7 @@ class AuthTest extends PHPUnit_Framework_TestCase {
 
    /**
     * test #11.
-    * Automatically computed attributes (created, updated, hash) are 
+    * Automatically computed attributes (created, updated, hash) are
     * properly set on the first save, and when appropriate changed on
     * subsequent saves.
     * @depends testSaveEmptyObject
@@ -531,7 +531,7 @@ class AuthTest extends PHPUnit_Framework_TestCase {
       // past date for the Created and Updated fields.
       // values after first save are unchanged
       $object->setCreated('2000-01-01 10:10:10.000000');
-      $object->setUpdated('2000-01-01 10:10:11.000000');        
+      $object->setUpdated('2000-01-01 10:10:11.000000');
       $object->setUserId($testUserId2);
       $object->setExpiration('2015-10-01');
 
@@ -623,6 +623,26 @@ class AuthTest extends PHPUnit_Framework_TestCase {
       $this->assertEquals('2015-10-01', $object->getExpiration());
       // Note: this will FAIL in the current implementation!
       //$this->assertEquals('future date hash', $object->getHash());
+   }
+
+   /**
+    * Extra test. Generate auth ID gives unique ID.
+    */
+   public function testGenerateAuthId() {
+      // Try the tests here a whole bunch of times
+      for ($i = 0; $i < 100; $i++) {
+        $firstId = Auth::generateAuthId();
+        $secondId = Auth::generateAuthId();
+        $this->assertTrue(strlen($firstId) > 60,
+          'first auth ID at least 60 chars');
+        $this->assertTrue(strlen($firstId) <= 64,
+          'first auth ID at most 64 chars');
+        $this->assertTrue(strlen($secondId) > 60,
+          'second auth ID at least 60 chars');
+        $this->assertTrue(strlen($secondId) <= 64,
+          'second auth ID at most 60 chars');
+        $this->assertNotEquals($firstId, $secondId);
+      }
    }
 }
 ?>

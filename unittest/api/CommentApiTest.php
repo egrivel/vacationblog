@@ -2,6 +2,8 @@
 include(dirname(__FILE__) . "/../common.php");
 include_once("$gl_site_root/database/Trip.php");
 include_once("$gl_site_root/database/Comment.php");
+include_once("$gl_site_root/database/User.php");
+include_once("$gl_site_root/database/Auth.php");
 
 class CommentApiTest extends PHPUnit_Framework_TestCase {
    private $testTripId1;
@@ -13,18 +15,24 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
 
    public static function setUpBeforeClass() {
       global $testTripId1, $testTripId2;
+
       $testTripId1 = '-test-trip-1';
       $testTripId2 = '-test-trip-2';
-      $query = "DELETE FROM blogTrip "
+
+      $query = "DELETE FROM blogTrip"
          . " WHERE tripId='$testTripId1'"
          .    " OR tripId='$testTripId2'";
       mysql_query($query);
+
       $object = new Trip($testTripId1);
       $object = new Trip($testTripId2);
+
+      setupTokens();
    }
 
    public static function tearDownAfterClass() {
       global $testTripId1, $testTripId2;
+
       $query = "DELETE FROM blogTrip "
          . " WHERE tripId='$testTripId1'"
          .    " OR tripId='$testTripId2'";
@@ -165,7 +173,7 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
       // Save the object and confirm a row is added to the database
       $this->assertTrue($object->save());
       $this->assertEquals(1, $this->countTestRows());
-      
+
       $data = array('tripId'=>$testTripId1,
                     'commentId'=>$testCommentId1);
 
@@ -334,38 +342,41 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
     * Test #6. PUT request with no parameters.
     */
    public function testPutNoParameters() {
+      global $visitorAuthToken;
       $this->assertEquals(0, $this->countTestRows());
 
       $data = array();
-      $result = putApi('putComment.php', $data);
+      $result = putApi('putComment.php', $data, $visitorAuthToken);
       $this->assertEquals('401', $result['resultCode']);
    }
-      
+
    /**
     * Test #7. PUT request with invalid parameters.
     */
    public function testPutInvalidParameters() {
+      global $visitorAuthToken;
       $this->assertEquals(0, $this->countTestRows());
 
       $data = array('tripId'=>null,
                     'commentId'=>null);
-      $result = putApi('putComment.php', $data);
+      $result = putApi('putComment.php', $data, $visitorAuthToken);
       $this->assertEquals('401', $result['resultCode']);
 
       $this->assertEquals(0, $this->countTestRows());
 
       $data = array('tripId'=>'',
                     'commentId'=>'');
-      $result = putApi('putComment.php', $data);
+      $result = putApi('putComment.php', $data, $visitorAuthToken);
       $this->assertEquals('401', $result['resultCode']);
 
       $this->assertEquals(0, $this->countTestRows());
    }
-      
+
    /**
     * Test #8. PUT request create new object.
     */
    public function testPutCreate() {
+      global $visitorAuthToken;
       global $testTripId1;
       global $testCommentId1;
 
@@ -380,7 +391,7 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
                     'commentText'=>'Comment Text',
                     'deleted'=>'Y',
                     'hash'=>'forced hash');
-      $result = putApi('putComment.php', $data);
+      $result = putApi('putComment.php', $data, $visitorAuthToken);
       $this->assertEquals('200', $result['resultCode']);
 
       $this->assertEquals(1, $this->countTestRows());
@@ -408,10 +419,40 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
    }
 
    /**
+    * Test 8a. PUT authorization
+    * @depends testPutCreate
+    */
+   public function testPutAuthorization() {
+      global $visitorAuthToken;
+      global $testTripId1;
+      global $testCommentId1;
+
+      $this->assertEquals(0, $this->countTestRows());
+
+      $data = array('tripId'=>$testTripId1,
+                    'commentId'=>$testCommentId1,
+                    'created'=>'2015-10-01',
+                    'updated'=>'2015-10-02',
+                    'userId'=>'user',
+                    'referenceId'=>'-reference-1',
+                    'commentText'=>'Comment Text',
+                    'deleted'=>'Y',
+                    'hash'=>'forced hash');
+
+      // With auth token this succeeds
+      $result = putApi('putComment.php', $data, $visitorAuthToken);
+      $this->assertEquals('200', $result['resultCode']);
+
+      // Without auth token this fails
+      $result = putApi('putComment.php', $data);
+      $this->assertEquals('403', $result['resultCode']);
+   }
+   /**
     * Test #9. PUT request update existing object.
     * @depends testPutCreate
-    */      
+    */
    public function testUpdateComment() {
+      global $visitorAuthToken;
       global $testTripId1;
       global $testCommentId1;
 
@@ -433,7 +474,7 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
                     'commentText'=>'Comment Text 2',
                     'deleted'=>'Y',
                     'hash'=>'forced hash');
-      $result = putApi('putComment.php', $data);
+      $result = putApi('putComment.php', $data, $visitorAuthToken);
       $this->assertEquals('200', $result['resultCode']);
 
       $this->assertEquals(2, $this->countTestRows());
@@ -452,16 +493,17 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
     * @depends testDataWipedBeforeTest
     */
    public function testSynchGetInvalid() {
+      global $synchAuthToken;
       $data = array();
-      $result = getApi('synchComment.php', $data);
+      $result = getApi('synchComment.php', $data, $synchAuthToken);
       $this->assertEquals('401', $result['resultCode']);
 
       $data = array('hash'=>'');
-      $result = getApi('synchComment.php', $data);
+      $result = getApi('synchComment.php', $data, $synchAuthToken);
       $this->assertEquals('401', $result['resultCode']);
 
       $data = array('hash'=>'non-existent');
-      $result = getApi('synchComment.php', $data);
+      $result = getApi('synchComment.php', $data, $synchAuthToken);
       $this->assertEquals('404', $result['resultCode']);
    }
 
@@ -471,6 +513,7 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
     * @depends testGetExistent
     */
    public function testSynchGet() {
+      global $synchAuthToken;
       global $testTripId1;
       global $testCommentId1;
 
@@ -484,9 +527,9 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
       // Save the object and confirm a row is added to the database
       $this->assertTrue($object->save());
       $this->assertEquals(1, $this->countTestRows());
-      
+
       $data = array('hash'=>$object->getHash());
-      $result = getApi('synchComment.php', $data);
+      $result = getApi('synchComment.php', $data, $synchAuthToken);
       $this->assertEquals('200', $result['resultCode']);
 
       $this->assertTrue(isset($result['tripId']));
@@ -514,48 +557,50 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
     * Test #12. SYNCH put request without data.
     */
    public function testSynchPutInvalid() {
+      global $synchAuthToken;
       global $testTripId1;
       global $testCommentId1;
 
       $this->assertEquals(0, $this->countTestRows());
 
       $data = array();
-      $result = putApi('synchComment.php', $data);
+      $result = putApi('synchComment.php', $data, $synchAuthToken);
       $this->assertEquals('401', $result['resultCode']);
 
       $data = array('tripId'=>'');
-      $result = getApi('synchComment.php', $data);
+      $result = getApi('synchComment.php', $data, $synchAuthToken);
       $this->assertEquals('401', $result['resultCode']);
 
       $data = array('commentId'=>'');
-      $result = getApi('synchComment.php', $data);
+      $result = getApi('synchComment.php', $data, $synchAuthToken);
       $this->assertEquals('401', $result['resultCode']);
 
       $data = array('tripId'=>$testTripId1);
-      $result = getApi('synchComment.php', $data);
+      $result = getApi('synchComment.php', $data, $synchAuthToken);
       $this->assertEquals('401', $result['resultCode']);
 
       $data = array('commentId'=>$testCommentId1);
-      $result = getApi('synchComment.php', $data);
+      $result = getApi('synchComment.php', $data, $synchAuthToken);
       $this->assertEquals('401', $result['resultCode']);
 
       $data = array('tripId'=>$testTripId1,
                     'commentId'=>'');
-      $result = getApi('synchComment.php', $data);
+      $result = getApi('synchComment.php', $data, $synchAuthToken);
       $this->assertEquals('401', $result['resultCode']);
 
       $data = array('tripId'=>'',
                     'commentId'=>$testCommentId1);
-      $result = getApi('synchComment.php', $data);
+      $result = getApi('synchComment.php', $data, $synchAuthToken);
       $this->assertEquals('401', $result['resultCode']);
 
       $this->assertEquals(0, $this->countTestRows());
    }
-      
+
    /**
     * Test #13. SYNCH request write new object.
     */
    public function testSynchPut() {
+      global $synchAuthToken;
       global $testTripId1, $testCommentId1;
 
       $this->assertEquals(0, $this->countTestRows());
@@ -569,7 +614,7 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
                     'commentText'=>'Comment Text',
                     'deleted'=>'Y',
                     'hash'=>'forced hash');
-      $result = putApi('synchComment.php', $data);
+      $result = putApi('synchComment.php', $data, $synchAuthToken);
       $this->assertEquals('200', $result['resultCode']);
 
       $this->assertEquals(1, $this->countTestRows());

@@ -4,6 +4,11 @@ include_once(dirname(__FILE__) . "/database.php");
 // hashing API
 include_once(dirname(__FILE__) . "/../lib/password/password.php");
 
+define('LEVEL_VISITOR', 'visitor');
+define('LEVEL_CONTRIB', 'contrib');
+define('LEVEL_ADMIN', 'admin');
+define('LEVEL_SYNCH', 'synch');
+
 class User {
 
    private $userId;

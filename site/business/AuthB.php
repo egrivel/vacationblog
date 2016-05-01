@@ -1,15 +1,44 @@
 <?php
 include_once(dirname(__FILE__) . "/../common/common.php");
+include_once(dirname(__FILE__) . "/../database/Auth.php");
+include_once(dirname(__FILE__) . "/../database/User.php");
 
 class AuthB {
+   private function getUser() {
+      if (isset($_COOKIE['blogAuthId'])
+         && ($_COOKIE['blogAuthId'] !== '')) {
+         $authId = $_COOKIE['blogAuthId'];
+         $auth = new Auth($authId);
+         $userId = $auth->getUserId();
+         if (isset($userId) && ($userId !== '')) {
+            return new User($userId);
+         }
+      }
+      return null;
+   }
    public function canGetComment($tripId = '', $commentId = '') {
+      // everyone can get comments
       return true;
    }
    public function canPutComment($tripId = '', $commentId = '') {
-      return true;
+      $user = $this->getUser();
+      if ($user) {
+         $access = $user->getAccess();
+         // all logged in users can put comments
+         return (($access === LEVEL_VISITOR)
+               || ($access === LEVEL_CONTRIB)
+               || ($access === LEVEL_ADMIN));
+      }
+      return false;
    }
    public function canSynchComment($tripId = '', $commentId = '') {
-      return true;
+      $user = $this->getUser();
+      if ($user) {
+         // only synch user can synch
+         $access = $user->getAccess();
+         return ($access === LEVEL_SYNCH);
+      }
+      return false;
    }
    public function canGetFeedback($userId = '',
                                   $referenceId = '',

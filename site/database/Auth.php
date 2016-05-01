@@ -1,5 +1,6 @@
 <?php
 include_once(dirname(__FILE__) . "/database.php");
+require_once(dirname(__FILE__) . "/../lib/random/random.php");
 
 class Auth {
    private $authId;
@@ -35,7 +36,7 @@ class Auth {
          // row. However, by defining the "created" field with a default value
          // of zero time, and pasing null in when creating the first row,
          // it automatically gets set to the current time as well. Obviously,
-         // when creating subsequent rows, the originally created timestamp 
+         // when creating subsequent rows, the originally created timestamp
          // has to be passed in anyway.
          // Note 2: use TIMESTAMP(6) rather than TIMESTAMP to get a
          // microsecond-precision for the timestamp. This will allow the
@@ -140,7 +141,7 @@ class Auth {
     * be loaded. If the auth ID does not exist, all fields except for the
     * auth ID field will be blanked.
     * @param $referenceId the auth ID to load. This must be a valid non-empty
-    * auth ID. 
+    * auth ID.
     * @return true when data is successfully loaded, false if no auth data
     * is loaded (object will be empty except for authID).
     */
@@ -194,6 +195,17 @@ class Auth {
       // load object to get the new values for created and updated
       Auth::load($this->authId);
       return true;
+   }
+
+   /**
+    * generate a unique auth ID. The unique ID is a base-64 encoding
+    * of a random value. Since the auth IDs are at most 64 chars
+    * long, the random value is 48 characters long
+    */
+   public static function generateAuthId() {
+    $value = random_bytes(48);
+
+    return substr(base64_encode($value), 0, 64);
    }
 
    public function getAuthId() {

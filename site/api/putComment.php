@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../database/Trip.php');
 include_once(dirname(__FILE__) . '/../database/Comment.php');
 
 $auth = new AuthB();
-if (!$auth->canGetComment()) {
+if (!$auth->canPutComment()) {
    $response = errorResponse(RESPONSE_NOT_ALLOWED);
 } else if (isPutMethod()) {
    $data = json_decode(file_get_contents('php://input'), true);
