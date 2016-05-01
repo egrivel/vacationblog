@@ -6,7 +6,7 @@ include_once(dirname(__FILE__) . '/../database/TripAttribute.php');
 
 $auth = new AuthB();
 if (!$auth->canGetTripAttribute()) {
-   $response = errorResponse(RESPONSE_NOT_ALLOWED);
+   $response = errorResponse(REPONSE_UNAUTHORIZED);
 } else if (isPutMethod()) {
    $data = json_decode(file_get_contents('php://input'), true);
    $tripId = '';
@@ -18,7 +18,7 @@ if (!$auth->canGetTripAttribute()) {
       $name = $data['name'];
    }
    if (($tripId === '') || ($name === '')) {
-      $response = errorResponse(RESPONSE_INVALID_PARAM);
+      $response = errorResponse(RESPONSE_BAD_REQUEST);
    } else {
       $object = new TripAttribute($tripId, $name);
       if (isset($data['value'])) {

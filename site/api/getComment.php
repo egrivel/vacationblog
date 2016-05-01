@@ -19,7 +19,7 @@ function fillItem($item, $object) {
 
 $auth = new AuthB();
 if (!$auth->canGetComment()) {
-   $response = errorResponse(RESPONSE_NOT_ALLOWED);
+   $response = errorResponse(RESPONSE_UNAUTHORIZED);
 } else {
    $tripId = '';
    if (isset($_GET['tripId'])) {
@@ -36,7 +36,7 @@ if (!$auth->canGetComment()) {
 
    if (($tripId === '') ||
        (($commentId === '') && $referenceId === '')) {
-      $response = errorResponse(RESPONSE_INVALID_PARAM);
+      $response = errorResponse(RESPONSE_BAD_REQUEST, 'Must give trip ID and either comment or reference ID');
    } else if ($commentId !== '') {
       $object = new Comment($tripId, $commentId);
       if ($object->getCreated() === null) {

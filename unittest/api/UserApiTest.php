@@ -14,6 +14,8 @@ class UserApiTest extends PHPUnit_Framework_TestCase {
          . "WHERE userId='$testUserId1'"
          .    "OR userId='$testUserId2'";
       mysql_query($query);
+
+      setupTokens();
    }
 
    protected function tearDown() {
@@ -81,7 +83,7 @@ class UserApiTest extends PHPUnit_Framework_TestCase {
    public function testGetNoParameter() {
       $data = array();
       $result = getApi('getUser.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
    }
 
    /**
@@ -90,11 +92,11 @@ class UserApiTest extends PHPUnit_Framework_TestCase {
    public function testGetIncompleteParameter() {
       $data = array('userId'=>null);
       $result = getApi('getUser.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('userId'=>'');
       $result = getApi('getUser.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
    }
 
 
@@ -106,7 +108,7 @@ class UserApiTest extends PHPUnit_Framework_TestCase {
       global $testUserId1;
       $data = array('userId'=>$testUserId1);
       $result = getApi('getUser.php', $data);
-      $this->assertEquals('404', $result['resultCode']);
+      $this->assertEquals(RESPONSE_NOT_FOUND, $result['resultCode']);
    }
 
    /**
@@ -115,6 +117,7 @@ class UserApiTest extends PHPUnit_Framework_TestCase {
     */
    public function testGetExistent() {
       global $testUserId1;
+      global $adminAuthToken;
 
       $object = new User($testUserId1);
       $object->setName('Test User');
@@ -128,8 +131,8 @@ class UserApiTest extends PHPUnit_Framework_TestCase {
       $object->save();
 
       $data = array('userId'=>$testUserId1);
-      $result = getApi('getUser.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $result = getApi('getUser.php', $data, $adminAuthToken);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertTrue(isset($result['userId']));
       $this->assertTrue(isset($result['created']));
@@ -157,7 +160,7 @@ class UserApiTest extends PHPUnit_Framework_TestCase {
       $this->assertEquals("tempcode", $result['tempCode']);
       $this->assertEquals('Y', $result['deleted']);
    }
-      
+
    /**
     * Test #6. PUT request with no parameters.
     */
@@ -166,9 +169,9 @@ class UserApiTest extends PHPUnit_Framework_TestCase {
 
       $data = array();
       $result = putApi('putUser.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
    }
-      
+
    /**
     * Test #7. PUT request with invalid parameters.
     */
@@ -177,22 +180,23 @@ class UserApiTest extends PHPUnit_Framework_TestCase {
 
       $data = array('userId'=>null);
       $result = putApi('putUser.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $this->assertEquals(0, $this->countTestRows());
 
       $data = array('userId'=>'');
       $result = putApi('putUser.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $this->assertEquals(0, $this->countTestRows());
    }
-      
+
    /**
     * Test #8. PUT request create new object.
     */
    public function testPutCreate() {
       global $testUserId1;
+      global $adminAuthToken;
 
       $this->assertEquals(0, $this->countTestRows());
 
@@ -208,8 +212,8 @@ class UserApiTest extends PHPUnit_Framework_TestCase {
                     'tempCode'=>'tempcode',
                     'deleted'=>'Y',
                     'hash'=>'forced hash');
-      $result = putApi('putUser.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $result = putApi('putUser.php', $data, $adminAuthToken);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertEquals(1, $this->countTestRows());
 
@@ -237,13 +241,15 @@ class UserApiTest extends PHPUnit_Framework_TestCase {
       $this->assertNotEquals('', $object->getHash());
       $this->assertNotEquals('forced hash', $object->getHash());
    }
-      
+
    /**
     * Test #9. PUT request update existing object.
     * @depends testPutCreate
-    */      
+    */
    public function testPutUpdate() {
       global $testUserId1;
+      global $adminAuthToken;
+
       $object = new User($testUserId1);
       $object->setName("Test User");
       $object->setExternalType("externaltype");
@@ -266,8 +272,8 @@ class UserApiTest extends PHPUnit_Framework_TestCase {
          'notification'=>'Y',
          'tempCode'=>'tempcode2',
          'deleted'=>'Y');
-      $result = putApi('putUser.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $result = putApi('putUser.php', $data, $adminAuthToken);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertEquals(2, $this->countTestRows());
 
@@ -289,15 +295,15 @@ class UserApiTest extends PHPUnit_Framework_TestCase {
    public function testSynchGetInvalid() {
       $data = array();
       $result = getApi('synchUser.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('hash'=>'');
       $result = getApi('synchUser.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('hash'=>'non-existent');
       $result = getApi('synchUser.php', $data);
-      $this->assertEquals('404', $result['resultCode']);
+      $this->assertEquals(RESPONSE_NOT_FOUND, $result['resultCode']);
    }
 
    /**
@@ -323,7 +329,7 @@ class UserApiTest extends PHPUnit_Framework_TestCase {
 
       $data = array('hash'=>$hash);
       $result = getApi('synchUser.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertTrue(isset($result['userId']));
       $this->assertTrue(isset($result['created']));
@@ -360,15 +366,15 @@ class UserApiTest extends PHPUnit_Framework_TestCase {
 
       $data = array();
       $result = putApi('synchUser.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('userId'=>'');
       $result = getApi('synchUser.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $this->assertEquals(0, $this->countTestRows());
    }
-      
+
    /**
     * Test #13. SYNCH request write new object.
     */
@@ -390,7 +396,7 @@ class UserApiTest extends PHPUnit_Framework_TestCase {
                     'deleted'=>'Y',
                     'hash'=>'forced hash');
       $result = putApi('synchUser.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertEquals(1, $this->countTestRows());
 

@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../database/Trip.php');
 
 $auth = new AuthB();
 if (!$auth->canPutTrip()) {
-   $response = errorResponse(RESPONSE_NOT_ALLOWED);
+   $response = errorResponse(REPONSE_UNAUTHORIZED);
 } else if (isPutMethod()) {
    $data = json_decode(file_get_contents('php://input'), true);
    $tripId = '';
@@ -13,7 +13,7 @@ if (!$auth->canPutTrip()) {
       $tripId = $data['tripId'];
    }
    if ($tripId === '') {
-      $response = errorResponse(RESPONSE_INVALID_PARAM);
+      $response = errorResponse(RESPONSE_BAD_REQUEST);
    } else {
       $object = new Trip($tripId);
       if (isset($data['name'])) {
@@ -44,7 +44,7 @@ if (!$auth->canPutTrip()) {
       }
    }
 } else {
-   $response = errorResponse(RESPONSE_INVALID_PARAM);
+   $response = errorResponse(RESPONSE_BAD_REQUEST);
 }
 echo json_encode($response);
 ?>

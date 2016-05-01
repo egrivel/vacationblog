@@ -117,7 +117,7 @@ class MediaApiTest extends PHPUnit_Framework_TestCase {
    public function testGetNoParameter() {
       $data = array();
       $result = getApi('getMedia.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
    }
 
    /**
@@ -126,11 +126,11 @@ class MediaApiTest extends PHPUnit_Framework_TestCase {
    public function testGetIncompleteParameter() {
       $data = array('mediaId'=>null);
       $result = getApi('getMedia.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('mediaId'=>'');
       $result = getApi('getMedia.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
    }
 
    /**
@@ -142,7 +142,7 @@ class MediaApiTest extends PHPUnit_Framework_TestCase {
       $data = array('tripId'=>$testTripId1,
                     'mediaId'=>$testMediaId1);
       $result = getApi('getMedia.php', $data);
-      $this->assertEquals('404', $result['resultCode']);
+      $this->assertEquals(RESPONSE_NOT_FOUND, $result['resultCode']);
    }
 
    /**
@@ -168,12 +168,12 @@ class MediaApiTest extends PHPUnit_Framework_TestCase {
       // Save the object and confirm a row is added to the database
       $this->assertTrue($object->save());
       $this->assertEquals(1, $this->countTestRows());
-      
+
       $data = array('tripId'=>$testTripId1,
                     'mediaId'=>$testMediaId1);
 
       $result = getApi('getMedia.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertTrue(isset($result['tripId']));
       $this->assertTrue(isset($result['mediaId']));
@@ -222,7 +222,7 @@ class MediaApiTest extends PHPUnit_Framework_TestCase {
       $object->setHeight('600');
       $object->setDeleted('N');
       $this->assertTrue($object->save());
-      
+
       $object = new Media($testTripId1, $testMediaId2);
       $object->setType('photo');
       $object->setCaption('Caption 1');
@@ -232,7 +232,7 @@ class MediaApiTest extends PHPUnit_Framework_TestCase {
       $object->setHeight('601');
       $object->setDeleted('N');
       $this->assertTrue($object->save());
-      
+
       $object = new Media($testTripId1, $testMediaId3);
       $object->setType('photo');
       $object->setCaption('Caption 2');
@@ -242,7 +242,7 @@ class MediaApiTest extends PHPUnit_Framework_TestCase {
       $object->setHeight('602');
       $object->setDeleted('Y');
       $this->assertTrue($object->save());
-      
+
       $object = new Media($testTripId1, $testMediaId4);
       $object->setType('photo');
       $object->setCaption('Caption 3');
@@ -259,19 +259,19 @@ class MediaApiTest extends PHPUnit_Framework_TestCase {
       // list without tripId fails
       $data = array('list'=>$list);
       $result = getApi('getMedia.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       // empty list fails
       $data = array('tripId'=>$testTripId1,
                     'list'=>'');
       $result = getApi('getMedia.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       // try and get all four media items in a list
       $data = array('tripId'=>$testTripId1,
                     'list'=>$list);
       $result = getApi('getMedia.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertTrue(isset($result['list']));
       $this->assertTrue(isset($result['count']));
@@ -340,9 +340,9 @@ class MediaApiTest extends PHPUnit_Framework_TestCase {
 
       $data = array();
       $result = putApi('putMedia.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
    }
-      
+
    /**
     * Test #7. PUT request with invalid parameters.
     */
@@ -352,18 +352,18 @@ class MediaApiTest extends PHPUnit_Framework_TestCase {
       $data = array('tripId'=>null,
                     'mediaId'=>null);
       $result = putApi('putMedia.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $this->assertEquals(0, $this->countTestRows());
 
       $data = array('tripId'=>'',
                     'mediaId'=>'');
       $result = putApi('putMedia.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $this->assertEquals(0, $this->countTestRows());
    }
-      
+
    /**
     * Test #8. PUT request create new object.
     */
@@ -386,7 +386,7 @@ class MediaApiTest extends PHPUnit_Framework_TestCase {
                     'deleted'=>'Y',
                     'hash'=>'forced hash');
       $result = putApi('putMedia.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertEquals(1, $this->countTestRows());
 
@@ -419,7 +419,7 @@ class MediaApiTest extends PHPUnit_Framework_TestCase {
    /**
     * Test #9. PUT request update existing object.
     * @depends testPutCreate
-    */      
+    */
    public function testUpdateMedia() {
       global $testTripId1;
       global $testMediaId1;
@@ -449,7 +449,7 @@ class MediaApiTest extends PHPUnit_Framework_TestCase {
                     'deleted'=>'Y',
                     'hash'=>'forced hash');
       $result = putApi('putMedia.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertEquals(2, $this->countTestRows());
 
@@ -473,15 +473,15 @@ class MediaApiTest extends PHPUnit_Framework_TestCase {
    public function testSynchGetInvalid() {
       $data = array();
       $result = getApi('synchMedia.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('hash'=>'');
       $result = getApi('synchMedia.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('hash'=>'non-existent');
       $result = getApi('synchMedia.php', $data);
-      $this->assertEquals('404', $result['resultCode']);
+      $this->assertEquals(RESPONSE_NOT_FOUND, $result['resultCode']);
    }
 
    /**
@@ -506,10 +506,10 @@ class MediaApiTest extends PHPUnit_Framework_TestCase {
       // Save the object and confirm a row is added to the database
       $this->assertTrue($object->save());
       $this->assertEquals(1, $this->countTestRows());
-      
+
       $data = array('hash'=>$object->getHash());
       $result = getApi('synchMedia.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertTrue(isset($result['tripId']));
       $this->assertTrue(isset($result['mediaId']));
@@ -549,37 +549,37 @@ class MediaApiTest extends PHPUnit_Framework_TestCase {
 
       $data = array();
       $result = putApi('synchMedia.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>'');
       $result = getApi('synchMedia.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('mediaId'=>'');
       $result = getApi('synchMedia.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>$testTripId1);
       $result = getApi('synchMedia.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('mediaId'=>$testMediaId1);
       $result = getApi('synchMedia.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>$testTripId1,
                     'mediaId'=>'');
       $result = getApi('synchMedia.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>'',
                     'mediaId'=>$testMediaId1);
       $result = getApi('synchMedia.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $this->assertEquals(0, $this->countTestRows());
    }
-      
+
    /**
     * Test #13. SYNCH request write new object.
     */
@@ -601,7 +601,7 @@ class MediaApiTest extends PHPUnit_Framework_TestCase {
                     'deleted'=>'Y',
                     'hash'=>'forced hash');
       $result = putApi('synchMedia.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertEquals(1, $this->countTestRows());
 

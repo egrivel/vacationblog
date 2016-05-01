@@ -4,16 +4,17 @@ include_once(dirname(__FILE__) . '/../business/AuthB.php');
 include_once(dirname(__FILE__) . '/../database/User.php');
 
 $auth = new AuthB();
-if (!$auth->canGetUser()) {
-   $response = errorResponse(RESPONSE_NOT_ALLOWED);
-} else if (isPutMethod()) {
+
+if (isPutMethod()) {
    $data = json_decode(file_get_contents('php://input'), true);
    $userId = '';
    if (isset($data['userId'])) {
       $userId = $data['userId'];
    }
    if ($userId === '') {
-      $response = errorResponse(RESPONSE_INVALID_PARAM);
+      $response = errorResponse(RESPONSE_BAD_REQUEST);
+   } else if (!$auth->canPutUser($userId)) {
+      $response = errorResponse(RESPONSE_UNAUTHORIZED);
    } else {
       $object = new User($userId);
       if (isset($data['name'])) {
@@ -46,6 +47,8 @@ if (!$auth->canGetUser()) {
          $response = errorResponse(RESPONSE_INTERNAL_ERROR);
       }
    }
- }
+} else {
+   $response = errorResponse(RESPONSE_METHOD_NOT_ALLOWED, 'Use Put method');
+}
 echo json_encode($response);
 ?>

@@ -5,12 +5,12 @@ include_once(dirname(__FILE__) . '/../database/User.php');
 
 $auth = new AuthB();
 if (!$auth->canSynchUser()) {
-   $response = errorResponse(RESPONSE_NOT_ALLOWED);
+   $response = errorResponse(RESPONSE_UNAUTHORIZED);
 } else if (isGetMethod()) {
    if (isset($_GET['hash'])) {
       $hash = $_GET['hash'];
       if ($hash === '') {
-         $response = errorResponse(RESPONSE_INVALID_PARAM);
+         $response = errorResponse(RESPONSE_BAD_REQUEST, 'Need hash');
       } else {
          $object = User::findByHash($hash);
          if ($object === null) {
@@ -33,7 +33,7 @@ if (!$auth->canSynchUser()) {
          }
       }
    } else {
-      $response = errorResponse(RESPONSE_INVALID_PARAM);
+      $response = errorResponse(RESPONSE_BAD_REQUEST, 'Need hash');
    }
 } else if (isPutMethod()) {
    $data = json_decode(file_get_contents('php://input'), true);
@@ -82,10 +82,10 @@ if (!$auth->canSynchUser()) {
          $response = errorResponse(RESPONSE_INTERNAL_ERROR);
       }
    } else {
-      $response = errorResponse(RESPONSE_INVALID_PARAM);
+      $response = errorResponse(RESPONSE_BAD_REQUEST, 'Need user ID');
    }
 } else {
-   $response = errorResponse(RESPONSE_INVALID_PARAM);
+   $response = errorResponse(RESPONSE_METHOD_NOT_ALLOWED);
 }
 
 echo json_encode($response);

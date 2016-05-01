@@ -5,12 +5,12 @@ include_once(dirname(__FILE__) . '/../database/Journal.php');
 
 $auth = new AuthB();
 if (!$auth->canSynchJournal()) {
-   $response = errorResponse(RESPONSE_NOT_ALLOWED);
+   $response = errorResponse(REPONSE_UNAUTHORIZED);
 } else if (isGetMethod()) {
    if (isset($_GET['hash'])) {
       $hash = $_GET['hash'];
       if ($hash === '') {
-         $response = errorResponse(RESPONSE_INVALID_PARAM, 'hash is blank');
+         $response = errorResponse(RESPONSE_BAD_REQUEST, 'hash is blank');
       } else {
          $object = Journal::findByHash($hash);
          if ($object === null) {
@@ -30,7 +30,7 @@ if (!$auth->canSynchJournal()) {
          }
       }
    } else {
-      $response = errorResponse(RESPONSE_INVALID_PARAM, 'hash not set');
+      $response = errorResponse(RESPONSE_BAD_REQUEST, 'hash not set');
    }
 } else if (isPutMethod()) {
    $contents = file_get_contents('php://input');
@@ -70,10 +70,10 @@ if (!$auth->canSynchJournal()) {
          $response = errorResponse(RESPONSE_INTERNAL_ERROR);
       }
    } else {
-      $response = errorResponse(RESPONSE_INVALID_PARAM, 'tripId or journalId not set');
+      $response = errorResponse(RESPONSE_BAD_REQUEST, 'tripId or journalId not set');
    }
 } else {
-   $response = errorResponse(RESPONSE_INVALID_PARAM, 'not GET or PUT response');
+   $response = errorResponse(RESPONSE_BAD_REQUEST, 'not GET or PUT response');
 }
 
 echo json_encode($response);

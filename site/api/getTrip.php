@@ -6,7 +6,7 @@ include_once(dirname(__FILE__) . '/../database/Journal.php');
 
 $auth = new AuthB();
 if (!$auth->canGetTrip()) {
-   $response = errorResponse(RESPONSE_NOT_ALLOWED);
+   $response = errorResponse(REPONSE_UNAUTHORIZED);
 } else {
    $tripId = '';
    if (isset($_GET['current'])) {
@@ -17,9 +17,9 @@ if (!$auth->canGetTrip()) {
    } else if (isset($_GET['tripId'])) {
       $tripId = $_GET['tripId'];
    }
-   
+
    if ($tripId === '') {
-      $response = errorResponse(RESPONSE_INVALID_PARAM);
+      $response = errorResponse(RESPONSE_BAD_REQUEST);
    } else {
       $object = new Trip($tripId);
       if ($object->getCreated() === null) {

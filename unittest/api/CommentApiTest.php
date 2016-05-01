@@ -125,7 +125,7 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
    public function testGetNoParameter() {
       $data = array();
       $result = getApi('getComment.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
    }
 
    /**
@@ -134,11 +134,11 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
    public function testGetIncompleteParameter() {
       $data = array('commentId'=>null);
       $result = getApi('getComment.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('commentId'=>'');
       $result = getApi('getComment.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
    }
 
    /**
@@ -150,7 +150,7 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
       $data = array('tripId'=>$testTripId1,
                     'commentId'=>$testCommentId1);
       $result = getApi('getComment.php', $data);
-      $this->assertEquals('404', $result['resultCode']);
+      $this->assertEquals(RESPONSE_NOT_FOUND, $result['resultCode']);
    }
 
    /**
@@ -178,7 +178,7 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
                     'commentId'=>$testCommentId1);
 
       $result = getApi('getComment.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertTrue(isset($result['tripId']));
       $this->assertTrue(isset($result['commentId']));
@@ -219,14 +219,14 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
                     'referenceId'=>'');
 
       $result = getApi('getComment.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       // Missing trip ID gives error
       $data = array('tripId'=>'',
                     'referenceId'=>$testCommentId1);
 
       $result = getApi('getComment.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       // Create a simple structure, starting at comment 1, which comments
       // 2 and three as its children, and comment 4 a child of 3
@@ -251,7 +251,7 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
                     'referenceId'=>$testCommentId1);
 
       $result = getApi('getComment.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertTrue(isset($result['list']));
       $this->assertTrue(isset($result['count']));
@@ -283,7 +283,7 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
                     'referenceId'=>$testCommentId2);
 
       $result = getApi('getComment.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertTrue(isset($result['list']));
       $this->assertTrue(isset($result['count']));
@@ -297,7 +297,7 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
                     'referenceId'=>$testCommentId3);
 
       $result = getApi('getComment.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertTrue(isset($result['list']));
       $this->assertTrue(isset($result['count']));
@@ -328,7 +328,7 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
                     'referenceId'=>$testCommentId4);
 
       $result = getApi('getComment.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertTrue(isset($result['list']));
       $this->assertTrue(isset($result['count']));
@@ -347,7 +347,7 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
 
       $data = array();
       $result = putApi('putComment.php', $data, $visitorAuthToken);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
    }
 
    /**
@@ -360,14 +360,14 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
       $data = array('tripId'=>null,
                     'commentId'=>null);
       $result = putApi('putComment.php', $data, $visitorAuthToken);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $this->assertEquals(0, $this->countTestRows());
 
       $data = array('tripId'=>'',
                     'commentId'=>'');
       $result = putApi('putComment.php', $data, $visitorAuthToken);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $this->assertEquals(0, $this->countTestRows());
    }
@@ -392,7 +392,7 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
                     'deleted'=>'Y',
                     'hash'=>'forced hash');
       $result = putApi('putComment.php', $data, $visitorAuthToken);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertEquals(1, $this->countTestRows());
 
@@ -441,11 +441,11 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
 
       // With auth token this succeeds
       $result = putApi('putComment.php', $data, $visitorAuthToken);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       // Without auth token this fails
       $result = putApi('putComment.php', $data);
-      $this->assertEquals('403', $result['resultCode']);
+      $this->assertEquals(RESPONSE_UNAUTHORIZED, $result['resultCode']);
    }
    /**
     * Test #9. PUT request update existing object.
@@ -475,7 +475,7 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
                     'deleted'=>'Y',
                     'hash'=>'forced hash');
       $result = putApi('putComment.php', $data, $visitorAuthToken);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertEquals(2, $this->countTestRows());
 
@@ -496,15 +496,15 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
       global $synchAuthToken;
       $data = array();
       $result = getApi('synchComment.php', $data, $synchAuthToken);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('hash'=>'');
       $result = getApi('synchComment.php', $data, $synchAuthToken);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('hash'=>'non-existent');
       $result = getApi('synchComment.php', $data, $synchAuthToken);
-      $this->assertEquals('404', $result['resultCode']);
+      $this->assertEquals(RESPONSE_NOT_FOUND, $result['resultCode']);
    }
 
    /**
@@ -530,7 +530,7 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
 
       $data = array('hash'=>$object->getHash());
       $result = getApi('synchComment.php', $data, $synchAuthToken);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertTrue(isset($result['tripId']));
       $this->assertTrue(isset($result['commentId']));
@@ -565,33 +565,33 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
 
       $data = array();
       $result = putApi('synchComment.php', $data, $synchAuthToken);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>'');
       $result = getApi('synchComment.php', $data, $synchAuthToken);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('commentId'=>'');
       $result = getApi('synchComment.php', $data, $synchAuthToken);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>$testTripId1);
       $result = getApi('synchComment.php', $data, $synchAuthToken);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('commentId'=>$testCommentId1);
       $result = getApi('synchComment.php', $data, $synchAuthToken);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>$testTripId1,
                     'commentId'=>'');
       $result = getApi('synchComment.php', $data, $synchAuthToken);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>'',
                     'commentId'=>$testCommentId1);
       $result = getApi('synchComment.php', $data, $synchAuthToken);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $this->assertEquals(0, $this->countTestRows());
    }
@@ -615,7 +615,7 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
                     'deleted'=>'Y',
                     'hash'=>'forced hash');
       $result = putApi('synchComment.php', $data, $synchAuthToken);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertEquals(1, $this->countTestRows());
 

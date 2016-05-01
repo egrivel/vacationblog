@@ -6,7 +6,7 @@ include_once(dirname(__FILE__) . '/../database/Journal.php');
 
 $auth = new AuthB();
 if (!$auth->canGetJournal()) {
-   $response = errorResponse(RESPONSE_NOT_ALLOWED);
+   $response = errorResponse(REPONSE_UNAUTHORIZED);
 } else if (isPutMethod()) {
    $data = json_decode(file_get_contents('php://input'), true);
    $tripId = '';
@@ -18,7 +18,7 @@ if (!$auth->canGetJournal()) {
       $journalId = $data['journalId'];
    }
    if (($tripId === '') || ($journalId === '')) {
-      $response = errorResponse(RESPONSE_INVALID_PARAM);
+      $response = errorResponse(RESPONSE_BAD_REQUEST);
    } else {
       $object = new Journal($tripId, $journalId);
       if (isset($data['userId'])) {

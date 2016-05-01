@@ -117,7 +117,7 @@ class JournalApiTest extends PHPUnit_Framework_TestCase {
    public function testGetNoParameter() {
       $data = array();
       $result = getApi('getJournal.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
    }
 
    /**
@@ -126,11 +126,11 @@ class JournalApiTest extends PHPUnit_Framework_TestCase {
    public function testGetIncompleteParameter() {
       $data = array('journalId'=>null);
       $result = getApi('getJournal.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('journalId'=>'');
       $result = getApi('getJournal.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
    }
 
    /**
@@ -142,7 +142,7 @@ class JournalApiTest extends PHPUnit_Framework_TestCase {
       $data = array('tripId'=>$testTripId1,
                     'journalId'=>$testJournalId1);
       $result = getApi('getJournal.php', $data);
-      $this->assertEquals('404', $result['resultCode']);
+      $this->assertEquals(RESPONSE_NOT_FOUND, $result['resultCode']);
    }
 
    /**
@@ -166,12 +166,12 @@ class JournalApiTest extends PHPUnit_Framework_TestCase {
       // Save the object and confirm a row is added to the database
       $this->assertTrue($object->save());
       $this->assertEquals(1, $this->countTestRows());
-      
+
       $data = array('tripId'=>$testTripId1,
                     'journalId'=>$testJournalId1);
 
       $result = getApi('getJournal.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertTrue(isset($result['tripId']));
       $this->assertTrue(isset($result['journalId']));
@@ -217,7 +217,7 @@ class JournalApiTest extends PHPUnit_Framework_TestCase {
       $object->setJournalText('Journal Text 1');
       $this->assertTrue($object->save());
       $this->assertEquals(1, $this->countTestRows());
-      
+
       $object = new Journal($testTripId1, $testJournalId2);
       $object->setUserId('user');
       $object->setJournalDate('2015-10-02');
@@ -247,7 +247,7 @@ class JournalApiTest extends PHPUnit_Framework_TestCase {
                     'journalId'=>$testJournalId1);
 
       $result = getApi('getJournal.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertTrue(isset($result['journalId']));
       $this->assertFalse(isset($result['prevId']));
@@ -262,7 +262,7 @@ class JournalApiTest extends PHPUnit_Framework_TestCase {
                     'journalId'=>$testJournalId2);
 
       $result = getApi('getJournal.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertTrue(isset($result['journalId']));
       $this->assertTrue(isset($result['prevId']));
@@ -277,7 +277,7 @@ class JournalApiTest extends PHPUnit_Framework_TestCase {
                     'journalId'=>$testJournalId3);
 
       $result = getApi('getJournal.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertTrue(isset($result['journalId']));
       $this->assertTrue(isset($result['prevId']));
@@ -292,7 +292,7 @@ class JournalApiTest extends PHPUnit_Framework_TestCase {
                     'journalId'=>$testJournalId4);
 
       $result = getApi('getJournal.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertTrue(isset($result['journalId']));
       $this->assertTrue(isset($result['prevId']));
@@ -311,9 +311,9 @@ class JournalApiTest extends PHPUnit_Framework_TestCase {
 
       $data = array();
       $result = putApi('putJournal.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
    }
-      
+
    /**
     * Test #7. PUT request with invalid parameters.
     */
@@ -323,18 +323,18 @@ class JournalApiTest extends PHPUnit_Framework_TestCase {
       $data = array('tripId'=>null,
                     'journalId'=>null);
       $result = putApi('putJournal.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $this->assertEquals(0, $this->countTestRows());
 
       $data = array('tripId'=>'',
                     'journalId'=>'');
       $result = putApi('putJournal.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $this->assertEquals(0, $this->countTestRows());
    }
-      
+
    /**
     * Test #8. PUT request create new object.
     */
@@ -355,7 +355,7 @@ class JournalApiTest extends PHPUnit_Framework_TestCase {
                     'deleted'=>'Y',
                     'hash'=>'forced hash');
       $result = putApi('putJournal.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertEquals(1, $this->countTestRows());
 
@@ -385,7 +385,7 @@ class JournalApiTest extends PHPUnit_Framework_TestCase {
    /**
     * Test #9. PUT request update existing object.
     * @depends testPutCreate
-    */      
+    */
    public function testUpdateJournal() {
       global $testTripId1;
       global $testJournalId1;
@@ -411,7 +411,7 @@ class JournalApiTest extends PHPUnit_Framework_TestCase {
                     'deleted'=>'Y',
                     'hash'=>'forced hash');
       $result = putApi('putJournal.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertEquals(2, $this->countTestRows());
 
@@ -432,15 +432,15 @@ class JournalApiTest extends PHPUnit_Framework_TestCase {
    public function testSynchGetInvalid() {
       $data = array();
       $result = getApi('synchJournal.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('hash'=>'');
       $result = getApi('synchJournal.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('hash'=>'non-existent');
       $result = getApi('synchJournal.php', $data);
-      $this->assertEquals('404', $result['resultCode']);
+      $this->assertEquals(RESPONSE_NOT_FOUND, $result['resultCode']);
    }
 
    /**
@@ -463,10 +463,10 @@ class JournalApiTest extends PHPUnit_Framework_TestCase {
       // Save the object and confirm a row is added to the database
       $this->assertTrue($object->save());
       $this->assertEquals(1, $this->countTestRows());
-      
+
       $data = array('hash'=>$object->getHash());
       $result = getApi('synchJournal.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertTrue(isset($result['tripId']));
       $this->assertTrue(isset($result['journalId']));
@@ -502,37 +502,37 @@ class JournalApiTest extends PHPUnit_Framework_TestCase {
 
       $data = array();
       $result = putApi('synchJournal.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>'');
       $result = putApi('synchJournal.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('journalId'=>'');
       $result = putApi('synchJournal.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>$testTripId1);
       $result = putApi('synchJournal.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('journalId'=>$testJournalId1);
       $result = putApi('synchJournal.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>$testTripId1,
                     'journalId'=>'');
       $result = putApi('synchJournal.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>'',
                     'journalId'=>$testJournalId1);
       $result = putApi('synchJournal.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $this->assertEquals(0, $this->countTestRows());
    }
-      
+
    /**
     * Test #13. SYNCH request write new object.
     */
@@ -552,7 +552,7 @@ class JournalApiTest extends PHPUnit_Framework_TestCase {
                     'deleted'=>'Y',
                     'hash'=>'forced hash');
       $result = putApi('synchJournal.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertEquals(1, $this->countTestRows());
 
@@ -598,7 +598,7 @@ class JournalApiTest extends PHPUnit_Framework_TestCase {
                     'deleted'=>'Y',
                     'hash'=>'forced hash');
       $result = putApi('synchJournal.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertEquals(1, $this->countTestRows());
 

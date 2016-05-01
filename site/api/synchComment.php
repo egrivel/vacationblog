@@ -5,12 +5,12 @@ include_once(dirname(__FILE__) . '/../database/Comment.php');
 
 $auth = new AuthB();
 if (!$auth->canSynchComment()) {
-   $response = errorResponse(RESPONSE_NOT_ALLOWED);
+   $response = errorResponse(RESPONSE_UNAUTHORIZED);
 } else if (isGetMethod()) {
    if (isset($_GET['hash'])) {
       $hash = $_GET['hash'];
       if ($hash === '') {
-         $response = errorResponse(RESPONSE_INVALID_PARAM);
+         $response = errorResponse(RESPONSE_BAD_REQUEST, 'need hash');
       } else {
          $object = Comment::findByHash($hash);
          if ($object === null) {
@@ -29,7 +29,7 @@ if (!$auth->canSynchComment()) {
          }
       }
    } else {
-      $response = errorResponse(RESPONSE_INVALID_PARAM);
+      $response = errorResponse(RESPONSE_BAD_REQUEST, 'need hash');
    }
 } else if (isPutMethod()) {
    $data = json_decode(file_get_contents('php://input'), true);
@@ -65,10 +65,10 @@ if (!$auth->canSynchComment()) {
          $response = errorResponse(RESPONSE_INTERNAL_ERROR);
       }
    } else {
-      $response = errorResponse(RESPONSE_INVALID_PARAM);
+      $response = errorResponse(RESPONSE_BAD_REQUEST);
    }
 } else {
-   $response = errorResponse(RESPONSE_INVALID_PARAM);
+   $response = errorResponse(RESPONSE_METHOD_NOT_ALLOWED, 'must be get or put');
 }
 
 echo json_encode($response);

@@ -62,10 +62,10 @@ function createResponse($code, $message) {
 }
 
 define("RESPONSE_SUCCESS", '200');
-define("RESPONSE_INVALID_PARAM", '401');
-define("RESPONSE_NOT_ALLOWED", '403');
-define("RESPONSE_NOT_AUTHORIZED", '403');
+define("RESPONSE_BAD_REQUEST", '400');
+define("RESPONSE_UNAUTHORIZED", '401');
 define("RESPONSE_NOT_FOUND", '404');
+define("RESPONSE_METHOD_NOT_ALLOWED", '405');
 define("RESPONSE_INTERNAL_ERROR", '500');
 
 function errorResponse($code, $info = '') {
@@ -73,19 +73,22 @@ function errorResponse($code, $info = '') {
       $info = ': ' . $info;
    }
    switch ($code) {
-   case RESPONSE_NOT_AUTHORIZED:
-      return createResponse($code, 'Not Authorized' . $info);
+   case RESPONSE_BAD_REQUEST:
+      return createResponse($code,
+         'Bad Request (Invalid parameter)' . $info);
+   case RESPONSE_UNAUTHORIZED:
+      return createResponse($code, 'Unauthorized' . $info);
    case RESPONSE_NOT_FOUND:
       return createResponse($code, 'Not found' . $info);
-   case RESPONSE_INVALID_PARAM:
-      return createResponse($code, 'Invalid parameter' . $info);
+   case RESPONSE_METHOD_NOT_ALLOWED:
+      return createResponse($code, 'Method not allowed' . $info);
    default:
       return createResponse($code, 'Unknown Code' . $info);
    }
 }
 
 function successResponse() {
-   return createResponse('200', 'OK');
+   return createResponse(RESPONSE_SUCCESS, 'OK');
 }
 
 ?>

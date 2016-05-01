@@ -21,7 +21,7 @@ function fillItem($item, $object) {
 
 $auth = new AuthB();
 if (!$auth->canGetMedia()) {
-   $response = errorResponse(RESPONSE_NOT_ALLOWED);
+   $response = errorResponse(REPONSE_UNAUTHORIZED);
 } else {
    $tripId = '';
    if (isset($_GET['tripId'])) {
@@ -37,7 +37,7 @@ if (!$auth->canGetMedia()) {
    }
 
    if (($tripId === '') || (($mediaId === '') && ($list === ''))) {
-      $response = errorResponse(RESPONSE_INVALID_PARAM);
+      $response = errorResponse(RESPONSE_BAD_REQUEST);
    } else {
       if ($mediaId !== '') {
          $object = new Media($tripId, $mediaId);

@@ -100,11 +100,36 @@ class AuthB {
    public function canSynchTripUser($tripId = '', $userId = '') {
       return true;
    }
-   public function canGetUser($userId = '') {
+   public function canGetUserBaseInfo($userId = '') {
+      // everybody can get a user's base info
       return true;
    }
+   public function canGetUserDetails($userId = '') {
+      // only user themselves or admin can get details
+      $user = $this->getUser();
+      if ($user) {
+         $access = $user->getAccess();
+         if (($access === LEVEL_VISITOR)
+            || ($access === LEVEL_CONTRIB)) {
+            return ($userId === $user->getUserId());
+         }
+         return ($access === LEVEL_ADMIN);
+      }
+      return false;
+   }
    public function canPutUser($userId = '') {
-      return true;
+      $user = $this->getUser();
+      if ($user) {
+         $access = $user->getAccess();
+         if (($access === LEVEL_VISITOR)
+            || ($access === LEVEL_CONTRIB)) {
+            // Regular users can only update their own info
+            return ($userId === $user->getUserId());
+         }
+         // administrators can update all users
+         return ($access === LEVEL_ADMIN);
+      }
+      return false;
    }
    public function canSynchUser($userId = '') {
       return true;

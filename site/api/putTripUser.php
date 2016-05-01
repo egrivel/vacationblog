@@ -6,7 +6,7 @@ include_once(dirname(__FILE__) . '/../database/TripUser.php');
 
 $auth = new AuthB();
 if (!$auth->canGetMedia()) {
-   $response = errorResponse(RESPONSE_NOT_ALLOWED);
+   $response = errorResponse(REPONSE_UNAUTHORIZED);
 } else if (isPutMethod()) {
    $data = json_decode(file_get_contents('php://input'), true);
    $tripId = '';
@@ -18,7 +18,7 @@ if (!$auth->canGetMedia()) {
       $userId = $data['userId'];
    }
    if (($tripId === '') || ($userId === '')) {
-      $response = errorResponse(RESPONSE_INVALID_PARAM);
+      $response = errorResponse(RESPONSE_BAD_REQUEST);
    } else {
       $object = new TripUser($tripId, $userId);
       if (isset($data['role'])) {

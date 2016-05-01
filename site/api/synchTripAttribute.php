@@ -5,12 +5,12 @@ include_once(dirname(__FILE__) . '/../database/TripAttribute.php');
 
 $auth = new AuthB();
 if (!$auth->canSynchTripAttribute()) {
-   $response = errorResponse(RESPONSE_NOT_ALLOWED);
+   $response = errorResponse(REPONSE_UNAUTHORIZED);
 } else if (isGetMethod()) {
    if (isset($_GET['hash'])) {
       $hash = $_GET['hash'];
       if ($hash === '') {
-         $response = errorResponse(RESPONSE_INVALID_PARAM);
+         $response = errorResponse(RESPONSE_BAD_REQUEST);
       } else {
          $object = TripAttribute::findByHash($hash);
          if ($object === null) {
@@ -27,7 +27,7 @@ if (!$auth->canSynchTripAttribute()) {
          }
       }
    } else {
-      $response = errorResponse(RESPONSE_INVALID_PARAM);
+      $response = errorResponse(RESPONSE_BAD_REQUEST);
    }
 } else if (isPutMethod()) {
    $data = json_decode(file_get_contents('php://input'), true);
@@ -57,10 +57,10 @@ if (!$auth->canSynchTripAttribute()) {
          $response = errorResponse(RESPONSE_INTERNAL_ERROR);
       }
    } else {
-      $response = errorResponse(RESPONSE_INVALID_PARAM);
+      $response = errorResponse(RESPONSE_BAD_REQUEST);
    }
 } else {
-   $response = errorResponse(RESPONSE_INVALID_PARAM);
+   $response = errorResponse(RESPONSE_BAD_REQUEST);
 }
 
 echo json_encode($response);

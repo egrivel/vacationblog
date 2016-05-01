@@ -5,13 +5,13 @@ include_once(dirname(__FILE__) . '/../database/Trip.php');
 
 $auth = new AuthB();
 if (!$auth->canGetTrip()) {
-   $response = errorResponse(RESPONSE_NOT_ALLOWED);
+   $response = errorResponse(REPONSE_UNAUTHORIZED);
 } else {
    if ($resultSet = Trip::listTrips()) {
       $response = successResponse();
       $response['resultSet'] = $resultSet;
    } else {
-      $response = errorResponse(RESPONSE_NOT_ALLOWED);
+      $response = errorResponse(REPONSE_UNAUTHORIZED);
    }
 }
 echo json_encode($response);

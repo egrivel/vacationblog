@@ -121,7 +121,7 @@ class FeedbackApiTest extends PHPUnit_Framework_TestCase {
    public function testGetNoParameter() {
       $data = array();
       $result = getApi('getFeedback.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
    }
 
    /**
@@ -130,11 +130,11 @@ class FeedbackApiTest extends PHPUnit_Framework_TestCase {
    public function testGetIncompleteParameter() {
       $data = array('referenceId'=>null);
       $result = getApi('getFeedback.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('referenceId'=>'');
       $result = getApi('getFeedback.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
    }
 
    /**
@@ -147,7 +147,7 @@ class FeedbackApiTest extends PHPUnit_Framework_TestCase {
                     'referenceId'=>$testReferenceId1,
                     'userId'=>$testUserId1);
       $result = getApi('getFeedback.php', $data);
-      $this->assertEquals('404', $result['resultCode']);
+      $this->assertEquals(RESPONSE_NOT_FOUND, $result['resultCode']);
    }
 
    /**
@@ -169,13 +169,13 @@ class FeedbackApiTest extends PHPUnit_Framework_TestCase {
       // Save the object and confirm a row is added to the database
       $this->assertTrue($object->save());
       $this->assertEquals(1, $this->countTestRows());
-      
+
       $data = array('tripId'=>$testTripId1,
                     'referenceId'=>$testReferenceId1,
                     'userId'=>$testUserId1);
 
       $result = getApi('getFeedback.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertTrue(isset($result['tripId']));
       $this->assertTrue(isset($result['referenceId']));
@@ -204,9 +204,9 @@ class FeedbackApiTest extends PHPUnit_Framework_TestCase {
 
       $data = array();
       $result = putApi('putFeedback.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
    }
-      
+
    /**
     * Test #7. PUT request with invalid parameters.
     */
@@ -217,7 +217,7 @@ class FeedbackApiTest extends PHPUnit_Framework_TestCase {
                     'referenceId'=>null,
                     'userId'=>null);
       $result = putApi('putFeedback.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $this->assertEquals(0, $this->countTestRows());
 
@@ -225,11 +225,11 @@ class FeedbackApiTest extends PHPUnit_Framework_TestCase {
                     'referenceId'=>'',
                     'userId'=>'');
       $result = putApi('putFeedback.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $this->assertEquals(0, $this->countTestRows());
    }
-      
+
    /**
     * Test #8. PUT request create new object.
     */
@@ -249,7 +249,7 @@ class FeedbackApiTest extends PHPUnit_Framework_TestCase {
                     'deleted'=>'Y',
                     'hash'=>'forced hash');
       $result = putApi('putFeedback.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertEquals(1, $this->countTestRows());
 
@@ -277,7 +277,7 @@ class FeedbackApiTest extends PHPUnit_Framework_TestCase {
    /**
     * Test #9. PUT request update existing object.
     * @depends testPutCreate
-    */      
+    */
    public function testUpdateFeedback() {
       global $testTripId1;
       global $testReferenceId1;
@@ -299,7 +299,7 @@ class FeedbackApiTest extends PHPUnit_Framework_TestCase {
                     'deleted'=>'Y',
                     'hash'=>'forced hash');
       $result = putApi('putFeedback.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertEquals(2, $this->countTestRows());
 
@@ -318,15 +318,15 @@ class FeedbackApiTest extends PHPUnit_Framework_TestCase {
    public function testSynchGetInvalid() {
       $data = array();
       $result = getApi('synchFeedback.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('hash'=>'');
       $result = getApi('synchFeedback.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('hash'=>'non-existent');
       $result = getApi('synchFeedback.php', $data);
-      $this->assertEquals('404', $result['resultCode']);
+      $this->assertEquals(RESPONSE_NOT_FOUND, $result['resultCode']);
    }
 
    /**
@@ -347,10 +347,10 @@ class FeedbackApiTest extends PHPUnit_Framework_TestCase {
       // Save the object and confirm a row is added to the database
       $this->assertTrue($object->save());
       $this->assertEquals(1, $this->countTestRows());
-      
+
       $data = array('hash'=>$object->getHash());
       $result = getApi('synchFeedback.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertTrue(isset($result['tripId']));
       $this->assertTrue(isset($result['referenceId']));
@@ -383,53 +383,53 @@ class FeedbackApiTest extends PHPUnit_Framework_TestCase {
 
       $data = array();
       $result = putApi('synchFeedback.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>'');
       $result = getApi('synchFeedback.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('referenceId'=>'');
       $result = getApi('synchFeedback.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('userId'=>'');
       $result = getApi('synchFeedback.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>$testTripId1);
       $result = getApi('synchFeedback.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('referenceId'=>$testReferenceId1);
       $result = getApi('synchFeedback.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('userId'=>$testUserId1);
       $result = getApi('synchFeedback.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>$testTripId1,
                     'referenceId'=>'',
                     'userId'=>'');
       $result = getApi('synchFeedback.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>'',
                     'referenceId'=>$testReferenceId1,
                     'userId'=>'');
       $result = getApi('synchFeedback.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>'',
                     'referenceId'=>'',
                     'userId'=>$testUserId1);
       $result = getApi('synchFeedback.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $this->assertEquals(0, $this->countTestRows());
    }
-      
+
    /**
     * Test #13. SYNCH request write new object.
     */
@@ -447,7 +447,7 @@ class FeedbackApiTest extends PHPUnit_Framework_TestCase {
                     'deleted'=>'Y',
                     'hash'=>'forced hash');
       $result = putApi('synchFeedback.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertEquals(1, $this->countTestRows());
 

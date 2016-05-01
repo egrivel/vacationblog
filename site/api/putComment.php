@@ -6,7 +6,7 @@ include_once(dirname(__FILE__) . '/../database/Comment.php');
 
 $auth = new AuthB();
 if (!$auth->canPutComment()) {
-   $response = errorResponse(RESPONSE_NOT_ALLOWED);
+   $response = errorResponse(RESPONSE_UNAUTHORIZED);
 } else if (isPutMethod()) {
    $data = json_decode(file_get_contents('php://input'), true);
    $tripId = '';
@@ -18,7 +18,7 @@ if (!$auth->canPutComment()) {
       $commentId = $data['commentId'];
    }
    if (($tripId === '') || ($commentId === '')) {
-      $response = errorResponse(RESPONSE_INVALID_PARAM);
+      $response = errorResponse(RESPONSE_BAD_REQUEST, 'Need tripId and commentId');
    } else {
       $object = new Comment($tripId, $commentId);
       if (isset($data['userId'])) {
@@ -39,6 +39,8 @@ if (!$auth->canPutComment()) {
          $response = errorResponse(RESPONSE_INTERNAL_ERROR);
       }
    }
- }
+} else {
+   $response = errorResponse(RESPONSE_METHOD_NOT_ALLOWED, 'Must use PUT method');
+}
 echo json_encode($response);
 ?>

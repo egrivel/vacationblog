@@ -7,7 +7,7 @@ include_once(dirname(__FILE__) . '/../database/Feedback.php');
 
 $auth = new AuthB();
 if (!$auth->canGetFeedback()) {
-   $response = errorResponse(RESPONSE_NOT_ALLOWED);
+   $response = errorResponse(REPONSE_UNAUTHORIZED);
 } else {
    $tripId = '';
    if (isset($_GET['tripId'])) {
@@ -23,7 +23,7 @@ if (!$auth->canGetFeedback()) {
    }
 
    if (($tripId === '') || ($referenceId === '') || ($userId === '')) {
-      $response = errorResponse(RESPONSE_INVALID_PARAM);
+      $response = errorResponse(RESPONSE_BAD_REQUEST);
    } else {
       $object = new Feedback($tripId, $referenceId, $userId);
       if ($object->getCreated() === null) {

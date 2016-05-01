@@ -104,7 +104,7 @@ class TripAttributeApiTest extends PHPUnit_Framework_TestCase {
    public function testGetNoParameter() {
       $data = array();
       $result = getApi('getTripAttribute.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
    }
 
    /**
@@ -113,11 +113,11 @@ class TripAttributeApiTest extends PHPUnit_Framework_TestCase {
    public function testGetIncompleteParameter() {
       $data = array('name'=>null);
       $result = getApi('getTripAttribute.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('name'=>'');
       $result = getApi('getTripAttribute.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
    }
 
    /**
@@ -129,7 +129,7 @@ class TripAttributeApiTest extends PHPUnit_Framework_TestCase {
       $data = array('tripId'=>$testTripId1,
                     'name'=>$testName1);
       $result = getApi('getTripAttribute.php', $data);
-      $this->assertEquals('404', $result['resultCode']);
+      $this->assertEquals(RESPONSE_NOT_FOUND, $result['resultCode']);
    }
 
    /**
@@ -150,12 +150,12 @@ class TripAttributeApiTest extends PHPUnit_Framework_TestCase {
       // Save the object and confirm a row is added to the database
       $this->assertTrue($object->save());
       $this->assertEquals(1, $this->countTestRows());
-      
+
       $data = array('tripId'=>$testTripId1,
                     'name'=>$testName1);
 
       $result = getApi('getTripAttribute.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertTrue(isset($result['tripId']));
       $this->assertTrue(isset($result['name']));
@@ -182,9 +182,9 @@ class TripAttributeApiTest extends PHPUnit_Framework_TestCase {
 
       $data = array();
       $result = putApi('putTripAttribute.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
    }
-      
+
    /**
     * Test #7. PUT request with invalid parameters.
     */
@@ -194,18 +194,18 @@ class TripAttributeApiTest extends PHPUnit_Framework_TestCase {
       $data = array('tripId'=>null,
                     'name'=>null);
       $result = putApi('putTripAttribute.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $this->assertEquals(0, $this->countTestRows());
 
       $data = array('tripId'=>'',
                     'name'=>'');
       $result = putApi('putTripAttribute.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $this->assertEquals(0, $this->countTestRows());
    }
-      
+
    /**
     * Test #8. PUT request create new object.
     */
@@ -223,7 +223,7 @@ class TripAttributeApiTest extends PHPUnit_Framework_TestCase {
                     'deleted'=>'Y',
                     'hash'=>'forced hash');
       $result = putApi('putTripAttribute.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertEquals(1, $this->countTestRows());
 
@@ -250,7 +250,7 @@ class TripAttributeApiTest extends PHPUnit_Framework_TestCase {
    /**
     * Test #9. PUT request update existing object.
     * @depends testPutCreate
-    */      
+    */
    public function testUpdateTripAttribute() {
       global $testTripId1;
       global $testName1;
@@ -270,7 +270,7 @@ class TripAttributeApiTest extends PHPUnit_Framework_TestCase {
                     'deleted'=>'Y',
                     'hash'=>'forced hash');
       $result = putApi('putTripAttribute.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertEquals(2, $this->countTestRows());
 
@@ -288,15 +288,15 @@ class TripAttributeApiTest extends PHPUnit_Framework_TestCase {
    public function testSynchGetInvalid() {
       $data = array();
       $result = getApi('synchTripAttribute.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('hash'=>'');
       $result = getApi('synchTripAttribute.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('hash'=>'non-existent');
       $result = getApi('synchTripAttribute.php', $data);
-      $this->assertEquals('404', $result['resultCode']);
+      $this->assertEquals(RESPONSE_NOT_FOUND, $result['resultCode']);
    }
 
    /**
@@ -316,10 +316,10 @@ class TripAttributeApiTest extends PHPUnit_Framework_TestCase {
       // Save the object and confirm a row is added to the database
       $this->assertTrue($object->save());
       $this->assertEquals(1, $this->countTestRows());
-      
+
       $data = array('hash'=>$object->getHash());
       $result = getApi('synchTripAttribute.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertTrue(isset($result['tripId']));
       $this->assertTrue(isset($result['name']));
@@ -349,37 +349,37 @@ class TripAttributeApiTest extends PHPUnit_Framework_TestCase {
 
       $data = array();
       $result = putApi('synchTripAttribute.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>'');
       $result = getApi('synchTripAttribute.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('name'=>'');
       $result = getApi('synchTripAttribute.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>$testTripId1);
       $result = getApi('synchTripAttribute.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('name'=>$testName1);
       $result = getApi('synchTripAttribute.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>$testTripId1,
                     'name'=>'');
       $result = getApi('synchTripAttribute.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $data = array('tripId'=>'',
                     'name'=>$testName1);
       $result = getApi('synchTripAttribute.php', $data);
-      $this->assertEquals('401', $result['resultCode']);
+      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
       $this->assertEquals(0, $this->countTestRows());
    }
-      
+
    /**
     * Test #13. SYNCH request write new object.
     */
@@ -396,7 +396,7 @@ class TripAttributeApiTest extends PHPUnit_Framework_TestCase {
                     'deleted'=>'Y',
                     'hash'=>'forced hash');
       $result = putApi('synchTripAttribute.php', $data);
-      $this->assertEquals('200', $result['resultCode']);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
 
       $this->assertEquals(1, $this->countTestRows());
 

@@ -5,12 +5,12 @@ include_once(dirname(__FILE__) . '/../database/Trip.php');
 
 $auth = new AuthB();
 if (!$auth->canSynchTrip()) {
-   $response = errorResponse(RESPONSE_NOT_ALLOWED);
+   $response = errorResponse(REPONSE_UNAUTHORIZED);
 } else if (isGetMethod()) {
    if (isset($_GET['hash'])) {
       $hash = $_GET['hash'];
       if ($hash === '') {
-         $response = errorResponse(RESPONSE_INVALID_PARAM, 'Empty hash');
+         $response = errorResponse(RESPONSE_BAD_REQUEST, 'Empty hash');
       } else {
          $trip = Trip::findByHash($hash);
          if ($trip === null) {
@@ -31,7 +31,7 @@ if (!$auth->canSynchTrip()) {
          }
       }
    } else {
-      $response = errorResponse(RESPONSE_INVALID_PARAM, 'Missing hash');
+      $response = errorResponse(RESPONSE_BAD_REQUEST, 'Missing hash');
    }
 } else if (isPutMethod()) {
    $contents = file_get_contents('php://input');
@@ -75,10 +75,10 @@ if (!$auth->canSynchTrip()) {
          $response = errorResponse(RESPONSE_INTERNAL_ERROR);
       }
    } else {
-      $response = errorResponse(RESPONSE_INVALID_PARAM, 'Missing tripId');
+      $response = errorResponse(RESPONSE_BAD_REQUEST, 'Missing tripId');
    }
 } else {
-   $response = errorResponse(RESPONSE_INVALID_PARAM, 'Not GET or PUT');
+   $response = errorResponse(RESPONSE_BAD_REQUEST, 'Not GET or PUT');
 }
 
 echo json_encode($response);
