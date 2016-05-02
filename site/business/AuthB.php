@@ -17,8 +17,13 @@ class AuthB {
       return null;
    }
 
+   // everyone by synch user can do this
    public function canGetComment($tripId = '', $commentId = '') {
-      // everyone can get comments
+      $user = $this->getUser();
+      if ($user
+         && ($user->getAccess() === LEVEL_SYNCH)) {
+         return false;
+      }
       return true;
    }
    public function canPutComment($tripId = '', $commentId = '') {
@@ -42,9 +47,15 @@ class AuthB {
       return false;
    }
 
+   // everyone by synch user can do this
    public function canGetFeedback($userId = '',
                                   $referenceId = '',
                                   $userId = '') {
+      $user = $this->getUser();
+      if ($user
+         && ($user->getAccess() === LEVEL_SYNCH)) {
+         return false;
+      }
       return true;
    }
    public function canPutFeedback($userId = '',
@@ -64,8 +75,13 @@ class AuthB {
       return false;
    }
 
+   // everyone by synch user can do this
    public function canGetJournal($tripId = '', $journalId = '') {
-      // everyone can get journals
+      $user = $this->getUser();
+      if ($user
+         && ($user->getAccess() === LEVEL_SYNCH)) {
+         return false;
+      }
       return true;
    }
    public function canPutJournal($tripId = '', $journalId = '') {
@@ -81,7 +97,13 @@ class AuthB {
       return false;
    }
 
+   // everyone by synch user can do this
    public function canGetMedia($tripId = '', $mediaId = '') {
+      $user = $this->getUser();
+      if ($user
+         && ($user->getAccess() === LEVEL_SYNCH)) {
+         return false;
+      }
       return true;
    }
    public function canPutMedia($tripId = '', $mediaId = '') {
@@ -97,6 +119,7 @@ class AuthB {
       return false;
    }
 
+   // everyone by synch user can do this
    public function canGetTrip($tripId = '') {
       $user = $this->getUser();
       if ($user
@@ -118,7 +141,13 @@ class AuthB {
       return false;
    }
 
+   // everyone by synch user can do this
    public function canGetTripAttribute($tripId = '', $name = '') {
+      $user = $this->getUser();
+      if ($user
+         && ($user->getAccess() === LEVEL_SYNCH)) {
+         return false;
+      }
       return true;
    }
    public function canPutTripAttribute($tripId = '', $name = '') {
@@ -134,7 +163,13 @@ class AuthB {
       return false;
    }
 
+   // everyone by synch user can do this
    public function canGetTripUser($tripId = '', $userId = '') {
+      $user = $this->getUser();
+      if ($user
+         && ($user->getAccess() === LEVEL_SYNCH)) {
+         return false;
+      }
       return true;
    }
    public function canPutTripUser($tripId = '', $userId = '') {
@@ -150,8 +185,13 @@ class AuthB {
       return false;
    }
 
+   // everyone by synch user can do this
    public function canGetUserBaseInfo($userId = '') {
-      // everybody can get a user's base info
+      $user = $this->getUser();
+      if ($user
+         && ($user->getAccess() === LEVEL_SYNCH)) {
+         return false;
+      }
       return true;
    }
    public function canGetUserDetails($userId = '') {

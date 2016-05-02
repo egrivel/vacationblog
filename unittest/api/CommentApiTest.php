@@ -202,6 +202,50 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
    }
 
    /**
+    * @depends testGetExistent
+    */
+   public function testGetCommentAuth() {
+      global $testTripId1;
+      global $testCommentId1;
+      global $visitorAuthToken, $contribAuthToken;
+      global $adminAuthToken, $synchAuthToken;
+
+      // Create the object and set attributes
+      $object = new Comment($testTripId1, $testCommentId1);
+      $object->setUserId('user');
+      $object->setReferenceId('-reference-1');
+      $object->setCommentText('Comment Text');
+      $object->setDeleted('Y');
+
+      // Save the object and confirm a row is added to the database
+      $this->assertTrue($object->save());
+      $this->assertEquals(1, $this->countTestRows());
+
+      $data = array('tripId'=>$testTripId1,
+                    'commentId'=>$testCommentId1);
+
+      // general public is able to access this
+      $result = getApi('getComment.php', $data);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
+
+      // visitor is able to access this
+      $result = getApi('getComment.php', $data, $visitorAuthToken);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
+
+      // contributor is able to access this
+      $result = getApi('getComment.php', $data, $contribAuthToken);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
+
+      // admin is able to access this
+      $result = getApi('getComment.php', $data, $adminAuthToken);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
+
+      // synch is not able to access this
+      $result = getApi('getComment.php', $data, $synchAuthToken);
+      $this->assertEquals(RESPONSE_UNAUTHORIZED, $result['resultCode']);
+   }
+
+   /**
     * Extra test. GET with reference ID.
     * @depends testGetExistent
     */
