@@ -48,7 +48,7 @@ class Trip {
          // row. However, by defining the "created" field with a default value
          // of zero time, and pasing null in when creating the first row,
          // it automatically gets set to the current time as well. Obviously,
-         // when creating subsequent rows, the originally created timestamp 
+         // when creating subsequent rows, the originally created timestamp
          // has to be passed in anyway.
          // Note 2: use TIMESTAMP(6) rather than TIMESTAMP to get a
          // microsecond-precision for the timestamp. This will allow the
@@ -84,7 +84,7 @@ class Trip {
          // row. However, by defining the "created" field with a default value
          // of zero time, and pasing null in when creating the first row,
          // it automatically gets set to the current time as well. Obviously,
-         // when creating subsequent rows, the originally created timestamp 
+         // when creating subsequent rows, the originally created timestamp
          // has to be passed in anyway.
          // Note 2: use TIMESTAMP(6) rather than TIMESTAMP to get a
          // microsecond-precision for the timestamp. This will allow the
@@ -255,7 +255,7 @@ class Trip {
     * be loaded. If the trip ID does not exist, all fields except for the
     * trip ID field will be blanked.
     * @param $tripId the trip ID to load. This must be a valid non-empty
-    * trip ID. 
+    * trip ID.
     * @return true when data is successfully loaded, false if no trip data
     * is loaded (object will be empty except for tripID).
     */
@@ -462,7 +462,7 @@ class Trip {
       }
 
       // Create an instance with a special ID '-' to bypass the
-      // checks on empty ID. The ID value will be overwritten by the 
+      // checks on empty ID. The ID value will be overwritten by the
       // value coming back from the database anyway.
       $object = new Trip('-');
       if ($object->loadFromResult($result)) {
@@ -541,7 +541,7 @@ class Trip {
             .   "AND name=" . db_sql_encode($name)
             . "ORDER BY updated DESC "
             . "LIMIT 1";
-         
+
          $result = mysql_query($query);
          if ($result && (mysql_num_rows($result) > 0)) {
             $line = mysql_fetch_array($result, MYSQL_ASSOC);
@@ -594,21 +594,20 @@ class Trip {
          print " --> error: " . mysql_error() . "<br/>\n";
          return false;
       }
-      if (mysql_num_rows($result) <= 0) {
-         // Trip does not exist
-         return false;
-      }
 
       $list = array();
-      $count = 0;
-      while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
-         $tripId = db_sql_decode($line["tripId"]);
-         $name = db_sql_decode($line['name']);
-         $list[$count++] =
-            array('tripId'=>$tripId, 'name'=>$name);
+      if (mysql_num_rows($result) > 0) {
+         $count = 0;
+         while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+            $tripId = db_sql_decode($line["tripId"]);
+            $name = db_sql_decode($line['name']);
+            $list[$count++] =
+               array('tripId'=>$tripId, 'name'=>$name);
+         }
       }
+
       return $list;
-   }      
+   }
 
    static function findCurrentTrip() {
       $query = ""

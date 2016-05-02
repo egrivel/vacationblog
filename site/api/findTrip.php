@@ -11,7 +11,10 @@ if (!$auth->canGetTrip()) {
       $response = successResponse();
       $response['resultSet'] = $resultSet;
    } else {
-      $response = errorResponse(RESPONSE_UNAUTHORIZED);
+      // @codeCoverageIgnoreStart
+      // cannot unit test database errors
+      $response = errorResponse(RESPONSE_INTERNAL_ERROR);
+      // @codeCoverageIgnoreEnd
    }
 }
 echo json_encode($response);

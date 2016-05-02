@@ -90,6 +90,8 @@ function errorResponse($code, $info = '') {
       return createResponse($code, 'Not found' . $info);
    case RESPONSE_METHOD_NOT_ALLOWED:
       return createResponse($code, 'Method not allowed' . $info);
+   case RESPONSE_INTERNAL_ERROR:
+      return createResponse($code, 'Internal error' . $info);
    default:
       return createResponse($code, 'Unknown Code' . $info);
    }

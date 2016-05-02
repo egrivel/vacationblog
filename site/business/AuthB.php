@@ -98,6 +98,11 @@ class AuthB {
    }
 
    public function canGetTrip($tripId = '') {
+      $user = $this->getUser();
+      if ($user
+         && ($user->getAccess() === LEVEL_SYNCH)) {
+         return false;
+      }
       return true;
    }
    public function canPutTrip($tripId = '') {
