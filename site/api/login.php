@@ -42,6 +42,8 @@ if (isPutMethod()) {
         }
       }
    }
+} else {
+  $response = errorResponse(RESPONSE_METHOD_NOT_ALLOWED, $_SERVER['REQUEST_METHOD']);
 }
 
 echo json_encode($response);

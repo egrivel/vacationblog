@@ -38,6 +38,7 @@ div.header, div.footer {
 }
 
 div.header {
+  position: relative;
 }
 
 div.footer {
@@ -57,6 +58,12 @@ div.header h1 {
   font-family: Roboto, sans-serif;
   font-weight: 300;
   letter-spacing: 8px;
+}
+
+div.header .userName {
+  position: absolute;
+  right: 0.5em;
+  top: 0.5em;
 }
 
 div.header img {
@@ -318,7 +325,7 @@ div.journalitem p.banner {
   text-align: center;
   font-family: 'Merriweather Sans', sans-serif;
   font-size: 90%;
-  color: #444;  
+  color: #444;
 }
 
 div.journalitem p.banner img {

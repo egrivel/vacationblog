@@ -14,6 +14,8 @@ class AuthB {
          if (isset($userId) && ($userId !== '')) {
             return new User($userId);
          }
+      } else {
+         error_log('no cookie');
       }
       return null;
    }

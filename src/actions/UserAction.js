@@ -5,7 +5,8 @@ var utils = require('./utils');
 
 var UserAction = {
   Types: {
-    USER_DATA: 'USER_DATA'
+    USER_SET_DATA: 'USER_SET_DATA',
+    USER_SET_LOGGED_IN: 'USER_SET_LOGGED_IN'
   },
 
   loadUser: function loadUser(userId) {
@@ -18,8 +19,15 @@ var UserAction = {
 
   _userLoaded: function _userLoaded(data) {
     AppDispatcher.dispatch({
-      type: this.Types.USER_DATA,
+      type: this.Types.USER_SET_DATA,
       data: data
+    });
+  },
+
+  setLoggedInUser: function(userId) {
+    AppDispatcher.dispatch({
+      type: this.Types.USER_SET_LOGGED_IN,
+      userId: userId
     });
   }
 };

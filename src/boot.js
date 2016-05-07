@@ -12,7 +12,7 @@ var JournalWrapper = require('./components/JournalWrapper.jsx');
 var TripAction = require('./actions/TripAction');
 
 var Search = require('./components/Search');
-var Login = require('./components/Login');
+var Login = require('./components/Login.jsx');
 var About = require('./components/About');
 
 /**

@@ -4,13 +4,14 @@ var React = require('react');
 var Menu = require('./Menu');
 var TripStore = require('../stores/TripStore');
 var MenuStore = require('../stores/MenuStore');
+var UserStore = require('../stores/UserStore');
 
 var storeMixin = require('./StoreMixin');
 
 var Header = React.createClass({
   displayName: 'Header',
 
-  stores: [TripStore, MenuStore],
+  stores: [TripStore, MenuStore, UserStore],
 
   mixins: [storeMixin()],
 
@@ -27,10 +28,19 @@ var Header = React.createClass({
       name = 'Vacation Website';
       img = 'default-banner.png';
     }
+    var userId = UserStore.getLoggedInUser();
+    var userName = '(not logged in)';
+    if (userId) {
+      var data = UserStore.getData(userId);
+      if (data && data.name) {
+        userName = data.name;
+      }
+    }
     return {
       name: name,
       bannerImg: img,
-      menuData: MenuStore.getData()
+      menuData: MenuStore.getData(),
+      userName: userName
     };
   },
 
@@ -55,6 +65,7 @@ var Header = React.createClass({
           className: 'header'
         },
         React.DOM.h1(null, this.state.name),
+        React.DOM.span({className: 'userName'}, this.state.userName),
         banner,
         React.createElement(Menu, {menuData: this.state.menuData})
       )
