@@ -52,7 +52,7 @@ function getApi($service, $data, $authToken = '') {
 }
 
 /* invoke a PUT API function */
-function oldPutApi($service, $data, $authToken = '') {
+function oldPostApi($service, $data, $authToken = '') {
    global $gl_api_root;
    $url = $gl_api_root . $service;
 
@@ -82,7 +82,7 @@ function oldPutApi($service, $data, $authToken = '') {
    return json_decode($result, true);
 }
 
-function putApi($service, $data, $authToken = '') {
+function postApi($service, $data, $authToken = '') {
    $_POST = [];
    if ($data) {
       foreach ($data as $key=>$value) {
@@ -96,6 +96,33 @@ function putApi($service, $data, $authToken = '') {
    }
 
    $_SERVER['REQUEST_METHOD'] = 'PUT';
+
+   ob_start();
+   include(dirname(__FILE__) . "/../site/api/" . $service);
+   $output = ob_get_clean();
+
+   return json_decode($output, true);
+}
+
+function putApi($service, $data, $authToken = '') {
+   return postApi($service, $data, $authToken);
+}
+
+/* invoke another API function */
+function headApi($service, $data, $authToken = '') {
+   $_GET = [];
+   if ($data) {
+      foreach ($data as $key=>$value) {
+         $_GET[$key] = $value;
+      }
+   }
+
+   $_COOKIE = [];
+   if ($authToken !== '') {
+      $_COOKIE['blogAuthId'] = $authToken;
+   }
+
+   $_SERVER['REQUEST_METHOD'] = 'HEAD';
 
    ob_start();
    include(dirname(__FILE__) . "/../site/api/" . $service);

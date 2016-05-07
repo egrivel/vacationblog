@@ -6,9 +6,7 @@ include_once(dirname(__FILE__) . '/../database/User.php');
 include_once(dirname(__FILE__) . '/../database/Feedback.php');
 
 $auth = new AuthB();
-if (!$auth->canGetFeedback()) {
-   $response = errorResponse(RESPONSE_UNAUTHORIZED);
-} else {
+if (isGetMethod()) {
    $tripId = '';
    if (isset($_GET['tripId'])) {
       $tripId = $_GET['tripId'];
@@ -24,6 +22,8 @@ if (!$auth->canGetFeedback()) {
 
    if (($tripId === '') || ($referenceId === '') || ($userId === '')) {
       $response = errorResponse(RESPONSE_BAD_REQUEST);
+   } else if (!$auth->canGetFeedback($tripId, $referenceId, $userId)) {
+      $response = errorResponse(RESPONSE_UNAUTHORIZED);
    } else {
       $object = new Feedback($tripId, $referenceId, $userId);
       if ($object->getCreated() === null) {
@@ -39,6 +39,8 @@ if (!$auth->canGetFeedback()) {
          $response['deleted'] = $object->getDeleted();
       }
    }
+} else {
+   $response = errorResponse(RESPONSE_METHOD_NOT_ALLOWED, 'Must use GET method');
 }
 
 echo json_encode($response);

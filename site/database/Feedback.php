@@ -44,7 +44,7 @@ class Feedback {
          // row. However, by defining the "created" field with a default value
          // of zero time, and pasing null in when creating the first row,
          // it automatically gets set to the current time as well. Obviously,
-         // when creating subsequent rows, the originally created timestamp 
+         // when creating subsequent rows, the originally created timestamp
          // has to be passed in anyway.
          // Note 2: use TIMESTAMP(6) rather than TIMESTAMP to get a
          // microsecond-precision for the timestamp. This will allow the
@@ -179,7 +179,7 @@ class Feedback {
     * be loaded. If the feedback ID does not exist, all fields except for the
     * feedback ID field will be blanked.
     * @param $referenceId the feedback ID to load. This must be a valid non-empty
-    * feedback ID. 
+    * feedback ID.
     * @return true when data is successfully loaded, false if no feedback data
     * is loaded (object will be empty except for feedbackID).
     */
@@ -371,7 +371,7 @@ class Feedback {
       }
 
       // Create an instance with a special ID '-' to bypass the
-      // checks on empty ID. The ID value will be overwritten by the 
+      // checks on empty ID. The ID value will be overwritten by the
       // value coming back from the database anyway.
       $object = new Feedback('-', '-', '-');
       if ($object->loadFromResult($result)) {
