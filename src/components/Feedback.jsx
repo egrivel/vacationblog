@@ -22,6 +22,7 @@ var Feedback = React.createClass({
   _getStateFromStores: function() {
     var tripId = this.props.tripId;
     var referenceId = this.props.referenceId;
+    var userId = UserStore.getLoggedInUser();
 
     var likeCount = 0;
     var plusCount = 0;
@@ -31,7 +32,6 @@ var Feedback = React.createClass({
     if (tripId && referenceId) {
       likeCount = FeedbackStore.getLikeCount(tripId, referenceId);
       plusCount = FeedbackStore.getPlusCount(tripId, referenceId);
-      var userId = UserStore.getLoggedInUser();
       doesUserLike = FeedbackStore.doesUserLike(tripId, referenceId, userId);
       doesUserPlus = FeedbackStore.doesUserPlus(tripId, referenceId, userId);
     }
@@ -40,7 +40,8 @@ var Feedback = React.createClass({
       likeCount: likeCount,
       plusCount: plusCount,
       doesUserLike: doesUserLike,
-      doesUserPlus: doesUserPlus
+      doesUserPlus: doesUserPlus,
+      userId: userId
     };
   },
 
@@ -84,6 +85,10 @@ var Feedback = React.createClass({
     var googleClassname = 'fa';
     if (this.state.doesUserPlus) {
       googleClassname += ' myPlus';
+    }
+    if (this.state.userId) {
+      fbClassname += ' select';
+      googleClassname += ' select';
     }
     return (
       <div className="feedback">

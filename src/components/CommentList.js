@@ -68,7 +68,10 @@ var Comment = React.createClass({
       userName = '(unknown)';
     }
 
-    var feedback = React.createElement(Feedback, null);
+    var feedback = React.createElement(Feedback, {
+      tripId: tripId,
+      referenceId: commentId
+    });
 
     // if this comment was deleted, ignore it
     if (deleted === 'Y') {

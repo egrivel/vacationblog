@@ -517,6 +517,10 @@ div.feedback {
   letter-spacing: 1px;
 }
 
+div.feedback i.select {
+  cursor: pointer;
+}
+
 div.feedback i.myLike {
   color: #33f;
   font-weight: bold;
