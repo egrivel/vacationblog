@@ -36,7 +36,10 @@ if (isPutMethod()) {
       if ($object->save()) {
          $response = successResponse();
       } else {
+         // @codeCoverageIgnoreStart
+         // cannot unit test database errors
          $response = errorResponse(RESPONSE_INTERNAL_ERROR);
+         // @codeCoverageIgnoreEnd
       }
    }
 } else {

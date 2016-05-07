@@ -62,7 +62,10 @@ if (!$auth->canSynchComment()) {
       if ($object->save()) {
          $response = successResponse();
       } else {
+         // @codeCoverageIgnoreStart
+         // cannot unit test database errors
          $response = errorResponse(RESPONSE_INTERNAL_ERROR);
+         // @codeCoverageIgnoreEnd
       }
    } else {
       $response = errorResponse(RESPONSE_BAD_REQUEST);

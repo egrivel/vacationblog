@@ -413,6 +413,11 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
       $result = putApi('putComment.php', $data, $visitorAuthToken);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
+      $data = array('tripId'=>'',
+                    'commentId'=>'');
+      $result = getApi('putComment.php', $data, $visitorAuthToken);
+      $this->assertEquals(RESPONSE_METHOD_NOT_ALLOWED, $result['resultCode']);
+
       $this->assertEquals(0, $this->countTestRows());
    }
 
@@ -570,6 +575,7 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
     * @depends testDataWipedBeforeTest
     */
    public function testSynchGetInvalid() {
+      global $adminAuthToken;
       global $synchAuthToken;
       $data = array();
       $result = getApi('synchComment.php', $data, $synchAuthToken);
@@ -582,6 +588,14 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
       $data = array('hash'=>'non-existent');
       $result = getApi('synchComment.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_NOT_FOUND, $result['resultCode']);
+
+      $data = array('hash'=>'non-existent');
+      $result = getApi('synchComment.php', $data, $adminAuthToken);
+      $this->assertEquals(RESPONSE_UNAUTHORIZED, $result['resultCode']);
+
+      $data = array('hash'=>'non-existent');
+      $result = headApi('synchComment.php', $data, $synchAuthToken);
+      $this->assertEquals(RESPONSE_METHOD_NOT_ALLOWED, $result['resultCode']);
    }
 
    /**
