@@ -496,12 +496,12 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
     * @depends testPutCreate
     */
    public function testUpdateComment() {
-      global $visitorAuthToken;
+      global $visitorUser, $visitorAuthToken;
       global $testTripId1;
       global $testCommentId1;
 
       $object = new Comment($testTripId1, $testCommentId1);
-      $object->setUserId("user");
+      $object->setUserId($visitorUser);
       $object->setReferenceId("-reference-1");
       $object->setCommentText("Comment Text");
       $object->setDeleted('N');
@@ -530,6 +530,39 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
       $this->assertEquals('-reference-2', $object->getReferenceId());
       $this->assertEquals('Comment Text 2', $object->getCommentText());
       $this->assertEquals('Y', $object->getDeleted());
+   }
+
+   /**
+    * Update of the comment of another user fails
+    * @depends testUpdateComment
+    */
+   public function testUpdateCommentAuth() {
+      global $visitorAuthToken;
+      global $testTripId1;
+      global $testCommentId1;
+
+      $object = new Comment($testTripId1, $testCommentId1);
+      $object->setUserId("user");
+      $object->setReferenceId("-reference-1");
+      $object->setCommentText("Comment Text");
+      $object->setDeleted('N');
+      $object->save();
+
+      $this->assertEquals(1, $this->countTestRows());
+
+      $data = array('tripId'=>$testTripId1,
+                    'commentId'=>$testCommentId1,
+                    'created'=>'2015-10-01',
+                    'updated'=>'2015-10-02',
+                    'userId'=>'user-2',
+                    'referenceId'=>'-reference-2',
+                    'commentText'=>'Comment Text 2',
+                    'deleted'=>'Y',
+                    'hash'=>'forced hash');
+      $result = putApi('putComment.php', $data, $visitorAuthToken);
+      $this->assertEquals(RESPONSE_UNAUTHORIZED, $result['resultCode']);
+
+      $this->assertEquals(1, $this->countTestRows());
    }
 
    /**

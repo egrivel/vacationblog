@@ -5,9 +5,7 @@ include_once(dirname(__FILE__) . '/../database/Trip.php');
 include_once(dirname(__FILE__) . '/../database/Comment.php');
 
 $auth = new AuthB();
-if (!$auth->canPutComment()) {
-   $response = errorResponse(RESPONSE_UNAUTHORIZED);
-} else if (isPutMethod()) {
+if (isPutMethod()) {
    $data = getPostData();
    $tripId = '';
    if (isset($data['tripId'])) {
@@ -19,7 +17,9 @@ if (!$auth->canPutComment()) {
    }
    if (($tripId === '') || ($commentId === '')) {
       $response = errorResponse(RESPONSE_BAD_REQUEST, 'Need tripId and commentId');
-   } else {
+   } else if (!$auth->canPutComment($tripId, $commentId)) {
+      $response = errorResponse(RESPONSE_UNAUTHORIZED);
+   } else  {
       $object = new Comment($tripId, $commentId);
       if (isset($data['userId'])) {
          $object->setUserId($data['userId']);

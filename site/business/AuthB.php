@@ -2,6 +2,7 @@
 include_once(dirname(__FILE__) . "/../common/common.php");
 include_once(dirname(__FILE__) . "/../database/Auth.php");
 include_once(dirname(__FILE__) . "/../database/User.php");
+include_once(dirname(__FILE__) . "/../database/Comment.php");
 
 class AuthB {
    private function getUser() {
@@ -26,14 +27,25 @@ class AuthB {
       }
       return true;
    }
+
    public function canPutComment($tripId = '', $commentId = '') {
       $user = $this->getUser();
       if ($user) {
          $access = $user->getAccess();
-         // all logged in users can put comments
-         return (($access === LEVEL_VISITOR)
-               || ($access === LEVEL_CONTRIB)
-               || ($access === LEVEL_ADMIN));
+         if ($access === LEVEL_ADMIN) {
+            // administrator can put all comments
+            return true;
+         }
+         if (($access === LEVEL_VISITOR)
+            || ($access === LEVEL_CONTRIB)) {
+            // visitor and contributor can put their own comments, or
+            // new comments (comments that don't have any user ID)
+            if ($tripId && $commentId) {
+               $object = new Comment($tripId, $commentId);
+               $objectId = $object->getUserId();
+               return (($objectId === '') || ($objectId === $user->getUserId()));
+            }
+         }
       }
       return false;
    }

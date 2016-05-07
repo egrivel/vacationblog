@@ -128,6 +128,8 @@ function setupOneToken($userId, $level, $token) {
 }
 
 function setupTokens() {
+   global $visitorUser, $contribUser;
+   global $adminUser, $synchUser;
    global $visitorAuthToken, $contribAuthToken;
    global $adminAuthToken, $synchAuthToken;
 
