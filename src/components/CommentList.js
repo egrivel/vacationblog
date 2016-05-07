@@ -10,7 +10,7 @@ var React = require('react');
 var UserStore = require('../stores/UserStore');
 
 var utils = require('./utils');
-var Feedback = require('./Feedback');
+var Feedback = require('./Feedback.jsx');
 
 // Declare variables that will be used later
 var CommentList;

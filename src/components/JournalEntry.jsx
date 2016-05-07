@@ -27,7 +27,7 @@ var storeMixin = require('./StoreMixin');
 
 var JournalParagraph = require('./JournalParagraph.jsx');
 var CommentList = require('./CommentList');
-var Feedback = require('./Feedback');
+var Feedback = require('./Feedback.jsx');
 var JournalHeader = require('./JournalHeader.jsx');
 var JournalPrevNext = require('./JournalPrevNext.jsx');
 var utils = require('./utils');
@@ -134,7 +134,10 @@ var JournalEntry = React.createClass({
 
     var feedback = null;
     if (tripId && journalId) {
-      feedback = React.createElement(Feedback, null);
+      feedback = React.createElement(Feedback, {
+        tripId: tripId,
+        referenceId: journalId
+      });
     }
 
     var prevNext1 = null;
