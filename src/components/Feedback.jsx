@@ -49,14 +49,19 @@ var Feedback = React.createClass({
     var tripId = this.props.tripId;
     var referenceId = this.props.referenceId;
     var userId = UserStore.getLoggedInUser();
-    if (tripId && referenceId && userId) {
-      if (FeedbackStore.doesUserLike(tripId, referenceId, userId)) {
-        FeedbackAction.clearLike(tripId, referenceId, userId);
-      } else {
-        FeedbackAction.setLike(tripId, referenceId, userId);
+
+    if (userId) {
+      if (tripId && referenceId) {
+        if (FeedbackStore.doesUserLike(tripId, referenceId, userId)) {
+          FeedbackAction.clearLike(tripId, referenceId, userId);
+        } else {
+          FeedbackAction.setLike(tripId, referenceId, userId);
+        }
+        this.setState({
+          likeCount: FeedbackStore.getLikeCount(tripId, referenceId)
+        });
       }
     }
-    this.setState({likeCount: FeedbackStore.getLikeCount(tripId, referenceId)});
   },
 
   clickPlus: function() {
@@ -79,25 +84,33 @@ var Feedback = React.createClass({
 
   render: function render() {
     var fbClassname = 'fa';
-    if (this.state.doesUserLike) {
-      fbClassname += ' myLike';
-    }
     var googleClassname = 'fa';
+    var loginText = null;
+
+    if (this.state.doesUserLike) {
+      fbClassname += ' my-like';
+    }
     if (this.state.doesUserPlus) {
-      googleClassname += ' myPlus';
+      googleClassname += ' my-plus';
     }
     if (this.state.userId) {
       fbClassname += ' select';
       googleClassname += ' select';
+    } else {
+      fbClassname += ' need-login';
+      googleClassname += ' need-login';
+      loginText = <span className="login-text">Must be logged in to like or plus</span>;
     }
     return (
       <div className="feedback">
         <i className={fbClassname} onClick={this.clickLike}>
           {'\uf087'} {this.state.likeCount}
+          {loginText}
         </i>
         &nbsp; facebook. &nbsp;
         <i className={googleClassname} onClick={this.clickPlus}>
           {'\uf067'} {this.state.plusCount}
+          {loginText}
         </i>
         &nbsp; Google.
       </div>
