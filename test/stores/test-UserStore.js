@@ -20,7 +20,7 @@ var testUser2 = {
   property: 'test prop 2'
 };
 
-describe('UserStore', function() {
+describe('src/stores/UserStore', function() {
   beforeEach(function() {
     UserStore.removeAllListeners();
     UserStore._reset();
@@ -43,11 +43,11 @@ describe('UserStore', function() {
     var cb;
 
     var userAction1 = {
-      type: UserActionTypes.USER_DATA,
+      type: UserActionTypes.USER_SET_DATA,
       data: testUser1
     };
     var userAction2 = {
-      type: UserActionTypes.USER_DATA,
+      type: UserActionTypes.USER_SET_DATA,
       data: testUser2
     };
     var randomAction = {

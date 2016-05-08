@@ -4,7 +4,7 @@ var expect = require('chai').expect;
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');
 
-var Login = require('../../src/components/Login');
+var Login = require('../../src/components/Login.jsx');
 
 describe('Login component', function() {
   describe('#render', function() {

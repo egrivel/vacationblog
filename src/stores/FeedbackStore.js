@@ -21,7 +21,10 @@ var FeedbackStore = {};
  * @param {String} userId - user who likes the item
  * @return {String} ID for the item.
  */
-function _makeId(tripId, referenceId, userId = '') {
+function _makeId(tripId, referenceId, userId) {
+  if (!userId) {
+    userId = '';
+  }
   return tripId + ':' + referenceId + ':' + userId;
 }
 

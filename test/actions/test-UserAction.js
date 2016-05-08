@@ -7,7 +7,7 @@ var utils = require('../../src/actions/utils');
 var AppDispatcher = require('../../src/AppDispatcher');
 var UserAction = require('../../src/actions/UserAction');
 
-describe('UserAction stuff', function() {
+describe('src/actions/UserAction', function() {
   describe('#loadUser', function() {
     var testUserId = 'user-1';
     var asyncStub;
@@ -66,7 +66,7 @@ describe('UserAction stuff', function() {
 
       expect(dispatchStub.args[0].length).to.be.equal(1);
       var action = dispatchStub.args[0][0];
-      expect(action.type).to.be.equal(UserAction.Types.USER_DATA);
+      expect(action.type).to.be.equal(UserAction.Types.USER_SET_DATA);
       expect(action.data).to.be.deep.eql(data);
     });
   });

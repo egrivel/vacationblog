@@ -1,5 +1,6 @@
 'use strict';
 
+var _ = require('lodash');
 var assign = require('object-assign');
 
 var GenericStore = require('./GenericStore');
@@ -42,8 +43,10 @@ var UserStore = assign({}, GenericStore, {
     switch (action.type) {
       case UserActionTypes.USER_SET_DATA:
         var userId = action.data.userId;
-        _userData[userId] = action.data;
-        UserStore.emitChange();
+        if (!_userData[userId] || !_.isEqual(action.data, _userData[userId])) {
+          _userData[userId] = action.data;
+          UserStore.emitChange();
+        }
         break;
       case UserActionTypes.USER_SET_LOGGED_IN:
         if (_userLoggedIn !== action.userId) {
