@@ -70,7 +70,8 @@ var Comment = React.createClass({
 
     var feedback = React.createElement(Feedback, {
       tripId: tripId,
-      referenceId: commentId
+      referenceId: commentId,
+      key: tripId + ':' + commentId
     });
 
     // if this comment was deleted, ignore it

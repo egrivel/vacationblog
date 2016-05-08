@@ -20,10 +20,17 @@ if (isGetMethod()) {
       $userId = $_GET['userId'];
    }
 
-   if (($tripId === '') || ($referenceId === '') || ($userId === '')) {
+   if (($tripId === '') || ($referenceId === '')) {
       $response = errorResponse(RESPONSE_BAD_REQUEST);
-   } else if (!$auth->canGetFeedback($tripId, $referenceId, $userId)) {
+   } else if (!$auth->canGetFeedback($tripId, $referenceId)) {
       $response = errorResponse(RESPONSE_UNAUTHORIZED);
+   } else if ($userId === '') {
+      // Request for a list
+      $list = Feedback::getList($tripId, $referenceId);
+      $response = successResponse();
+      $response['tripId'] = $tripId;
+      $response['referenceId'] = $referenceId;
+      $response['list'] = $list;
    } else {
       $object = new Feedback($tripId, $referenceId, $userId);
       if ($object->getCreated() === null) {

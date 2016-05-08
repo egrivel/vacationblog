@@ -14,8 +14,6 @@ class AuthB {
          if (isset($userId) && ($userId !== '')) {
             return new User($userId);
          }
-      } else {
-         error_log('no cookie');
       }
       return null;
    }
@@ -64,7 +62,7 @@ class AuthB {
    // everyone by synch user can do this
    public function canGetFeedback($tripId = '',
                                   $referenceId = '',
-                                  $userId) {
+                                  $userId = '') {
       $user = $this->getUser();
       if ($user
          && ($user->getAccess() === LEVEL_SYNCH)) {

@@ -136,7 +136,8 @@ var JournalEntry = React.createClass({
     if (tripId && journalId) {
       feedback = React.createElement(Feedback, {
         tripId: tripId,
-        referenceId: journalId
+        referenceId: journalId,
+        key: tripId + ':' + journalId
       });
     }
 

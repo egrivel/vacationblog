@@ -42,7 +42,8 @@ describe('src/components/Feedback', function() {
 
     it('render facebook count', function() {
       expect(feedback.children.length).to.be.equal(4);
-      expect(feedback.children[1].textContent).to.be.equal('\u00A0 facebook. \u00A0');
+      expect(feedback.children[1].textContent)
+        .to.be.equal('\u00A0 facebook. \u00A0');
       var count = getFacebookCount(feedback);
       expect(count).to.be.equal(0);
     });
@@ -53,23 +54,5 @@ describe('src/components/Feedback', function() {
       var count = getGoogleCount(feedback);
       expect(count).to.be.equal(0);
     });
-
-    // it('increment facebook count', function() {
-    //   expect(getFacebookCount(feedback)).to.be.equal(0);
-    //   expect(getGoogleCount(feedback)).to.be.equal(0);
-
-    //   TestUtils.Simulate.click(feedback.children[0]);
-    //   expect(getFacebookCount(feedback)).to.be.equal(1);
-    //   expect(getGoogleCount(feedback)).to.be.equal(0);
-    // });
-
-    // it('increment google count', function() {
-    //   expect(getFacebookCount(feedback)).to.be.equal(0);
-    //   expect(getGoogleCount(feedback)).to.be.equal(0);
-
-    //   TestUtils.Simulate.click(feedback.children[2]);
-    //   expect(getFacebookCount(feedback)).to.be.equal(0);
-    //   expect(getGoogleCount(feedback)).to.be.equal(1);
-    // });
   });
 });

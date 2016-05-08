@@ -28,12 +28,16 @@ var Feedback = React.createClass({
     var plusCount = 0;
     var doesUserLike = false;
     var doesUserPlus = false;
+    var likeList = '';
+    var plusList = '';
 
     if (tripId && referenceId) {
       likeCount = FeedbackStore.getLikeCount(tripId, referenceId);
       plusCount = FeedbackStore.getPlusCount(tripId, referenceId);
       doesUserLike = FeedbackStore.doesUserLike(tripId, referenceId, userId);
       doesUserPlus = FeedbackStore.doesUserPlus(tripId, referenceId, userId);
+      likeList = FeedbackStore.getLikeList(tripId, referenceId, userId);
+      plusList = FeedbackStore.getPlusList(tripId, referenceId, userId);
     }
 
     return {
@@ -41,7 +45,9 @@ var Feedback = React.createClass({
       plusCount: plusCount,
       doesUserLike: doesUserLike,
       doesUserPlus: doesUserPlus,
-      userId: userId
+      userId: userId,
+      likeList: likeList,
+      plusList: plusList
     };
   },
 
@@ -57,9 +63,6 @@ var Feedback = React.createClass({
         } else {
           FeedbackAction.setLike(tripId, referenceId, userId);
         }
-        this.setState({
-          likeCount: FeedbackStore.getLikeCount(tripId, referenceId)
-        });
       }
     }
   },
@@ -75,42 +78,57 @@ var Feedback = React.createClass({
         FeedbackAction.setPlus(tripId, referenceId, userId);
       }
     }
-    this.setState({likeCount: FeedbackStore.getLikeCount(tripId, referenceId)});
   },
 
   componentWillMount: function() {
+    FeedbackAction.loadData(this.props.tripId, this.props.referenceId);
     this.setState(this._getStateFromStores());
   },
 
   render: function render() {
     var fbClassname = 'fa';
     var googleClassname = 'fa';
-    var loginText = null;
+
+    var fbTitle = '';
+    var googleTitle = '';
 
     if (this.state.doesUserLike) {
       fbClassname += ' my-like';
+      if (this.state.likeList) {
+        fbTitle = 'You and ' + this.state.likeList + ' like this.';
+      } else {
+        fbTitle = 'You like this.';
+      }
+    } else if (this.state.likeList) {
+      fbTitle = this.state.likeList + ' like this.';
     }
+
     if (this.state.doesUserPlus) {
       googleClassname += ' my-plus';
+      if (this.state.plusList) {
+        googleTitle = 'You and ' + this.state.plusList + ' plussed this.';
+      } else {
+        googleTitle = 'You plussed this.';
+      }
+    } else if (this.state.plusList) {
+      googleTitle = this.state.plusList + ' plussed this.';
     }
+
     if (this.state.userId) {
       fbClassname += ' select';
       googleClassname += ' select';
-    } else {
-      fbClassname += ' need-login';
-      googleClassname += ' need-login';
-      loginText = <span className="login-text">Must be logged in to like or plus</span>;
     }
+
     return (
       <div className="feedback">
-        <i className={fbClassname} onClick={this.clickLike}>
+        <i className={fbClassname} onClick={this.clickLike}
+          title={fbTitle}>
           {'\uf087'} {this.state.likeCount}
-          {loginText}
         </i>
         &nbsp; facebook. &nbsp;
-        <i className={googleClassname} onClick={this.clickPlus}>
+        <i className={googleClassname} onClick={this.clickPlus}
+          title={googleTitle}>
           {'\uf067'} {this.state.plusCount}
-          {loginText}
         </i>
         &nbsp; Google.
       </div>

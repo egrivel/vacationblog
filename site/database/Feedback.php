@@ -379,5 +379,71 @@ class Feedback {
       }
       return null;
    }
+
+   static public function getList($tripId, $referenceId) {
+      $tripId = db_sql_encode($tripId);
+      $referenceId = db_sql_encode($referenceId);
+      $query = ""
+         . "SELECT "
+         .     "blogFeedback.tripId, "
+         .     "blogFeedback.referenceId, "
+         .     "blogFeedback.userId, "
+         .     "blogFeedback.type "
+         .   "FROM blogFeedback "
+         .   "INNER JOIN ("
+         .     "SELECT "
+         .       "MAX(t1.updated) AS updated, "
+         .       "t1.tripId AS tripId, "
+         .       "t1.referenceId AS referenceId, "
+         .       "t1.userId AS userId "
+         .     "FROM blogFeedback "
+         .     "AS t1 "
+         .     "GROUP BY "
+         .       "t1.tripId, "
+         .       "t1.referenceId, "
+         .       "t1.userId "
+         .     "HAVING "
+         .       "t1.tripId=$tripId "
+         .       "AND t1.referenceId=$referenceId "
+         .   ") AS t2 "
+         .   "WHERE blogFeedback.tripId = t2.tripId "
+         .     "AND blogFeedback.referenceId = t2.referenceId "
+         .     "AND blogFeedback.userId = t2.userId "
+         .     "AND blogFeedback.updated = t2.updated "
+         .     "AND blogFeedback.deleted != 'Y' "
+         .   "ORDER BY blogFeedback.userId";
+
+      $result = mysql_query($query);
+      if (!$result) {
+         // Error executing the query
+         print $query . "<br/>";
+         print " --> error: " . mysql_error() . "<br/>\n";
+         return false;
+      }
+
+      $list = array();
+      if (mysql_num_rows($result) > 0) {
+         $count = 0;
+         while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+            $tripId = db_sql_decode($line["tripId"]);
+            $referenceId = db_sql_decode($line['referenceId']);
+            $userId = db_sql_decode($line['userId']);
+            $userName = '';
+            $type = db_sql_decode($line['type']);
+            $user = new User($userId);
+            if ($user) {
+               $userName = $user->getName();
+            }
+            $list[$count++] =
+               array('tripId'=>$tripId,
+                  'referenceId'=>$referenceId,
+                  'userId'=>$userId,
+                  'userName'=>$userName,
+                  'type'=>$type);
+         }
+      }
+
+      return $list;
+   }
 }
 ?>

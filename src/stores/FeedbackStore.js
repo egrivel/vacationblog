@@ -1,15 +1,13 @@
 'use strict';
 
+var _ = require('lodash');
 var assign = require('object-assign');
 
 var AppDispatcher = require('../AppDispatcher');
 var GenericStore = require('./GenericStore');
 var FeedbackActionTypes = require('../actions/FeedbackAction').Types;
 
-var _likeList = {};
-var _likeCountList = {};
-var _plusList = {};
-var _plusCountList = {};
+var _data = {};
 
 var FeedbackStore = {};
 
@@ -29,131 +27,135 @@ function _makeId(tripId, referenceId, userId) {
 }
 
 /**
- * Set a like
- *
+ * Load data
  * @param {String} tripId - unique ID for the trip.
  * @param {String} referenceId - unique ID for the reference
- * @param {String} userId - user who likes the item
+ * @param {array} list - list of feedbacks
  */
-function _setLike(tripId, referenceId, userId) {
-  var itemId = _makeId(tripId, referenceId, userId);
-  var itemCountId = _makeId(tripId, referenceId);
-  if (!_likeList[itemId]) {
-    _likeList[itemId] = true;
-    if (_likeCountList[itemCountId]) {
-      _likeCountList[itemCountId]++;
-    } else {
-      _likeCountList[itemCountId] = 1;
+function _load(tripId, referenceId, list) {
+  var itemId = _makeId(tripId, referenceId);
+  if (_data[itemId]) {
+    if (_.isEqual(_data[itemId], list)) {
+      // no need to do anything
+      return;
     }
-    FeedbackStore.emitChange();
   }
-}
-
-/**
- * Set a plus
- *
- * @param {String} tripId - unique ID for the trip.
- * @param {String} referenceId - unique ID for the reference
- * @param {String} userId - user who likes the item
- */
-function _setPlus(tripId, referenceId, userId) {
-  var itemId = _makeId(tripId, referenceId, userId);
-  var itemCountId = _makeId(tripId, referenceId);
-  if (!_plusList[itemId]) {
-    _plusList[itemId] = true;
-    if (_plusCountList[itemCountId]) {
-      _plusCountList[itemCountId]++;
-    } else {
-      _plusCountList[itemCountId] = 1;
-    }
-    FeedbackStore.emitChange();
-  }
-}
-
-/**
- * Clear a like
- *
- * @param {String} tripId - unique ID for the trip.
- * @param {String} referenceId - unique ID for the reference
- * @param {String} userId - user who likes the item
- */
-function _clearLike(tripId, referenceId, userId) {
-  var itemId = _makeId(tripId, referenceId, userId);
-  var itemCountId = _makeId(tripId, referenceId);
-  if (_likeList[itemId]) {
-    _likeList[itemId] = false;
-    if (_likeCountList[itemCountId]) {
-      _likeCountList[itemCountId]--;
-    } else {
-      _likeCountList[itemCountId] = 0;
-    }
-    FeedbackStore.emitChange();
-  }
-}
-
-/**
- * Clear a plus
- *
- * @param {String} tripId - unique ID for the trip.
- * @param {String} referenceId - unique ID for the reference
- * @param {String} userId - user who likes the item
- */
-function _clearPlus(tripId, referenceId, userId) {
-  var itemId = _makeId(tripId, referenceId, userId);
-  var itemCountId = _makeId(tripId, referenceId);
-  if (_plusList[itemId]) {
-    _plusList[itemId] = false;
-    if (_plusCountList[itemCountId]) {
-      _plusCountList[itemCountId]--;
-    } else {
-      _plusCountList[itemCountId] = 0;
-    }
-    FeedbackStore.emitChange();
-  }
+  // only if needed, update the list and emit a change
+  _data[itemId] = list;
+  FeedbackStore.emitChange();
 }
 
 FeedbackStore = assign({}, GenericStore, {
   getLikeCount: function(tripId, referenceId) {
-    var likeId = _makeId(tripId, referenceId);
-    var count = _likeCountList[likeId];
-    if (!count) {
-      count = 0;
+    var count = 0;
+    var itemId = _makeId(tripId, referenceId);
+    var list = _data[itemId];
+    if (list) {
+      var i;
+      for (i = 0; i < list.length; i++) {
+        if (list[i].type === 'like') {
+          count++;
+        }
+      }
     }
     return count;
   },
 
   getPlusCount: function(tripId, referenceId) {
+    var count = 0;
     var itemId = _makeId(tripId, referenceId);
-    var count = _plusCountList[itemId];
-    if (!count) {
-      count = 0;
+    var list = _data[itemId];
+    if (list) {
+      var i;
+      for (i = 0; i < list.length; i++) {
+        if (list[i].type === 'plus') {
+          count++;
+        }
+      }
     }
     return count;
   },
 
   doesUserLike: function(tripId, referenceId, userId) {
-    var itemId = _makeId(tripId, referenceId, userId);
-    return _likeList[itemId];
+    var doesLike = false;
+    var itemId = _makeId(tripId, referenceId);
+    var list = _data[itemId];
+    if (list) {
+      var i;
+      for (i = 0; i < list.length; i++) {
+        if ((list[i].type === 'like') &&
+            (list[i].userId === userId)) {
+          doesLike++;
+        }
+      }
+    }
+    return doesLike;
   },
 
   doesUserPlus: function(tripId, referenceId, userId) {
-    var itemId = _makeId(tripId, referenceId, userId);
-    return _plusList[itemId];
+    var doesPlus = false;
+    var itemId = _makeId(tripId, referenceId);
+    var list = _data[itemId];
+    if (list) {
+      var i;
+      for (i = 0; i < list.length; i++) {
+        if ((list[i].type === 'plus') &&
+            (list[i].userId === userId)) {
+          doesPlus++;
+        }
+      }
+    }
+    return doesPlus;
+  },
+
+  getLikeList: function(tripId, referenceId, userId) {
+    if (!userId) {
+      userId = '';
+    }
+    var result = '';
+    var itemId = _makeId(tripId, referenceId);
+    var list = _data[itemId];
+    if (list) {
+      var i;
+      for (i = 0; i < list.length; i++) {
+        if ((list[i].type === 'like') &&
+            (list[i].userId !== userId)) {
+          if (result !== '') {
+            result += ', ';
+          }
+          result += list[i].userName;
+        }
+      }
+    }
+    return result;
+  },
+
+  getPlusList: function(tripId, referenceId, userId) {
+    if (!userId) {
+      userId = '';
+    }
+    var result = '';
+    var itemId = _makeId(tripId, referenceId);
+    var list = _data[itemId];
+    if (list) {
+      var i;
+      for (i = 0; i < list.length; i++) {
+        if ((list[i].type === 'plus') &&
+            (list[i].userId !== userId)) {
+          if (result !== '') {
+            result += ', ';
+          }
+          result += list[i].userName;
+        }
+      }
+    }
+    return result;
   },
 
   _storeCallback: function(action) {
     switch (action.type) {
-      case FeedbackActionTypes.FEEDBACK_SET_LIKE:
-        _setLike(action.tripId, action.referenceId, action.userId);
-        break;
-      case FeedbackActionTypes.FEEDBACK_CLEAR_LIKE:
-        _clearLike(action.tripId, action.referenceId, action.userId);
-        break;
-      case FeedbackActionTypes.FEEDBACK_SET_PLUS:
-        _setPlus(action.tripId, action.referenceId, action.userId);
-        break;
-      case FeedbackActionTypes.FEEDBACK_CLEAR_PLUS:
-        _clearPlus(action.tripId, action.referenceId, action.userId);
+      case FeedbackActionTypes.FEEDBACK_LOAD:
+        _load(action.tripId, action.referenceId, action.list);
         break;
       default:
         // do nothing
