@@ -26,6 +26,7 @@ function db_init() {
       } else {
         $password = $config['password'];
       }
+      echo "Connect to $hostname<br/>\n";
       mysql_connect($hostname, $username, $password);
       mysql_selectdb($config['dbname']);
 
