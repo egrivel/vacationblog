@@ -11,10 +11,24 @@ function db_init() {
    global $gl_db_system;
    if (!$gl_db_init) {
       $config = parse_ini_file(dirname(__FILE__) . '/../../vacationblog.ini');
-      mysql_connect($config['hostname'], $config['username'],
-                    $config['password']);
+      if (isset($_ENV["OPENSHIFT_MYSQL_DB_HOST"])) {
+        $hostname = $_ENV["OPENSHIFT_MYSQL_DB_HOST"];
+      } else {
+        $hostname = $config['hostname'];
+      }
+      if (isset($_ENV["OPENSHIFT_MYSQL_DB_USERNAME"])) {
+        $username = $_ENV["OPENSHIFT_MYSQL_DB_USERNAME"];
+      } else {
+        $username = $config['username'];
+      }
+      if (isset($_ENV['OPENSHIFT_MYSQL_DB_PASSWORD'])) {
+        $password = $_ENV['OPENSHIFT_MYSQL_DB_PASSWORD'];
+      } else {
+        $password = $config['password'];
+      }
+      mysql_connect($hostname, $username, $password);
       mysql_selectdb($config['dbname']);
-      
+
       $gl_db_init = true;
    }
 }
