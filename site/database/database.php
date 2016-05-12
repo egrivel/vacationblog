@@ -26,9 +26,14 @@ function db_init() {
       } else {
         $password = $config['password'];
       }
-      echo "Connect to $hostname<br/>\n";
+      if (isset($_ENV['OPENSHIFT_GEAR_NAME'])) {
+        $dbname = $_ENV['OPENSHIFT_GEAR_NAME'];
+      } else {
+        $dbname = $config('dbname');
+      }
+      echo "Connect to $hostname as $username<br/>\n";
       mysql_connect($hostname, $username, $password);
-      mysql_selectdb($config['dbname']);
+      mysql_selectdb($dbname);
 
       $gl_db_init = true;
    }
