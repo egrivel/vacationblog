@@ -7,7 +7,7 @@ var TestUtils = require('react-addons-test-utils');
 
 var TripStore = require('../../src/stores/TripStore');
 var MenuStore = require('../../src/stores/MenuStore');
-var Header = require('../../src/components/Header');
+var Header = require('../../src/components/Header.jsx');
 
 describe('Header component', function() {
   var defaultBanner = 'default-banner.png';

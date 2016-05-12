@@ -47,28 +47,25 @@ var Header = React.createClass({
   render: function() {
     var banner;
     if (this.state.bannerImg) {
-      banner = React.DOM.img(
-        {
-          src: 'media/' + this.state.bannerImg
-        });
+      banner = <img src={'media/' + this.state.bannerImg}/>;
     } else {
-      banner = React.DOM.div(
-        {
-          className: 'dummy-banner'
-        },
-        React.DOM.span(null, 'trip banner image is missing')
+      banner = (
+        <div className="dummy-banner">
+          <span>trip banner image is missing</span>
+        </div>
       );
     }
     return (
-      React.DOM.div(
-        {
-          className: 'header'
-        },
-        React.DOM.h1(null, this.state.name),
-        React.DOM.span({className: 'userName'}, this.state.userName),
-        banner,
-        React.createElement(Menu, {menuData: this.state.menuData})
-      )
+      <div className="header">
+        <h1>{this.state.name}</h1>
+        <span className="userName">
+          {this.state.userName}
+          &nbsp;
+          <i className="fa fa-user"></i>
+        </span>
+        {banner}
+        <Menu menuData={this.state.menuData}/>
+      </div>
     );
   }
 });

@@ -5,7 +5,7 @@ var ReactDOM = require('react-dom');
 var Router = require('react-router').Router;
 var hashHistory = require('react-router').hashHistory;
 
-var Header = require('./components/Header');
+var Header = require('./components/Header.jsx');
 var Footer = require('./components/Footer');
 var TripDescription = require('./components/TripDescription');
 var JournalWrapper = require('./components/JournalWrapper.jsx');
