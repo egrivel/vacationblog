@@ -16,8 +16,10 @@ function db_init() {
       } else {
         $dbname = $config['dbname'];
       }
-      if (isset($_ENV['DB_HOST'])) {
-        $hostname = '' + $_ENV['DB_HOST'] + ':' + $_ENV['DB_PORT'];
+      if (isset($_ENV['DB_HOST']) && isset($_ENV['DB_PORT'])) {
+        $hostname = $_ENV['DB_HOST'] . ':' . $_ENV['DB_PORT'];
+      } else if (isset($_ENV['DB_HOST'])) {
+        $hostname = $_ENV['DB_HOST'];
       } else {
         $hostname = $config['hostname'];
       }
