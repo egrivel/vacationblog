@@ -90,6 +90,26 @@ function db_sql_recode($value) {
     return db_sql_encode(db_sql_decode($value));
 }
 
+/*
+ * Some SQL constructs are version-dependent. Return the correct
+ * syntax depending on the version.
+ */
+function db_get_create_default($version) {
+  if ($version === 'mysql-5.7') {
+    return 'CURRENT_TIMESTAMP(6)';
+  } else {
+    return '\'0000-00-00 00:00:00\'';
+  }
+}
+
+function db_get_update_default($version) {
+  if ($version === 'mysql-5.7') {
+    return 'CURRENT_TIMESTAMP(6)';
+  } else {
+    return 'CURRENT_TIMESTAMP';
+  }
+}
+
 /* Always init database when this module is loaded */
 db_init();
 

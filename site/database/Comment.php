@@ -35,7 +35,9 @@ class Comment {
       $this->latestHash = "";
    }
 
-   private static function createCommentTable() {
+   private static function createCommentTable($mysqlVersion) {
+      $createDefault = db_get_create_default($mysqlVersion);
+      $updateDefault = db_get_update_default($mysqlVersion);
       $query = "CREATE TABLE IF NOT EXISTS blogComment("
          . "tripId CHAR(32) NOT NULL, "
          . "commentId CHAR(32) NOT NULL, "
@@ -45,14 +47,14 @@ class Comment {
          // row. However, by defining the "created" field with a default value
          // of zero time, and pasing null in when creating the first row,
          // it automatically gets set to the current time as well. Obviously,
-         // when creating subsequent rows, the originally created timestamp 
+         // when creating subsequent rows, the originally created timestamp
          // has to be passed in anyway.
          // Note 2: use TIMESTAMP(6) rather than TIMESTAMP to get a
          // microsecond-precision for the timestamp. This will allow the
          // distinction of multiple inserts within the same second (unlikely,
          // but can happen, especially in testing).
-         . "created TIMESTAMP(6) DEFAULT '0000-00-00 00:00:00', "
-         . "updated TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP, "
+         . "created TIMESTAMP(6) DEFAULT $createDefault, "
+         . "updated TIMESTAMP(6) DEFAULT $updateDefault, "
          . "userId CHAR(32) NOT NULL, "
          . "referenceId char(32), "
          . "commentText TEXT, "
@@ -143,7 +145,7 @@ class Comment {
     * Basically, this function is a big switch on the data version value
     * with each case falling through to the next one.
     */
-   public static function updateTables($dataVersion) {
+   public static function updateTables($dataVersion, $mysqlVersion) {
       switch ($dataVersion) {
       case "":
       case "v0.1":
@@ -153,7 +155,7 @@ class Comment {
       case "v0.5":
       case "v0.6":
          // No data version yet - create initial table
-         return Comment::createCommentTable();
+         return Comment::createCommentTable($mysqlVersion);
          break;
       case "v0.7":
       case "v0.8":
@@ -216,7 +218,7 @@ class Comment {
     * be loaded. If the comment ID does not exist, all fields except for the
     * comment ID field will be blanked.
     * @param $commentId the comment ID to load. This must be a valid non-empty
-    * comment ID. 
+    * comment ID.
     * @return true when data is successfully loaded, false if no comment data
     * is loaded (object will be empty except for commentID).
     */
@@ -413,7 +415,7 @@ class Comment {
       }
 
       // Create an instance with a special ID '-' to bypass the
-      // checks on empty ID. The ID value will be overwritten by the 
+      // checks on empty ID. The ID value will be overwritten by the
       // value coming back from the database anyway.
       $object = new Comment('-', '-');
       if ($object->loadFromResult($result)) {

@@ -39,7 +39,9 @@ class Trip {
       $this->latestHash = "";
    }
 
-   private static function createTripTable() {
+   private static function createTripTable($mysqlVersion) {
+      $createDefault = db_get_create_default($mysqlVersion);
+      $updateDefault = db_get_update_default($mysqlVersion);
       $query = "CREATE TABLE IF NOT EXISTS blogTrip("
          . "tripId CHAR(32) NOT NULL, "
          // Note 1: there can be only a single TIMESTAMP field that defaults
@@ -54,8 +56,8 @@ class Trip {
          // microsecond-precision for the timestamp. This will allow the
          // distinction of multiple inserts within the same second (unlikely,
          // but can happen, especially in testing).
-         . "created TIMESTAMP(6) DEFAULT '0000-00-00 00:00:00', "
-         . "updated TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP, "
+         . "created TIMESTAMP(6) DEFAULT $createDefault, "
+         . "updated TIMESTAMP(6) DEFAULT $updateDefault, "
          . "name TEXT, "
          . "description TEXT, "
          . "bannerImg CHAR(64), "
@@ -174,7 +176,7 @@ class Trip {
     * Basically, this function is a big switch on the data version value
     * with each case falling through to the next one.
     */
-   public static function updateTables($dataVersion) {
+   public static function updateTables($dataVersion, $mysqlVersion) {
       switch ($dataVersion) {
       case "":
       case "v0.1":
@@ -183,7 +185,7 @@ class Trip {
             return false;
          }
       case "v0.2":
-         if (!Trip::createTripAttributeTable()) {
+         if (!Trip::createTripAttributeTable($mysqlVersion)) {
             return false;
          }
          break;

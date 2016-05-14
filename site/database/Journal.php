@@ -37,7 +37,9 @@ class Journal {
       $this->latestHash = "";
    }
 
-   private static function createJournalTable() {
+   private static function createJournalTable($mysqlVersion) {
+      $createDefault = db_get_create_default($mysqlVersion);
+      $updateDefault = db_get_update_default($mysqlVersion);
       $query = "CREATE TABLE IF NOT EXISTS blogJournal("
          . "tripId CHAR(32) NOT NULL, "
          . "journalId CHAR(32) NOT NULL, "
@@ -47,14 +49,14 @@ class Journal {
          // row. However, by defining the "created" field with a default value
          // of zero time, and pasing null in when creating the first row,
          // it automatically gets set to the current time as well. Obviously,
-         // when creating subsequent rows, the originally created timestamp 
+         // when creating subsequent rows, the originally created timestamp
          // has to be passed in anyway.
          // Note 2: use TIMESTAMP(6) rather than TIMESTAMP to get a
          // microsecond-precision for the timestamp. This will allow the
          // distinction of multiple inserts within the same second (unlikely,
          // but can happen, especially in testing).
-         . "created TIMESTAMP(6) DEFAULT '0000-00-00 00:00:00', "
-         . "updated TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP, "
+         . "created TIMESTAMP(6) DEFAULT $createDefault, "
+         . "updated TIMESTAMP(6) DEFAULT $updateDefault, "
          . "userId CHAR(32) NOT NULL, "
          . "journalDate char(10), "
          . "journalTitle VARCHAR(128), "
@@ -127,7 +129,7 @@ class Journal {
     * Basically, this function is a big switch on the data version value
     * with each case falling through to the next one.
     */
-   public static function updateTables($dataVersion) {
+   public static function updateTables($dataVersion, $mysqlVersion) {
       switch ($dataVersion) {
       case "":
       case "v0.1":
@@ -135,7 +137,7 @@ class Journal {
       case "v0.3":
       case "v0.4":
          // No data version yet - create initial table
-         if (!Journal::createJournalTable()) {
+         if (!Journal::createJournalTable($mysqlVersion)) {
             return false;
          }
          break;
@@ -202,7 +204,7 @@ class Journal {
     * be loaded. If the journal ID does not exist, all fields except for the
     * journal ID field will be blanked.
     * @param $journalId the journal ID to load. This must be a valid non-empty
-    * journal ID. 
+    * journal ID.
     * @return true when data is successfully loaded, false if no journal data
     * is loaded (object will be empty except for journalID).
     */
@@ -411,7 +413,7 @@ class Journal {
       }
 
       // Create an instance with a special ID '-' to bypass the
-      // checks on empty ID. The ID value will be overwritten by the 
+      // checks on empty ID. The ID value will be overwritten by the
       // value coming back from the database anyway.
       $object = new Journal('-', '-');
       if ($object->loadFromResult($result)) {
@@ -455,7 +457,7 @@ class Journal {
       }
 
       // Create an instance with a special ID '-' to bypass the
-      // checks on empty ID. The ID value will be overwritten by the 
+      // checks on empty ID. The ID value will be overwritten by the
       // value coming back from the database anyway.
       $object = new Journal('-', '-');
       if ($object->loadFromResult($result)) {
@@ -499,7 +501,7 @@ class Journal {
       }
 
       // Create an instance with a special ID '-' to bypass the
-      // checks on empty ID. The ID value will be overwritten by the 
+      // checks on empty ID. The ID value will be overwritten by the
       // value coming back from the database anyway.
       $object = new Journal('-', '-');
       if ($object->loadFromResult($result)) {
@@ -557,7 +559,7 @@ class Journal {
       }
 
       // Create an instance with a special ID '-' to bypass the
-      // checks on empty ID. The ID value will be overwritten by the 
+      // checks on empty ID. The ID value will be overwritten by the
       // value coming back from the database anyway.
       $object = new Journal('-', '-');
       if ($object->loadFromResult($result)) {
@@ -615,7 +617,7 @@ class Journal {
       }
 
       // Create an instance with a special ID '-' to bypass the
-      // checks on empty ID. The ID value will be overwritten by the 
+      // checks on empty ID. The ID value will be overwritten by the
       // value coming back from the database anyway.
       $object = new Journal('-', '-');
       if ($object->loadFromResult($result)) {

@@ -33,7 +33,9 @@ class TripUser {
       $this->latestHash = "";
    }
 
-   private static function createTable() {
+   private static function createTable($mysqlVersion) {
+      $createDefault = db_get_create_default($mysqlVersion);
+      $updateDefault = db_get_update_default($mysqlVersion);
       $query = "CREATE TABLE IF NOT EXISTS blogTripUser ("
          . "tripId CHAR(32) NOT NULL, "
          . "userId CHAR(32) NOT NULL, "
@@ -43,14 +45,14 @@ class TripUser {
          // row. However, by defining the "created" field with a default value
          // of zero time, and pasing null in when creating the first row,
          // it automatically gets set to the current time as well. Obviously,
-         // when creating subsequent rows, the originally created timestamp 
+         // when creating subsequent rows, the originally created timestamp
          // has to be passed in anyway.
          // Note 2: use TIMESTAMP(6) rather than TIMESTAMP to get a
          // microsecond-precision for the timestamp. This will allow the
          // distinction of multiple inserts within the same second (unlikely,
          // but can happen, especially in testing).
-         . "created TIMESTAMP(6) DEFAULT '0000-00-00 00:00:00', "
-         . "updated TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP, "
+         . "created TIMESTAMP(6) DEFAULT $createDefault, "
+         . "updated TIMESTAMP(6) DEFAULT $updateDefault, "
          . "role CHAR(32) NOT NULL, "
          . "message TEXT, "
          . "deleted CHAR(1), "
@@ -96,7 +98,7 @@ class TripUser {
     * Basically, this function is a big switch on the data version value
     * with each case falling through to the next one.
     */
-   public static function updateTables($dataVersion) {
+   public static function updateTables($dataVersion, $mysqlVersion) {
       switch ($dataVersion) {
       case "":
       case "v0.1":
@@ -114,7 +116,7 @@ class TripUser {
       case "v0.13":
       case "v0.14":
          // No data version yet - create initial table
-         return TripUser::createTable();
+         return TripUser::createTable($mysqlVersion);
          break;
       case "v0.15":
       case "v0.16":
@@ -161,7 +163,7 @@ class TripUser {
     * be loaded. If the comment ID does not exist, all fields except for the
     * comment ID field will be blanked.
     * @param $userId the comment ID to load. This must be a valid non-empty
-    * comment ID. 
+    * comment ID.
     * @return true when data is successfully loaded, false if no comment data
     * is loaded (object will be empty except for commentID).
     */
@@ -348,7 +350,7 @@ class TripUser {
       }
 
       // Create an instance with a special ID '-' to bypass the
-      // checks on empty ID. The ID value will be overwritten by the 
+      // checks on empty ID. The ID value will be overwritten by the
       // value coming back from the database anyway.
       $object = new TripUser('-', '-');
       if ($object->loadFromResult($result)) {

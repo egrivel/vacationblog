@@ -41,7 +41,9 @@ class Media {
       $this->latestHash = "";
    }
 
-   private static function createMediaTable() {
+   private static function createMediaTable($mysqlVersion) {
+      $createDefault = db_get_create_default($mysqlVersion);
+      $updateDefault = db_get_update_default($mysqlVersion);
       $query = "CREATE TABLE IF NOT EXISTS blogMedia("
          . "tripId CHAR(32) NOT NULL, "
          . "mediaId CHAR(32) NOT NULL, "
@@ -51,14 +53,14 @@ class Media {
          // row. However, by defining the "created" field with a default value
          // of zero time, and pasing null in when creating the first row,
          // it automatically gets set to the current time as well. Obviously,
-         // when creating subsequent rows, the originally created timestamp 
+         // when creating subsequent rows, the originally created timestamp
          // has to be passed in anyway.
          // Note 2: use TIMESTAMP(6) rather than TIMESTAMP to get a
          // microsecond-precision for the timestamp. This will allow the
          // distinction of multiple inserts within the same second (unlikely,
          // but can happen, especially in testing).
-         . "created TIMESTAMP(6) DEFAULT '0000-00-00 00:00:00', "
-         . "updated TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP, "
+         . "created TIMESTAMP(6) DEFAULT $createDefault, "
+         . "updated TIMESTAMP(6) DEFAULT $updateDefault, "
          . "type CHAR(16), "
          . "caption TEXT, "
          . "timestamp CHAR(32), "
@@ -162,14 +164,14 @@ class Media {
     * Basically, this function is a big switch on the data version value
     * with each case falling through to the next one.
     */
-   public static function updateTables($dataVersion) {
+   public static function updateTables($dataVersion, $mysqlVersion) {
       switch ($dataVersion) {
       case "":
       case "v0.1":
       case "v0.2":
       case "v0.3":
          // No data version yet - create initial table
-         if (!Media::createMediaTable()) {
+         if (!Media::createMediaTable($mysqlVersion)) {
             return false;
          }
          break;
@@ -245,7 +247,7 @@ class Media {
     * be loaded. If the media ID does not exist, all fields except for the
     * media ID field will be blanked.
     * @param $mediaId the media ID to load. This must be a valid non-empty
-    * media ID. 
+    * media ID.
     * @return true when data is successfully loaded, false if no media data
     * is loaded (object will be empty except for mediaID).
     */
@@ -475,7 +477,7 @@ class Media {
       }
 
       // Create an instance with a special ID '-' to bypass the
-      // checks on empty ID. The ID value will be overwritten by the 
+      // checks on empty ID. The ID value will be overwritten by the
       // value coming back from the database anyway.
       $object = new Media('-', '-');
       if ($object->loadFromResult($result)) {

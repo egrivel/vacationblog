@@ -31,7 +31,9 @@ class TripAttribute {
       $this->latestHash = "";
    }
 
-   private static function createTable() {
+   private static function createTable($mysqlVersion) {
+      $createDefault = db_get_create_default($mysqlVersion);
+      $updateDefault = db_get_update_default($mysqlVersion);
       $query = "CREATE TABLE IF NOT EXISTS blogTripAttribute("
          . "tripId CHAR(32) NOT NULL, "
          . "name CHAR(32), "
@@ -41,14 +43,14 @@ class TripAttribute {
          // row. However, by defining the "created" field with a default value
          // of zero time, and pasing null in when creating the first row,
          // it automatically gets set to the current time as well. Obviously,
-         // when creating subsequent rows, the originally created timestamp 
+         // when creating subsequent rows, the originally created timestamp
          // has to be passed in anyway.
          // Note 2: use TIMESTAMP(6) rather than TIMESTAMP to get a
          // microsecond-precision for the timestamp. This will allow the
          // distinction of multiple inserts within the same second (unlikely,
          // but can happen, especially in testing).
-         . "created TIMESTAMP(6) DEFAULT '0000-00-00 00:00:00', "
-         . "updated TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP, "
+         . "created TIMESTAMP(6) DEFAULT $createDefault, "
+         . "updated TIMESTAMP(6) DEFAULT $updateDefault, "
          . "value TEXT, "
          . "deleted CHAR(1), "
          . "hash CHAR(32), "
@@ -94,7 +96,7 @@ class TripAttribute {
     * Basically, this function is a big switch on the data version value
     * with each case falling through to the next one.
     */
-   public static function updateTables($dataVersion) {
+   public static function updateTables($dataVersion, $mysqlVersion) {
       switch ($dataVersion) {
       case "":
       case "v0.1":
@@ -110,7 +112,7 @@ class TripAttribute {
       case "v0.11":
       case "v0.12":
       case "v0.13":
-         if (!TripAttribute::createTable()) {
+         if (!TripAttribute::createTable($mysqlVersion)) {
             return false;
          }
          break;
@@ -158,7 +160,7 @@ class TripAttribute {
     * be loaded. If the trip ID does not exist, all fields except for the
     * trip ID field will be blanked.
     * @param $tripId the trip ID to load. This must be a valid non-empty
-    * trip ID. 
+    * trip ID.
     * @return true when data is successfully loaded, false if no trip data
     * is loaded (object will be empty except for tripID).
     */
@@ -323,7 +325,7 @@ class TripAttribute {
       }
 
       // Create a Trip object with a special trip ID '-' to bypass the
-      // checks on empty ID. The ID value will be overwritten by the 
+      // checks on empty ID. The ID value will be overwritten by the
       // value coming back from the database anyway.
       $trip = new TripAttribute('-', '-');
       if ($trip->loadFromResult($result)) {

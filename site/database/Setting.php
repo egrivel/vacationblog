@@ -7,11 +7,12 @@ class Setting {
    /* Private functions                                            */
    /* ============================================================ */
 
-   private static function createSettingTable() {
+   private static function createSettingTable($mysqlVersion) {
+      $updateDefault = db_get_update_default($mysqlVersion);
       $query = "CREATE TABLE IF NOT EXISTS blogSetting("
          . "name CHAR(32) NOT NULL, "
          . "value TEXT, "
-         . "updated TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP, "
+         . "updated TIMESTAMP(6) DEFAULT $updateVersion, "
          . "PRIMARY KEY(name)"
          .")";
       if (!mysql_query($query)) {
@@ -35,12 +36,12 @@ class Setting {
     * Basically, this function is a big switch on the data version value
     * with each case falling through to the next one.
     */
-   public static function updateTables($dataVersion) {
+   public static function updateTables($dataVersion, $mysqlVersion) {
       switch ($dataVersion) {
       case "":
          // No data version yet - create initial table and set version number
          Setting::createSettingTable();
-         Setting::set("DataVersion", Setting::getCurrentVersion());
+         Setting::set("DataVersion", Setting::getCurrentVersion($mysqlVersion));
          break;
       case "v0.1":
       case "v0.2":

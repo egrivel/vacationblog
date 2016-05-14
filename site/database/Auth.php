@@ -26,7 +26,9 @@ class Auth {
       $this->expiration = "";
    }
 
-   private static function createAuthTable() {
+   private static function createAuthTable($mysqlVersion) {
+      $createDefault = db_get_create_default($mysqlVersion);
+      $updateDefault = db_get_update_default($mysqlVersion);
       $query = "CREATE TABLE IF NOT EXISTS blogAuth("
          . "authId CHAR(64) NOT NULL, "
          . "userId CHAR(32) NOT NULL, "
@@ -42,8 +44,8 @@ class Auth {
          // microsecond-precision for the timestamp. This will allow the
          // distinction of multiple inserts within the same second (unlikely,
          // but can happen, especially in testing).
-         . "created TIMESTAMP(6) DEFAULT '0000-00-00 00:00:00', "
-         . "updated TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP, "
+         . "created TIMESTAMP(6) DEFAULT $createDefault, "
+         . "updated TIMESTAMP(6) DEFAULT $updateDefault, "
          . "expiration CHAR(16), "
          . "PRIMARY KEY(authId, updated) "
          . ")";
@@ -81,7 +83,7 @@ class Auth {
     * Basically, this function is a big switch on the data version value
     * with each case falling through to the next one.
     */
-   public static function updateTables($dataVersion) {
+   public static function updateTables($dataVersion, $mysqlVersion) {
       switch ($dataVersion) {
       case "":
       case "v0.1":
@@ -93,7 +95,7 @@ class Auth {
       case "v0.7":
       case "v0.8":
          // No data version yet - create initial table
-         Auth::createAuthTable();
+         Auth::createAuthTable($mysqlVersion);
          break;
       case "v0.9":
       case "v0.10":

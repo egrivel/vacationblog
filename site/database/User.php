@@ -52,7 +52,9 @@ class User {
       $this->latestHash = "";
    }
 
-   private static function createUserTable() {
+   private static function createUserTable($mysqlVersion) {
+      $createDefault = db_get_create_default($mysqlVersion);
+      $updateDefault = db_get_update_default($mysqlVersion);
       $query = "CREATE TABLE IF NOT EXISTS blogUser("
          . "userId CHAR(32) NOT NULL, "
          // Use 255 characters for the password, even though the inital version
@@ -71,8 +73,8 @@ class User {
          // microsecond-precision for the timestamp. This will allow the
          // distinction of multiple inserts within the same second (unlikely,
          // but can happen, especially in testing).
-         . "created TIMESTAMP(6) DEFAULT '0000-00-00 00:00:00', "
-         . "updated TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP, "
+         . "created TIMESTAMP(6) DEFAULT $createDefault, "
+         . "updated TIMESTAMP(6) DEFAULT $updateDefault, "
          . "name TEXT, "
          . "externalType CHAR(16), "
          . "externalId TEXT, "
@@ -144,11 +146,11 @@ class User {
     * Basically, this function is a big switch on the data version value
     * with each case falling through to the next one.
     */
-   public static function updateTables($dataVersion) {
+   public static function updateTables($dataVersion, $mysqlVersion) {
       switch ($dataVersion) {
       case "":
          // No data version yet - create initial table
-         User::createUserTable();
+         User::createUserTable($mysqlVersion);
          break;
       case "v0.1":
       case "v0.2":
