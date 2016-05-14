@@ -81,19 +81,19 @@ class DatabaseTest extends PHPUnit_Framework_TestCase {
 
    public function testUpdateDatabase() {
       $version = Setting::getDataVersion();
-      $this->assertTrue(Auth::updateTables($version));
-      $this->assertTrue(Comment::updateTables($version));
-      $this->assertTrue(Feedback::updateTables($version));
-      $this->assertTrue(Journal::updateTables($version));
-      $this->assertTrue(Media::updateTables($version));
-      $this->assertTrue(Trip::updateTables($version));
-      $this->assertTrue(TripAttribute::updateTables($version));
-      $this->assertTrue(TripUser::updateTables($version));
-      $this->assertTrue(User::updateTables($version));
+      $this->assertTrue(Auth::updateTables($version, ''));
+      $this->assertTrue(Comment::updateTables($version, ''));
+      $this->assertTrue(Feedback::updateTables($version, ''));
+      $this->assertTrue(Journal::updateTables($version, ''));
+      $this->assertTrue(Media::updateTables($version, ''));
+      $this->assertTrue(Trip::updateTables($version, ''));
+      $this->assertTrue(TripAttribute::updateTables($version, ''));
+      $this->assertTrue(TripUser::updateTables($version, ''));
+      $this->assertTrue(User::updateTables($version, ''));
       // Note: make sure the Settings::updateTables is last: when any of the
       // above fail, the data version in the database should NOT be updated!
-      $this->assertTrue(Setting::updateTables($version));
-   }     
+      $this->assertTrue(Setting::updateTables($version, ''));
+   }
 }
 
 ?>
