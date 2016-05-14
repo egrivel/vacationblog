@@ -33,9 +33,9 @@ class Feedback {
       $this->latestHash = "";
    }
 
-   private static function createFeedbackTable($mysqlVersion) {
-      $createDefault = db_get_create_default($mysqlVersion);
-      $updateDefault = db_get_update_default($mysqlVersion);
+   private static function createFeedbackTable() {
+      $createDefault = db_get_create_default();
+      $updateDefault = db_get_update_default();
       $query = "CREATE TABLE IF NOT EXISTS blogFeedback("
          . "tripId CHAR(32) NOT NULL, "
          . "referenceId CHAR(32) NOT NULL, "
@@ -112,7 +112,7 @@ class Feedback {
     * Basically, this function is a big switch on the data version value
     * with each case falling through to the next one.
     */
-   public static function updateTables($dataVersion, $mysqlVersion) {
+   public static function updateTables($dataVersion) {
       switch ($dataVersion) {
       case "":
       case "v0.1":
@@ -123,7 +123,7 @@ class Feedback {
       case "v0.6":
       case "v0.7":
          // No data version yet - create initial table
-         if (!Feedback::createFeedbackTable($mysqlVersion)) {
+         if (!Feedback::createFeedbackTable()) {
             return false;
          }
          break;

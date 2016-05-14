@@ -41,9 +41,9 @@ class Media {
       $this->latestHash = "";
    }
 
-   private static function createMediaTable($mysqlVersion) {
-      $createDefault = db_get_create_default($mysqlVersion);
-      $updateDefault = db_get_update_default($mysqlVersion);
+   private static function createMediaTable() {
+      $createDefault = db_get_create_default();
+      $updateDefault = db_get_update_default();
       $query = "CREATE TABLE IF NOT EXISTS blogMedia("
          . "tripId CHAR(32) NOT NULL, "
          . "mediaId CHAR(32) NOT NULL, "
@@ -164,14 +164,14 @@ class Media {
     * Basically, this function is a big switch on the data version value
     * with each case falling through to the next one.
     */
-   public static function updateTables($dataVersion, $mysqlVersion) {
+   public static function updateTables($dataVersion) {
       switch ($dataVersion) {
       case "":
       case "v0.1":
       case "v0.2":
       case "v0.3":
          // No data version yet - create initial table
-         if (!Media::createMediaTable($mysqlVersion)) {
+         if (!Media::createMediaTable()) {
             return false;
          }
          break;

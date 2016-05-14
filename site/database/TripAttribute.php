@@ -31,9 +31,9 @@ class TripAttribute {
       $this->latestHash = "";
    }
 
-   private static function createTable($mysqlVersion) {
-      $createDefault = db_get_create_default($mysqlVersion);
-      $updateDefault = db_get_update_default($mysqlVersion);
+   private static function createTable() {
+      $createDefault = db_get_create_default();
+      $updateDefault = db_get_update_default();
       $query = "CREATE TABLE IF NOT EXISTS blogTripAttribute("
          . "tripId CHAR(32) NOT NULL, "
          . "name CHAR(32), "
@@ -96,7 +96,7 @@ class TripAttribute {
     * Basically, this function is a big switch on the data version value
     * with each case falling through to the next one.
     */
-   public static function updateTables($dataVersion, $mysqlVersion) {
+   public static function updateTables($dataVersion) {
       switch ($dataVersion) {
       case "":
       case "v0.1":
@@ -112,7 +112,7 @@ class TripAttribute {
       case "v0.11":
       case "v0.12":
       case "v0.13":
-         if (!TripAttribute::createTable($mysqlVersion)) {
+         if (!TripAttribute::createTable()) {
             return false;
          }
          break;

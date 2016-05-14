@@ -52,9 +52,9 @@ class User {
       $this->latestHash = "";
    }
 
-   private static function createUserTable($mysqlVersion) {
-      $createDefault = db_get_create_default($mysqlVersion);
-      $updateDefault = db_get_update_default($mysqlVersion);
+   private static function createUserTable() {
+      $createDefault = db_get_create_default();
+      $updateDefault = db_get_update_default();
       $query = "CREATE TABLE IF NOT EXISTS blogUser("
          . "userId CHAR(32) NOT NULL, "
          // Use 255 characters for the password, even though the inital version
@@ -146,11 +146,11 @@ class User {
     * Basically, this function is a big switch on the data version value
     * with each case falling through to the next one.
     */
-   public static function updateTables($dataVersion, $mysqlVersion) {
+   public static function updateTables($dataVersion) {
       switch ($dataVersion) {
       case "":
          // No data version yet - create initial table
-         User::createUserTable($mysqlVersion);
+         User::createUserTable();
          break;
       case "v0.1":
       case "v0.2":

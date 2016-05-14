@@ -33,9 +33,9 @@ class TripUser {
       $this->latestHash = "";
    }
 
-   private static function createTable($mysqlVersion) {
-      $createDefault = db_get_create_default($mysqlVersion);
-      $updateDefault = db_get_update_default($mysqlVersion);
+   private static function createTable() {
+      $createDefault = db_get_create_default();
+      $updateDefault = db_get_update_default();
       $query = "CREATE TABLE IF NOT EXISTS blogTripUser ("
          . "tripId CHAR(32) NOT NULL, "
          . "userId CHAR(32) NOT NULL, "
@@ -98,7 +98,7 @@ class TripUser {
     * Basically, this function is a big switch on the data version value
     * with each case falling through to the next one.
     */
-   public static function updateTables($dataVersion, $mysqlVersion) {
+   public static function updateTables($dataVersion) {
       switch ($dataVersion) {
       case "":
       case "v0.1":
@@ -116,7 +116,7 @@ class TripUser {
       case "v0.13":
       case "v0.14":
          // No data version yet - create initial table
-         return TripUser::createTable($mysqlVersion);
+         return TripUser::createTable();
          break;
       case "v0.15":
       case "v0.16":
@@ -215,8 +215,8 @@ class TripUser {
       $query = "INSERT INTO blogTripUser SET "
          . "tripId=" . db_sql_encode($this->tripId)
          . ", userId=" . db_sql_encode($this->userId)
-         . ", created=" . db_sql_encode($this->created)
-         . ", updated=" . db_sql_encode($this->updated)
+         . db_created($this->created)
+         . db_updated($this->updated)
          . ", role=" . db_sql_encode($this->role)
          . ", message=" . db_sql_encode($this->message)
          . ", deleted=" . db_sql_encode($this->deleted)

@@ -26,9 +26,9 @@ class Auth {
       $this->expiration = "";
    }
 
-   private static function createAuthTable($mysqlVersion) {
-      $createDefault = db_get_create_default($mysqlVersion);
-      $updateDefault = db_get_update_default($mysqlVersion);
+   private static function createAuthTable() {
+      $createDefault = db_get_create_default();
+      $updateDefault = db_get_update_default();
       $query = "CREATE TABLE IF NOT EXISTS blogAuth("
          . "authId CHAR(64) NOT NULL, "
          . "userId CHAR(32) NOT NULL, "
@@ -83,7 +83,7 @@ class Auth {
     * Basically, this function is a big switch on the data version value
     * with each case falling through to the next one.
     */
-   public static function updateTables($dataVersion, $mysqlVersion) {
+   public static function updateTables($dataVersion) {
       switch ($dataVersion) {
       case "":
       case "v0.1":
@@ -95,7 +95,7 @@ class Auth {
       case "v0.7":
       case "v0.8":
          // No data version yet - create initial table
-         Auth::createAuthTable($mysqlVersion);
+         Auth::createAuthTable();
          break;
       case "v0.9":
       case "v0.10":

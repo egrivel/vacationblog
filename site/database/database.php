@@ -94,7 +94,14 @@ function db_sql_recode($value) {
  * Some SQL constructs are version-dependent. Return the correct
  * syntax depending on the version.
  */
-function db_get_create_default($version) {
+function db_get_installed_version() {
+  if (isset($_ENV['DB_VERSION'])) {
+    return $_ENV['DB_VERSION'];
+  }
+  return '';
+}
+function db_get_create_default() {
+  $version = db_get_installed_version();
   if ($version === 'mysql-5.7') {
     return 'CURRENT_TIMESTAMP(6)';
   } else {
@@ -102,7 +109,8 @@ function db_get_create_default($version) {
   }
 }
 
-function db_get_update_default($version) {
+function db_get_update_default() {
+  $version = db_get_installed_version();
   if ($version === 'mysql-5.7') {
     return 'CURRENT_TIMESTAMP(6)';
   } else {
@@ -111,18 +119,24 @@ function db_get_update_default($version) {
 }
 
 function db_created($value) {
+  $version = db_get_installed_version();
   if ($value) {
     return ', created=' . db_sql_encode($value);
-  } else {
+  } else if ($version === 'mysql-5.7') {
     return '';
+  } else {
+    return ', created=null';
   }
 }
 
 function db_updated($value) {
+  $version = db_get_installed_version();
   if ($value) {
-    return ', created=' . db_sql_encode($value);
-  } else {
+    return ', updated=' . db_sql_encode($value);
+  } else if ($version === 'mysql-5.7') {
     return '';
+  } else {
+    return ', updated=null';
   }
 }
 

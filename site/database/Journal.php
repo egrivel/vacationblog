@@ -37,9 +37,9 @@ class Journal {
       $this->latestHash = "";
    }
 
-   private static function createJournalTable($mysqlVersion) {
-      $createDefault = db_get_create_default($mysqlVersion);
-      $updateDefault = db_get_update_default($mysqlVersion);
+   private static function createJournalTable() {
+      $createDefault = db_get_create_default();
+      $updateDefault = db_get_update_default();
       $query = "CREATE TABLE IF NOT EXISTS blogJournal("
          . "tripId CHAR(32) NOT NULL, "
          . "journalId CHAR(32) NOT NULL, "
@@ -129,7 +129,7 @@ class Journal {
     * Basically, this function is a big switch on the data version value
     * with each case falling through to the next one.
     */
-   public static function updateTables($dataVersion, $mysqlVersion) {
+   public static function updateTables($dataVersion) {
       switch ($dataVersion) {
       case "":
       case "v0.1":
@@ -137,7 +137,7 @@ class Journal {
       case "v0.3":
       case "v0.4":
          // No data version yet - create initial table
-         if (!Journal::createJournalTable($mysqlVersion)) {
+         if (!Journal::createJournalTable()) {
             return false;
          }
          break;

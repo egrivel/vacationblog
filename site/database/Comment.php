@@ -35,9 +35,9 @@ class Comment {
       $this->latestHash = "";
    }
 
-   private static function createCommentTable($mysqlVersion) {
-      $createDefault = db_get_create_default($mysqlVersion);
-      $updateDefault = db_get_update_default($mysqlVersion);
+   private static function createCommentTable() {
+      $createDefault = db_get_create_default();
+      $updateDefault = db_get_update_default();
       $query = "CREATE TABLE IF NOT EXISTS blogComment("
          . "tripId CHAR(32) NOT NULL, "
          . "commentId CHAR(32) NOT NULL, "
@@ -145,7 +145,7 @@ class Comment {
     * Basically, this function is a big switch on the data version value
     * with each case falling through to the next one.
     */
-   public static function updateTables($dataVersion, $mysqlVersion) {
+   public static function updateTables($dataVersion) {
       switch ($dataVersion) {
       case "":
       case "v0.1":
@@ -155,7 +155,7 @@ class Comment {
       case "v0.5":
       case "v0.6":
          // No data version yet - create initial table
-         return Comment::createCommentTable($mysqlVersion);
+         return Comment::createCommentTable();
          break;
       case "v0.7":
       case "v0.8":
