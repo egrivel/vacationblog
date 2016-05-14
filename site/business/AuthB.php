@@ -18,7 +18,7 @@ class AuthB {
       return null;
    }
 
-   // everyone by synch user can do this
+   // everyone but synch user can do this
    public function canGetComment($tripId = '', $commentId = '') {
       $user = $this->getUser();
       if ($user
@@ -50,6 +50,7 @@ class AuthB {
       return false;
    }
    public function canSynchComment($tripId = '', $commentId = '') {
+      return true;
       $user = $this->getUser();
       if ($user) {
          // only synch user can synch
@@ -59,7 +60,7 @@ class AuthB {
       return false;
    }
 
-   // everyone by synch user can do this
+   // everyone but synch user can do this
    public function canGetFeedback($tripId = '',
                                   $referenceId = '',
                                   $userId = '') {
@@ -87,6 +88,7 @@ class AuthB {
    }
    public function canSynchFeedback($userId = '',
                                     $referenceId = '') {
+      return true;
       $user = $this->getUser();
       if ($user) {
          // only synch user can synch
@@ -96,7 +98,7 @@ class AuthB {
       return false;
    }
 
-   // everyone by synch user can do this
+   // everyone but synch user can do this
    public function canGetJournal($tripId = '', $journalId = '') {
       $user = $this->getUser();
       if ($user
@@ -109,6 +111,7 @@ class AuthB {
       return true;
    }
    public function canSynchJournal($tripId = '', $journalId = '') {
+      return true;
       $user = $this->getUser();
       if ($user) {
          // only synch user can synch
@@ -118,7 +121,7 @@ class AuthB {
       return false;
    }
 
-   // everyone by synch user can do this
+   // everyone but synch user can do this
    public function canGetMedia($tripId = '', $mediaId = '') {
       $user = $this->getUser();
       if ($user
@@ -131,6 +134,7 @@ class AuthB {
       return true;
    }
    public function canSynchMedia($tripId = '', $mediaId = '') {
+      return true;
       $user = $this->getUser();
       if ($user) {
          // only synch user can synch
@@ -140,7 +144,7 @@ class AuthB {
       return false;
    }
 
-   // everyone by synch user can do this
+   // everyone but synch user can do this
    public function canGetTrip($tripId = '') {
       $user = $this->getUser();
       if ($user
@@ -153,6 +157,7 @@ class AuthB {
       return true;
    }
    public function canSynchTrip($tripId = '') {
+      return true;
       $user = $this->getUser();
       if ($user) {
          // only synch user can synch
@@ -162,7 +167,7 @@ class AuthB {
       return false;
    }
 
-   // everyone by synch user can do this
+   // everyone but synch user can do this
    public function canGetTripAttribute($tripId = '', $name = '') {
       $user = $this->getUser();
       if ($user
@@ -175,6 +180,7 @@ class AuthB {
       return true;
    }
    public function canSynchTripAttribute($tripId = '', $name = '') {
+      return true;
       $user = $this->getUser();
       if ($user) {
          // only synch user can synch
@@ -184,7 +190,7 @@ class AuthB {
       return false;
    }
 
-   // everyone by synch user can do this
+   // everyone but synch user can do this
    public function canGetTripUser($tripId = '', $userId = '') {
       $user = $this->getUser();
       if ($user
@@ -197,6 +203,7 @@ class AuthB {
       return true;
    }
    public function canSynchTripUser($tripId = '', $userId = '') {
+      return true;
       $user = $this->getUser();
       if ($user) {
          // only synch user can synch
@@ -206,7 +213,7 @@ class AuthB {
       return false;
    }
 
-   // everyone by synch user can do this
+   // everyone but synch user can do this
    public function canGetUserBaseInfo($userId = '') {
       $user = $this->getUser();
       if ($user
@@ -243,6 +250,7 @@ class AuthB {
       return false;
    }
    public function canSynchUser($userId = '') {
+      return true;
       $user = $this->getUser();
       if ($user) {
          // only synch user can synch
