@@ -12,22 +12,18 @@ include_once("../database/User.php");
 
 $setting = new Setting();
 $version = $setting->getDataVersion();
-$mysqlVersion = '';
-if (isset($_ENV['DB_VERSION'])) {
-  $mysqlVersion = $_ENV['DB_VERSION'];
-}
 
-function updateTables($version, $mysqlVersion) {
-   Auth::updateTables($version, $mysqlVersion);
-   Comment::updateTables($version, $mysqlVersion);
-   Feedback::updateTables($version, $mysqlVersion);
-   Journal::updateTables($version, $mysqlVersion);
-   Media::updateTables($version, $mysqlVersion);
-   Setting::updateTables($version, $mysqlVersion);
-   Trip::updateTables($version, $mysqlVersion);
-   TripAttribute::updateTables($version, $mysqlVersion);
-   TripUser::updateTables($version, $mysqlVersion);
-   User::updateTables($version, $mysqlVersion);
+function updateTables($version) {
+   Auth::updateTables($version);
+   Comment::updateTables($version);
+   Feedback::updateTables($version);
+   Journal::updateTables($version);
+   Media::updateTables($version);
+   Setting::updateTables($version);
+   Trip::updateTables($version);
+   TripAttribute::updateTables($version);
+   TripUser::updateTables($version);
+   User::updateTables($version);
    print "Tables have been updated. ";
 }
 
@@ -77,7 +73,7 @@ if ($version === "") {
       if ($errors) {
          showForm($errors);
       } else {
-         updateTables($version, $mysqlVersion);
+         updateTables($version);
          $user = new User($name);
          $user->setName($fullname);
          $user->setPassword($password);
@@ -89,7 +85,7 @@ if ($version === "") {
       showForm('');
    }
 } else {
-   updateTables($version, $mysqlVersion);
+   updateTables($version);
 }
 
 function showForm($errors) {
