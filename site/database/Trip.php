@@ -76,7 +76,9 @@ class Trip {
       return true;
    }
 
-   private static function createTripAttributeTable() {
+   private static function createTripAttributeTable($mysqlVersion) {
+      $createDefault = db_get_create_default($mysqlVersion);
+      $updateDefault = db_get_update_default($mysqlVersion);
       $query = "CREATE TABLE IF NOT EXISTS blogTripAttribute("
          . "tripId CHAR(32) NOT NULL, "
          . "name CHAR(32), "
@@ -92,8 +94,8 @@ class Trip {
          // microsecond-precision for the timestamp. This will allow the
          // distinction of multiple inserts within the same second (unlikely,
          // but can happen, especially in testing).
-         . "created TIMESTAMP(6) DEFAULT '0000-00-00 00:00:00', "
-         . "updated TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP, "
+         . "created TIMESTAMP(6) DEFAULT $createDefault, "
+         . "updated TIMESTAMP(6) DEFAULT $updateDefault, "
          . "value TEXT, "
          . "deleted CHAR(1), "
          . "hash CHAR(32), "
@@ -181,7 +183,7 @@ class Trip {
       case "":
       case "v0.1":
          // No data version yet - create initial table
-         if (!Trip::createTripTable()) {
+         if (!Trip::createTripTable($mysqlVersion)) {
             return false;
          }
       case "v0.2":
