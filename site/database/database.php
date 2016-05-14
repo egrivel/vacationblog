@@ -11,25 +11,25 @@ function db_init() {
    global $gl_db_system;
    if (!$gl_db_init) {
       $config = parse_ini_file(dirname(__FILE__) . '/../../vacationblog.ini');
-      if (isset($_ENV["OPENSHIFT_MYSQL_DB_HOST"])) {
-        $hostname = $_ENV["OPENSHIFT_MYSQL_DB_HOST"];
+      if (isset($_ENV['DB_NAME'])) {
+        $dbname = $_ENV['DB_NAME'];
+      } else {
+        $dbname = $config['dbname'];
+      }
+      if (isset($_ENV['DB_HOST'])) {
+        $hostname = $_ENV['DB_HOST'];
       } else {
         $hostname = $config['hostname'];
       }
-      if (isset($_ENV["OPENSHIFT_MYSQL_DB_USERNAME"])) {
-        $username = $_ENV["OPENSHIFT_MYSQL_DB_USERNAME"];
+      if (isset($_ENV['DB_USERNAME'])) {
+        $username = $_ENV['DB_USERNAME'];
       } else {
         $username = $config['username'];
       }
-      if (isset($_ENV['OPENSHIFT_MYSQL_DB_PASSWORD'])) {
-        $password = $_ENV['OPENSHIFT_MYSQL_DB_PASSWORD'];
+      if (isset($_ENV['DB_PASSWORD'])) {
+        $password = $_ENV['DB_PASSWORD'];
       } else {
         $password = $config['password'];
-      }
-      if (isset($_ENV['OPENSHIFT_GEAR_NAME'])) {
-        $dbname = $_ENV['OPENSHIFT_GEAR_NAME'];
-      } else {
-        $dbname = $config['dbname'];
       }
       echo "Connect to $hostname as $username with password $password<br/>\n";
       echo "dbname = '$dbname'<br/>\n";
