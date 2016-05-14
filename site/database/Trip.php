@@ -296,8 +296,8 @@ class Trip {
       }
       $query = "INSERT INTO blogTrip SET "
          . "tripId=" . db_sql_encode($this->tripId)
-         . ", created=" . db_sql_encode($this->created)
-         . ", updated=" . db_sql_encode($this->updated)
+         . db_created($this->created)
+         . db_updated($this->updated)
          . ", name=" . db_sql_encode($this->name)
          . ", description=" . db_sql_encode($this->description)
          . ", bannerImg=" . db_sql_encode($this->bannerImg)

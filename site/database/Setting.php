@@ -109,10 +109,10 @@ class Setting {
       $query = "INSERT INTO blogSetting SET "
          . "name=" . db_sql_encode($name)
          . ", value=" . db_sql_encode($value)
-         . ", updated=null "
-         . "ON DUPLICATE KEY UPDATE "
+         . db_updated(null)
+         . " ON DUPLICATE KEY UPDATE "
          . "value=" . db_sql_encode($value)
-         . ", updated=null ";
+         . db_updated(null);
 
       if (!mysql_query($query)) {
          // Error executing the query

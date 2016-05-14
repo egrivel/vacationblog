@@ -258,8 +258,8 @@ class Journal {
       $query = "INSERT INTO blogJournal SET "
          . "tripId=" . db_sql_encode($this->tripId)
          . ", journalId=" . db_sql_encode($this->journalId)
-         . ", created=" . db_sql_encode($this->created)
-         . ", updated=" . db_sql_encode($this->updated)
+         . db_created($this->created)
+         . db_updated($this->updated)
          . ", userId=" . db_sql_encode($this->userId)
          . ", journalDate=" . db_sql_encode($this->journalDate)
          . ", journalTitle=" . db_sql_encode($this->journalTitle)

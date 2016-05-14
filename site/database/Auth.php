@@ -184,8 +184,8 @@ class Auth {
       }
       $query = "INSERT INTO blogAuth SET "
          . "authId=" . db_sql_encode($this->authId)
-         . ", created=" . db_sql_encode($this->created)
-         . ", updated=" . db_sql_encode($this->updated)
+         . db_created($this->created)
+         . db_updated($this->updated)
          . ", userId=" . db_sql_encode($this->userId)
          . ", expiration=" . db_sql_encode($this->expiration);
       // print "Saving to database: $query<br/>\n";

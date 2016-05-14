@@ -44779,7 +44779,6 @@ var utils = require('./utils');
 
 var LoginAction = {
   _doLoginCallback: function(response) {
-    console.log('Got response ' + response);
     var data = JSON.parse(response);
     if (data.resultCode === '200') {
       var authId = data.authId;

@@ -302,8 +302,8 @@ class Media {
       $query = "INSERT INTO blogMedia SET "
          . "tripId=" . db_sql_encode($this->tripId)
          . ", mediaId=" . db_sql_encode($this->mediaId)
-         . ", created=" . db_sql_encode($this->created)
-         . ", updated=" . db_sql_encode($this->updated)
+         . db_created($this->created)
+         . db_updated($this->updated)
          . ", type=" . db_sql_encode($this->type)
          . ", caption=" . db_sql_encode($this->caption)
          . ", timestamp=" . db_sql_encode($this->timestamp)

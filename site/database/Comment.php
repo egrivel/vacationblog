@@ -270,8 +270,8 @@ class Comment {
       $query = "INSERT INTO blogComment SET "
          . "tripId=" . db_sql_encode($this->tripId)
          . ", commentId=" . db_sql_encode($this->commentId)
-         . ", created=" . db_sql_encode($this->created)
-         . ", updated=" . db_sql_encode($this->updated)
+         . db_created($this->created)
+         . db_updated($this->updated)
          . ", userId=" . db_sql_encode($this->userId)
          . ", referenceId=" . db_sql_encode($this->referenceId)
          . ", commentText=" . db_sql_encode($this->commentText)

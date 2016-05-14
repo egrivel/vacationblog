@@ -244,8 +244,8 @@ class Feedback {
          . "tripId=" . db_sql_encode($this->tripId)
          . ", referenceId=" . db_sql_encode($this->referenceId)
          . ", userId=" . db_sql_encode($this->userId)
-         . ", created=" . db_sql_encode($this->created)
-         . ", updated=" . db_sql_encode($this->updated)
+         . db_created($this->created)
+         . db_updated($this->updated)
          . ", type=" . db_sql_encode($this->type)
          . ", deleted=" . db_sql_encode($this->deleted)
          . ", hash=" . db_sql_encode($this->hash);
