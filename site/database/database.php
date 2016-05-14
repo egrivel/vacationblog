@@ -33,8 +33,8 @@ function db_init() {
       } else {
         $password = $config['password'];
       }
-      echo "Connect to $hostname as $username with password $password<br/>\n";
-      echo "dbname = '$dbname'<br/>\n";
+      // echo "Connect to $hostname as $username with password $password<br/>\n";
+      // echo "dbname = '$dbname'<br/>\n";
       if (!mysql_connect($hostname, $username, $password)) {
         echo "Could not connect: " .mysql_error() . '<br/>\n';
       }
@@ -107,6 +107,22 @@ function db_get_update_default($version) {
     return 'CURRENT_TIMESTAMP(6)';
   } else {
     return 'CURRENT_TIMESTAMP';
+  }
+}
+
+function db_created($value) {
+  if ($value) {
+    return ', created=' . db_sql_encode($value);
+  } else {
+    return '';
+  }
+}
+
+function db_updated($value) {
+  if ($value) {
+    return ', created=' . db_sql_encode($value);
+  } else {
+    return '';
   }
 }
 
