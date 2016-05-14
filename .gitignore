@@ -2,6 +2,7 @@ CVS
 node_modules
 coverage
 temp
+dist
 vacationblog.ini
 *.sublime-*
 .git
