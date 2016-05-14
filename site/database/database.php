@@ -35,7 +35,9 @@ function db_init() {
       }
       echo "Connect to $hostname as $username with password $password<br/>\n";
       echo "dbname = '$dbname'<br/>\n";
-      mysql_connect($hostname, $username, $password);
+      if (!mysql_connect($hostname, $username, $password)) {
+        echo "Could not connect: " .mysql_error() . '<br/>\n';
+      }
       mysql_selectdb($dbname);
 
       $gl_db_init = true;
