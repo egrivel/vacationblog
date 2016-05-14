@@ -311,8 +311,8 @@ class User {
       $query = "INSERT INTO blogUser SET "
          . "userId=" . db_sql_encode($this->userId)
          . ", password=" . db_sql_encode($this->password)
-         . ", created=" . db_sql_encode($this->created)
-         . ", updated=" . db_sql_encode($this->updated)
+         . db_created($this->created)
+         . db_updated($this->updated)
          . ", name=" . db_sql_encode($this->name)
          . ", externalType=" . db_sql_encode($this->externalType)
          . ", externalId=" . db_sql_encode($this->externalId)
