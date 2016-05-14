@@ -40,7 +40,7 @@ class Setting {
       switch ($dataVersion) {
       case "":
          // No data version yet - create initial table and set version number
-         Setting::createSettingTable();
+         Setting::createSettingTable($mysqlVersion);
          Setting::set("DataVersion", Setting::getCurrentVersion($mysqlVersion));
          break;
       case "v0.1":
