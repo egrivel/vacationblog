@@ -147,7 +147,7 @@ var setupDeploy = function(grunt) {
       command: 'scripts/deploy.sh'
     }
   });
-  grunt.registerTask('deploy', ['exec:deploy']);
+  grunt.registerTask('deploy', ['browserify:development', 'exec:deploy']);
 };
 
 module.exports = function(grunt) {
