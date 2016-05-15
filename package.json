@@ -25,6 +25,7 @@
     "grunt": "^0.4.5",
     "grunt-browserify": "^5.0.0",
     "grunt-eslint": "^18.0.0",
+    "grunt-exec": "^0.4.7",
     "grunt-mocha-phantomjs": "^3.0.0",
     "istanbul": "^0.4.2",
     "istanbul-combine": "^0.3.0",
@@ -42,6 +43,7 @@
     "eslint": "grunt eslint",
     "check-files": "grunt check-files",
     "all": "grunt all",
+    "deploy": "grunt deploy",
     "browserify": "grunt build",
     "browserify-prod": "NODE_ENV=production browserify -t reactify src/boot.js -o site/js/boot.js"
   },

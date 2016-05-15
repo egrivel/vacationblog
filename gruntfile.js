@@ -140,6 +140,16 @@ var setupAll = function(grunt) {
     ['coverage', 'eslint', 'check-files']);
 };
 
+var setupDeploy = function(grunt) {
+  grunt.loadNpmTasks('grunt-exec');
+  grunt.config('exec', {
+    deploy: {
+      command: 'scripts/deploy.sh'
+    }
+  });
+  grunt.registerTask('deploy', ['exec:deploy']);
+};
+
 module.exports = function(grunt) {
   grunt.loadTasks('scripts/tasks');
 
@@ -151,4 +161,5 @@ module.exports = function(grunt) {
   setupEslint(grunt);
   setupCheckFiles(grunt);
   setupAll(grunt);
+  setupDeploy(grunt);
 };
