@@ -451,7 +451,6 @@ var JournalParagraph = React.createClass({
   },
 
   clickImg: function clickImg(id) {
-    console.log('click image ' + id);
     if (this.state && this.state.modal && this.state.modal === id) {
       this.setState({modal: ''});
     } else {

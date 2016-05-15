@@ -903,9 +903,10 @@ describe('/src/components/JournalParagraph', function() {
       it('image list', function() {
         var imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
         expect(imgList.length).to.equal(2);
-        expect(imgList[0].className).to.be.equal('landscape');
+        expect(imgList[0].className).to.be.equal('landscape', 'first image');
         expect(imgList[0].src).to.contain('00000000-000000');
-        expect(imgList[1].className).to.be.equal('landscape');
+        expect(imgList[1].className).to.be.equal('landscape modal-img',
+          'second image');
         expect(imgList[1].src).to.contain('00000000-000000');
       });
 
