@@ -2,6 +2,7 @@
 
 var React = require('react');
 var Menu = require('./Menu');
+var Login = require('./Login.jsx');
 var TripStore = require('../stores/TripStore');
 var MenuStore = require('../stores/MenuStore');
 var UserStore = require('../stores/UserStore');
@@ -14,6 +15,16 @@ var Header = React.createClass({
   stores: [TripStore, MenuStore, UserStore],
 
   mixins: [storeMixin()],
+
+  _doUserClick: function() {
+    if (this.state.userName === 'Login') {
+      this.setState({showLogin: true});
+    }
+  },
+
+  _onLoginClose: function() {
+    this.setState({showLogin: false});
+  },
 
   /**
    * Get the state from the stores.
@@ -29,7 +40,7 @@ var Header = React.createClass({
       img = 'default-banner.png';
     }
     var userId = UserStore.getLoggedInUser();
-    var userName = '(not logged in)';
+    var userName = 'Login';
     if (userId) {
       var data = UserStore.getData(userId);
       if (data && data.name) {
@@ -55,13 +66,24 @@ var Header = React.createClass({
         </div>
       );
     }
+    var loginForm = null;
+    if (this.state.showLogin) {
+      loginForm = <Login onClose={this._onLoginClose}/>;
+    }
+    var icon = 'fa-user';
+    if (this.state.userName === 'Login') {
+      icon = 'fa-sign-in';
+    }
     return (
       <div className="header">
         <h1>{this.state.name}</h1>
         <span className="userName">
-          {this.state.userName}
-          &nbsp;
-          <i className="fa fa-user"></i>
+          <a className="login-link" href="#" onClick={this._doUserClick}>
+            {this.state.userName}
+            &nbsp;
+            <i className={'fa ' + icon}></i>
+          </a>
+          {loginForm}
         </span>
         {banner}
         <Menu menuData={this.state.menuData}/>

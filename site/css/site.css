@@ -353,6 +353,20 @@ img.modal-img {
   float: right;
 }
 
+.userName {
+  text-align: right;
+}
+
+a.login-link {
+  color: #fff;
+}
+
+.form {
+  text-align: left;
+  background-color: #fff;
+  color: #000;
+}
+
 div.commentBlock {
   border-left: solid 15px;
   margin-left: 0.25em;

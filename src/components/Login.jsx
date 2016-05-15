@@ -7,6 +7,10 @@ var LoginAction = require('../actions/LoginAction');
 var Login = React.createClass({
   displayName: 'Login',
 
+  propTypes: {
+    onClose: React.PropTypes.func.isRequired
+  },
+
   getInitialState: function() {
     return {
       username: '',
@@ -18,6 +22,7 @@ var Login = React.createClass({
     var username = this.state.username;
     var password = this.state.password;
     LoginAction.doLogin(username, password);
+    this.props.onClose();
   },
 
   _updateField: function(event) {
@@ -46,7 +51,7 @@ var Login = React.createClass({
         </div>
         <div className="buttonbar">
           <input type="submit" value="Login" onClick={this._onLogin}/>
-          <input type="submit" value="Cancel"/>
+          <input type="submit" value="Cancel" onClick={this.props.onClose} />
         </div>
       </div>
     );
