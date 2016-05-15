@@ -31,7 +31,6 @@ var Login = React.createClass({
   render: function() {
     return (
       <div className="form login">
-        <h3>Login</h3>
         <p>
           Please enter your user name and password to log into the site.
         </p>
