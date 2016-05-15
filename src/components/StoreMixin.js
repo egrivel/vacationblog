@@ -24,8 +24,6 @@ function StoreMixin() {
       for (var i = 0; i < this.stores.length; i++) {
         this.stores[i].removeChangeListener(this._onChange);
       }
-      // console.log('Saved rendering ' + this._totalRendersSaved + ' out of ' +
-      //   this._totalChangeEvents + ' change events');
     },
 
     _onEndTimer: function() {

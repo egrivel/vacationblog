@@ -26,7 +26,6 @@ var moment = require('moment-timezone');
  * <li>[LINK] for a link.</li>
  * </ul>
  * @param {string} text - text to parse.
- * @param {boolean} isLegacy - indicator whether in legacy mode.
  * @param {int} count - counter to create unique key attributes.
  * @return {array} list of React elements.
  * @private
