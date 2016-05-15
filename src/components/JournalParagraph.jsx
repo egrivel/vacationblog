@@ -357,7 +357,12 @@ function _paragraphMultipleImages(parent, tripId, text, images) {
     currentImg += 2;
   }
 
-  var realResult = React.DOM.div({className: 'result'}, textPart, result);
+  var realResult = React.DOM.div(
+    {className: 'result'},
+    textPart,
+    result,
+    parent.buildModal()
+  );
   return realResult;
 }
 
@@ -424,6 +429,7 @@ var JournalParagraph = React.createClass({
           React.createElement(
             Image,
             {
+              className: 'modal-img',
               tripId: this.props.tripId,
               imageId: mediaId,
               format: mediaInfo.orientation,
@@ -445,6 +451,7 @@ var JournalParagraph = React.createClass({
   },
 
   clickImg: function clickImg(id) {
+    console.log('click image ' + id);
     if (this.state && this.state.modal && this.state.modal === id) {
       this.setState({modal: ''});
     } else {
