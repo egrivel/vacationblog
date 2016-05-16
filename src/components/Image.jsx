@@ -46,7 +46,7 @@ var Image = React.createClass({
       {
         className: fullClassname,
         title: this.props.caption,
-        src: 'http://washington/cgi-bin/photos/phimg?large=' + this.props.imageId,
+        src: 'http://173.64.119.113:31415/cgi-bin/photos/phimg?large=' + this.props.imageId,
         onClick: this.props.onClick
       }
     );
