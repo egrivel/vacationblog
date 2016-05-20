@@ -70,4 +70,26 @@ describe('src/actions/UserAction', function() {
       expect(action.data).to.be.deep.eql(data);
     });
   });
+
+  describe('#setLoggedInUser', function() {
+    var dispatchStub;
+
+    beforeEach(function() {
+      dispatchStub = sinon.stub(AppDispatcher, 'dispatch');
+    });
+
+    afterEach(function() {
+      dispatchStub.restore();
+    });
+
+    it('dispatch is called with right info', function() {
+      var testUserId = 'test-user';
+      UserAction.setLoggedInUser(testUserId);
+
+      expect(dispatchStub.args[0].length).to.be.equal(1);
+      var action = dispatchStub.args[0][0];
+      expect(action.type).to.be.equal(UserAction.Types.USER_SET_LOGGED_IN);
+      expect(action.userId).to.be.equal(testUserId);
+    });
+  });
 });
