@@ -93,7 +93,8 @@ describe('/actions/FeedbackAction', function() {
       expect(dispatchStub.callCount).to.be.equal(1);
       expect(dispatchStub.args[0].length).to.be.equal(1);
       expect(dispatchStub.args[0][0].referenceId).to.be.exit;
-      expect(dispatchStub.args[0][0].referenceId).to.be.equal(testData.referenceId);
+      expect(dispatchStub.args[0][0].referenceId).to.be.equal(
+        testData.referenceId);
     });
 
     it('dispatched action list', function() {
