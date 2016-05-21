@@ -56,13 +56,11 @@ var Feedback = React.createClass({
     var referenceId = this.props.referenceId;
     var userId = UserStore.getLoggedInUser();
 
-    if (userId) {
-      if (tripId && referenceId) {
-        if (FeedbackStore.doesUserLike(tripId, referenceId, userId)) {
-          FeedbackAction.clearLike(tripId, referenceId, userId);
-        } else {
-          FeedbackAction.setLike(tripId, referenceId, userId);
-        }
+    if (userId && tripId && referenceId) {
+      if (FeedbackStore.doesUserLike(tripId, referenceId, userId)) {
+        FeedbackAction.clearLike(tripId, referenceId, userId);
+      } else {
+        FeedbackAction.setLike(tripId, referenceId, userId);
       }
     }
   },
@@ -71,7 +69,7 @@ var Feedback = React.createClass({
     var tripId = this.props.tripId;
     var referenceId = this.props.referenceId;
     var userId = UserStore.getLoggedInUser();
-    if (tripId && referenceId && userId) {
+    if (userId && tripId && referenceId) {
       if (FeedbackStore.doesUserPlus(tripId, referenceId, userId)) {
         FeedbackAction.clearPlus(tripId, referenceId, userId);
       } else {
@@ -81,8 +79,9 @@ var Feedback = React.createClass({
   },
 
   componentWillMount: function() {
-    FeedbackAction.loadData(this.props.tripId, this.props.referenceId);
-    this.setState(this._getStateFromStores());
+    if (this.props.tripId && this.props.referenceId) {
+      FeedbackAction.loadData(this.props.tripId, this.props.referenceId);
+    }
   },
 
   render: function render() {
