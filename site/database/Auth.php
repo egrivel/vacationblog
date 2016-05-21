@@ -245,5 +245,14 @@ class Auth {
    public function setExpiration($value) {
       $this->expiration = $value;
    }
+
+   public function delete() {
+      if (isset($this->authId) && ($this->authId !== '')) {
+        $authIdValue = db_sql_encode($this->authId);
+        $query = "DELETE FROM blogAuth "
+         . "WHERE authId=$authIdValue";
+         mysql_query($query);
+      }
+   }
 }
 ?>

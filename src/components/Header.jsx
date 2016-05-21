@@ -3,6 +3,7 @@
 var React = require('react');
 var Menu = require('./Menu');
 var Login = require('./Login.jsx');
+var Logout = require('./Logout.jsx');
 var TripStore = require('../stores/TripStore');
 var MenuStore = require('../stores/MenuStore');
 var UserStore = require('../stores/UserStore');
@@ -18,12 +19,24 @@ var Header = React.createClass({
 
   _doUserClick: function() {
     if (this.state.userName === 'Login') {
-      this.setState({showLogin: true});
+      if (this.state.showLogin) {
+        this.setState({showLogin: false});
+      } else {
+        this.setState({showLogin: true});
+      }
+    } else if (this.state.showLogout) {
+      this.setState({showLogout: false});
+    } else {
+      this.setState({showLogout: true});
     }
   },
 
   _onLoginClose: function() {
     this.setState({showLogin: false});
+  },
+
+  _onLogoutClose: function() {
+    this.setState({showLogout: false});
   },
 
   /**
@@ -66,9 +79,11 @@ var Header = React.createClass({
         </div>
       );
     }
-    var loginForm = null;
+    var userForm = null;
     if (this.state.showLogin) {
-      loginForm = <Login onClose={this._onLoginClose}/>;
+      userForm = <Login onClose={this._onLoginClose}/>;
+    } else if (this.state.showLogout) {
+      userForm = <Logout onClose={this._onLogoutClose}/>;
     }
     var icon = 'fa-user';
     if (this.state.userName === 'Login') {
@@ -78,12 +93,12 @@ var Header = React.createClass({
       <div className="header">
         <h1>{this.state.name}</h1>
         <span className="userName">
-          <a className="login-link" href="#" onClick={this._doUserClick}>
+          <a className="login-link" onClick={this._doUserClick}>
             {this.state.userName}
             &nbsp;
             <i className={'fa ' + icon}></i>
           </a>
-          {loginForm}
+          {userForm}
         </span>
         {banner}
         <Menu menuData={this.state.menuData}/>

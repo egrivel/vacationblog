@@ -12,11 +12,15 @@ var LoginAction = {
       var authId = data.authId;
       if (authId) {
         document.cookie = 'blogAuthId=' + encodeURIComponent(authId);
+      } else {
+        document.cookie = 'blogAuthId=';
       }
 
       if (this.loginUserId) {
         UserAction.setLoggedInUser(this.loginUserId);
         UserAction.loadUser(this.loginUserId);
+      } else {
+        UserAction.setLoggedInUser('');
       }
     }
   },
@@ -29,6 +33,12 @@ var LoginAction = {
     };
     this.loginUserId = userName;
     utils.postAsync(url, data, this._doLoginCallback.bind(this));
+  },
+
+  doLogout: function() {
+    var url = 'api/logout.php';
+    this.loginUserId = '';
+    utils.getAsync(url, this._doLoginCallback.bind(this));
   }
 };
 
