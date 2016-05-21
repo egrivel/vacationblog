@@ -180,8 +180,7 @@ div.footer p {
 /* end of multi-level CSS menu */
 
 div.trip,
-div.journalitem,
-div.form {
+div.journalitem {
   margin-left: 2em;
   margin-right: 2em;
   margin-top: 1em;
@@ -363,6 +362,10 @@ a.login-link {
 }
 
 .form {
+  margin-left: 2em;
+  margin-right: 2em;
+  margin-top: 1em;
+  margin-bottom: 1em;
   text-align: left;
   background-color: #fff;
   color: #000;
@@ -575,7 +578,7 @@ div.feedback i.my-plus {
   display: block;
 }
 
-div.login {
+.login {
   max-width: 25em;
   margin-left: auto;
   margin-right: auto;
@@ -584,7 +587,7 @@ div.login {
   line-height: 125%;
 }
 
-div.login h3 {
+.login h3 {
   font-size: 125%;
   font-weight: bold;
   margin-top: 0.25em;
