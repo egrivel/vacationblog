@@ -8,7 +8,8 @@ var Login = React.createClass({
   displayName: 'Login',
 
   propTypes: {
-    onClose: React.PropTypes.func.isRequired
+    onClose: React.PropTypes.func.isRequired,
+    errorMessage: React.PropTypes.string
   },
 
   getInitialState: function() {
@@ -18,13 +19,16 @@ var Login = React.createClass({
     };
   },
 
+  _noProp: function(event) {
+    event.preventDefault();
+    event.stopPropagation();
+  },
+
   _onLogin: function(event) {
     var username = this.state.username;
     var password = this.state.password;
     LoginAction.doLogin(username, password);
-    this.props.onClose();
-    event.preventDefault();
-    event.stopPropagation();
+    this._noProp(event);
   },
 
   componentDidMount: function() {
@@ -40,26 +44,34 @@ var Login = React.createClass({
   },
 
   render: function() {
+    var errors = null;
+    if (this.props.errorMessage) {
+      errors = <div className="errorMessage">{this.props.errorMessage}</div>;
+    }
     return (
-      <form className="form login" onSubmit={this._onLogin}>
-        <p>
-          Please enter your user name and password to log into the site.
-        </p>
-        <div className="input-element">
-          <label>User name:</label>
-          <input type="text" ref="username" name="username" id="username"
-            value={this.state.username} onChange={this._updateField}/>
-        </div>
-        <div className="input-element">
-          <label>Password:</label>
-          <input type="password" name="password" id="password"
-            value={this.state.password} onChange={this._updateField}/>
-        </div>
-        <div className="buttonbar">
-          <input type="submit" value="Login" onClick={this._onLogin}/>
-          <input type="submit" value="Cancel" onClick={this.props.onClose} />
-        </div>
-      </form>
+      <div className="modal" onClick={this.props.onClose}>
+        <form className="form login" onClick={this._noProp}
+            onSubmit={this._onLogin}>
+          {errors}
+          <p>
+            Please enter your user name and password to log into the site.
+          </p>
+          <div className="input-element">
+            <label>User name:</label>
+            <input type="text" ref="username" name="username" id="username"
+              value={this.state.username} onChange={this._updateField}/>
+          </div>
+          <div className="input-element">
+            <label>Password:</label>
+            <input type="password" name="password" id="password"
+              value={this.state.password} onChange={this._updateField}/>
+          </div>
+          <div className="buttonbar">
+            <input type="submit" value="Login" onClick={this._onLogin}/>
+            <input type="submit" value="Cancel" onClick={this.props.onClose} />
+          </div>
+        </form>
+      </div>
     );
   }
 });

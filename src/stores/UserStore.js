@@ -7,10 +7,21 @@ var GenericStore = require('./GenericStore');
 var AppDispatcher = require('../AppDispatcher');
 var UserActionTypes = require('../actions/UserAction').Types;
 
+var UserStore;
+
 var _userData = {};
 var _userLoggedIn = '';
+var _formStatus = '';
+var _formErrorMessage = '';
 
-var UserStore = assign({}, GenericStore, {
+UserStore = assign({}, GenericStore, {
+  constants: {
+    NONE: 'NONE',
+    LOGIN_CLEAR: 'LOGIN_CLEAR',
+    LOGIN_ERROR: 'LOGIN_ERROR',
+    LOGOUT: 'LOGOUT'
+  },
+
   _reset: function() {
     _userData = {};
   },
@@ -39,6 +50,14 @@ var UserStore = assign({}, GenericStore, {
     return '';
   },
 
+  getFormStatus: function() {
+    return _formStatus;
+  },
+
+  getFormErrorMessage: function() {
+    return _formErrorMessage;
+  },
+
   _storeCallback: function(action) {
     switch (action.type) {
       case UserActionTypes.USER_SET_DATA:
@@ -54,12 +73,32 @@ var UserStore = assign({}, GenericStore, {
           UserStore.emitChange();
         }
         break;
+      case UserActionTypes.USER_SET_LOGIN_FORM_STATUS:
+        if (_formStatus !== action.status) {
+          _formStatus = action.status;
+          if (_formStatus !== UserStore.constants.LOGIN_ERROR) {
+            _formErrorMessage = '';
+          }
+          UserStore.emitChange();
+        }
+        break;
+      case UserActionTypes.USER_SET_LOGIN_FORM_ERROR:
+        if (_formErrorMessage !== action.message) {
+          _formErrorMessage = action.message;
+          if (_formErrorMessage) {
+            _formStatus = UserStore.constants.LOGIN_ERROR;
+          }
+          UserStore.emitChange();
+        }
+        break;
       default:
         // do nothing
         break;
     }
   }
 });
+
+_formStatus = UserStore.constants.NONE;
 
 UserStore.dispatchToken = AppDispatcher.register(UserStore._storeCallback);
 

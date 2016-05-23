@@ -3,6 +3,7 @@
 /* global document */
 
 var UserAction = require('./UserAction');
+var UserStore = require('../stores/UserStore');
 var utils = require('./utils');
 
 var LoginAction = {
@@ -17,11 +18,14 @@ var LoginAction = {
       }
 
       if (this.loginUserId) {
+        UserAction.setLoginFormStatus(UserStore.constants.NONE);
         UserAction.setLoggedInUser(this.loginUserId);
         UserAction.loadUser(this.loginUserId);
       } else {
         UserAction.setLoggedInUser('');
       }
+    } else {
+      UserAction.setLoginFormError('Please check the information you entered.');
     }
   },
 

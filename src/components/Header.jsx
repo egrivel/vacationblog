@@ -7,6 +7,7 @@ var Logout = require('./Logout.jsx');
 var TripStore = require('../stores/TripStore');
 var MenuStore = require('../stores/MenuStore');
 var UserStore = require('../stores/UserStore');
+var UserAction = require('../actions/UserAction');
 
 var storeMixin = require('./StoreMixin');
 
@@ -19,24 +20,26 @@ var Header = React.createClass({
 
   _doUserClick: function() {
     if (this.state.userName === 'Login') {
-      if (this.state.showLogin) {
-        this.setState({showLogin: false});
+      if (this.state.loginStatus === UserStore.constants.NONE) {
+        UserAction.setLoginFormStatus(UserStore.constants.LOGIN_CLEAR);
       } else {
-        this.setState({showLogin: true});
+        UserAction.setLoginFormStatus(UserStore.constants.NONE);
       }
-    } else if (this.state.showLogout) {
-      this.setState({showLogout: false});
     } else {
-      this.setState({showLogout: true});
+      if (this.state.loginStatus === UserStore.constants.LOGOUT) {
+        UserAction.setLoginFormStatus(UserStore.constants.NONE);
+      } else {
+        UserAction.setLoginFormStatus(UserStore.constants.LOGOUT);
+      }
     }
   },
 
   _onLoginClose: function() {
-    this.setState({showLogin: false});
+    UserAction.setLoginFormStatus(UserStore.constants.NONE);
   },
 
   _onLogoutClose: function() {
-    this.setState({showLogout: false});
+    UserAction.setLoginFormStatus(UserStore.constants.NONE);
   },
 
   /**
@@ -60,11 +63,15 @@ var Header = React.createClass({
         userName = data.name;
       }
     }
+    var loginStatus = UserStore.getFormStatus();
+    var loginErrorMessage = UserStore.getFormErrorMessage();
     return {
       name: name,
       bannerImg: img,
       menuData: MenuStore.getData(),
-      userName: userName
+      userName: userName,
+      loginStatus: loginStatus,
+      loginErrorMessage: loginErrorMessage
     };
   },
 
@@ -80,9 +87,13 @@ var Header = React.createClass({
       );
     }
     var userForm = null;
-    if (this.state.showLogin) {
-      userForm = <Login onClose={this._onLoginClose}/>;
-    } else if (this.state.showLogout) {
+    if ((this.state.loginStatus === UserStore.constants.LOGIN_CLEAR) ||
+        (this.state.loginStatus === UserStore.constants.LOGIN_ERROR)) {
+      userForm = (
+        <Login errorMessage={this.state.loginErrorMessage}
+            onClose={this._onLoginClose}/>
+      );
+    } else if (this.state.loginStatus === UserStore.constants.LOGOUT) {
       userForm = <Logout onClose={this._onLogoutClose}/>;
     }
     var icon = 'fa-user';

@@ -6,7 +6,9 @@ var utils = require('./utils');
 var UserAction = {
   Types: {
     USER_SET_DATA: 'USER_SET_DATA',
-    USER_SET_LOGGED_IN: 'USER_SET_LOGGED_IN'
+    USER_SET_LOGGED_IN: 'USER_SET_LOGGED_IN',
+    USER_SET_LOGIN_FORM_STATUS: 'USER_SET_LOGIN_FORM_STATUS',
+    USER_SET_LOGIN_FORM_ERROR: 'USER_SET_LOGIN_FORM_ERROR'
   },
 
   loadUser: function loadUser(userId) {
@@ -28,6 +30,20 @@ var UserAction = {
     AppDispatcher.dispatch({
       type: this.Types.USER_SET_LOGGED_IN,
       userId: userId
+    });
+  },
+
+  setLoginFormStatus: function(status) {
+    AppDispatcher.dispatch({
+      type: this.Types.USER_SET_LOGIN_FORM_STATUS,
+      status: status
+    });
+  },
+
+  setLoginFormError: function(errorMessage) {
+    AppDispatcher.dispatch({
+      type: this.Types.USER_SET_LOGIN_FORM_ERROR,
+      message: errorMessage
     });
   }
 };
