@@ -96,7 +96,6 @@ var CommentAction = {
       commentText: text
     };
     utils.postAsync('api/putComment.php', data, function(response) {
-      console.log('post response: ' + response);
       var data = JSON.parse(response);
       if (data.resultCode === '200') {
         CommentAction.recursivelyLoadComments(tripId, referenceId);
