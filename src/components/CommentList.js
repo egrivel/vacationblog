@@ -11,6 +11,7 @@ var UserStore = require('../stores/UserStore');
 
 var utils = require('./utils');
 var Feedback = require('./Feedback.jsx');
+var CommentEdit = require('./CommentEdit.jsx');
 
 // Declare variables that will be used later
 var CommentList;
@@ -68,6 +69,16 @@ var Comment = React.createClass({
       userName = '(unknown)';
     }
 
+    var newComment = null;
+    if (tripId && commentId) {
+      newComment = React.createElement(
+        CommentEdit,
+        {
+          tripId: tripId,
+          referenceId: commentId,
+          key: 'c-' + tripId + '-' + commentId
+        });
+    }
     var feedback = React.createElement(Feedback, {
       tripId: tripId,
       referenceId: commentId,
@@ -117,6 +128,7 @@ var Comment = React.createClass({
           text: par
         });
       }),
+      newComment,
       feedback,
       list);
   }

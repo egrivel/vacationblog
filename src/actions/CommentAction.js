@@ -2,6 +2,7 @@
 
 var AppDispatcher = require('../AppDispatcher');
 var UserAction = require('./UserAction');
+var UserStore = require('../stores/UserStore');
 var utils = require('./utils');
 
 var CommentAction = {
@@ -84,6 +85,25 @@ var CommentAction = {
       }
       this.recursivelyLoadComments(tripId, data.list[i].commentId);
     }
+  },
+
+  postComment: function(tripId, referenceId, text) {
+    var userId = UserStore.getLoggedInUser();
+    var data = {
+      userId: userId,
+      referenceId: referenceId,
+      tripId: tripId,
+      commentText: text
+    };
+    utils.postAsync('api/putComment.php', data, function(response) {
+      console.log('post response: ' + response);
+      var data = JSON.parse(response);
+      if (data.resultCode === '200') {
+        CommentAction.recursivelyLoadComments(tripId, referenceId);
+      } else {
+        console.log('got error: ' + data.resultCode);
+      }
+    });
   }
 };
 

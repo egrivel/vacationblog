@@ -615,3 +615,18 @@ div.buttonbar input {
   font-weight: bold;
   color: #c00;
 }
+
+div.commentEdit {
+  padding: 5px;
+  padding-right: 15px;
+  font-size: 90%;
+}
+
+a.addComment {
+  color: #009;
+}
+
+textarea.comment {
+  width: 100%;
+  height: 3em;
+}

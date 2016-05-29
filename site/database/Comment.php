@@ -321,6 +321,17 @@ class Comment {
       }
    }
 
+   /**
+    * generate a unique comment ID. The unique ID is a base-64 encoding
+    * of a random value. Since the comment IDs are at most 32 chars
+    * long, the random value is 24 characters long
+    */
+   public static function generateCommentId() {
+    $value = random_bytes(24);
+
+    return substr(base64_encode($value), 0, 32);
+   }
+
    public function getTripId() {
       return $this->tripId;
    }

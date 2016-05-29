@@ -40,6 +40,10 @@ UserStore = assign({}, GenericStore, {
     return _userLoggedIn;
   },
 
+  isUserLoggedIn: function() {
+    return _userLoggedIn !== '';
+  },
+
   getAccess: function() {
     if (_userLoggedIn) {
       var user = _userData[_userLoggedIn];

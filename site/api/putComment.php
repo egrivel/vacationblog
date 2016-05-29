@@ -14,6 +14,8 @@ if (isPutMethod()) {
    $commentId = '';
    if (isset($data['commentId'])) {
       $commentId = $data['commentId'];
+   } else {
+      $commentId = Comment::generateCommentId();
    }
    if (($tripId === '') || ($commentId === '')) {
       $response = errorResponse(RESPONSE_BAD_REQUEST, 'Need tripId and commentId');

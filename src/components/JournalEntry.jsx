@@ -27,6 +27,7 @@ var storeMixin = require('./StoreMixin');
 
 var JournalParagraph = require('./JournalParagraph.jsx');
 var CommentList = require('./CommentList');
+var CommentEdit = require('./CommentEdit.jsx');
 var Feedback = require('./Feedback.jsx');
 var JournalHeader = require('./JournalHeader.jsx');
 var JournalPrevNext = require('./JournalPrevNext.jsx');
@@ -158,6 +159,14 @@ var JournalEntry = React.createClass({
       );
     }
 
+    var newComment = null;
+    if (tripId && journalId) {
+      newComment = (
+        <CommentEdit tripId={tripId} referenceId={journalId}
+          key={tripId + '-' + journalId}/>
+      );
+    }
+
     return (
       <div className="journalitem">
         <JournalHeader title={this.state.journalTitle}
@@ -166,6 +175,7 @@ var JournalEntry = React.createClass({
           created={this.state.created}/>
         {prevNext1}
         {paragraphs}
+        {newComment}
         {feedback}
         {comments}
         {prevNext2}

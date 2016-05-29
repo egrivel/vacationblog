@@ -19,18 +19,16 @@ var Header = React.createClass({
   mixins: [storeMixin()],
 
   _doUserClick: function() {
-    if (this.state.userName === 'Login') {
+    if (!this.state.isUserLoggedIn) {
       if (this.state.loginStatus === UserStore.constants.NONE) {
         UserAction.setLoginFormStatus(UserStore.constants.LOGIN_CLEAR);
       } else {
         UserAction.setLoginFormStatus(UserStore.constants.NONE);
       }
+    } else if (this.state.loginStatus === UserStore.constants.LOGOUT) {
+      UserAction.setLoginFormStatus(UserStore.constants.NONE);
     } else {
-      if (this.state.loginStatus === UserStore.constants.LOGOUT) {
-        UserAction.setLoginFormStatus(UserStore.constants.NONE);
-      } else {
-        UserAction.setLoginFormStatus(UserStore.constants.LOGOUT);
-      }
+      UserAction.setLoginFormStatus(UserStore.constants.LOGOUT);
     }
   },
 
@@ -56,11 +54,12 @@ var Header = React.createClass({
       img = 'default-banner.png';
     }
     var userId = UserStore.getLoggedInUser();
-    var userName = 'Login';
+    var isUserLoggedIn = (userId !== '');
+    var loginDisplay = 'Login';
     if (userId) {
       var data = UserStore.getData(userId);
       if (data && data.name) {
-        userName = data.name;
+        loginDisplay = data.name;
       }
     }
     var loginStatus = UserStore.getFormStatus();
@@ -69,7 +68,8 @@ var Header = React.createClass({
       name: name,
       bannerImg: img,
       menuData: MenuStore.getData(),
-      userName: userName,
+      loginDisplay: loginDisplay,
+      isUserLoggedIn: isUserLoggedIn,
       loginStatus: loginStatus,
       loginErrorMessage: loginErrorMessage
     };
@@ -96,16 +96,16 @@ var Header = React.createClass({
     } else if (this.state.loginStatus === UserStore.constants.LOGOUT) {
       userForm = <Logout onClose={this._onLogoutClose}/>;
     }
-    var icon = 'fa-user';
-    if (this.state.userName === 'Login') {
-      icon = 'fa-sign-in';
+    var icon = 'fa-sign-in';
+    if (this.state.isUserLoggedIn) {
+      icon = 'fa-user';
     }
     return (
       <div className="header">
         <h1>{this.state.name}</h1>
         <span className="userName">
           <a className="login-link" onClick={this._doUserClick}>
-            {this.state.userName}
+            {this.state.loginDisplay}
             &nbsp;
             <i className={'fa ' + icon}></i>
           </a>
