@@ -622,11 +622,21 @@ div.commentEdit {
   font-size: 90%;
 }
 
-a.addComment {
+div.commentEdit span {
+  display: block;
+  margin-bottom: 5px;
+}
+
+div.commentEdit a.addComment {
   color: #009;
 }
 
-textarea.comment {
+div.commentEdit textarea.comment {
   width: 100%;
   height: 3em;
+  margin-bottom: 5px;
+}
+
+div.commentEdit button {
+  margin-right: 5px;
 }
