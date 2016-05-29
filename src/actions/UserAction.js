@@ -11,6 +11,15 @@ var UserAction = {
     USER_SET_LOGIN_FORM_ERROR: 'USER_SET_LOGIN_FORM_ERROR'
   },
 
+  loadLoggedInUser: function() {
+    var url = 'api/getUser.php';
+    utils.getAsync(url, function(response) {
+      var data = JSON.parse(response);
+      UserAction._userLoaded(data);
+      UserAction.setLoggedInUser(data.userId);
+    });
+  },
+
   loadUser: function loadUser(userId) {
     var url = 'api/getUser.php?userId=' + userId;
     utils.getAsync(url, function(response) {

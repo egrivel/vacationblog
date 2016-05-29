@@ -10,6 +10,7 @@ var Footer = require('./components/Footer');
 var TripDescription = require('./components/TripDescription');
 var JournalWrapper = require('./components/JournalWrapper.jsx');
 var TripAction = require('./actions/TripAction');
+var UserAction = require('./actions/UserAction');
 
 var Search = require('./components/Search');
 var Login = require('./components/Login.jsx');
@@ -70,3 +71,14 @@ ReactDOM.render(
 // Load the default trip on startup (until we have a better default)
 TripAction.loadTripList();
 setInterval(TripAction.loadTripList, 30000);
+
+// Check if logged in
+var cookies = document.cookie.split(';');
+for (var i = 0; i < cookies.length; i++) {
+  var nameValue = cookies[i].split('=');
+  if (nameValue[0] === 'blogAuthId') {
+    UserAction.loadLoggedInUser();
+    break;
+  }
+}
+

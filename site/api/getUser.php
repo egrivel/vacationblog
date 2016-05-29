@@ -8,6 +8,11 @@ $auth = new AuthB();
 $userId = '';
 if (isset($_GET['userId'])) {
    $userId = $_GET['userId'];
+} else {
+   $userId = $auth->getUserId();
+   if (!$userId) {
+      $userId = '';
+   }
 }
 
 if (!isset($userId) || ($userId === '')) {
