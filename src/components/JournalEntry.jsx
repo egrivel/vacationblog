@@ -26,7 +26,7 @@ var CommentStore = require('../stores/CommentStore');
 var storeMixin = require('./StoreMixin');
 
 var JournalParagraph = require('./JournalParagraph.jsx');
-var CommentList = require('./CommentList');
+var CommentList = require('./CommentList.jsx');
 var CommentEdit = require('./CommentEdit.jsx');
 var Feedback = require('./Feedback.jsx');
 var JournalHeader = require('./JournalHeader.jsx');

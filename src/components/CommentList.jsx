@@ -99,8 +99,7 @@ var Comment = React.createClass({
       React.DOM.span(
         {
           className: 'commentId'
-        },
-        '[id: ' + commentId + ']'));
+        }));
 
     var parList = utils.splitText(commentText);
 

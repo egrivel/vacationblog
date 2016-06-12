@@ -6,7 +6,7 @@ var React = require('react');
 var ReactDOMServer = require('react-dom/server');
 var TestUtils = require('react-addons-test-utils');
 
-var CommentList = require('../../src/components/CommentList');
+var CommentList = require('../../src/components/CommentList.jsx');
 
 var UserStore = require('../../src/stores/UserStore');
 

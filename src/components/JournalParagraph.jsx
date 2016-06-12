@@ -8,7 +8,7 @@
 var React = require('react');
 
 var MediaStore = require('../stores/MediaStore');
-var CommentList = require('./CommentList');
+var CommentList = require('./CommentList.jsx');
 var Image = require('./Image.jsx');
 
 var utils = require('./utils');

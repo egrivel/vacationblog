@@ -17,17 +17,26 @@ var CommentEdit = React.createClass({
 
   propTypes: {
     tripId: React.PropTypes.string.isRequired,
-    referenceId: React.PropTypes.string.isRequired
+    referenceId: React.PropTypes.string.isRequired,
+    commentId: React.PropTypes.string
   },
 
   _getStateFromStores: function() {
     var isEditing = CommentEditStore.isEditing(this.props.tripId,
-      this.props.referenceId);
+      this.props.referenceId, this.props.commentId);
     var value = CommentEditStore.getValue(this.props.tripId,
-      this.props.referenceId);
+      this.props.referenceId, this.props.commentId);
+    var commentUserId = CommentEditStore.getCommentUserId(this.props.tripId,
+      this.props.referenceId, this.props.commentId);
     var userId = UserStore.getLoggedInUser();
+    var canEdit = false;
+    if (this.props.commentId) {
+      canEdit = (userId === commentUserId);
+    } else {
+      canEdit = true;
+    }
     return {
-      canEdit: userId !== '',
+      canEdit: canEdit,
       isEditing: isEditing,
       value: value
     };
@@ -35,7 +44,7 @@ var CommentEdit = React.createClass({
 
   _startEditing: function(event) {
     CommentEditAction.setEditing(this.props.tripId,
-      this.props.referenceId,
+      this.props.referenceId, this.props.commentId,
       true);
     event.preventDefault();
     event.stopPropagation();
@@ -43,7 +52,7 @@ var CommentEdit = React.createClass({
 
   _stopEditing: function(event) {
     CommentEditAction.setEditing(this.props.tripId,
-      this.props.referenceId,
+      this.props.referenceId, this.props.commentId,
       false);
     event.preventDefault();
     event.stopPropagation();
@@ -51,7 +60,7 @@ var CommentEdit = React.createClass({
 
   _updateValue: function(event) {
     CommentEditAction.setValue(this.props.tripId,
-      this.props.referenceId,
+      this.props.referenceId, this.props.commentId,
       event.target.value);
     event.preventDefault();
     event.stopPropagation();
@@ -59,10 +68,10 @@ var CommentEdit = React.createClass({
 
   _doPost: function() {
     CommentAction.postComment(this.props.tripId,
-      this.props.referenceId,
+      this.props.referenceId, this.props.commentId,
       this.state.value);
     CommentEditAction.setEditing(this.props.tripId,
-      this.props.referenceId,
+      this.props.referenceId, this.props.commentId,
       false);
   },
 
