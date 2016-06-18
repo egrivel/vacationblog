@@ -47,7 +47,7 @@ function getDomElement(tripId) {
   return ReactDOM.findDOMNode(component);
 }
 
-describe('TripDescription component', function() {
+describe('components/TripDescription', function() {
   // Dummy trip data used in the tests
   var tripId = 'trip-1';
   var tripData;

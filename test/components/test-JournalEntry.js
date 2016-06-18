@@ -13,7 +13,7 @@ var JournalStore = require('../../src/stores/JournalStore');
 var UserStore = require('../../src/stores/UserStore');
 var CommentStore = require('../../src/stores/CommentStore');
 
-describe('/src/components/JournalEntry', function() {
+describe('components/JournalEntry', function() {
   var getJournalDataStub;
   var getUserDataStub;
   var getCommentDataStub;

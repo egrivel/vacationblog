@@ -84,7 +84,7 @@ function findObjectWithProperty(obj, key, value) {
   return returnValue;
 }
 
-describe('CommentStore', function() {
+describe('stores/CommentStore', function() {
   beforeEach(function() {
     CommentStore.removeAllListeners();
     CommentStore._reset();

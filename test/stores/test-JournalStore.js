@@ -18,7 +18,7 @@ var testJournal2 = {
   journalText: 'journal text 2'
 };
 
-describe('JournalStore', function() {
+describe('stores/JournalStore', function() {
   beforeEach(function() {
     JournalStore.removeAllListeners();
     JournalStore._reset();

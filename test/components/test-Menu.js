@@ -12,7 +12,7 @@ var Menu = require('../../src/components/Menu');
 var MenuAction = require('../../src/actions/MenuAction');
 var FeedbackAction = require('../../src/actions/FeedbackAction');
 
-describe('Menu component', function() {
+describe('components/Menu', function() {
   var menuData;
   var divComponent;
 

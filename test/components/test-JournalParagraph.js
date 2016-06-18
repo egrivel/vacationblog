@@ -10,7 +10,7 @@ var TestUtils = require('react-addons-test-utils');
 var JournalParagraph = require('../../src/components/JournalParagraph.jsx');
 var MediaStore = require('../../src/stores/MediaStore');
 
-describe('/src/components/JournalParagraph', function() {
+describe('components/JournalParagraph', function() {
   var mediaDataStub;
   var testTripId1 = 'test-trip-1';
 

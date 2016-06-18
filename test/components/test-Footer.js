@@ -8,7 +8,7 @@ var TestUtils = require('react-addons-test-utils');
 var TripStore = require('../../src/stores/TripStore');
 var Footer = require('../../src/components/Footer');
 
-describe('Footer component', function() {
+describe('components/Footer', function() {
   var standardFooter = 'Website design \u00a92015-16 by Eric Grivel.';
 
   describe('render with different start and end date', function() {

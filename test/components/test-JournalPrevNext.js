@@ -9,7 +9,7 @@ var TestUtils = require('react-addons-test-utils');
 var JournalPrevNext =
   require('../../src/components/JournalPrevNext.jsx');
 
-describe('JournalPrevNext component', function() {
+describe('components/JournalPrevNext', function() {
   var testTripId1 = 'test-trip-1';
   // var testTripId2 = 'test-trip-2';
   var testPrevId1 = 'test-prev-1';

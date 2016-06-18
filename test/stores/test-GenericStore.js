@@ -5,7 +5,7 @@ var sinon = require('sinon');
 
 var GenericStore = require('../../src/stores/GenericStore');
 
-describe('GenericStore', function() {
+describe('stores/GenericStore', function() {
   beforeEach(function() {
     GenericStore.removeAllListeners();
   });

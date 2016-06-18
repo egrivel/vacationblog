@@ -107,7 +107,7 @@ function markupTests(description, tag, replacement) {
   });
 }
 
-describe('/src/components/utils', function() {
+describe('components/utils', function() {
   describe('#replaceEntities', function() {
     describe('non-entities', function() {
       it('plain string is unchanged', function() {

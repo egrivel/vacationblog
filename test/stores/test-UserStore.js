@@ -20,7 +20,7 @@ var testUser2 = {
   property: 'test prop 2'
 };
 
-describe('src/stores/UserStore', function() {
+describe('stores/UserStore', function() {
   beforeEach(function() {
     UserStore.removeAllListeners();
     UserStore._reset();

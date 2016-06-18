@@ -10,7 +10,7 @@ var utils = require('../../src/actions/utils');
 var LoginAction = require('../../src/actions/LoginAction');
 var UserAction = require('../../src/actions/UserAction');
 
-describe('/actions/LoginAction', function() {
+describe('actions/LoginAction', function() {
   var asyncPostStub;
   var setLoggedInUserStub;
   var loadUserStub;

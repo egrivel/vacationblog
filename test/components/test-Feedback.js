@@ -48,7 +48,7 @@ function getGoogleList(feedback) {
   return feedback.children[2].title;
 }
 
-describe('src/components/Feedback', function() {
+describe('components/Feedback', function() {
   var getLoggedInUserStub;
   var loadDataStub;
   var getLikeCountStub;

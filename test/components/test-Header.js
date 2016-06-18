@@ -9,7 +9,7 @@ var TripStore = require('../../src/stores/TripStore');
 var MenuStore = require('../../src/stores/MenuStore');
 var Header = require('../../src/components/Header.jsx');
 
-describe('Header component', function() {
+describe('components/Header', function() {
   var defaultBanner = 'default-banner.png';
 
   describe('#render with name and banner', function() {

@@ -10,7 +10,7 @@ var CommentAction = require('../../src/actions/CommentAction');
 var MediaAction = require('../../src/actions/MediaAction');
 var UserAction = require('../../src/actions/UserAction');
 
-describe('JournalAction stuff', function() {
+describe('actions/JournalAction', function() {
   var loadUserStub;
 
   beforeEach(function() {

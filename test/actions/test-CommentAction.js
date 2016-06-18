@@ -8,7 +8,7 @@ var AppDispatcher = require('../../src/AppDispatcher');
 var CommentAction = require('../../src/actions/CommentAction');
 var UserAction = require('../../src/actions/UserAction');
 
-describe('CommentAction stuff', function() {
+describe('actions/CommentAction', function() {
   var loadUserStub;
 
   beforeEach(function() {

@@ -7,7 +7,7 @@ var utils = require('../../src/actions/utils');
 var AppDispatcher = require('../../src/AppDispatcher');
 var MediaAction = require('../../src/actions/MediaAction');
 
-describe('MediaAction stuff', function() {
+describe('actions/MediaAction', function() {
   describe('#loadMedia', function() {
     var asyncStub;
     var mediaLoadedStub;

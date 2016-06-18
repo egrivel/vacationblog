@@ -10,7 +10,7 @@ var sinon = require('sinon');
 
 var storeMixin = require('../../src/components/StoreMixin');
 
-describe('StoreMixin', function() {
+describe('components/StoreMixin', function() {
   var Mixin;
   var stub;
 

@@ -7,7 +7,7 @@ var utils = require('../../src/actions/utils');
 var AppDispatcher = require('../../src/AppDispatcher');
 var UserAction = require('../../src/actions/UserAction');
 
-describe('src/actions/UserAction', function() {
+describe('actions/UserAction', function() {
   describe('#loadUser', function() {
     var testUserId = 'user-1';
     var asyncStub;

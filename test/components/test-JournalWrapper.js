@@ -9,7 +9,7 @@ var JournalWrapper = require('../../src/components/JournalWrapper.jsx');
 var JournalAction = require('../../src/actions/JournalAction');
 var JournalStore = require('../../src/stores/JournalStore');
 
-describe('src/components/JournalWrapper', function() {
+describe('components/JournalWrapper', function() {
   var loadJournalStub;
   var journalGetDataStub;
   var dummyData;

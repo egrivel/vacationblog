@@ -10,7 +10,7 @@ var CommentList = require('../../src/components/CommentList.jsx');
 
 var UserStore = require('../../src/stores/UserStore');
 
-describe('/src/components/CommentList', function() {
+describe('components/CommentList', function() {
   var getUserDataStub;
   var testTripId = 'test-trip-1';
   var testUser1 = 'test-user-1';

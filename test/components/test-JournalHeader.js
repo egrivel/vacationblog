@@ -8,7 +8,7 @@ var TestUtils = require('react-addons-test-utils');
 
 var JournalHeader = require('../../src/components/JournalHeader.jsx');
 
-describe('JournalHeader component', function() {
+describe('components/JournalHeader', function() {
   var testTitle1 = 'test title 1';
   var testTitle2 = 'test title 2';
   var testDate1 = '2015-01-01';

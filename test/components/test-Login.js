@@ -8,7 +8,7 @@ var TestUtils = require('react-addons-test-utils');
 
 var Login = require('../../src/components/Login.jsx');
 
-describe('Login component', function() {
+describe('components/Login', function() {
   describe('#render', function() {
     var component = TestUtils.renderIntoDocument(
       React.createElement(Login, {onClose: _.noop})

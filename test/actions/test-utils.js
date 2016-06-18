@@ -5,7 +5,7 @@ var sinon = require('sinon');
 
 var utils = require('../../src/actions/utils');
 
-describe('action utils', function() {
+describe('actions/utils', function() {
   var xhr;
   var requests;
   var callback;

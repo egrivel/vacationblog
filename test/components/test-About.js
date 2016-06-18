@@ -6,7 +6,7 @@ var TestUtils = require('react-addons-test-utils');
 
 var About = require('../../src/components/About');
 
-describe('About component', function() {
+describe('components/About', function() {
   describe('#render', function() {
     var component = TestUtils.renderIntoDocument(
       React.createElement(About, null)

@@ -7,7 +7,7 @@ var utils = require('../../src/actions/utils');
 var AppDispatcher = require('../../src/AppDispatcher');
 var TripAction = require('../../src/actions/TripAction');
 
-describe('TripAction stuff', function() {
+describe('actions/TripAction', function() {
   describe('#setCurrentTrip', function() {
     var dispatchStub;
     var loadTripStub;

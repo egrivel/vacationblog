@@ -7,7 +7,7 @@ var utils = require('../../src/actions/utils');
 var AppDispatcher = require('../../src/AppDispatcher');
 var FeedbackAction = require('../../src/actions/FeedbackAction');
 
-describe('/actions/FeedbackAction', function() {
+describe('actions/FeedbackAction', function() {
   var asyncPostStub;
   var asyncGetStub;
   var dispatchStub;

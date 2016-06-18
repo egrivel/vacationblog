@@ -24,7 +24,7 @@ var testTripData2 = {
   tripText: 'trip text 2'
 };
 
-describe('TripStore', function() {
+describe('stores/TripStore', function() {
   // Always have the trip store available
   beforeEach(function() {
     TripStore.removeAllListeners();

@@ -7,7 +7,7 @@ var MenuStore = require('../../src/stores/MenuStore');
 var MenuActionTypes = require('../../src/actions/MenuAction').Types;
 var TripActionTypes = require('../../src/actions/TripAction').Types;
 
-describe('MenuStore', function() {
+describe('stores/MenuStore', function() {
   beforeEach(function() {
     MenuStore.removeAllListeners();
   });

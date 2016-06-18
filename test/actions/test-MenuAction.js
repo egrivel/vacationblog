@@ -6,7 +6,7 @@ var sinon = require('sinon');
 var AppDispatcher = require('../../src/AppDispatcher');
 var MenuAction = require('../../src/actions/MenuAction');
 
-describe('MenuAction stuff', function() {
+describe('actions/MenuAction', function() {
   var dispatchStub;
   beforeEach(function() {
     dispatchStub = sinon.stub(AppDispatcher, 'dispatch');

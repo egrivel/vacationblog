@@ -22,7 +22,7 @@ var testMedia2 = {
   mediaText: 'media text 2'
 };
 
-describe('MediaStore', function() {
+describe('stores/MediaStore', function() {
   // Always have the media store available
   beforeEach(function() {
     MediaStore.removeAllListeners();

@@ -9,7 +9,7 @@ var TestUtils = require('react-addons-test-utils');
 var Image = require('../../src/components/Image.jsx');
 var Orientation = require('../../src/components/utils').orientation;
 
-describe('Image component', function() {
+describe('components/Image', function() {
   var testTripId1 = 'test-tripid-1';
   var testImageId1 = 'test-imageid-1';
   var testImageId2 = 'test-imageid-2';
