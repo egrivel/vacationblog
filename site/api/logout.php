@@ -10,7 +10,7 @@ include_once(dirname(__FILE__) . '/../database/User.php');
 
 if (isGetMethod()) {
    $authId = $_COOKIE['blogAuthId'];
-   if (isset($authId)) {
+   if (isset($authId) && ($authId !== '')) {
       $auth = new Auth($authId);
       $auth->delete();
    }
