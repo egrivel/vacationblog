@@ -11,6 +11,7 @@ function StoreMixin() {
     },
 
     componentDidMount: function() {
+      this.isMounted = true;
       this._totalChangeEvents = 0;
       this._totalRendersSaved = 0;
 
@@ -21,6 +22,7 @@ function StoreMixin() {
     },
 
     componentWillUnmount: function() {
+      this.isMounted = false;
       for (var i = 0; i < this.stores.length; i++) {
         this.stores[i].removeChangeListener(this._onChange);
       }
@@ -30,7 +32,9 @@ function StoreMixin() {
       if (this._changeCount) {
         // there was at least one change event that happened while the timer
         // was running, so there is a need to re-render
-        this.setState(this._getStateFromStores());
+        if (this.isMounted) {
+          this.setState(this._getStateFromStores());
+        }
         // we saved rendering all but the last change event
         this._totalRendersSaved += this._changeCount - 1;
       }
