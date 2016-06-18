@@ -97,8 +97,9 @@ describe('CommentStore', function() {
   // Behavior of an uninitialized trip store
   describe('without comments loaded', function() {
     describe('#getList', function() {
-      it('returns undefined when uninitialized', function() {
-        expect(CommentStore.getList()).to.equal(undefined);
+      it('returns empty list when uninitialized', function() {
+        expect(CommentStore.getList(testTripId1, testReferenceId1))
+          .to.deep.eql([]);
       });
     });
   });
@@ -126,9 +127,9 @@ describe('CommentStore', function() {
           .to.deep.eql(undefined);
       });
 
-      it('returns undefined requesting non-loaded data', function() {
+      it('returns empty list requesting non-loaded data', function() {
         expect(CommentStore.getList(testTripId1, testReferenceId2))
-          .to.deep.eql(undefined);
+          .to.deep.eql([]);
       });
 
       it('returns loaded comment', function() {
@@ -139,7 +140,7 @@ describe('CommentStore', function() {
       it('new comment is available after it was loaded', function() {
         // comment 2 is not yet there
         expect(CommentStore.getList(testTripId1, testReferenceId2))
-          .to.deep.eql(undefined);
+          .to.deep.eql([]);
 
         // action to load comment 2
         CommentStore._storeCallback({

@@ -79,8 +79,8 @@ function _setData(listItem) {
   var index = _makeIndex(listItem.tripId, listItem.referenceId);
   if (_commentData[index]) {
     if (_.indexOf(_commentData[index], commentId) >= 0) {
-      // data is already there
-      return false;
+      // entry is already there, but details still changed
+      return true;
     }
   } else {
     _commentData[index] = [];
@@ -99,6 +99,14 @@ var CommentStore = assign({}, GenericStore, {
     _commentDetails = [];
   },
 
+  getUserId: function(commentId) {
+    if (commentId && _commentDetails[commentId] &&
+        _commentDetails[commentId].userId) {
+      return _commentDetails[commentId].userId;
+    }
+    return '';
+  },
+
   /**
    * Obtain all the attributes of the requested comment[s]
    * @param {id} tripId - unique trip ID.
@@ -110,13 +118,15 @@ var CommentStore = assign({}, GenericStore, {
   getList: function(tripId, referenceId) {
     var result = [];
 
-    var index = _makeIndex(tripId, referenceId);
-    if (_commentData[index]) {
-      for (var i = 0; i < _commentData[index].length; i++) {
-        result.push(_.cloneDeep(_commentDetails[_commentData[index][i]]));
+    if (tripId && referenceId) {
+      var index = _makeIndex(tripId, referenceId);
+      if (_commentData[index]) {
+        for (var i = 0; i < _commentData[index].length; i++) {
+          result.push(_.cloneDeep(_commentDetails[_commentData[index][i]]));
+        }
       }
+      return result;
     }
-    return result;
   },
 
   /**

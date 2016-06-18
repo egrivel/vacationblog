@@ -7,6 +7,7 @@ var ReactDOMServer = require('react-dom/server');
 var TestUtils = require('react-addons-test-utils');
 
 var JournalEntry = require('../../src/components/JournalEntry.jsx');
+var FeedbackAction = require('../../src/actions/FeedbackAction');
 
 var JournalStore = require('../../src/stores/JournalStore');
 var UserStore = require('../../src/stores/UserStore');
@@ -16,6 +17,7 @@ describe('/src/components/JournalEntry', function() {
   var getJournalDataStub;
   var getUserDataStub;
   var getCommentDataStub;
+  var loadFeedbackStub;
 
   var testUserId = 'test-user-1';
   var testUserName = 'Test User';
@@ -53,6 +55,7 @@ describe('/src/components/JournalEntry', function() {
           commentText: testCommentText
         }];
       });
+    loadFeedbackStub = sinon.stub(FeedbackAction, 'loadData');
     journalData = {
       tripId: testTripId,
       journalId: testJournalId,
@@ -70,6 +73,7 @@ describe('/src/components/JournalEntry', function() {
     getJournalDataStub.restore();
     getUserDataStub.restore();
     getCommentDataStub.restore();
+    loadFeedbackStub.restore();
   });
 
   describe('render journal entry', function() {
@@ -105,12 +109,14 @@ describe('/src/components/JournalEntry', function() {
         var journal = TestUtils.renderIntoDocument(element);
         var divList = TestUtils.scryRenderedDOMComponentsWithTag(journal,
           'div');
-        expect(divList.length).to.be.equal(5);
+        expect(divList.length).to.be.equal(7);
         expect(divList[0].className).to.be.equal('journalitem');
-        expect(divList[1].className).to.be.equal('feedback');
-        expect(divList[2].className).to.be.equal('comments');
-        expect(divList[3].className).to.be.equal('commentBlock');
-        expect(divList[4].className).to.be.equal('feedback');
+        expect(divList[1].className).to.be.equal('commentEdit');
+        expect(divList[2].className).to.be.equal('feedback');
+        expect(divList[3].className).to.be.equal('comments');
+        expect(divList[4].className).to.be.equal('commentBlock');
+        expect(divList[5].className).to.be.equal('commentEdit');
+        expect(divList[6].className).to.be.equal('feedback');
       });
     });
 
@@ -187,8 +193,8 @@ describe('/src/components/JournalEntry', function() {
         var journal = TestUtils.renderIntoDocument(element);
         var divList = TestUtils.scryRenderedDOMComponentsWithTag(journal,
           'div');
-        expect(divList.length).to.be.equal(5);
-        expect(divList[1].className).to.be.equal('feedback');
+        expect(divList.length).to.be.equal(7);
+        expect(divList[2].className).to.be.equal('feedback');
       });
     });
 
@@ -197,19 +203,19 @@ describe('/src/components/JournalEntry', function() {
         var journal = TestUtils.renderIntoDocument(element);
         var divList = TestUtils.scryRenderedDOMComponentsWithTag(journal,
           'div');
-        expect(divList.length).to.be.equal(5);
-        expect(divList[2].className).to.be.equal('comments');
-        expect(divList[3].className).to.be.equal('commentBlock');
-        expect(divList[4].className).to.be.equal('feedback');
+        expect(divList.length).to.be.equal(7);
+        expect(divList[3].className).to.be.equal('comments');
+        expect(divList[4].className).to.be.equal('commentBlock');
+        expect(divList[6].className).to.be.equal('feedback');
       });
 
       it('render text', function() {
         var journal = TestUtils.renderIntoDocument(element);
         var divList = TestUtils.scryRenderedDOMComponentsWithTag(journal,
           'div');
-        expect(divList.length).to.be.equal(5);
-        expect(divList[3].className).to.be.equal('commentBlock');
-        expect(divList[3].innerHTML).to.contain(testCommentText);
+        expect(divList.length).to.be.equal(7);
+        expect(divList[4].className).to.be.equal('commentBlock');
+        expect(divList[4].innerHTML).to.contain(testCommentText);
       });
     });
   });

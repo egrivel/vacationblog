@@ -131,12 +131,16 @@ describe('/actions/LoginAction', function() {
       expect(setLoggedInUserStub.args[0][0]).to.be.equal(testUserId);
     });
 
-    it('does not call setLoggedInUser without user ID', function() {
+    it('blanks out setLoggedInUser without user ID', function() {
       if (LoginAction.loginUserId) {
         delete LoginAction.loginUserId;
       }
+      // If there is no user ID when the callback gets executed, it will
+      // explicitly set the logged in user to a blank string
       LoginAction._doLoginCallback(response);
-      expect(setLoggedInUserStub.callCount).to.be.equal(0);
+      expect(setLoggedInUserStub.callCount).to.be.equal(1);
+      expect(setLoggedInUserStub.args[0].length).to.be.equal(1);
+      expect(setLoggedInUserStub.args[0][0]).to.be.equal('');
     });
 
     it('calls loadUser when user ID is set', function() {
@@ -174,14 +178,14 @@ describe('/actions/LoginAction', function() {
       expect(loadUserStub.callCount).to.be.equal(0);
     });
 
-    it('response without authId does not set cookie', function() {
+    it('response without authId blanks cookie', function() {
       response = JSON.stringify({
         resultCode: '200'
       });
       LoginAction.loginUserId = testUserId;
       expect(document.cookie).to.be.equal('', 'before');
       LoginAction._doLoginCallback(response);
-      expect(document.cookie).to.be.equal('', 'after');
+      expect(document.cookie).to.be.equal('blogAuthId=', 'after');
       expect(setLoggedInUserStub.callCount).to.be.equal(1);
       expect(loadUserStub.callCount).to.be.equal(1);
     });

@@ -4,6 +4,7 @@ var React = require('react');
 
 var CommentEditAction = require('../actions/CommentEditAction');
 var CommentAction = require('../actions/CommentAction');
+var CommentStore = require('../stores/CommentStore');
 var CommentEditStore = require('../stores/CommentEditStore');
 var UserStore = require('../stores/UserStore');
 var storeMixin = require('./StoreMixin');
@@ -26,11 +27,10 @@ var CommentEdit = React.createClass({
       this.props.referenceId, this.props.commentId);
     var value = CommentEditStore.getValue(this.props.tripId,
       this.props.referenceId, this.props.commentId);
-    var commentUserId = CommentEditStore.getCommentUserId(this.props.tripId,
-      this.props.referenceId, this.props.commentId);
     var userId = UserStore.getLoggedInUser();
     var canEdit = false;
     if (this.props.commentId) {
+      var commentUserId = CommentStore.getUserId(this.props.commentId);
       canEdit = (userId === commentUserId);
     } else {
       canEdit = true;

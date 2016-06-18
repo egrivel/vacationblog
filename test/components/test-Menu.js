@@ -10,6 +10,7 @@ var TestUtils = require('react-addons-test-utils');
 
 var Menu = require('../../src/components/Menu');
 var MenuAction = require('../../src/actions/MenuAction');
+var FeedbackAction = require('../../src/actions/FeedbackAction');
 
 describe('Menu component', function() {
   var menuData;
@@ -17,15 +18,18 @@ describe('Menu component', function() {
 
   var selectItemStub;
   var visibleItemStub;
+  var loadFeedbackStub;
 
   beforeEach(function() {
     selectItemStub = sinon.stub(MenuAction, 'selectItem');
     visibleItemStub = sinon.stub(MenuAction, 'visibleItem');
+    loadFeedbackStub = sinon.stub(FeedbackAction, 'loadData');
   });
 
   afterEach(function() {
     visibleItemStub.restore();
     selectItemStub.restore();
+    loadFeedbackStub.restore();
   });
 
   describe('with simple structure', function() {
