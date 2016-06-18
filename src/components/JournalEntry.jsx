@@ -91,7 +91,7 @@ var JournalEntry = React.createClass({
       }
     }
 
-    comments = CommentStore.getRecursiveData(journalData.tripId,
+    comments = CommentStore.getRecursiveList(journalData.tripId,
                                              journalData.journalId);
 
     return {

@@ -25,12 +25,17 @@ var GenericStore = require('./GenericStore');
 var CommentActionTypes = require('../actions/CommentAction').Types;
 
 // ---
-// All the data about the comments. Data structure:
-// _commentData is an array indexed by trip ID and reference ID. Each item
-// in the array is an object with comment ID properties. Each of those
-// properties is a whole comment object.
+// Comment structure. The _commentData is indexed by the tripId / referenceId
+// index and contains an array of comment IDs that reference that particular
+// trip ID / reference ID combination.
 // ---
 var _commentData = [];
+
+// ---
+// Comment details: the specifics for an individual comment. Indexed
+// by comment ID.
+// ---
+var _commentDetails = [];
 
 /**
  * Make a unique index string.
@@ -44,23 +49,44 @@ function _makeIndex(tripId, referenceId) {
 
 /**
  * Set the data for a comment item.
- * @param {object} data - comment data to set.
+ * @param {object} listItem - comment data to set. The listItem is a single
+ * item in the 'list' returned by the api/getComment.php call, meaning it is an
+ * object with the following attributes:
+ *  - tripId
+ *  - commentId
+ *  - referenceId
+ *  - userId
+ *  - created
+ *  - updated
+ *  - commentText
+ *  - deleted
  * @return {boolean} true if any data was changed.
  */
-function _setData(data) {
-  var index = _makeIndex(data.tripId, data.referenceId);
-  if (_commentData[index]) {
-    if (_commentData[index][data.commentId]) {
-      if (_.isEqual(_commentData[index][data.commentId], data)) {
-        // data is already there
-        return false;
-      }
-    }
-  } else {
-    _commentData[index] = {};
+function _setData(listItem) {
+  if (!listItem || !listItem.commentId) {
+    // nothing to set
+    return false;
   }
 
-  _commentData[index][data.commentId] = _.cloneDeep(data);
+  var commentId = listItem.commentId;
+  if (_commentDetails[commentId] &&
+    _.isEqual(_commentDetails[commentId], listItem)) {
+    // details are not changing
+    return false;
+  }
+  _commentDetails[commentId] = _.cloneDeep(listItem);
+
+  var index = _makeIndex(listItem.tripId, listItem.referenceId);
+  if (_commentData[index]) {
+    if (_.indexOf(_commentData[index], commentId) >= 0) {
+      // data is already there
+      return false;
+    }
+  } else {
+    _commentData[index] = [];
+  }
+
+  _commentData[index].push(commentId);
   return true;
 }
 
@@ -70,6 +96,7 @@ var CommentStore = assign({}, GenericStore, {
    */
   _reset: function() {
     _commentData = [];
+    _commentDetails = [];
   },
 
   /**
@@ -80,14 +107,14 @@ var CommentStore = assign({}, GenericStore, {
    * The array returned by this function consists of _cloned_
    * versions of the actual data.
    */
-  getData: function(tripId, referenceId) {
-    var result;
-    var obj = _commentData[_makeIndex(tripId, referenceId)];
-    if (obj) {
-      result = [];
-      _.forEach(obj, function(item) {
-        result.push(JSON.parse(JSON.stringify(item)));
-      });
+  getList: function(tripId, referenceId) {
+    var result = [];
+
+    var index = _makeIndex(tripId, referenceId);
+    if (_commentData[index]) {
+      for (var i = 0; i < _commentData[index].length; i++) {
+        result.push(_.cloneDeep(_commentDetails[_commentData[index][i]]));
+      }
     }
     return result;
   },
@@ -99,11 +126,11 @@ var CommentStore = assign({}, GenericStore, {
    * @return {array} list of comments on the indicated item, where each
    * comment element has its own 'comments' list. This
    */
-  getRecursiveData: function(tripId, referenceId) {
-    var result = this.getData(tripId, referenceId);
+  getRecursiveList: function(tripId, referenceId) {
+    var result = this.getList(tripId, referenceId);
     if (result) {
       for (var i = 0; i < result.length; i++) {
-        var list = CommentStore.getRecursiveData(tripId, result[i].commentId);
+        var list = CommentStore.getRecursiveList(tripId, result[i].commentId);
         if (list) {
           result[i].childComments = list;
         }

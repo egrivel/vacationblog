@@ -96,9 +96,9 @@ describe('CommentStore', function() {
 
   // Behavior of an uninitialized trip store
   describe('without comments loaded', function() {
-    describe('#getData', function() {
+    describe('#getList', function() {
       it('returns undefined when uninitialized', function() {
-        expect(CommentStore.getData()).to.equal(undefined);
+        expect(CommentStore.getList()).to.equal(undefined);
       });
     });
   });
@@ -113,32 +113,32 @@ describe('CommentStore', function() {
       });
     });
 
-    describe('#getData', function() {
+    describe('#getList', function() {
       it('returns undefined without arguments', function() {
-        expect(CommentStore.getData()).to.deep.eql(undefined);
+        expect(CommentStore.getList()).to.deep.eql(undefined);
       });
 
       it('returns undefined with invalid arguments', function() {
-        expect(CommentStore.getData(testTripId1)).to.deep.eql(undefined);
-        expect(CommentStore.getData(testTripId1, null))
+        expect(CommentStore.getList(testTripId1)).to.deep.eql(undefined);
+        expect(CommentStore.getList(testTripId1, null))
           .to.deep.eql(undefined);
-        expect(CommentStore.getData(null, testReferenceId1))
+        expect(CommentStore.getList(null, testReferenceId1))
           .to.deep.eql(undefined);
       });
 
       it('returns undefined requesting non-loaded data', function() {
-        expect(CommentStore.getData(testTripId1, testReferenceId2))
+        expect(CommentStore.getList(testTripId1, testReferenceId2))
           .to.deep.eql(undefined);
       });
 
       it('returns loaded comment', function() {
-        expect(CommentStore.getData(testTripId1, testReferenceId1))
+        expect(CommentStore.getList(testTripId1, testReferenceId1))
           .to.deep.eql([testComment1]);
       });
 
       it('new comment is available after it was loaded', function() {
         // comment 2 is not yet there
-        expect(CommentStore.getData(testTripId1, testReferenceId2))
+        expect(CommentStore.getList(testTripId1, testReferenceId2))
           .to.deep.eql(undefined);
 
         // action to load comment 2
@@ -150,12 +150,12 @@ describe('CommentStore', function() {
         });
 
         // comment 2 is now there
-        expect(CommentStore.getData(testTripId1, testReferenceId2))
+        expect(CommentStore.getList(testTripId1, testReferenceId2))
           .to.deep.eql([testComment2]);
       });
     });
 
-    describe('#getRecursiveData', function() {
+    describe('#getRecursiveList', function() {
       beforeEach(function() {
         CommentStore._storeCallback({
           type: CommentActionTypes.COMMENT_DATA,
@@ -199,7 +199,7 @@ describe('CommentStore', function() {
         var result;
         beforeEach(function() {
           result =
-            CommentStore.getRecursiveData(testTripId1, testReferenceId1);
+            CommentStore.getRecursiveList(testTripId1, testReferenceId1);
         });
 
         it('should get comment 1', function() {
@@ -255,7 +255,7 @@ describe('CommentStore', function() {
         var result;
         beforeEach(function() {
           result =
-            CommentStore.getRecursiveData(testTripId1, testReferenceId2);
+            CommentStore.getRecursiveList(testTripId1, testReferenceId2);
         });
 
         it('should not get comment 1', function() {

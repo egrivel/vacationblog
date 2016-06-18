@@ -44,7 +44,7 @@ describe('/src/components/JournalEntry', function() {
       }
       return null;
     });
-    getCommentDataStub = sinon.stub(CommentStore, 'getRecursiveData',
+    getCommentDataStub = sinon.stub(CommentStore, 'getRecursiveList',
       function() {
         return [{
           tripId: testTripId,
