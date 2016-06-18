@@ -41,7 +41,18 @@ UserStore = assign({}, GenericStore, {
   },
 
   isUserLoggedIn: function() {
-    return _userLoggedIn !== '';
+    return (_userLoggedIn && (_userLoggedIn !== ''));
+  },
+
+  /**
+   * Determine if the user can add a comment. This is a convenience function,
+   * as currently all logged in users can add comments. In the future, it
+   * may be possible to inspect a user's abilities to determine whether they
+   * can add a comment.
+   * @return {Boolean} whether user can add a comment.
+   */
+  canAddComment: function() {
+    return (_userLoggedIn && (_userLoggedIn !== ''));
   },
 
   getAccess: function() {

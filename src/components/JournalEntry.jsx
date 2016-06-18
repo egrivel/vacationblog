@@ -64,6 +64,9 @@ var JournalEntry = React.createClass({
     var journalData = JournalStore.getData();
     var userName = '';
     var comments = null;
+    var canAddComment = UserStore.canAddComment();
+    var isLoggedIn = UserStore.isUserLoggedIn();
+    var loggedInUserId = UserStore.getLoggedInUser();
 
     if (!journalData || !journalData.tripId || !journalData.journalId) {
       // There is no actual journal item. Clear out the state.
@@ -77,7 +80,10 @@ var JournalEntry = React.createClass({
         userName: null,
         nextId: null,
         prevId: null,
-        comments: null
+        comments: null,
+        canAddComment: canAddComment,
+        loggedInUserId: loggedInUserId,
+        isLoggedIn: isLoggedIn
       };
     }
 
@@ -104,7 +110,10 @@ var JournalEntry = React.createClass({
       userName: userName,
       nextId: journalData.nextId,
       prevId: journalData.prevId,
-      comments: comments
+      comments: comments,
+      canAddComment: canAddComment,
+      loggedInUserId: loggedInUserId,
+      isLoggedIn: isLoggedIn
     };
   },
 
@@ -112,6 +121,7 @@ var JournalEntry = React.createClass({
     var nr = 0;
     var tripId = this.state.tripId;
     var journalId = this.state.journalId;
+    var loggedInUserId = this.state.loggedInUserId;
 
     var parList = utils.splitText(this.state.journalText);
 
@@ -129,7 +139,7 @@ var JournalEntry = React.createClass({
     if (tripId && journalId) {
       comments = (
         <CommentList tripId={tripId} referenceId={journalId}
-          comments={this.state.comments}/>
+          comments={this.state.comments} loggedInUserId={loggedInUserId}/>
       );
     }
 
@@ -160,10 +170,14 @@ var JournalEntry = React.createClass({
     }
 
     var newComment = null;
-    if (tripId && journalId) {
+    if (this.state.canAddComment && tripId && journalId) {
       newComment = (
         <CommentEdit tripId={tripId} referenceId={journalId}
           key={tripId + '-' + journalId}/>
+      );
+    } else if (!this.state.isLoggedIn) {
+      newComment = (
+        <div className="commentAdd">Please login to comment.</div>
       );
     }
 

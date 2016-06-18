@@ -616,7 +616,7 @@ div.buttonbar input {
   color: #c00;
 }
 
-div.commentEdit {
+div.commentEdit, div.commentAdd {
   padding: 5px;
   padding-right: 15px;
   font-size: 90%;
