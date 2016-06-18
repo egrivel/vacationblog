@@ -99,8 +99,6 @@ var CommentAction = {
       var data = JSON.parse(response);
       if (data.resultCode === '200') {
         CommentAction.recursivelyLoadComments(tripId, referenceId);
-      } else {
-        console.log('got error: ' + data.resultCode);
       }
     });
   }

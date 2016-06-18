@@ -77,7 +77,8 @@ describe('actions/FeedbackAction', function() {
       expect(dispatchStub.callCount).to.be.equal(1);
       expect(dispatchStub.args[0].length).to.be.equal(1);
       expect(dispatchStub.args[0][0].type).to.be.exit;
-      expect(dispatchStub.args[0][0].type).to.be.equal(FeedbackAction.Types.FEEDBACK_LOAD);
+      expect(dispatchStub.args[0][0].type)
+        .to.be.equal(FeedbackAction.Types.FEEDBACK_LOAD);
     });
 
     it('dispatched action tripId', function() {

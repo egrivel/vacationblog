@@ -36,12 +36,22 @@ function getGoogleCount(feedback) {
   return parseInt(result[1], 10);
 }
 
+/**
+ * Inspect the list of facebook feedback items
+ * @param {object} feedback - feedback object to inspect
+ * @return {string} title
+ */
 function getFacebookList(feedback) {
   expect(feedback.children.length).to.be.equal(4);
   expect(feedback.children[0].title).to.exist;
   return feedback.children[0].title;
 }
 
+/**
+ * Inspect the list of google feedback items
+ * @param {object} feedback - feedback object to inspect
+ * @return {string} title
+ */
 function getGoogleList(feedback) {
   expect(feedback.children.length).to.be.equal(4);
   expect(feedback.children[2].title).to.exist;

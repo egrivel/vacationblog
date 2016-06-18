@@ -57,7 +57,6 @@ describe('actions/utils', function() {
   });
 
   describe('#postAsync', function() {
-    // TODO: add tests for the data being properly posted
     var testData;
 
     beforeEach(function() {
