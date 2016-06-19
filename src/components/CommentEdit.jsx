@@ -58,17 +58,21 @@ var CommentEdit = React.createClass({
   _doPost: function() {
     var value = this.state.value;
     value = value.replace(/(\r\n|\r|\n)/g, '&lf;');
-    CommentAction.postComment(this.props.tripId,
-      this.props.referenceId, this.props.commentId,
-      value);
     CommentAction.setEditing(this.props.tripId,
       this.props.referenceId, this.props.commentId,
       false);
-    if (!this.props.commentId) {
+    if (this.props.commentId) {
+      CommentAction.setCommentText(this.props.tripId,
+        this.props.referenceId, this.props.commentId,
+        value);
+    } else {
       CommentAction.setCommentText(this.props.tripId,
         this.props.referenceId, this.props.commentId,
         '');
     }
+    CommentAction.postComment(this.props.tripId,
+      this.props.referenceId, this.props.commentId,
+      value);
   },
 
   render: function() {

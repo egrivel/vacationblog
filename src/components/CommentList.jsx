@@ -45,6 +45,7 @@ var Comment = React.createClass({
 
   propTypes: {
     tripId: React.PropTypes.string.isRequired,
+    referenceId: React.PropTypes.string.isRequired,
     commentId: React.PropTypes.string,
     created: React.PropTypes.string,
     commentText: React.PropTypes.string,
@@ -67,6 +68,7 @@ var Comment = React.createClass({
 
   render: function render() {
     var tripId = this.props.tripId;
+    var referenceId = this.props.referenceId;
     var commentId = this.props.commentId;
     var created = this.props.created;
     var commentText = this.props.commentText;
@@ -160,7 +162,7 @@ var Comment = React.createClass({
     if (CommentStore.isEditing('', '', commentId)) {
       commentBody = (
         <CommentEdit tripId={tripId} commentId={commentId}
-          key={'c-' + tripId + '-' + commentId}/>
+          referenceId={referenceId} key={'c-' + tripId + '-' + commentId}/>
       );
     } else {
       commentBody = parList.map(function(par) {
@@ -215,6 +217,7 @@ CommentList = React.createClass({
         Comment,
         {
           tripId: this.props.comments[i].tripId,
+          referenceId: this.props.comments[i].referenceId,
           commentId: this.props.comments[i].commentId,
           userId: userId,
           userName: userName,
