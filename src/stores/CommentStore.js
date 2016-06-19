@@ -37,6 +37,13 @@ var _commentData = [];
 // ---
 var _commentDetails = [];
 
+// ---
+// Keep track of which comments are being edited. This can either be an existing
+// comment (index is specific comment ID) or a new comment (index is the
+// generated index for trip ID and reference ID).
+// ---
+var _isEditing = [];
+
 /**
  * Make a unique index string.
  * @param {id} tripId - trip ID for index.
@@ -97,6 +104,7 @@ var CommentStore = assign({}, GenericStore, {
   _reset: function() {
     _commentData = [];
     _commentDetails = [];
+    _isEditing = [];
   },
 
   getUserId: function(commentId) {
@@ -149,7 +157,43 @@ var CommentStore = assign({}, GenericStore, {
     return result;
   },
 
+  canEditComment(commentId, userId) {
+    if (commentId && userId && _commentDetails[commentId]) {
+      if (_commentDetails[commentId].userId) {
+        return _commentDetails[commentId].userId === userId;
+      }
+    }
+    return false;
+  },
+
+  isEditing: function(tripId, referenceId, commentId) {
+    if (commentId && _isEditing[commentId]) {
+      return true;
+    } else if (tripId && referenceId) {
+      var index = _makeIndex(tripId, referenceId);
+      if (_isEditing[index]) {
+        return true;
+      }
+    }
+    return false;
+  },
+
+  getCommentText: function(tripId, referenceId, commentId) {
+    if (commentId) {
+      if (_commentDetails[commentId]) {
+        return _commentDetails[commentId].commentText;
+      }
+    } else if (tripId && referenceId) {
+      var index = _makeIndex(tripId, referenceId);
+      if (_commentDetails[index]) {
+        return _commentDetails[index].commentText;
+      }
+    }
+    return '';
+  },
+
   _storeCallback: function(action) {
+    var index;
     switch (action.type) {
       case CommentActionTypes.COMMENT_DATA:
         var isChanged = false;
@@ -162,6 +206,37 @@ var CommentStore = assign({}, GenericStore, {
           CommentStore.emitChange();
         }
         break;
+
+      case CommentActionTypes.COMMENT_SET_EDITING:
+        var value = false;
+        if (action.value) {
+          value = true;
+        }
+        if (action.commentId) {
+          _isEditing[action.commentId] = value;
+        } else if (action.tripId && action.referenceId) {
+          index = _makeIndex(action.tripId, action.referenceId);
+          _isEditing[index] = value;
+        }
+        CommentStore.emitChange();
+        break;
+
+      case CommentActionTypes.COMMENT_SET_TEXT:
+        if (action.commentId) {
+          if (!_commentDetails[action.commentId]) {
+            _commentDetails[action.commentId] = {};
+          }
+          _commentDetails[action.commentId].commentText = action.value;
+        } else if (action.tripId && action.referenceId) {
+          index = _makeIndex(action.tripId, action.referenceId);
+          if (!_commentDetails[index]) {
+            _commentDetails[index] = {};
+          }
+          _commentDetails[index].commentText = action.value;
+        }
+        CommentStore.emitChange();
+        break;
+
       default:
         // do nothing
     }

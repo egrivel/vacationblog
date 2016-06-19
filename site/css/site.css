@@ -639,4 +639,5 @@ div.commentEdit textarea.comment {
 
 div.commentEdit button {
   margin-right: 5px;
+  margin-top: -8px;
 }

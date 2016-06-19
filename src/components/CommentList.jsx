@@ -8,6 +8,8 @@
 var React = require('react');
 
 var UserStore = require('../stores/UserStore');
+var CommentStore = require('../stores/CommentStore');
+var CommentAction = require('../actions/CommentAction');
 
 var utils = require('./utils');
 var Feedback = require('./Feedback.jsx');
@@ -54,6 +56,15 @@ var Comment = React.createClass({
     canEdit: React.PropTypes.bool.isRequired
   },
 
+  _startEditing: function(event) {
+    var tripId = event.target.getAttribute('data-trip-id');
+    var referenceId = event.target.getAttribute('data-reference-id');
+    var commentId = event.target.getAttribute('data-comment-id');
+    CommentAction.setEditing(tripId, referenceId, commentId, true);
+    event.preventDefault();
+    event.stopPropagation();
+  },
+
   render: function render() {
     var tripId = this.props.tripId;
     var commentId = this.props.commentId;
@@ -80,13 +91,25 @@ var Comment = React.createClass({
     // and may result in too many event listners being added.
     var newComment = null;
     if (tripId && commentId && this.props.loggedInUserId) {
-      newComment = React.createElement(
-        CommentEdit,
-        {
-          tripId: tripId,
-          referenceId: commentId,
-          key: 'c-' + tripId + '-' + commentId
-        });
+      if (CommentStore.isEditing(tripId, commentId)) {
+        newComment = React.createElement(
+          CommentEdit,
+          {
+            tripId: tripId,
+            referenceId: commentId,
+            key: 'c-' + tripId + '-' + commentId
+          }
+        );
+      } else {
+        newComment = (
+          <div className="commentEdit">
+            <a href="#" onClick={this._startEditing} className="addComment"
+              data-trip-id={tripId} data-reference-id={commentId}>
+              Add a comment
+            </a>
+          </div>
+        );
+      }
     }
 
     var feedback = null;
@@ -96,16 +119,29 @@ var Comment = React.createClass({
       key: tripId + ':' + commentId
     });
 
-    var header = React.DOM.h3(
-      null,
-      React.DOM.em(null, 'by '),
-      React.DOM.strong(null,
-                       utils.replaceEntities(userName)),
-      ' on ' + utils.formatDate(created),
-      React.DOM.span(
-        {
-          className: 'commentId'
-        }));
+    var commentEdit = null;
+    if (CommentStore.canEditComment(commentId, this.props.loggedInUserId)) {
+      if (!CommentStore.isEditing('', '', commentId)) {
+        commentEdit = (
+          <div className="commentEdit">
+            <button onClick={this._startEditing} className="addComment"
+              data-trip-id={tripId} data-comment-id={commentId}>
+              Edit
+            </button>
+          </div>
+        );
+      }
+    }
+
+    var header = (
+      <h3>
+        <em>by </em>
+        <strong>{userName} </strong>
+        <span>on </span>
+        {utils.formatDate(created)}
+        <span className="commentId">{commentEdit}</span>
+      </h3>
+    );
 
     var parList = utils.splitText(commentText);
 
@@ -120,12 +156,14 @@ var Comment = React.createClass({
         loggedInUserId: this.props.loggedInUserId
       });
 
-    return React.DOM.div(
-      {
-        className: 'commentBlock'
-      },
-      header,
-      parList.map(function(par) {
+    var commentBody = '';
+    if (CommentStore.isEditing('', '', commentId)) {
+      commentBody = (
+        <CommentEdit tripId={tripId} commentId={commentId}
+          key={'c-' + tripId + '-' + commentId}/>
+      );
+    } else {
+      commentBody = parList.map(function(par) {
         parCount++;
         var key = 'p-' + parCount;
         return React.createElement(CommentParagraph, {
@@ -133,7 +171,15 @@ var Comment = React.createClass({
           key: key,
           text: par
         });
-      }),
+      });
+    }
+
+    return React.DOM.div(
+      {
+        className: 'commentBlock'
+      },
+      header,
+      commentBody,
       newComment,
       feedback,
       list);

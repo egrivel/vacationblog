@@ -7,7 +7,9 @@ var utils = require('./utils');
 
 var CommentAction = {
   Types: {
-    COMMENT_DATA: 'COMMENT_DATA'
+    COMMENT_DATA: 'COMMENT_DATA',
+    COMMENT_SET_EDITING: 'COMMENT_SET_EDITING',
+    COMMENT_SET_TEXT: 'COMMENT_SET_TEXT'
   },
 
   /**
@@ -16,8 +18,9 @@ var CommentAction = {
    * @param {id} referenceId - unique ID of the specified item.
    */
   loadComments: function(tripId, referenceId) {
-    var url = 'api/getComment.php?tripId=' + tripId +
-      '&referenceId=' + referenceId;
+    var url = 'api/getComment.php?' +
+      'tripId=' + encodeURIComponent(tripId) +
+      '&referenceId=' + encodeURIComponent(referenceId);
 
     utils.getAsync(url, function(response) {
       var data = JSON.parse(response);
@@ -52,8 +55,9 @@ var CommentAction = {
    * @param {ID} referenceId - reference ID for item to load
    */
   recursivelyLoadComments: function(tripId, referenceId) {
-    var url = 'api/getComment.php?tripId=' + tripId +
-      '&referenceId=' + referenceId;
+    var url = 'api/getComment.php?' +
+      'tripId=' + encodeURIComponent(tripId) +
+      '&referenceId=' + encodeURIComponent(referenceId);
     utils.getAsync(url, function(response) {
       var data = JSON.parse(response);
       CommentAction._recursiveCommentsLoaded(tripId, referenceId, data);
@@ -87,12 +91,13 @@ var CommentAction = {
     }
   },
 
-  postComment: function(tripId, referenceId, text) {
+  postComment: function(tripId, referenceId, commentId, text) {
     var userId = UserStore.getLoggedInUser();
     var data = {
       userId: userId,
-      referenceId: referenceId,
       tripId: tripId,
+      referenceId: referenceId,
+      commentId: commentId,
       commentText: text
     };
     utils.postAsync('api/putComment.php', data, function(response) {
@@ -100,6 +105,26 @@ var CommentAction = {
       if (data.resultCode === '200') {
         CommentAction.recursivelyLoadComments(tripId, referenceId);
       }
+    });
+  },
+
+  setEditing: function(tripId, referenceId, commentId, value) {
+    AppDispatcher.dispatch({
+      type: CommentAction.Types.COMMENT_SET_EDITING,
+      tripId: tripId,
+      referenceId: referenceId,
+      commentId: commentId,
+      value: value
+    });
+  },
+
+  setCommentText: function(tripId, referenceId, commentId, value) {
+    AppDispatcher.dispatch({
+      type: CommentAction.Types.COMMENT_SET_TEXT,
+      tripId: tripId,
+      referenceId: referenceId,
+      commentId: commentId,
+      value: value
     });
   }
 };

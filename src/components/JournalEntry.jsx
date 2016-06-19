@@ -25,6 +25,8 @@ var UserStore = require('../stores/UserStore');
 var CommentStore = require('../stores/CommentStore');
 var storeMixin = require('./StoreMixin');
 
+var CommentAction = require('../actions/CommentAction');
+
 var JournalParagraph = require('./JournalParagraph.jsx');
 var CommentList = require('./CommentList.jsx');
 var CommentEdit = require('./CommentEdit.jsx');
@@ -117,6 +119,15 @@ var JournalEntry = React.createClass({
     };
   },
 
+  _startEditing: function(event) {
+    var tripId = event.target.getAttribute('data-trip-id');
+    var referenceId = event.target.getAttribute('data-reference-id');
+    var commentId = event.target.getAttribute('data-comment-id');
+    CommentAction.setEditing(tripId, referenceId, commentId, true);
+    event.preventDefault();
+    event.stopPropagation();
+  },
+
   render: function render() {
     var nr = 0;
     var tripId = this.state.tripId;
@@ -171,10 +182,21 @@ var JournalEntry = React.createClass({
 
     var newComment = null;
     if (this.state.canAddComment && tripId && journalId) {
-      newComment = (
-        <CommentEdit tripId={tripId} referenceId={journalId}
-          key={tripId + '-' + journalId}/>
-      );
+      if (CommentStore.isEditing(tripId, journalId)) {
+        newComment = (
+          <CommentEdit tripId={tripId} referenceId={journalId}
+            key={tripId + '-' + journalId}/>
+        );
+      } else {
+        newComment = (
+          <div className="commentEdit">
+            <a href="#" onClick={this._startEditing} className="addComment"
+              data-trip-id={tripId} data-reference-id={journalId}>
+              Add a comment
+            </a>
+          </div>
+        );
+      }
     } else if (!this.state.isLoggedIn) {
       newComment = (
         <div className="commentAdd">Please login to comment.</div>
