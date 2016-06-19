@@ -12,7 +12,7 @@ if (isPutMethod()) {
       $tripId = $data['tripId'];
    }
    $commentId = '';
-   if (isset($data['commentId'])) {
+   if (isset($data['commentId']) && ($data['commentId'] !== '')) {
       $commentId = $data['commentId'];
    } else {
       $commentId = Comment::generateCommentId();
