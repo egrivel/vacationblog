@@ -117,4 +117,9 @@ _formStatus = UserStore.constants.NONE;
 
 UserStore.dispatchToken = AppDispatcher.register(UserStore._storeCallback);
 
+// The feedback component listens to the user store, and there can be a *lot*
+// of feedback components on the page, so increase the number of listeners
+// allowed.
+UserStore.setMaxListeners(100);
+
 module.exports = UserStore;

@@ -167,4 +167,8 @@ FeedbackStore = assign({}, GenericStore, {
 FeedbackStore.dispatchToken =
   AppDispatcher.register(FeedbackStore._storeCallback);
 
+// There can potentially be a *lot* of listeners to the feedback store, so
+// set the limit high!
+FeedbackStore.setMaxListeners(100);
+
 module.exports = FeedbackStore;
