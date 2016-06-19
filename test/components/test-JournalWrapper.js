@@ -7,11 +7,13 @@ var TestUtils = require('react-addons-test-utils');
 
 var JournalWrapper = require('../../src/components/JournalWrapper.jsx');
 var JournalAction = require('../../src/actions/JournalAction');
+var FeedbackAction = require('../../src/actions/FeedbackAction');
 var JournalStore = require('../../src/stores/JournalStore');
 
 describe('components/JournalWrapper', function() {
   var loadJournalStub;
   var journalGetDataStub;
+  var loadFeedbackStub;
   var dummyData;
 
   beforeEach(function() {
@@ -22,12 +24,14 @@ describe('components/JournalWrapper', function() {
       function() {
         return dummyData;
       });
+    loadFeedbackStub = sinon.stub(FeedbackAction, 'loadData');
   });
 
   afterEach(function() {
     journalGetDataStub.restore();
     loadJournalStub.restore();
     JournalStore.removeAllListeners();
+    loadFeedbackStub.restore();
   });
 
   describe('render without data', function() {

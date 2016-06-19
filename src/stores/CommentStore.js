@@ -157,7 +157,7 @@ var CommentStore = assign({}, GenericStore, {
     return result;
   },
 
-  canEditComment(commentId, userId) {
+  canEditComment: function(commentId, userId) {
     if (commentId && userId && _commentDetails[commentId]) {
       if (_commentDetails[commentId].userId) {
         return _commentDetails[commentId].userId === userId;

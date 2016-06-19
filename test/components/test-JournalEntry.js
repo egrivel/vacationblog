@@ -109,14 +109,13 @@ describe('components/JournalEntry', function() {
         var journal = TestUtils.renderIntoDocument(element);
         var divList = TestUtils.scryRenderedDOMComponentsWithTag(journal,
           'div');
-        expect(divList.length).to.be.equal(7);
+        expect(divList.length).to.be.equal(6);
         expect(divList[0].className).to.be.equal('journalitem');
-        expect(divList[1].className).to.be.equal('commentEdit');
+        expect(divList[1].className).to.be.equal('commentAdd');
         expect(divList[2].className).to.be.equal('feedback');
         expect(divList[3].className).to.be.equal('comments');
         expect(divList[4].className).to.be.equal('commentBlock');
-        expect(divList[5].className).to.be.equal('commentEdit');
-        expect(divList[6].className).to.be.equal('feedback');
+        expect(divList[5].className).to.be.equal('feedback');
       });
     });
 
@@ -193,7 +192,7 @@ describe('components/JournalEntry', function() {
         var journal = TestUtils.renderIntoDocument(element);
         var divList = TestUtils.scryRenderedDOMComponentsWithTag(journal,
           'div');
-        expect(divList.length).to.be.equal(7);
+        expect(divList.length).to.be.equal(6);
         expect(divList[2].className).to.be.equal('feedback');
       });
     });
@@ -203,17 +202,17 @@ describe('components/JournalEntry', function() {
         var journal = TestUtils.renderIntoDocument(element);
         var divList = TestUtils.scryRenderedDOMComponentsWithTag(journal,
           'div');
-        expect(divList.length).to.be.equal(7);
+        expect(divList.length).to.be.equal(6);
         expect(divList[3].className).to.be.equal('comments');
         expect(divList[4].className).to.be.equal('commentBlock');
-        expect(divList[6].className).to.be.equal('feedback');
+        expect(divList[5].className).to.be.equal('feedback');
       });
 
       it('render text', function() {
         var journal = TestUtils.renderIntoDocument(element);
         var divList = TestUtils.scryRenderedDOMComponentsWithTag(journal,
           'div');
-        expect(divList.length).to.be.equal(7);
+        expect(divList.length).to.be.equal(6);
         expect(divList[4].className).to.be.equal('commentBlock');
         expect(divList[4].innerHTML).to.contain(testCommentText);
       });
