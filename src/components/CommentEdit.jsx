@@ -23,7 +23,7 @@ var CommentEdit = React.createClass({
     var value = CommentStore.getCommentText(this.props.tripId,
       this.props.referenceId, this.props.commentId);
     if (value) {
-      value = value.replace(/&lf;/g, "\r\n");
+      value = value.replace(/&lf;/g, "\n\n");
     }
     return {
       value: value
@@ -31,14 +31,23 @@ var CommentEdit = React.createClass({
   },
 
   _stopEditing: function(event) {
+    var value = this.state.value;
+    value = value.replace(/[\r\n]+/g, '&lf;');
     CommentAction.setEditing(this.props.tripId,
       this.props.referenceId, this.props.commentId,
       false);
-    if (!this.props.commentId) {
+    if (this.props.commentId) {
+      CommentAction.setCommentText(this.props.tripId,
+        this.props.referenceId, this.props.commentId,
+        value);
+    } else {
       CommentAction.setCommentText(this.props.tripId,
         this.props.referenceId, this.props.commentId,
         '');
     }
+    // re-load data from server, since we cancelled
+    CommentAction.recursivelyLoadComments(this.props.tripId,
+      this.props.referenceId);
     event.preventDefault();
     event.stopPropagation();
   },
@@ -57,7 +66,7 @@ var CommentEdit = React.createClass({
 
   _doPost: function() {
     var value = this.state.value;
-    value = value.replace(/(\r\n|\r|\n)/g, '&lf;');
+    value = value.replace(/[\r\n]+/g, '&lf;');
     CommentAction.setEditing(this.props.tripId,
       this.props.referenceId, this.props.commentId,
       false);
@@ -79,8 +88,8 @@ var CommentEdit = React.createClass({
     return (
       <div className="commentEdit">
         Comment:
-        <textarea autoFocus className="comment" value={this.state.value}
-          ref="editbox" onChange={this._updateValue}/>
+        <textarea autoFocus className="comment" defaultValue={this.state.value}
+          ref="editbox" onBlur={this._updateValue}/>
         <button onClick={this._doPost}>Post</button>
         <button onClick={this._stopEditing}>Cancel</button>
       </div>
