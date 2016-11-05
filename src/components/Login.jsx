@@ -2,20 +2,39 @@
 
 var React = require('react');
 
+var storeMixin = require('./StoreMixin');
+
 var LoginAction = require('../actions/LoginAction');
+var UserStore = require('../stores/UserStore');
 
 var Login = React.createClass({
   displayName: 'Login',
 
+  stores: [UserStore],
+
+  mixins: [storeMixin()],
+
   propTypes: {
-    onClose: React.PropTypes.func.isRequired,
-    errorMessage: React.PropTypes.string
+    onClose: React.PropTypes.func.isRequired
   },
 
-  getInitialState: function() {
+  // getInitialState: function() {
+  //   var name = UserStore.getLoggedInUser();
+  //   var errorMessage = UserStore.getFormErrorMessage();
+  //   return {
+  //     username: name,
+  //     password: '',
+  //     errorMessage: errorMessage
+  //   };
+  // },
+
+  _getStateFromStores: function() {
+    var name = UserStore.getLoggedInUser();
+    var errorMessage = UserStore.getFormErrorMessage();
     return {
-      username: '',
-      password: ''
+      username: name,
+      password: '',
+      errorMessage: errorMessage
     };
   },
 
@@ -45,7 +64,7 @@ var Login = React.createClass({
 
   render: function() {
     var errors = null;
-    if (this.props.errorMessage) {
+    if (this.state.errorMessage) {
       errors = <div className="errorMessage">{this.props.errorMessage}</div>;
     }
     return (

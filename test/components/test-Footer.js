@@ -6,7 +6,7 @@ var React = require('react');
 var TestUtils = require('react-addons-test-utils');
 
 var TripStore = require('../../src/stores/TripStore');
-var Footer = require('../../src/components/Footer');
+var Footer = require('../../src/components/Footer.jsx');
 
 describe('components/Footer', function() {
   var standardFooter = 'Website design \u00a92015-16 by Eric Grivel.';

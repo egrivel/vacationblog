@@ -11,7 +11,7 @@ var TestUtils = require('react-addons-test-utils');
 
 var TripStore = require('../../src/stores/TripStore');
 var TripAction = require('../../src/actions/TripAction');
-var TripDescription = require('../../src/components/TripDescription');
+var TripDescription = require('../../src/components/TripDescription.jsx');
 
 /**
  * Create a trip description element.
@@ -210,22 +210,22 @@ describe('components/TripDescription', function() {
   describe('mount without tripId', function() {
     var otherTripId = null;
 
-    it('calls initialLoadTrip', function() {
-      expect(initialLoadTripStub.callCount).to.be.equal(0);
-      getDomElement(otherTripId);
-      expect(initialLoadTripStub.callCount).to.be.equal(1);
-    });
-
-    it('does not call setCurrentTrip', function() {
-      expect(setCurrentTripStub.callCount).to.be.equal(0);
-      getDomElement(otherTripId);
-      expect(setCurrentTripStub.callCount).to.be.equal(0);
-    });
-
     it('calls getCurrentTripId', function() {
       expect(getCurrentTripIdStub.callCount).to.be.equal(0);
       getDomElement(otherTripId);
       expect(getCurrentTripIdStub.callCount).to.be.equal(1);
+    });
+
+    it('does not call initialLoadTrip', function() {
+      expect(initialLoadTripStub.callCount).to.be.equal(0);
+      getDomElement(otherTripId);
+      expect(initialLoadTripStub.callCount).to.be.equal(0);
+    });
+
+    it('calls setCurrentTrip', function() {
+      expect(setCurrentTripStub.callCount).to.be.equal(0);
+      getDomElement(otherTripId);
+      expect(setCurrentTripStub.callCount).to.be.equal(1);
     });
 
     it('calls getTripData', function() {

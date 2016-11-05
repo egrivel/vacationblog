@@ -15,7 +15,9 @@ var TripAction = {
       type: this.Types.TRIP_SET_CURRENT,
       data: id
     });
-    TripAction.loadTrip(id);
+    if (id) {
+      TripAction.loadTrip(id);
+    }
   },
 
   /** Special load function to load the system with the current trip. */

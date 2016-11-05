@@ -6,15 +6,15 @@ var Router = require('react-router').Router;
 var hashHistory = require('react-router').hashHistory;
 
 var Header = require('./components/Header.jsx');
-var Footer = require('./components/Footer');
-var TripDescription = require('./components/TripDescription');
+var Footer = require('./components/Footer.jsx');
+var TripDescription = require('./components/TripDescription.jsx');
 var JournalWrapper = require('./components/JournalWrapper.jsx');
 var TripAction = require('./actions/TripAction');
 var UserAction = require('./actions/UserAction');
 
-var Search = require('./components/Search');
-var Login = require('./components/Login.jsx');
-var About = require('./components/About');
+var Search = require('./components/Search.jsx');
+var LoginWrapper = require('./components/LoginWrapper.jsx');
+var About = require('./components/About.jsx');
 
 /**
  * The application object renders the framework of the application, which
@@ -52,7 +52,7 @@ const routes = {
     {path: '/journal/:tripId', component: JournalWrapper},
     {path: '/journal/:tripId/:journalId', component: JournalWrapper},
     {path: '/search', component: Search},
-    {path: '/login', component: Login},
+    {path: '/login', component: LoginWrapper},
     {path: '/about', component: About}
   ]
 };
@@ -70,7 +70,7 @@ ReactDOM.render(
 
 // Load the default trip on startup (until we have a better default)
 TripAction.loadTripList();
-setInterval(TripAction.loadTripList, 30000);
+// setInterval(TripAction.loadTripList, 30000);
 
 // Check if logged in
 var cookies = document.cookie.split(';');

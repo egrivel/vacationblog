@@ -93,6 +93,7 @@ var TripStore = assign({}, GenericStore, {
       case TripActionTypes.TRIP_SET_CURRENT:
         if (action.data !== _currentTripId) {
           _currentTripId = action.data;
+          _tripData = {};
           TripStore.emitChange();
         }
         break;

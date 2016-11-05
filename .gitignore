@@ -7,3 +7,4 @@ vacationblog.ini
 *.sublime-*
 .git
 .cvsignore
+npm-debug.log
