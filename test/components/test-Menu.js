@@ -8,7 +8,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var TestUtils = require('react-addons-test-utils');
 
-var Menu = require('../../src/components/Menu');
+var Menu = require('../../src/components/Menu.jsx');
 var MenuAction = require('../../src/actions/MenuAction');
 var FeedbackAction = require('../../src/actions/FeedbackAction');
 

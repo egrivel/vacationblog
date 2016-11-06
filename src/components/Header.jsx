@@ -1,7 +1,7 @@
 'use strict';
 
 var React = require('react');
-var Menu = require('./Menu');
+var Menu = require('./Menu.jsx');
 var Login = require('./Login.jsx');
 var Logout = require('./Logout.jsx');
 var TripStore = require('../stores/TripStore');

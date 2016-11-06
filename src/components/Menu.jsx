@@ -1,7 +1,7 @@
 'use strict';
 
 var React = require('react');
-var MenuList = require('./MenuList');
+var MenuList = require('./MenuList.jsx');
 
 var Menu = React.createClass({
   displayName: 'Menu',
