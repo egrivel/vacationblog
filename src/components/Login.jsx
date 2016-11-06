@@ -65,7 +65,7 @@ var Login = React.createClass({
   render: function() {
     var errors = null;
     if (this.state.errorMessage) {
-      errors = <div className="errorMessage">{this.props.errorMessage}</div>;
+      errors = <div className="errorMessage">{this.state.errorMessage}</div>;
     }
     return (
       <div className="modal" onClick={this.props.onClose}>

@@ -6,19 +6,11 @@ var MenuList = React.createClass({
   displayName: 'MenuList',
 
   propTypes: {
-    topLevel: React.PropTypes.bool,
-    list: React.PropTypes.array,
-    handleHover: React.PropTypes.func,
-    handleSelect: React.PropTypes.func
+    list: React.PropTypes.array
   },
 
   render: function() {
     var children = [];
-
-    var attribs = {};
-    if (this.props.topLevel) {
-      attribs.className = 'main-menu';
-    }
 
     var i;
     if (this.props.list) {
@@ -35,7 +27,11 @@ var MenuList = React.createClass({
       }
     }
 
-    return (React.DOM.ul(attribs, children));
+    return (
+      <ul className="main-menu">
+        {children}
+      </ul>
+    );
   }
 });
 

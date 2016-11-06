@@ -41,7 +41,7 @@ ReactDOM.render(
       history: hashHistory
     }
   ),
-  document.getElementById('body')
+  document.getElementById('react-root')
 );
 
 // Load the default trip on startup (until we have a better default)

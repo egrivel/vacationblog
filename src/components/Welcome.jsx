@@ -23,7 +23,6 @@ var Welcome = React.createClass({
   componentDidMount: function() {
     var currentTripId = TripStore.getCurrentTripId();
     if (currentTripId) {
-      console.log('remove current trip');
       TripAction.setCurrentTrip(null);
     }
   },

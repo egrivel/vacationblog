@@ -26,9 +26,11 @@ var App = React.createClass({
       children = <Welcome/>;
     }
     return (
-      <div>
+      <div className="body">
         <Header/>
-        {children}
+        <div className="content">
+          {children}
+        </div>
         <Footer/>
       </div>
     );

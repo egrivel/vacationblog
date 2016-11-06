@@ -8,22 +8,28 @@ that the menu bar is considered part of the header.
 
 ## CSS Structure
 
-The global page structure is set out in `index.html`:
+The global page structure is set out in `index.html`, (found in the `site`
+folder), which provides for the surrounding HTML structure. It also defines
+the `react-root` element into which `boot.js` will render the application.
 
 ```
 <body>
-  <div id="body">
+  <div id="react-root">
     ... application content ...
   </div>
 </body>
 ```
 
-The application content is defined in `App.jsx`:
+The application content is defined in `App.jsx`, consisting of a _body_ with
+in it a _header_, a _content_ and a _footer_ div. The header and footer are
+rendered by the respective elements. The actual content depends of the route.
 
 ```
-<div>
+<div class="body">
   ... Header ...
-  ... content ...
+  <div class="content">
+    ... content ...
+  </div>
   ... Footer ...
 </div>
 ```
@@ -50,3 +56,5 @@ The header structure is defined in `Header.jsx` and `Menu.jsx`:
     <div class="clear"></div>
   </div>
 </div>
+```
+
