@@ -5,55 +5,31 @@ var ReactDOM = require('react-dom');
 var Router = require('react-router').Router;
 var hashHistory = require('react-router').hashHistory;
 
-var Header = require('./components/Header.jsx');
-var Footer = require('./components/Footer.jsx');
+var App = require('./components/App.jsx');
+var Welcome = require('./components/Welcome.jsx');
 var TripDescription = require('./components/TripDescription.jsx');
 var JournalWrapper = require('./components/JournalWrapper.jsx');
+var Search = require('./components/Search.jsx');
+var Admin = require('./components/Admin.jsx');
+var About = require('./components/About.jsx');
+var LoginWrapper = require('./components/LoginWrapper.jsx');
+
 var TripAction = require('./actions/TripAction');
 var UserAction = require('./actions/UserAction');
-
-var Search = require('./components/Search.jsx');
-var LoginWrapper = require('./components/LoginWrapper.jsx');
-var About = require('./components/About.jsx');
-
-/**
- * The application object renders the framework of the application, which
- * includes the header and footer. It allows for the page-specific content
- * to be inserted by the React Router, except when there is no router-inserted
- * content, it will default to a trip description page. This is the initial
- * view when someone enters the site.
- */
-var App = React.createClass({
-  propTypes: {
-    children: React.PropTypes.object
-  },
-
-  render: function() {
-    var children = this.props.children;
-    if (!children || children.length === 0) {
-      children = React.createElement(TripDescription, null);
-    }
-    return React.DOM.div(
-      null,
-      React.createElement(Header, null),
-      children,
-      React.createElement(Footer, null)
-    );
-  }
-});
 
 const routes = {
   path: '/',
   component: App,
   childRoutes: [
-    {path: '/', component: TripDescription},
+    {path: '/', component: Welcome},
     {path: '/trip', component: TripDescription},
     {path: '/trip/:tripId', component: TripDescription},
     {path: '/journal/:tripId', component: JournalWrapper},
     {path: '/journal/:tripId/:journalId', component: JournalWrapper},
     {path: '/search', component: Search},
     {path: '/login', component: LoginWrapper},
-    {path: '/about', component: About}
+    {path: '/about', component: About},
+    {path: '/admin', component: Admin}
   ]
 };
 

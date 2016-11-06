@@ -7,12 +7,14 @@ body {
   font-family: 'Droid Serif', Georgia, 'Times New Roman', Times, serif;
 }
 
-div#body {
-  background-color: #fff;
-  color: #000;
-  max-width: 50em;
-  margin-left: auto;
-  margin-right: auto;
+p, li {
+  letter-spacing: 1px;
+  line-height: 130%;
+  list-style-type: disc;
+}
+
+ul {
+  margin-left: 1.5em;
 }
 
 a {
@@ -26,6 +28,14 @@ em {
 
 strong {
   font-weight: bold;
+}
+
+div#body {
+  background-color: #fff;
+  color: #000;
+  max-width: 50em;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .clear {
@@ -104,7 +114,7 @@ div.footer p {
 
 .main-menu li.first {
   margin-left: 1em;
-  height: 1.8em;
+  x-height: 1.8em;
   padding: 0;
 }
 
@@ -113,6 +123,8 @@ div.footer p {
   border: 1px solid #679;
   background-color: #679;
   color: #fff;
+  margin-top: 0.25em;
+  margin-bottom: 0.5em;
 }
 
 /* if the <li> element does not contain <a>, add padding to the <li>,
@@ -198,12 +210,9 @@ div.journalitem h3 {
 
 div.trip p,
 div.journalitem p {
+  clear: both;
   padding-top: 0.5em;
   padding-bottom: 0.5em;
-  clear: both;
-  letter-spacing: 1px;
-  line-height: 130%;
-  font-size: 100%;
   text-align: justify;
 }
 

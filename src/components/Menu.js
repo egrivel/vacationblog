@@ -22,19 +22,19 @@ var Menu = React.createClass({
   },
 
   handleHover: function(id, hover) {
-    inHover = hover;
-    if (hover) {
-      // turn hover on immediately
-      MenuAction.visibleItem(id, hover);
-    } else {
-      // turn off menu's visibility after 1/10th of a second, but only if
-      // at that time the inHover is still false.
-      setTimeout(function() {
-        if (!inHover) {
-          MenuAction.visibleItem(id, hover);
-        }
-      }, 100);
-    }
+    // inHover = hover;
+    // if (hover) {
+    //   // turn hover on immediately
+    //   MenuAction.visibleItem(id, hover);
+    // } else {
+    //   // turn off menu's visibility after 1/10th of a second, but only if
+    //   // at that time the inHover is still false.
+    //   setTimeout(function() {
+    //     if (!inHover) {
+    //       MenuAction.visibleItem(id, hover);
+    //     }
+    //   }, 100);
+    // }
   },
 
   render: function() {
@@ -56,4 +56,3 @@ var Menu = React.createClass({
 });
 
 module.exports = Menu;
-

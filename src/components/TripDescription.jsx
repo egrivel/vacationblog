@@ -113,37 +113,7 @@ var TripDescription = React.createClass({
         )
       );
     }
-
-    var tripList = TripStore.getTripList();
-    var tripListDisplay;
-    if (tripList) {
-      var count = 0;
-      var tripListArray = tripList.map(function(item) {
-        count++;
-        return (
-          <li key={count}>
-            <a href={'#/trip/' + item.tripId}>
-              {item.name}
-            </a>
-          </li>
-        );
-      });
-      if (count) {
-        tripListDisplay = (<ul>{tripListArray}</ul>);
-      }
-    }
-
-    return (
-      <div className="trip">
-        <p>
-          Hi there, and welcome to our Vacation Blog website. We use this
-          site to keep a vacation blog whenever we are exploring some new
-          part of the world. Select from the various trips below to start
-          reading!
-        </p>
-        {tripListDisplay}
-      </div>
-    );
+    return <div>nothing here</div>;
   }
 });
 

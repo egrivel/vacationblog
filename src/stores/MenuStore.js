@@ -1,10 +1,12 @@
 'use strict';
 
+var _ = require('lodash');
 var assign = require('object-assign');
 var AppDispatcher = require('../AppDispatcher');
 var MenuActionTypes = require('../actions/MenuAction').Types;
-var TripActionTypes = require('../actions/TripAction').Types;
+var UserActionTypes = require('../actions/UserAction').Types;
 var GenericStore = require('./GenericStore');
+var UserStore = require('./UserStore');
 
 // The menu structure. It uses the following attributes:
 //  - id: unique ID for the menu item
@@ -15,10 +17,16 @@ var GenericStore = require('./GenericStore');
 //  - submenu: next level menu to display when selected (non-leaf entries
 //    only)
 var _menuData = [
-  {id: 'm1', label: 'Trip', selected: false, target: ''},
-  {id: 'm2', label: 'Search', selected: false, target: '#/search'},
-  {id: 'm3', label: 'Login', selected: false, target: '#/login'},
-  {id: 'm4', label: 'About', selected: false, target: '#/about'}
+  {id: 'm1', label: 'Trip', selected: false, visible: true,
+    target: '#/'},
+  {id: 'm2', label: 'Search', selected: false, visible: true,
+    target: '#/search'},
+  {id: 'm3', label: 'Login', selected: false, visible: true,
+    target: '#/login'},
+  {id: 'm4', label: 'Admin', selected: false, visible: false,
+    target: '#/admin'},
+  {id: 'm5', label: 'About', selected: false, visible: true,
+    target: '#/about'}
 ];
 
 /**
@@ -87,31 +95,6 @@ function _visibleMenuItem(list, id, isVisible) {
   return didFind;
 }
 
-/**
- * Update the trip menu.
- * @param {array} newList - New list of trips.
- * @private
- */
-function _updateTripMenu(newList) {
-  var i;
-  if (newList) {
-    var submenu = [];
-    for (i = 0; newList[i]; i++) {
-      submenu[i] = {
-        id: 'm1.' + i,
-        label: newList[i].name,
-        selected: false,
-        target: '#/trip/' + newList[i].tripId
-      };
-    }
-    _menuData[0].submenu = submenu;
-    delete _menuData[0].target;
-  } else {
-    _menuData[0].target = '#/trip';
-    delete _menuData[0].submenu;
-  }
-}
-
 var MenuStore = assign({}, GenericStore, {
   getData: function() {
     return _menuData;
@@ -119,19 +102,28 @@ var MenuStore = assign({}, GenericStore, {
 
   _storeCallback: function(action) {
     switch (action.type) {
-      case TripActionTypes.TRIP_LOAD_LIST:
-        _updateTripMenu(action.data);
-        MenuStore.emitChange();
-        break;
-
       case MenuActionTypes.MENU_SELECT:
         _selectMenuItem(_menuData, action.data.id);
         MenuStore.emitChange();
         break;
 
       case MenuActionTypes.MENU_VISIBLE:
-        _visibleMenuItem(_menuData, action.data.id, action.data.visible);
-        MenuStore.emitChange();
+        // _visibleMenuItem(_menuData, action.data.id, action.data.visible);
+        // MenuStore.emitChange();
+        break;
+
+      case UserActionTypes.USER_SET_DATA:
+      case UserActionTypes.USER_SET_LOGGED_IN:
+        AppDispatcher.waitFor([UserStore.dispatchToken]);
+        var visible = false;
+        var access = UserStore.getAccess();
+        if (access === 'admin') {
+          visible = true;
+        }
+        if (visible !== _menuData[3].visible) {
+          _menuData[3].visible = visible;
+          MenuStore.emitChange();
+        }
         break;
 
       default:
