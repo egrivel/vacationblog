@@ -1,3 +1,10 @@
+/*
+ * Basic styling (after reset.css tears everything down).
+ */
+
+* {
+  box-sizing: border-box;
+}
 
 body {
   background-color: #666;
@@ -30,18 +37,25 @@ strong {
   font-weight: bold;
 }
 
+/*
+ * Common utility styles
+ */
+
+.clear {
+  display: block;
+  clear: both;
+  height: 0;
+}
+
+/*
+ * Body, header, menu and footer
+ */
 div.body {
   background-color: #fff;
   color: #000;
   max-width: 50em;
   margin-left: auto;
   margin-right: auto;
-}
-
-.clear {
-  display: block;
-  clear: both;
-  height: 0;
 }
 
 div.header, div.footer {
@@ -112,41 +126,6 @@ div.footer p {
   font-family: 'Merriweather Sans', sans-serif;
 }
 
-.main-menu li.first {
-  margin-left: 1em;
-  x-height: 1.8em;
-  padding: 0;
-}
-
-.main-menu li {
-  display: block;
-  border: 1px solid #679;
-  background-color: #679;
-  color: #fff;
-  margin-top: 0.25em;
-  margin-bottom: 0.5em;
-}
-
-/* if the <li> element does not contain <a>, add padding to the <li>,
- * otherwise padding will be added to the <a> element. */
-.main-menu li.nolink {
-  padding: 0 1em;
-}
-
-.main-menu li a {
-  padding: 0 1em;
-}
-
-.main-menu li:hover, .main-menu li.selected {
-  background-color: #fff;
-  color: #333b4b;
-}
-
-.main-menu li {
-  float: left;
-  position: relative;
-}
-
 .main-menu ul {
   position: absolute;
   width: 15em;
@@ -156,28 +135,30 @@ div.footer p {
   margin: 0;
 }
 
-.main-menu li ul li {
-  width: 15em;
+.main-menu li {
+  display: block;
+  border: 1px solid #679;
+  background-color: #679;
+  color: #fff;
+  margin-top: 0.25em;
+  margin-bottom: 0.5em;
   float: left;
-  padding: 0;
-  margin: 0;
+  position: relative;
 }
 
-.main-menu li ul li.nolink,
-.main-menu li ul li a {
-  display: inline-block;
-  width: 13em;
-  margin: 0;
+.main-menu li.first {
+  margin-left: 1em;
+  x-height: 1.8em;
+  padding: 0;
+}
+
+.main-menu li a {
   padding: 0 1em;
 }
 
-.main-menu ul ul {
-  top: auto;
-}
-
-.main-menu li ul ul {
-  left: 15em;
-  margin: 0 0 0 10px;
+.main-menu li:hover {
+  background-color: #fff;
+  color: #333b4b;
 }
 
 .main-menu a,
@@ -189,7 +170,9 @@ div.footer p {
   background-color: inherit;
 }
 
-/* end of multi-level CSS menu */
+/*
+ * Content area (general)
+ */
 
 div.content {
   margin-left: 2em;
@@ -212,6 +195,10 @@ div.content p {
   padding-bottom: 0.5em;
   text-align: justify;
 }
+
+/*
+ * Journal
+ */
 
 div.journalitem .subtitle {
   display: block;
@@ -345,6 +332,10 @@ div.journalitem p.prevnext {
   text-align: center;
   font-family: 'Meriweather Sans', sans-serif;
 }
+
+/*
+ * Modal
+ */
 
 img.modal-img {
   max-width: 100%;
@@ -646,4 +637,28 @@ div.commentEdit textarea.comment {
 div.commentEdit button {
   margin-right: 5px;
   margin-top: -8px;
+}
+
+/*
+ * Forms
+ */
+div.formLabel {
+  clear: both;
+  display: inline-block;
+  width: 20%;
+  text-align: right;
+  padding: 0.25em;
+  vertical-align: top;
+}
+
+div.formValue {
+  display: inline-block;
+  width: 80%;
+  padding: 0.25em;
+}
+
+div.formValue img.preview {
+  width: 100%;
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
 }

@@ -41,6 +41,24 @@ var TripAction = {
     });
   },
 
+  loadEditTrip: function(id) {
+    var url = 'api/getTrip.php?';
+    url += 'tripId=' + id;
+
+    utils.getAsync(url, function(response) {
+      var data = JSON.parse(response);
+      TripAction._editTripLoaded(data);
+    });
+  },
+
+  updateEditTrip: function(data) {
+    data.tripId = '_edit';
+    AppDispatcher.dispatch({
+      type: this.Types.TRIP_LOAD_DATA,
+      data: data
+    });
+  },
+
   loadTripList: function() {
     var url = 'api/findTrip.php';
     utils.getAsync(url, function(response) {
@@ -56,10 +74,29 @@ var TripAction = {
     });
   },
 
+  _editTripLoaded: function(data) {
+    data.tripId = '_edit';
+    AppDispatcher.dispatch({
+      type: this.Types.TRIP_LOAD_DATA,
+      data: data
+    });
+  },
+
   _tripListLoaded: function(data) {
     AppDispatcher.dispatch({
       type: this.Types.TRIP_LOAD_LIST,
       data: data
+    });
+  },
+
+  saveTrip: function(data) {
+    const url = 'api/putTrip.php';
+    utils.postAsync(url, data, function() {
+      console.log('Data posted');
+      AppDispatcher.dispatch({
+        type: TripAction.Types.TRIP_LOAD_DATA,
+        data: data
+      });
     });
   }
 };

@@ -8,6 +8,8 @@ var hashHistory = require('react-router').hashHistory;
 var App = require('./components/App.jsx');
 var Welcome = require('./components/Welcome.jsx');
 var TripDescription = require('./components/TripDescription.jsx');
+var TripEdit = require('./components/TripEdit.jsx');
+var TripAdmin = require('./components/TripAdmin.jsx');
 var JournalWrapper = require('./components/JournalWrapper.jsx');
 var Search = require('./components/Search.jsx');
 var Admin = require('./components/Admin.jsx');
@@ -29,7 +31,9 @@ const routes = {
     {path: '/search', component: Search},
     {path: '/login', component: LoginWrapper},
     {path: '/about', component: About},
-    {path: '/admin', component: Admin}
+    {path: '/admin', component: Admin},
+    {path: '/admin/trip', component: TripAdmin},
+    {path: '/admin/trip/:tripId', component: TripEdit}
   ]
 };
 

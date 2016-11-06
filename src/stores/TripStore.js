@@ -46,6 +46,7 @@ var TripStore = assign({}, GenericStore, {
   _reset: function() {
     _currentTripId = '';
     _tripData = {};
+    _tripList = [];
   },
 
   /**
@@ -58,10 +59,17 @@ var TripStore = assign({}, GenericStore, {
 
   /**
    * Obtain all the data elements of the currently displayed trip.
+   * @param {string} tripId - ID of trip to get data about.
    * @return {object} Information about the current trip.
    */
-  getTripData: function() {
-    return _tripData;
+  getTripData: function(tripId) {
+    if (tripId) {
+      return _tripData[tripId];
+    }
+    if (_currentTripId && _tripData[_currentTripId]) {
+      return _tripData[_currentTripId];
+    }
+    return {};
   },
 
   /**
@@ -69,19 +77,23 @@ var TripStore = assign({}, GenericStore, {
    * @return {array} list of all the trips.
    */
   getTripList: function() {
+    console.log(JSON.stringify(_tripList));
     return _tripList;
   },
 
   _storeCallback: function(action) {
     switch (action.type) {
       case TripActionTypes.TRIP_LOAD_DATA:
-        if (action.data.tripId === _currentTripId) {
-          if (!_.isEqual(_tripData, action.data)) {
-            // Only emit change if different
-            _tripData = action.data;
-            TripStore.emitChange();
-          }
+        _tripData[action.data.tripId] = action.data;
+        if (action.data.tripId && action.data.name) {
+          _tripList = _tripList.map(function(item) {
+            if (item.tripId === action.data.tripId) {
+              item.name = action.data.name;
+            }
+            return item;
+          });
         }
+        TripStore.emitChange();
         break;
       case TripActionTypes.TRIP_LOAD_LIST:
         if (!_.isEqual(_tripList, action.data)) {
@@ -93,7 +105,9 @@ var TripStore = assign({}, GenericStore, {
       case TripActionTypes.TRIP_SET_CURRENT:
         if (action.data !== _currentTripId) {
           _currentTripId = action.data;
-          _tripData = {};
+          if (!_tripData[_currentTripId]) {
+            _tripData[_currentTripId] = {};
+          }
           TripStore.emitChange();
         }
         break;
