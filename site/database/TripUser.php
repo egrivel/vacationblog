@@ -9,6 +9,7 @@ class TripUser {
    private $latestUpdated;
    private $role;
    private $message;
+   private $profileImg;
    private $deleted;
    private $hash;
    private $latestHash;
@@ -28,6 +29,7 @@ class TripUser {
       $this->latestUpdated = null;
       $this->role = "";
       $this->message = "";
+      $this->profileImg = "";
       $this->deleted = "N";
       $this->hash = "";
       $this->latestHash = "";
@@ -55,10 +57,22 @@ class TripUser {
          . "updated TIMESTAMP(6) DEFAULT $updateDefault, "
          . "role CHAR(32) NOT NULL, "
          . "message TEXT, "
+         . "profileImg CHAR(64), "
          . "deleted CHAR(1), "
          . "hash CHAR(32), "
          . "PRIMARY KEY(tripId, userId, updated) "
          . ")";
+      if (!mysql_query($query)) {
+         print $query . "<br/>";
+         print "Error: " . mysql_error() . "<br/>";
+         return false;
+      }
+      return true;
+   }
+
+   private static function addProfileImgColumn() {
+      $query = "ALTER TABLE blogTripUser "
+         . "ADD COLUMN profileImg CHAR(64)";
       if (!mysql_query($query)) {
          print $query . "<br/>";
          print "Error: " . mysql_error() . "<br/>";
@@ -120,6 +134,11 @@ class TripUser {
          break;
       case "v0.15":
       case "v0.16":
+         if (!TripUser::addProfileImgColumn()) {
+            return false;
+         }
+         break;
+      case "v0.17":
          // current version
          break;
       default:
@@ -150,6 +169,7 @@ class TripUser {
       $this->updated = null;
       $this->role = db_sql_decode($line["role"]);
       $this->message = db_sql_decode($line["message"]);
+      $this->profileImg = db_sql_decode($line["profileImg"]);
       $this->deleted = db_sql_decode($line['deleted']);
       $this->hash = db_sql_decode($line["hash"]);
       $this->latestHash = $this->hash;
@@ -219,6 +239,7 @@ class TripUser {
          . db_updated($this->updated)
          . ", role=" . db_sql_encode($this->role)
          . ", message=" . db_sql_encode($this->message)
+         . ", profileImg=" . db_sql_encode($this->profileImg)
          . ", deleted=" . db_sql_encode($this->deleted)
          . ", hash=" . db_sql_encode($this->hash);
       // print "Saving to database: $query<br/>\n";
@@ -237,6 +258,7 @@ class TripUser {
                   . $this->latestUpdated . "|"
                   . $this->role . "|"
                   . $this->message . "|"
+                  . $this->profileImg . "|"
                   . $this->deleted . "|";
                $this->hash = md5($value);
                $this->latestHash = $this->hash;
@@ -304,6 +326,14 @@ class TripUser {
       $this->message = $value;
    }
 
+   public function getProfileImg() {
+      return $this->profileImg;
+   }
+
+   public function setProfileImg($value) {
+      $this->profileImg = $value;
+   }
+
    public function getDeleted() {
       return $this->deleted;
    }
@@ -357,6 +387,50 @@ class TripUser {
          return $object;
       }
       return null;
+   }
+
+   static public function listTripUsers($tripId = '') {
+      if ($tripId === '') {
+         // need to have a trip ID in order to get a list
+         return null;
+      }
+      $query = "SELECT DISTINCT tripId, blogTripUser.userId, "
+         . "name, role, message, profileImg FROM blogTripUser "
+         . "INNER JOIN blogUser ON blogTripUser.userId = blogUser.userId "
+         . "WHERE tripId=" . db_sql_encode($tripId);
+      $result = mysql_query($query);
+      if (!$result) {
+         // Error executing the query
+         print $query . "<br/>";
+         print " --> error: " . mysql_error() . "<br/>\n";
+         return null;
+      }
+      if (mysql_num_rows($result) <= 0) {
+         // No results
+         return null;
+      }
+
+      $list = array();
+      if (mysql_num_rows($result) > 0) {
+         $count = 0;
+         while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+            $tripId = db_sql_decode($line["tripId"]);
+            $userId = db_sql_decode($line['userId']);
+            $name = db_sql_decode($line['name']);
+            $role = db_sql_decode($line['role']);
+            $message = db_sql_decode($line['message']);
+            $profileImg = db_sql_decode($line['profileImg']);
+            $list[$count++] =
+               array(
+                  'userId'=>$userId,
+                  'name'=>$name,
+                  'role'=>$role,
+                  'profileImg'=>$profileImg,
+                  'message'=>$message);
+         }
+      }
+
+      return $list;
    }
 }
 ?>

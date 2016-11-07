@@ -214,6 +214,7 @@ class Trip {
             return false;
          }
       case "v0.16":
+      case "v0.17":
          // current version
          break;
       default:

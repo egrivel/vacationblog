@@ -7,7 +7,8 @@ var TripAction = {
   Types: {
     TRIP_SET_CURRENT: 'TRIP_SET_CURRENT',
     TRIP_LOAD_DATA: 'TRIP_LOAD_DATA',
-    TRIP_LOAD_LIST: 'TRIP_LOAD_LIST'
+    TRIP_LOAD_LIST: 'TRIP_LOAD_LIST',
+    TRIP_LOAD_USERLIST: 'TRIP_LOAD_USER_LIST'
   },
 
   setCurrentTrip: function(id) {
@@ -48,6 +49,23 @@ var TripAction = {
     utils.getAsync(url, function(response) {
       var data = JSON.parse(response);
       TripAction._editTripLoaded(data);
+    });
+  },
+
+  loadTripUser: function(id) {
+    const url = 'api/getTripUser.php?tripId=' + id;
+    console.log('Loading trip users ' + url);
+    utils.getAsync(url, function(response) {
+      var data = JSON.parse(response);
+      TripAction._tripUserLoaded(data);
+    });
+  },
+
+  _tripUserLoaded: function(data) {
+    console.log('Loaded trip users: ' + JSON.stringify(data));
+    AppDispatcher.dispatch({
+      type: this.Types.TRIP_LOAD_USER_LIST,
+      data: data
     });
   },
 

@@ -36,6 +36,8 @@ var _currentTripId = '';
 // ---
 var _tripData = {};
 
+var _tripUsers = {};
+
 /**
  * Trip store maintains information about the current trip.
  */
@@ -47,6 +49,7 @@ var TripStore = assign({}, GenericStore, {
     _currentTripId = '';
     _tripData = {};
     _tripList = [];
+    _tripUsers = {};
   },
 
   /**
@@ -95,6 +98,7 @@ var TripStore = assign({}, GenericStore, {
         }
         TripStore.emitChange();
         break;
+
       case TripActionTypes.TRIP_LOAD_LIST:
         if (!_.isEqual(_tripList, action.data)) {
           // Only emit change if different
@@ -102,6 +106,7 @@ var TripStore = assign({}, GenericStore, {
           TripStore.emitChange();
         }
         break;
+
       case TripActionTypes.TRIP_SET_CURRENT:
         if (action.data !== _currentTripId) {
           _currentTripId = action.data;
@@ -111,6 +116,13 @@ var TripStore = assign({}, GenericStore, {
           TripStore.emitChange();
         }
         break;
+
+      case TripActionTypes.TRIP_LOAD_USER_LIST:
+        if (action.data.tripId) {
+          _tripUsers[action.data.tripId] = action.data.userList;
+        }
+        break;
+
       default:
         // do nothing
     }

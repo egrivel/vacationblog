@@ -17,8 +17,15 @@ if (!$auth->canGetMedia()) {
       $userId = $_GET['userId'];
    }
 
-   if (($tripId === '') || ($userId === '')) {
+   if ($tripId === '') {
       $response = errorResponse(RESPONSE_BAD_REQUEST);
+   } else if ($userId === '') {
+      $object = TripUser::listTripUsers($tripId);
+      if ($object) {
+         $response = successResponse();
+         $response['tripId'] = $tripId;
+         $response['userList'] = $object;
+      }
    } else {
       $object = new TripUser($tripId, $userId);
       if ($object->getCreated() === null) {

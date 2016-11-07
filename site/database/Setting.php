@@ -22,7 +22,7 @@ class Setting {
    }
 
    private function getCurrentVersion() {
-      return "v0.16";
+      return "v0.17";
    }
 
    /* ============================================================ */
@@ -58,9 +58,10 @@ class Setting {
       case "v0.13":
       case "v0.14":
       case "v0.15":
+      case "v0.16":
          // Update data version to the current version
          Setting::set("DataVersion", Setting::getCurrentVersion());
-      case "v0.16":
+      case "v0.17":
          // current version
          break;
       default:

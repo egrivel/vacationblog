@@ -24,6 +24,7 @@ var TripEdit = React.createClass({
     const tripId = this.props.params.tripId;
     if (tripId && (tripId !== 'new')) {
       TripAction.loadEditTrip(tripId);
+      TripAction.loadTripUser(tripId);
     }
   },
 
@@ -71,6 +72,18 @@ var TripEdit = React.createClass({
     TripAction.updateEditTrip(tripData);
   },
 
+  _updateStartDate: function(event) {
+    const tripData = _.clone(this.state.tripData);
+    tripData.startDate = event.target.value;
+    TripAction.updateEditTrip(tripData);
+  },
+
+  _updateEndDate: function(event) {
+    const tripData = _.clone(this.state.tripData);
+    tripData.endDate = event.target.value;
+    TripAction.updateEditTrip(tripData);
+  },
+
   _saveData: function() {
     const tripData = _.clone(this.state.tripData);
     tripData.tripId = this.props.params.tripId;
@@ -91,13 +104,13 @@ var TripEdit = React.createClass({
             onChange={this._updateId}/>
         );
       }
-      let startDate = 'undefined';
-      let endDate = 'undefined';
+      let startDate = '';
+      let endDate = '';
       if (this.state.tripData.startDate) {
-        startDate = moment(this.state.tripData.startDate).format('YYYY-MM-DD');
+        startDate = this.state.tripData.startDate;
       }
       if (this.state.tripData.endDate) {
-        endDate = moment(this.state.tripData.endDate).format('YYYY-MM-DD');
+        endDate = this.state.tripData.endDate;
       }
       const name = this.state.tripData.name;
       let description = this.state.tripData.description;
@@ -137,9 +150,18 @@ var TripEdit = React.createClass({
             {' '} Preview:
             {bannerPreview}
           </div>
-          <p>Banner image: {this.state.tripData.bannerImg}</p>
-          <p>Start date: {startDate}</p>
-          <p>End date: {endDate}</p>
+          <div className="formLabel">Start date</div>
+          <div className="formValue">
+            <input type="text"
+              value={startDate}
+              onChange={this._updateStartDate}/>
+          </div>
+          <div className="formLabel">End date</div>
+          <div className="formValue">
+            <input type="text"
+              value={endDate}
+              onChange={this._updateEndDate}/>
+          </div>
           <input type="submit" value="Save" onClick={this._saveData}/>
         </div>
       );

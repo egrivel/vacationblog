@@ -174,6 +174,7 @@ class Comment {
       case "v0.14":
       case "v0.15":
       case "v0.16":
+      case "v0.17":
          // current version
          break;
       default:
