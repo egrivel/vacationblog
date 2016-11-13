@@ -30,6 +30,9 @@ if (!$auth->canGetMedia()) {
       if (isset($data['deleted'])) {
          $object->setDeleted($data['deleted']);
       }
+      if (isset($data['profileImg'])) {
+         $object->setProfileImg($data['profileImg']);
+      }
       if ($object->save()) {
          $response = successResponse();
       } else {

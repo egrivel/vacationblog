@@ -23,6 +23,7 @@ if (!$auth->canSynchTripUser()) {
             $response['updated'] = $object->getUpdated();
             $response['role'] = $object->getRole();
             $response['message'] = $object->getMessage();
+            $response['profileImg'] = $object->getProfileImg();
             $response['deleted'] = $object->getDeleted();
             $response['hash'] = $object->getHash();
          }
@@ -48,6 +49,9 @@ if (!$auth->canSynchTripUser()) {
       }
       if (isset($data['message'])) {
          $object->setMessage($data['message']);
+      }
+      if (isset($data['profileImg'])) {
+         $object->setProfileImg($data['profileImg']);
       }
       if (isset($data['deleted'])) {
          $object->setDeleted($data['deleted']);

@@ -6,9 +6,17 @@ This section of the documentation describes the authorization process, including
 
 The vacation blog maintains a set of users and their access levels. There are three levels of user access defined:
 
- - *Normal user*: most users fall in this category. Normal users can comment on entries, but can not create entries themselves.
- - *Contributor*: users who can not only leave comments but also create new blog entries.
- - *Administrator*: users who can administer the site, including administring trips and users and moderating the entries and comments.
+ - *Guest*: someone visiting the blog but did not identify themselves
+   (log in). Guests can view the site but not make any changes.
+ - *Normal user*: most users fall in this category. Normal users can
+   comment on entries, but can not create entries themselves.
+ - *Administrator*: users who can administer the site, including
+   administring trips and users. The administrator is *not* automatically
+   a contributor on any particular trip.
+
+In addition, each trip identifies one or more users as *contributors*.
+The contributor can create new blog entries (for that trip) and can
+moderate comments on that trip.
 
 ## Public Access
 

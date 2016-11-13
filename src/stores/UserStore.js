@@ -13,6 +13,7 @@ var _userData = {};
 var _userLoggedIn = '';
 var _formStatus = '';
 var _formErrorMessage = '';
+var _userList = [];
 
 UserStore = assign({}, GenericStore, {
   constants: {
@@ -24,6 +25,7 @@ UserStore = assign({}, GenericStore, {
 
   _reset: function() {
     _userData = {};
+    _userList = [];
   },
 
   /**
@@ -73,6 +75,10 @@ UserStore = assign({}, GenericStore, {
     return _formErrorMessage;
   },
 
+  getUserList: function() {
+    return _userList;
+  },
+
   _storeCallback: function(action) {
     switch (action.type) {
       case UserActionTypes.USER_SET_DATA:
@@ -105,6 +111,10 @@ UserStore = assign({}, GenericStore, {
           }
           UserStore.emitChange();
         }
+        break;
+      case UserActionTypes.USER_SET_LIST:
+        _userList = action.list;
+        UserStore.emitChange();
         break;
       default:
         // do nothing

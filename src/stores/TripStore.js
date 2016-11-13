@@ -76,27 +76,40 @@ var TripStore = assign({}, GenericStore, {
   },
 
   /**
+   * Get the list of users for a trip
+   * @param {string} tripId - ID of the trip to get the users for.
+   * @return {array} list of users.
+   */
+  getTripUsers: function(tripId) {
+    if (tripId && _tripUsers[tripId]) {
+      return _tripUsers[tripId];
+    }
+    return [];
+  },
+
+  /**
    * Obtain the list of all the trips in the system.
    * @return {array} list of all the trips.
    */
   getTripList: function() {
-    console.log(JSON.stringify(_tripList));
     return _tripList;
   },
 
   _storeCallback: function(action) {
     switch (action.type) {
       case TripActionTypes.TRIP_LOAD_DATA:
-        _tripData[action.data.tripId] = action.data;
-        if (action.data.tripId && action.data.name) {
-          _tripList = _tripList.map(function(item) {
-            if (item.tripId === action.data.tripId) {
-              item.name = action.data.name;
-            }
-            return item;
-          });
+        if (action.data && action.data.tripId) {
+          _tripData[action.data.tripId] = action.data;
+          if (action.data.tripId && action.data.name) {
+            _tripList = _tripList.map(function(item) {
+              if (item.tripId === action.data.tripId) {
+                item.name = action.data.name;
+              }
+              return item;
+            });
+          }
+          TripStore.emitChange();
         }
-        TripStore.emitChange();
         break;
 
       case TripActionTypes.TRIP_LOAD_LIST:
@@ -117,9 +130,10 @@ var TripStore = assign({}, GenericStore, {
         }
         break;
 
-      case TripActionTypes.TRIP_LOAD_USER_LIST:
-        if (action.data.tripId) {
+      case TripActionTypes.TRIP_LOAD_USERLIST:
+        if (action.data && action.data.tripId) {
           _tripUsers[action.data.tripId] = action.data.userList;
+          TripStore.emitChange();
         }
         break;
 

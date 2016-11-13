@@ -38,6 +38,7 @@ if (!$auth->canGetMedia()) {
          $response['updated'] = $object->getUpdated();
          $response['role'] = $object->getRole();
          $response['message'] = $object->getMessage();
+         $response['profileImg'] = $object->getProfileImg();
          $response['deleted'] = $object->getDeleted();
       }
    }

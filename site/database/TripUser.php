@@ -394,10 +394,35 @@ class TripUser {
          // need to have a trip ID in order to get a list
          return null;
       }
-      $query = "SELECT DISTINCT tripId, blogTripUser.userId, "
-         . "name, role, message, profileImg FROM blogTripUser "
-         . "INNER JOIN blogUser ON blogTripUser.userId = blogUser.userId "
-         . "WHERE tripId=" . db_sql_encode($tripId);
+
+      // The following query gets the info from blogTripUser, but also brings
+      // in the name from blogUser. It makes sure that it only returns the
+      // last instance of a record from blogTripUser, and only if that last
+      // instance is not deleted.
+      //
+      // The first inner join functions to return only the last entry from
+      // the blogTripUser table. The second inner join adds the user name to
+      // the result. The final where clause selects the appropriate entries.
+      $query = ""
+         . "SELECT DISTINCT "
+         .     "blogTripUser.tripId, blogTripUser.userId, blogUser.name, "
+         .     "blogTripUser.message, blogTripUser.profileImg, "
+         .     "blogTripUser.role, blogTripUser.updated, blogTripUser.deleted "
+         .   "FROM blogTripUser "
+         .   "INNER JOIN ("
+         .     "SELECT "
+         .       "MAX(t1.updated) AS updated, "
+         .       "t1.tripId AS tripId, "
+         .       "t1.userId AS userId "
+         .     "FROM blogTripUser AS t1 GROUP BY t1.tripId, t1.userId"
+         .   ") AS t2 "
+         .   "INNER JOIN blogUser "
+         .     "ON blogUser.userId = blogTripUser.userId "
+         . "WHERE blogTripUser.tripId = " . db_sql_encode($tripId)
+         .   "AND blogTripUser.userId = t2.userId "
+         .   "AND blogTripUser.updated = t2.updated "
+         .   "AND blogTripUser.deleted != 'Y'";
+
       $result = mysql_query($query);
       if (!$result) {
          // Error executing the query

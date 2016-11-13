@@ -8,7 +8,8 @@ var UserAction = {
     USER_SET_DATA: 'USER_SET_DATA',
     USER_SET_LOGGED_IN: 'USER_SET_LOGGED_IN',
     USER_SET_LOGIN_FORM_STATUS: 'USER_SET_LOGIN_FORM_STATUS',
-    USER_SET_LOGIN_FORM_ERROR: 'USER_SET_LOGIN_FORM_ERROR'
+    USER_SET_LOGIN_FORM_ERROR: 'USER_SET_LOGIN_FORM_ERROR',
+    USER_SET_LIST: 'USER_SET_LIST'
   },
 
   loadLoggedInUser: function() {
@@ -32,6 +33,17 @@ var UserAction = {
     AppDispatcher.dispatch({
       type: this.Types.USER_SET_DATA,
       data: data
+    });
+  },
+
+  loadAllUsers: function() {
+    const url = 'api/findUsers.php';
+    utils.getAsync(url, function(response) {
+      var data = JSON.parse(response);
+      AppDispatcher.dispatch({
+        type: UserAction.Types.USER_SET_LIST,
+        list: data.resultSet
+      });
     });
   },
 

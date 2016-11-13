@@ -570,5 +570,45 @@ class User {
       }
       return null;
    }
+
+   static function listUsers() {
+      $query = ""
+         . "SELECT blogUser.userId, blogUser.name, "
+         .   "blogUser.updated "
+         .   "FROM blogUser "
+         .   "INNER JOIN ("
+         .     "SELECT "
+         .       "MAX(t1.updated) AS updated, "
+         .       "t1.userId as userId "
+         .     "FROM blogUser "
+         .     "AS t1 "
+         .     "GROUP BY t1.userId"
+         .   ") AS t2 "
+         .   "WHERE blogUser.userId = t2.userId "
+         .     "AND blogUser.updated = t2.updated "
+         .     "AND blogUser.deleted != 'Y' "
+         .   "ORDER BY blogUser.name ";
+
+      $result = mysql_query($query);
+      if (!$result) {
+         // Error executing the query
+         print $query . "<br/>";
+         print " --> error: " . mysql_error() . "<br/>\n";
+         return false;
+      }
+
+      $list = array();
+      if (mysql_num_rows($result) > 0) {
+         $count = 0;
+         while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+            $userId = db_sql_decode($line["userId"]);
+            $name = db_sql_decode($line['name']);
+            $list[$count++] =
+               array('userId'=>$userId, 'name'=>$name);
+         }
+      }
+
+      return $list;
+   }
 }
 ?>
