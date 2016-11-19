@@ -46,32 +46,36 @@ var Header = React.createClass({
    * @private
    */
   _getStateFromStores: function _getStateFromStores() {
-    var tripData = TripStore.getTripData();
-    var name = tripData.name;
-    var img = tripData.bannerImg;
+    const tripData = TripStore.getTripData();
+    let name = tripData.name;
+    let img = tripData.bannerImg;
     if (!name) {
       name = 'Vacation Website';
       img = 'default-banner.png';
     }
-    var userId = UserStore.getLoggedInUser();
-    var isUserLoggedIn = (userId !== '');
-    var loginDisplay = 'Login';
+
+    const userId = UserStore.getLoggedInUser();
+    const isUserLoggedIn = (userId !== '');
+    let loginDisplay = 'Login';
     if (userId) {
-      var data = UserStore.getData(userId);
+      const data = UserStore.getData(userId);
       if (data && data.name) {
         loginDisplay = data.name;
       }
     }
-    var loginStatus = UserStore.getFormStatus();
-    var loginErrorMessage = UserStore.getFormErrorMessage();
+    const loginStatus = UserStore.getFormStatus();
+    const loginErrorMessage = UserStore.getFormErrorMessage();
+
+    const menuData = MenuStore.getData();
+
     return {
       name: name,
       bannerImg: img,
-      menuData: MenuStore.getData(),
       loginDisplay: loginDisplay,
       isUserLoggedIn: isUserLoggedIn,
       loginStatus: loginStatus,
-      loginErrorMessage: loginErrorMessage
+      loginErrorMessage: loginErrorMessage,
+      menuData: menuData
     };
   },
 

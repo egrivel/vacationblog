@@ -626,5 +626,52 @@ class Journal {
       }
       return null;
    }
+
+   static function listTripJournalDates($tripId) {
+      $tripId = db_sql_encode($tripId);
+      $query = ""
+         . "SELECT blogJournal.journalId, blogJournal.journalDate, "
+         .   "blogJournal.userId, blogJournal.created, blogJournal.updated "
+         .   "FROM blogJournal "
+         .   "INNER JOIN ("
+         .     "SELECT "
+         .       "MAX(t1.updated) AS updated, "
+         .       "t1.tripId AS tripId, "
+         .       "t1.journalId AS journalId "
+         .     "FROM blogJournal "
+         .     "AS t1 "
+         .     "WHERE t1.tripId = $tripId "
+         .     "GROUP BY t1.journalId "
+         .   ") AS t2 "
+         .   "WHERE blogJournal.tripId = t2.tripId "
+         .     "AND blogJournal.journalId = t2.journalId "
+         .     "AND blogJournal.updated = t2.updated "
+         .     "AND blogJournal.deleted != 'Y' "
+         .   "ORDER BY blogJournal.journalDate DESC, blogJournal.created DESC";
+
+      $result = mysql_query($query);
+      if (!$result) {
+         // Error executing the query
+         print $query . "<br/>";
+         print " --> error: " . mysql_error() . "<br/>\n";
+         return false;
+      }
+
+      $list = array();
+      if (mysql_num_rows($result) > 0) {
+         $count = 0;
+         while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+            $journalId = db_sql_decode($line["journalId"]);
+            $journalDate = db_sql_decode($line['journalDate']);
+            $userId = db_sql_decode($line['userId']);
+            $list[$count++] =
+               array('journalId'=>$journalId,
+                  'journalDate'=>$journalDate,
+                  'userId'=>$userId);
+         }
+      }
+
+      return $list;
+   }
 }
 ?>

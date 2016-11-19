@@ -8,6 +8,7 @@
 var React = require('react');
 
 var MediaStore = require('../stores/MediaStore');
+var MediaAction = require('../actions/MediaAction');
 var CommentList = require('./CommentList.jsx');
 var Image = require('./Image.jsx');
 
@@ -24,15 +25,20 @@ var Orientation = utils.orientation;
 function _getMediaInfo(tripId, mediaId) {
   var result = {
     orientation: Orientation.LANDSCAPE,
-    caption: ''
+    caption: '',
+    imageId: mediaId
   };
 
   var mediaInfo = MediaStore.getData(tripId, mediaId);
   if (mediaInfo) {
+    result.width = mediaInfo.width;
+    result.height = mediaInfo.height;
     result.caption = mediaInfo.caption;
     if (mediaInfo.height > mediaInfo.width) {
       result.orientation = Orientation.PORTRAIT;
     }
+  } else {
+    MediaAction.loadMedia(tripId, mediaId);
   }
 
   return result;
@@ -137,17 +143,17 @@ function _lineThreeImages(parent, tripId, images,
 
   var nrHor = 0;
   var nrVert = 0;
-  if (orientation1 === 'landscape') {
+  if (orientation1 === Orientation.LANDSCAPE) {
     nrHor++;
   } else {
     nrVert++;
   }
-  if (orientation2 === 'landscape') {
+  if (orientation2 === Orientation.LANDSCAPE) {
     nrHor++;
   } else {
     nrVert++;
   }
-  if (orientation3 === 'landscape') {
+  if (orientation3 === Orientation.LANDSCAPE) {
     nrHor++;
   } else {
     nrVert++;
@@ -193,8 +199,8 @@ function _lineThreeImages(parent, tripId, images,
       className: 'images three ' + className,
       key: 'p-' + start
     },
-    _imgWithModal(parent, tripId, img1, mediaInfo[start], 'img3'),
-    _imgWithModal(parent, tripId, img2, mediaInfo[start + 1], 'img3'),
+    _imgWithModal(parent, tripId, img1, mediaInfo[start], 'img3'), ' ',
+    _imgWithModal(parent, tripId, img2, mediaInfo[start + 1], 'img3'), ' ',
     _imgWithModal(parent, tripId, img3, mediaInfo[start + 2], 'img3'),
     React.DOM.span(
       {
@@ -227,12 +233,12 @@ function _lineTwoImages(parent, tripId, images,
 
   var nrHor = 0;
   var nrVert = 0;
-  if (orientation1 === 'landscape') {
+  if (orientation1 === Orientation.LANDSCAPE) {
     nrHor++;
   } else {
     nrVert++;
   }
-  if (orientation2 === 'landscape') {
+  if (orientation2 === Orientation.LANDSCAPE) {
     nrHor++;
   } else {
     nrVert++;
@@ -270,7 +276,7 @@ function _lineTwoImages(parent, tripId, images,
       className: 'images two ' + className,
       key: 'p-' + start
     },
-    _imgWithModal(parent, tripId, img1, mediaInfo[start], 'img2'),
+    _imgWithModal(parent, tripId, img1, mediaInfo[start], 'img2'), ' ',
     _imgWithModal(parent, tripId, img2, mediaInfo[start + 1], 'img2'),
     React.DOM.span(
       {className: 'clear'}

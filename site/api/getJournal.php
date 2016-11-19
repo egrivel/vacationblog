@@ -17,8 +17,13 @@ if (!$auth->canGetJournal()) {
       $journalId = $_GET['journalId'];
    }
 
-   if (($tripId === '') || ($journalId === '')) {
+   if ($tripId === '') {
       $response = errorResponse(RESPONSE_BAD_REQUEST);
+   } else if ($journalId === '') {
+      // Get all journal entries for a trip
+      $resultSet = Journal::listTripJournalDates($tripId);
+      $response = successResponse();
+      $response['resultSet'] = $resultSet;
    } else {
       $object = new Journal($tripId, $journalId);
       if ($object->getCreated() === null) {

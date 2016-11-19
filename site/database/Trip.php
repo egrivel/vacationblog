@@ -574,6 +574,9 @@ class Trip {
       return;
    }
 
+   /**
+    * Retrieve a list of trips, most recent one first.
+    */
    static function listTrips() {
       $query = ""
          . "SELECT blogTrip.tripId, blogTrip.name, "

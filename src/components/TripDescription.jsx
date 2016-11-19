@@ -2,11 +2,13 @@
 
 var React = require('react');
 var Link = require('react-router').Link;
+var moment = require('moment-timezone');
 
 var TripAction = require('../actions/TripAction');
 var TripStore = require('../stores/TripStore');
 
 // var Paragraph = require('./Paragraph');
+var TripJournalList = require('./TripJournalList.jsx');
 var utils = require('./utils');
 
 /**
@@ -15,10 +17,10 @@ var utils = require('./utils');
  * @private
  */
 function _getStateFromStores() {
-  var tripData = TripStore.getTripData();
-  var tripId = tripData.tripId;
-  var description = tripData.description;
-  var firstJournalId = tripData.firstJournalId;
+  const tripData = TripStore.getTripData();
+  const tripId = tripData.tripId;
+  const description = tripData.description;
+  const firstJournalId = tripData.firstJournalId;
   return {
     tripId: tripId,
     description: description,
@@ -46,7 +48,7 @@ function _startReadingLink(tripId, journalId) {
         {
           to: '/journal/' + tripId + '/' + journalId
         },
-        'Start reading journal ',
+        'Start reading at the beginning ',
         React.DOM.i({className: 'fa fa-chevron-right'}),
         React.DOM.i({className: 'fa fa-chevron-right'})
       )
@@ -102,15 +104,19 @@ var TripDescription = React.createClass({
 
     if (tripId) {
       var parList = utils.splitText(this.state.description);
-
+      var paragraphs = parList.map(function(par) {
+        parCount++;
+        return utils.buildTextNode('p', 'text', 'p-' + parCount, par);
+      });
       return (
-        React.DOM.div({className: 'trip'},
-          parList.map(function(par) {
-            parCount++;
-            return utils.buildTextNode('p', 'text', 'p-' + parCount, par);
-          }),
-          _startReadingLink(tripId, this.state.firstJournalId)
-        )
+        <div className="trip">
+          {paragraphs}
+          {_startReadingLink(tripId, this.state.firstJournalId)}
+          <h3>Post List</h3>
+          <p>Use the list below to jump to a specific day in the trip and start
+            reading.</p>
+          <TripJournalList tripId={tripId} />
+        </div>
       );
     }
     return <div>nothing here</div>;

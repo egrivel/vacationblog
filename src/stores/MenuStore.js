@@ -21,8 +21,6 @@ var _menuData = [
     target: '#/'},
   {id: 'm2', label: 'Search', selected: false, visible: true,
     target: '#/search'},
-  {id: 'm3', label: 'Login', selected: false, visible: true,
-    target: '#/login'},
   {id: 'm4', label: 'Admin', selected: false, visible: false,
     target: '#/admin'},
   {id: 'm5', label: 'About', selected: false, visible: true,
@@ -121,7 +119,7 @@ var MenuStore = assign({}, GenericStore, {
           visible = true;
         }
         if (visible !== _menuData[3].visible) {
-          _menuData[3].visible = visible;
+          _menuData[2].visible = visible;
           MenuStore.emitChange();
         }
         break;

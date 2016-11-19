@@ -33,7 +33,7 @@ var TripEdit = React.createClass({
     const tripId = this.props.params.tripId;
     if (tripId && (tripId !== '_new')) {
       TripAction.loadEditTrip(tripId);
-      TripAction.loadTripUser(tripId);
+      TripAction.loadTripUsers(tripId);
     }
     UserAction.loadAllUsers();
   },

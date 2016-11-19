@@ -12,6 +12,7 @@
     "react"
   ],
   "rules": {
-    "arrow-parens": "always"
+    "arrow-parens": "always",
+    "no-unused-vars": "error"
   }
 }

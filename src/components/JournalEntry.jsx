@@ -23,6 +23,7 @@ var React = require('react');
 var JournalStore = require('../stores/JournalStore');
 var UserStore = require('../stores/UserStore');
 var CommentStore = require('../stores/CommentStore');
+var MediaStore = require('../stores/MediaStore');
 var storeMixin = require('./StoreMixin');
 
 var CommentAction = require('../actions/CommentAction');
@@ -38,7 +39,7 @@ var utils = require('./utils');
 var JournalEntry = React.createClass({
   displayName: 'JournalEntry',
 
-  stores: [JournalStore, UserStore, CommentStore],
+  stores: [JournalStore, UserStore, CommentStore, MediaStore],
 
   mixins: [storeMixin()],
 
@@ -203,8 +204,17 @@ var JournalEntry = React.createClass({
       );
     }
 
+    const backLink = (
+      <div className="backlink">
+        <a href={'#/trip/' + tripId}>
+          <i className="fa fa-arrow-left"></i> Back to trip
+        </a>
+      </div>
+    );
+
     return (
       <div className="journalitem">
+        {backLink}
         <JournalHeader title={this.state.journalTitle}
           date={this.state.journalDate}
           userName={this.state.userName}

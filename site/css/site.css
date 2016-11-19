@@ -16,7 +16,7 @@ body {
 
 p, li {
   letter-spacing: 1px;
-  line-height: 130%;
+  line-height: 140%;
   list-style-type: disc;
 }
 
@@ -219,7 +219,6 @@ div.journalitem p.img-text span.label {
   font-weight: bold;
   font-size: 160%;
   line-height: 120%;
-  /* margin-top: -0.4em; */
 }
 
 div.journalitem p.text span.value,
@@ -247,70 +246,124 @@ div.journalitem p.img-text img.portrait {
 }
 
 div.journalitem p.images {
-  /* background-color: #ffb; */
-  text-align: center;
-  padding-top: 0;
-  padding-bottom: 0.5em;
+  text-align: justify;
+  text-align-last: justify;
+  padding: 0;
   line-height: 1;
 }
 
+div.journalitem p.images img.img1,
+div.journalitem p.images img.img2,
 div.journalitem p.images img.img3 {
-  display: inline-block;
-  float: left;
-  width: 31%;
-  padding-top: 0.5em;
-  padding-bottom: 0.5em;
-  padding-left: 1%;
-  padding-right: 1%;
+  display: inline;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
-div.journalitem p.images img.img2 {
-  display: inline-block;
-  float: left;
-  width: 47.5%;
-  padding-top: 0.5em;
-  padding-left: 1%;
-  padding-right: 1%;
-}
-
-div.journalitem p.images img.img1 {
-  width: 99%;
-  padding-top: 0.5em;
-  padding-left: 0.5em;
-  padding-right: 0.5em;
-}
-
-/* different variations of three on a line */
+/*
+ * Image lines are generated with <img> tags separated by a space. The line
+ * is stretched through the text-align: justify CSS rule; this gives an even
+ * result unless the window gets so narrow that the space cannot be compressed
+ * any further. The risk of this happening is minimized by using a tiny font
+ * size (thus a tiny space with).
+ *
+ * The actual spacing between the images is achieved by reserving a percentage
+ * of the line width to the spacing and calculating the individual image
+ * widths based on the rest. These calculations are below. A spacing of 2% of
+ * the line width is used. Note that all images have a 3:2 ratio, so landscape
+ * (horizontal) images are 1.5 times as wide as high and portrait (vertical)
+ * images are 2/3 as wide as high.
+ */
+/*
+ * Three images on a line. With a 2% spacing, the total width of the images
+ * adds up to 96%.
+ */
+/*
+ * Three horizontal or three vertical area easy: each is 1/3 of 96% wide.
+ */
 div.journalitem p.hhh img.landscape,
 div.journalitem p.vvv img.portrait {
-  width: 31%;
+  width: 32%;
 }
 
+/*
+ * Two horizontal, one vertical. Assume in that order.
+ * To calculate the width of each,
+ *  w1 + w2 + w3 = 96%
+ *  h1 = h2 = h3
+ *  w1 = h1 * 1.5
+ *  w2 = h2 * 1.5
+ *  w3 = h3 * 2/3
+ * =>
+ *  h1 * 1.5 + h2 * 1.5 + h3 * 2/3 = 96
+ *  h * (1.5 + 1.5 + 2/3) = 96
+ *  h * (11/3) = 96
+ *  h = 3 * 96 / 11 = 26.181818...
+ *  w1 = 39.272727...
+ *  w3 = 17.454545...
+ */
 div.journalitem p.hhv img.landscape {
-  width: 38%;
+  width: 39.2727%;
 }
 div.journalitem p.hhv img.portrait {
-  width: 17%;
+  width: 17.4545%;
 }
 
+/*
+ * One horizontal, two vertical. Assume in that order.
+ * To calculate the width of each,
+ *  w1 + w2 + w3 = 96%
+ *  h1 = h2 = h3
+ *  w1 = h1 * 1.5
+ *  w2 = h2 * 2/3
+ *  w3 = h3 * 2/3
+ * =>
+ *  h1 * 1.5 + h2 * 2/3 + h3 * 2/3 = 96
+ *  h * (1.5 + 2/3 + 2/3) = 96
+ *  h * (17/6) = 96
+ *  h = 6 * 96 / 17 = 33.8823529412
+ *  w1 = 50.8235294118
+ *  w3 = 22.5882352941
+ */
 div.journalitem p.hvv img.landscape {
-  width: 49.25%;
+  width: 50.824%;
 }
 div.journalitem p.hvv img.portrait {
-  width: 21.875%;
+  width: 22.588%;
 }
 
-/* different variations of two on a line */
+/*
+ * Two images on a line. With a 2% spacing, the total width of the images
+ * adds up to 98%.
+ */
+/*
+ * Two horizontal or two vertical is easy. Each is 1/2 of 98% = 49% wide.
+ */
 div.journalitem p.hh img.landscape,
 div.journalitem p.vv img.portrait {
-  width: 48%;
+  width: 49%;
 }
 
+/*
+ * A horizontal and a vertical image. Assume in that order.
+ * To calculate the width of each,
+ *  w1 + w2 = 98%
+ *  h1 = h2 = h
+ *  w1 = h1 * 1.5
+ *  w2 = h2 * 2/3
+ * =>
+ *  h1 * 1.5 + h1 * 2/3 = 98
+ *  h * (9/6 + 4/6) = 98
+ *  h * (13/6) = 98
+ *  h = 6 * 98 / 13 = 45.2307692308
+ *  w1 = 67.8461538462
+ *  w2 = 30.1538461538
+ */
 div.journalitem p.hv img.landscape {
-  width: 66%;
+  width: 67.846%;
 }
 div.journalitem p.hv img.portrait {
-  width: 29.5%;
+  width: 30.154%;
 }
 
 
@@ -711,4 +764,27 @@ div.profileImgPreview img {
   max-width: 100%;
   max-height: 100%;
   margin: auto;
+}
+
+img.tiny {
+  max-width: 40px;
+  max-height: 60px;
+}
+
+ul.journalList {
+  font-family: Roboto, sans-serif;
+}
+
+span.userRef {
+  font-weight: bold;
+  color: #080;
+}
+
+.backlink {
+  font-family: Roboto, sans-serif;
+  letter-spacing: 0.5px;
+}
+
+.backlink a {
+  color: #33f;
 }

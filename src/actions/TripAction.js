@@ -13,7 +13,8 @@ const TripAction = {
     TRIP_SET_CURRENT: 'TRIP_SET_CURRENT',
     TRIP_LOAD_LIST: 'TRIP_LOAD_LIST',
     TRIP_LOAD_DATA: 'TRIP_LOAD_DATA',
-    TRIP_LOAD_USERLIST: 'TRIP_LOAD_USERLIST'
+    TRIP_LOAD_USERLIST: 'TRIP_LOAD_USERLIST',
+    TRIP_LOAD_JOURNALS: 'TRIP_LOAD_JOURNALS'
   },
 
   /**
@@ -72,7 +73,7 @@ const TripAction = {
    * trip.
    * @param {string} id - ID of the trip for which to load the users.
    */
-  loadTripUser: function(id) {
+  loadTripUsers: function(id) {
     const url = 'api/getTripUser.php?tripId=' + id;
     utils.getAsync(url, function(response) {
       const data = JSON.parse(response);
@@ -84,6 +85,18 @@ const TripAction = {
     AppDispatcher.dispatch({
       type: this.Types.TRIP_LOAD_USERLIST,
       data: data
+    });
+  },
+
+  loadTripJournals: function(id) {
+    const url = 'api/getJournal.php?tripId=' + id;
+    utils.getAsync(url, function(response) {
+      const data = JSON.parse(response);
+      AppDispatcher.dispatch({
+        type: TripAction.Types.TRIP_LOAD_JOURNALS,
+        tripId: id,
+        data: data.resultSet
+      });
     });
   },
 
@@ -175,7 +188,7 @@ const TripAction = {
     sendObj.message = data.message;
     sendObj.deleted = 'N';
     utils.postAsync(url, sendObj, function(response) {
-      TripAction.loadTripUser(data.tripId);
+      TripAction.loadTripUsers(data.tripId);
     });
   },
 
@@ -189,7 +202,7 @@ const TripAction = {
     sendObj.message = data.message;
     sendObj.deleted = 'Y';
     utils.postAsync(url, sendObj, function(response) {
-      TripAction.loadTripUser(data.tripId);
+      TripAction.loadTripUsers(data.tripId);
     });
   }
 };

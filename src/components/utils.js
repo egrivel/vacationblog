@@ -14,6 +14,49 @@
 var React = require('react');
 var moment = require('moment-timezone');
 
+function _replaceEntities(text) {
+  text = text.replace(/&aacute;/g, '\u00e1');
+  text = text.replace(/&agrave;/g, '\u00e0');
+
+  text = text.replace(/&ccedil;/g, '\u00e7');
+
+  text = text.replace(/&eacute;/g, '\u00e9');
+  text = text.replace(/&ecirc;/g, '\u00ea');
+  text = text.replace(/&egrave;/g, '\u00e8');
+  text = text.replace(/&euml;/g, '\u00eb');
+
+  text = text.replace(/&iacute;/g, '\u00ed');
+
+  text = text.replace(/&ntilde;/g, '\u00f1');
+
+  text = text.replace(/&ocirc;/g, '\u00f4');
+  text = text.replace(/&omacron;/g, '\u014d');
+  text = text.replace(/&ouml;/g, '\u00f6');
+
+  text = text.replace(/&uuml;/g, '\u00fc');
+
+  text = text.replace(/&mdash;/g, '\u2014');
+  text = text.replace(/&frac12;/g, '\u00bd');
+  text = text.replace(/&frac14;/g, '\u00bc');
+  text = text.replace(/&sup2;/g, '\u00b2');
+  text = text.replace(/&deg;/g, '\u00b0');
+
+  text = text.replace(/&ldquo;/g, '\u201c');
+  text = text.replace(/&rdquo;/g, '\u201d');
+  text = text.replace(/&lsquo;/g, '\u2018');
+  text = text.replace(/&rsquo;/g, '\u2019');
+  text = text.replace(/&apos;/g, '\u2019');
+
+  text = text.replace(/&amp;/g, '&');
+  text = text.replace(/&quot;/g, '"');
+  text = text.replace(/&lf;/g, ' ');
+  text = text.replace(/&nl;/g, ' ');
+  /* eslint no-regex-spaces: 0 */
+  text = text.replace(/  +/g, ' ');
+
+  return text;
+}
+
 /**
  * Recursively get all the nodes from a string of text.
  * This function will parse a string (text) into a series of React elements
@@ -36,12 +79,12 @@ function _recursivelyGetNodes(text, count) {
 
   if (text.indexOf('[') < 0) {
     // no markup, that's easy
-    nodes.push(text);
+    nodes.push(_replaceEntities(text));
     return nodes;
   }
 
   if (text.indexOf('[') > 0) {
-    nodes.push(text.substring(0, text.indexOf('[')));
+    nodes.push(_replaceEntities(text.substring(0, text.indexOf('['))));
     text = text.substring(text.indexOf('['));
   }
 
@@ -124,46 +167,7 @@ var utils = {
   },
 
   replaceEntities: function replaceEntities(text) {
-    text = text.replace(/&aacute;/g, '\u00e1');
-    text = text.replace(/&agrave;/g, '\u00e0');
-
-    text = text.replace(/&ccedil;/g, '\u00e7');
-
-    text = text.replace(/&eacute;/g, '\u00e9');
-    text = text.replace(/&ecirc;/g, '\u00ea');
-    text = text.replace(/&egrave;/g, '\u00e8');
-    text = text.replace(/&euml;/g, '\u00eb');
-
-    text = text.replace(/&iacute;/g, '\u00ed');
-
-    text = text.replace(/&ntilde;/g, '\u00f1');
-
-    text = text.replace(/&ocirc;/g, '\u00f4');
-    text = text.replace(/&omacron;/g, '\u014d');
-    text = text.replace(/&ouml;/g, '\u00f6');
-
-    text = text.replace(/&uuml;/g, '\u00fc');
-
-    text = text.replace(/&mdash;/g, '\u2014');
-    text = text.replace(/&frac12;/g, '\u00bd');
-    text = text.replace(/&frac14;/g, '\u00bc');
-    text = text.replace(/&sup2;/g, '\u00b2');
-    text = text.replace(/&deg;/g, '\u00b0');
-
-    text = text.replace(/&ldquo;/g, '\u201c');
-    text = text.replace(/&rdquo;/g, '\u201d');
-    text = text.replace(/&lsquo;/g, '\u2018');
-    text = text.replace(/&rsquo;/g, '\u2019');
-    text = text.replace(/&apos;/g, '\u2019');
-
-    text = text.replace(/&amp;/g, '&');
-    text = text.replace(/&quot;/g, '"');
-    text = text.replace(/&lf;/g, ' ');
-    text = text.replace(/&nl;/g, ' ');
-    /* eslint no-regex-spaces: 0 */
-    text = text.replace(/  +/g, ' ');
-
-    return text;
+    return _replaceEntities(text);
   },
 
   buildTextNode: function buildTextNode(type, className, key, text) {
