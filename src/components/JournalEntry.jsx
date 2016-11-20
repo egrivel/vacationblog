@@ -20,6 +20,7 @@
 
 var React = require('react');
 
+var TripStore = require('../stores/TripStore');
 var JournalStore = require('../stores/JournalStore');
 var UserStore = require('../stores/UserStore');
 var CommentStore = require('../stores/CommentStore');
@@ -39,7 +40,7 @@ var utils = require('./utils');
 var JournalEntry = React.createClass({
   displayName: 'JournalEntry',
 
-  stores: [JournalStore, UserStore, CommentStore, MediaStore],
+  stores: [TripStore, JournalStore, UserStore, CommentStore, MediaStore],
 
   mixins: [storeMixin()],
 
@@ -70,6 +71,7 @@ var JournalEntry = React.createClass({
     var canAddComment = UserStore.canAddComment();
     var isLoggedIn = UserStore.isUserLoggedIn();
     var loggedInUserId = UserStore.getLoggedInUser();
+    var profileImg = null;
 
     if (!journalData || !journalData.tripId || !journalData.journalId) {
       // There is no actual journal item. Clear out the state.
@@ -86,7 +88,8 @@ var JournalEntry = React.createClass({
         comments: null,
         canAddComment: canAddComment,
         loggedInUserId: loggedInUserId,
-        isLoggedIn: isLoggedIn
+        isLoggedIn: isLoggedIn,
+        profileImg: profileImg
       };
     }
 
@@ -102,6 +105,15 @@ var JournalEntry = React.createClass({
 
     comments = CommentStore.getRecursiveList(journalData.tripId,
                                              journalData.journalId);
+    var userList = TripStore.getTripUsers(journalData.tripId);
+    if (userList) {
+      for (let i = 0; i < userList.length; i++) {
+        const item = userList[i];
+        if (item.userId === journalData.userId) {
+          profileImg = item.profileImg;
+        }
+      }
+    }
 
     return {
       tripId: journalData.tripId,
@@ -116,7 +128,8 @@ var JournalEntry = React.createClass({
       comments: comments,
       canAddComment: canAddComment,
       loggedInUserId: loggedInUserId,
-      isLoggedIn: isLoggedIn
+      isLoggedIn: isLoggedIn,
+      profileImg: profileImg
     };
   },
 
@@ -218,7 +231,8 @@ var JournalEntry = React.createClass({
         <JournalHeader title={this.state.journalTitle}
           date={this.state.journalDate}
           userName={this.state.userName}
-          created={this.state.created}/>
+          created={this.state.created}
+          profileImg={this.state.profileImg}/>
         {prevNext1}
         {paragraphs}
         {newComment}

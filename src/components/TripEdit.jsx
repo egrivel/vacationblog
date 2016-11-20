@@ -122,7 +122,7 @@ var TripEdit = React.createClass({
 
     data.contribId = id;
     if (this.state.tripUsers) {
-      for (let i = 0; i < this.state.tripUser.length; i++) {
+      for (let i = 0; i < this.state.tripUsers.length; i++) {
         const item = this.state.tripUsers[i];
         if (item.userId === id) {
           data.name = item.name;

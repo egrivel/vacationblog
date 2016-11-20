@@ -11,9 +11,10 @@ var utils = require('./utils');
  * Construct the title part of the journal entry header.
  * @param {string} title - entry title.
  * @param {string} date - entry date.
+ * @param {string} profileImg - addres of profile img, if any.
  * @return {react} element representing the title.
  */
-function _constructTitle(title, date) {
+function _constructTitle(title, date, profileImg) {
   var titleText = '';
 
   if (title) {
@@ -26,7 +27,15 @@ function _constructTitle(title, date) {
     titleText = utils.formatDate(date) + ': ' + titleText;
   }
 
-  return <span className="title">{titleText}</span>;
+  let profileImgElement;
+  if (profileImg) {
+    profileImgElement = (
+      <img className="journal-entry-profile-thumbnail"
+        src={'media/' + profileImg}/>
+    );
+  }
+
+  return <span className="title">{titleText} {profileImgElement}</span>;
 }
 
 /**
@@ -73,11 +82,13 @@ var JournalHeader = React.createClass({
     title: React.PropTypes.string,
     date: React.PropTypes.string,
     userName: React.PropTypes.string,
-    created: React.PropTypes.string
+    created: React.PropTypes.string,
+    profileImg: React.PropTypes.string
   },
 
   render: function() {
-    var title = _constructTitle(this.props.title, this.props.date);
+    var title = _constructTitle(this.props.title, this.props.date,
+      this.props.profileImg);
     var subtitle = _constructSubtitle(this.props.created, this.props.userName);
 
     return (

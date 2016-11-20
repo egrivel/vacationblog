@@ -19,10 +19,12 @@ function _getStateFromStores() {
   const tripId = tripData.tripId;
   const description = tripData.description;
   const firstJournalId = tripData.firstJournalId;
+  const contributorList = TripStore.getTripUsers(tripId);
   return {
     tripId: tripId,
     description: description,
-    firstJournalId: firstJournalId
+    firstJournalId: firstJournalId,
+    contributorList: contributorList
   };
 }
 
@@ -41,12 +43,13 @@ function _startReadingLink(tripId, journalId) {
       {
         className: 'readJournalLink'
       },
+      'See the list of days with posts below or ',
       React.createElement(
         Link,
         {
           to: '/journal/' + tripId + '/' + journalId
         },
-        'Start reading at the beginning ',
+        'start reading at the beginning ',
         React.DOM.i({className: 'fa fa-chevron-right'}),
         React.DOM.i({className: 'fa fa-chevron-right'})
       )
@@ -89,10 +92,49 @@ var TripDescription = React.createClass({
       if (props.params.tripId !== currentTripId) {
         TripAction.setCurrentTrip(props.params.tripId);
       }
+      const tripUsers = TripStore.getTripUsers(props.params.tripId);
+      if (!tripUsers) {
+        TripAction.loadTripUsers(props.params.tripId);
+      }
     } else {
       TripAction.setCurrentTrip(null);
       // if we don't have props or params or tripId, need default
       // TripAction.initialLoadTrip();
+    }
+  },
+
+  _renderContributors: function() {
+    if (this.state.contributorList) {
+      const messages = [];
+      let parCount = 0;
+      for (let i = 0; i < this.state.contributorList.length; i++) {
+        const item = this.state.contributorList[i];
+        parCount++;
+        let profileImg;
+        if (item.profileImg) {
+          profileImg = (
+            <img
+              className="profileImg"
+              src={'media/' + item.profileImg}
+            />
+          );
+        }
+        messages.push(
+          <h3 key={'head-' + parCount}>
+            Contributor to this blog: <em>{item.name}</em>
+            {profileImg}
+          </h3>
+        );
+        if (item.message) {
+          var parList = utils.splitText(item.message);
+          for (let j = 0; j < parList.length; j++) {
+            parCount++;
+            messages.push(utils.buildTextNode('p', 'text noclear',
+              'p-' + parCount, parList[j]));
+          }
+        }
+      }
+      return messages;
     }
   },
 
@@ -110,6 +152,7 @@ var TripDescription = React.createClass({
         <div className="trip">
           {paragraphs}
           {_startReadingLink(tripId, this.state.firstJournalId)}
+          {this._renderContributors()}
           <h3>Post List</h3>
           <p>Use the list below to jump to a specific day in the trip and start
             reading.</p>

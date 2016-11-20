@@ -47,6 +47,10 @@ strong {
   height: 0;
 }
 
+.noclear {
+  clear: none !important;
+}
+
 /*
  * Body, header, menu and footer
  */
@@ -199,6 +203,11 @@ div.content p {
 /*
  * Journal
  */
+
+img.journal-entry-profile-thumbnail {
+  float: right;
+  width: 150px;
+}
 
 div.journalitem .subtitle {
   display: block;
@@ -761,6 +770,14 @@ div.profileImgPreview img {
   max-width: 100%;
   max-height: 100%;
   margin: auto;
+}
+
+img.profileImg {
+  width: 250px;
+  max-width: 50%;
+  float: right;
+  padding-left: 0.5em;
+  padding-bottom: 0.25em;
 }
 
 img.tiny {

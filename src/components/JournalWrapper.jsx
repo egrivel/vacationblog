@@ -3,7 +3,9 @@
 var React = require('react');
 
 var JournalStore = require('../stores/JournalStore');
+var TripStore = require('../stores/TripStore');
 var JournalAction = require('../actions/JournalAction');
+var TripAction = require('../actions/TripAction');
 var JournalEntry = require('./JournalEntry.jsx');
 
 /**
@@ -59,6 +61,10 @@ var JournalWrapper = React.createClass({
         // loading the journal will also load comments, media, and all
         // associated user information.
         JournalAction.loadJournal(tripId, journalId);
+      }
+      const userList = TripStore.getTripUsers(tripId);
+      if (!userList || !userList.length) {
+        TripAction.loadTripUsers(tripId);
       }
     }
   },

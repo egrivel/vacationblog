@@ -82,7 +82,7 @@ var MenuStore = assign({}, GenericStore, {
         if (access === 'admin') {
           visible = true;
         }
-        if (visible !== _menuData[3].visible) {
+        if (visible !== _menuData[2].visible) {
           _menuData[2].visible = visible;
           MenuStore.emitChange();
         }
