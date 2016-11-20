@@ -52,8 +52,10 @@ function StoreMixin() {
         // subsequent change events that would cause a rerender as well and
         // combine them into a single re-render
         this._changeCount = 0;
-        this.setState(this._getStateFromStores());
-        setTimeout(this._onEndTimer, 100);
+        if (this.isMounted) {
+          this.setState(this._getStateFromStores());
+          setTimeout(this._onEndTimer, 100);
+        }
       } else {
         // already on a timer to re-render the component, so hold off until
         // the timer expires
