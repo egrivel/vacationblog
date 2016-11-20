@@ -19,6 +19,8 @@ var Image = React.createClass({
     tripId: React.PropTypes.string.isRequired,
     // Unique image ID
     imageId: React.PropTypes.string.isRequired,
+    // optional element ID
+    elementId: React.PropTypes.string,
     // Image format: either 'portrait' or 'landscape'
     format: React.PropTypes.oneOf([
       Orientation.PORTRAIT,
@@ -44,6 +46,7 @@ var Image = React.createClass({
     var fullClassname = _.trim(this.props.format + ' ' + this.props.className);
     return React.DOM.img(
       {
+        id: this.props.elementId,
         className: fullClassname,
         title: this.props.caption,
         // src: 'http://173.64.119.113:31415/cgi-bin/photos/phimg?large=' + this.props.imageId,

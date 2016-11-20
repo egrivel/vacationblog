@@ -5,6 +5,7 @@
  * text and/or media.
  */
 
+var _ = require('lodash');
 var React = require('react');
 
 var MediaStore = require('../stores/MediaStore');
@@ -62,17 +63,17 @@ function _imgWithModal(parent, tripId, mediaId, mediaInfo, className) {
     mediaInfo = _getMediaInfo(tripId, mediaId);
   }
 
-  return React.createElement(Image, {
-    tripId: tripId,
-    imageId: mediaId,
-    format: mediaInfo.orientation,
-    className: className,
-    key: mediaId,
-    caption: mediaInfo.caption,
-    onClick: function() {
-      parent.clickImg(mediaId);
-    }
-  });
+  return (
+    <Image
+      tripId={tripId}
+      imageId={mediaId}
+      format={mediaInfo.orientation}
+      className={className}
+      key={mediaId}
+      caption={mediaInfo.caption}
+      onClick={() => parent.clickImg(mediaId)}
+    />
+  );
 }
 
 /**
@@ -87,14 +88,17 @@ function _imgWithModal(parent, tripId, mediaId, mediaInfo, className) {
  * @return {object} React element for the standard paragraph.
  * @private
  */
-function _standardParagraph(parent, tripId, text, mediaId, mediaInfo) {
+function _standardParagraph(parent, tripId, text, mediaId) {
+  const mediaInfo = _getMediaInfo(tripId, mediaId);
   // standard text paragraph with a single image
-  var label = React.DOM.span(
-    {
-      key: 'label',
-      className: 'label'
-    },
-    _imgWithModal(parent, tripId, mediaId, mediaInfo, '')
+  let orientation = Orientation.LANDSCAPE;
+  if (mediaInfo && mediaInfo.orientation) {
+    orientation = mediaInfo.orientation;
+  }
+  const label = (
+    <span className={'label-' + orientation}>
+      {_imgWithModal(parent, tripId, mediaId, mediaInfo, '')}
+    </span>
   );
   var value = utils.buildTextNode('span', 'value', 'value', text);
   var clear = React.DOM.span(
@@ -383,7 +387,8 @@ function _paragraphMultipleImages(parent, tripId, text, images) {
  * @return {object} React element for the line with three images
  * @private
  */
-function _paragraphSingleImage(parent, tripId, mediaId, mediaInfo) {
+function _paragraphSingleImage(parent, tripId, mediaId) {
+  const mediaInfo = _.getMediaInfo(tripId, mediaId);
   return React.DOM.div(
     null,
     React.DOM.p(
@@ -401,6 +406,57 @@ function _paragraphSingleImage(parent, tripId, mediaId, mediaInfo) {
   );
 }
 
+/**
+ * Make sure the images in the modal window are appropriately sized. Handling
+ * a maximum vertical size through CSS doesn't seem to be working, so have
+ * this sizing function which looks at the original size of the image and the
+ * current window size, and makes sure the actual height of the image does not
+ * exceed 75% of the window height.
+ */
+function _sizeModalImg() {
+  if (this.state && this.state.modal && this.state.modal !== '') {
+    // The modal is displayed. Get the image
+    /* global document */
+    const containerElement = document.getElementById('the-modal');
+    const imgElement = document.getElementById('the-modal-image');
+    if (containerElement && imgElement) {
+      const orientation = _getMediaInfo(this.props.tripId,
+        this.state.modal).orientation;
+
+      // Determine underlying image size and width/height ration
+      let imageHeight = 600;
+      let imageWidthMult = 1.5;
+      if (orientation === Orientation.PORTRAIT) {
+        imageHeight = 900;
+        imageWidthMult = (2 / 3);
+      }
+
+      // First the image height is limited to 75% of the window height
+      const windowHeight = window.innerHeight;
+      if (imageHeight > (0.75 * windowHeight)) {
+        imageHeight = 0.75 * windowHeight;
+      }
+
+      // Calculate the image width based on the (possibly limited) height
+      let imageWidth = imageHeight * imageWidthMult;
+
+      // Available width is the container width minus 20px padding on
+      // each side
+      const availableWidth = containerElement.clientWidth - 40;
+
+      // If window width exceeds available width, adjust both width and height
+      if (imageWidth > availableWidth) {
+        imageWidth = availableWidth;
+        imageHeight = imageWidth / imageWidthMult;
+      }
+
+      // Set calculated size
+      imgElement.style.height = String(imageHeight) + 'px';
+      imgElement.style.width = String(imageWidth) + 'px';
+    }
+  }
+}
+
 var JournalParagraph = React.createClass({
   displayName: 'JournalParagraph',
 
@@ -410,48 +466,91 @@ var JournalParagraph = React.createClass({
     text: React.PropTypes.string.isRequired
   },
 
+  // Handling dynamic sizing of images in modal: set the event handler to
+  // update size upon resizing
+  componentDidMount: function() {
+    /* global window */
+    window.addEventListener('resize', _sizeModalImg.bind(this), false);
+  },
+
+  // Handling dynamic sizing of images in modal: remove the event handler to
+  // update size upon resizing
+  componentWillUnmount: function() {
+    window.removeEventListener('resize', _sizeModalImg);
+  },
+
+  // Handling dynamic sizing of images in modal: size right upon render
+  componentDidUpdate: function() {
+    _sizeModalImg.bind(this)();
+  },
+
   buildModal: function buildModal() {
     if (this.state && this.state.modal && this.state.modal !== '') {
-      var clickImg = this.clickImg;
-      var mediaId = this.state.modal;
-      var mediaInfo = _getMediaInfo(this.props.tripId, mediaId);
-      var comment = React.createElement(CommentList, {
-        tripId: this.props.tripId,
-        referenceId: mediaId
-      });
-
-      return React.DOM.div(
-        {
-          key: 'modal',
-          className: 'modal',
-          onClick: function() {
-            clickImg(mediaId);
-          }
-        },
-        React.DOM.div(
-          {
-            className: 'modal-content'
-          },
-          React.createElement(
-            Image,
-            {
-              className: 'modal-img',
-              tripId: this.props.tripId,
-              imageId: mediaId,
-              format: mediaInfo.orientation,
-              caption: utils.replaceEntities(mediaInfo.caption)
-            }
-          ),
-          React.DOM.div(
-            {
-              key: 'modal-caption',
-              className: 'modal-image-caption'
-            },
-            utils.replaceEntities(mediaInfo.caption)
-          ),
-          comment
-        )
+      const tripId = this.props.tripId;
+      const clickImg = this.clickImg;
+      const mediaId = this.state.modal;
+      const mediaInfo = _getMediaInfo(tripId, mediaId);
+      const comment = (
+        <CommentList
+          tripId={tripId}
+          referenceId={mediaId}
+        />
       );
+
+      return (
+        <div
+          key="modal"
+          className="modal"
+          onClick={() => clickImg(mediaId)} onResize={() => this._modalResize()}
+        >
+          <div id="the-modal" className="modal-content">
+            <Image
+              elementId="the-modal-image"
+              className="modal-img"
+              tripId={tripId}
+              imageId={mediaId}
+              format={mediaInfo.orientation}
+              caption={utils.replaceEntities(mediaInfo.caption)}
+            />
+            <div className="modal-image-caption">
+              {utils.replaceEntities(mediaInfo.caption)}
+            </div>
+            {comment}
+          </div>
+        </div>
+      );
+      // return React.DOM.div(
+      //   {
+      //     key: 'modal',
+      //     className: 'modal',
+      //     onClick: function() {
+      //       clickImg(mediaId);
+      //     }
+      //   },
+      //   React.DOM.div(
+      //     {
+      //       className: 'modal-content'
+      //     },
+      //     React.createElement(
+      //       Image,
+      //       {
+      //         className: 'modal-img',
+      //         tripId: this.props.tripId,
+      //         imageId: mediaId,
+      //         format: mediaInfo.orientation,
+      //         caption: utils.replaceEntities(mediaInfo.caption)
+      //       }
+      //     ),
+      //     React.DOM.div(
+      //       {
+      //         key: 'modal-caption',
+      //         className: 'modal-image-caption'
+      //       },
+      //       utils.replaceEntities(mediaInfo.caption)
+      //     ),
+      //     comment
+      //   )
+      // );
     }
     return null;
   },
@@ -502,14 +601,14 @@ var JournalParagraph = React.createClass({
     }
 
     if ((images.length === 1) && text) {
-      return _standardParagraph(this, tripId, text, images[0], null);
+      return _standardParagraph(this, tripId, text, images[0]);
     } else if (images.length > 1) {
       return _paragraphMultipleImages(this, tripId, text,
                                      images);
     } else if (text) {
       return _paragraphTextOnly(this, text);
     } else if (images.length === 1) {
-      return _paragraphSingleImage(this, tripId, images[0], null);
+      return _paragraphSingleImage(this, tripId, images[0]);
     }
     // default if nothing applies
     return null;

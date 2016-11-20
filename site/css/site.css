@@ -210,9 +210,9 @@ div.journalitem .lastupdate {
   display: none;
 }
 
-div.journalitem p.text span.label,
-div.journalitem p.img-text span.label {
-  display: block;
+div.journalitem p.text span.label-landscape,
+div.journalitem p.img-text span.label-landscape {
+  display: inline-block;
   float: left;
   width: 30%;
   font-family: Lato, serif;
@@ -221,11 +221,22 @@ div.journalitem p.img-text span.label {
   line-height: 120%;
 }
 
+div.journalitem p.text span.label-portrait,
+div.journalitem p.img-text span.label-portrait {
+  display: inline-block;
+  float: left;
+  width: 20%;
+  font-family: Lato, serif;
+  font-weight: bold;
+  font-size: 160%;
+  line-height: 120%;
+}
+
 div.journalitem p.text span.value,
 div.journalitem p.img-text span.value {
-  display: block;
-  float: right;
-  width: 68%;
+  display: inline;
+  x-float: right;
+  x-width: 68%;
 }
 
 div.journalitem p.text img.landscape,
@@ -239,7 +250,7 @@ div.journalitem p.img-text img.landscape {
 div.journalitem p.text img.portrait,
 div.journalitem p.img-text img.portrait {
   float: right;
-  width: 66%;
+  width: 100%;
   padding-right: 1em;
   padding-bottom: 0.5em;
   padding-top: 0.15em;
@@ -390,11 +401,6 @@ div.journalitem p.prevnext {
  * Modal
  */
 
-img.modal-img {
-  max-width: 100%;
-  max-height: 100%;
-}
-
 .prevlink {
   float: left;
 }
@@ -541,47 +547,6 @@ span.nested-paragraph {
   display: block;
 }
 
-div.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  text-align: center;
-  color: #eee;
-  background-color: rgba(30, 30, 30, 0.75);
-  width: 100%;
-  height: 100%;
-  overflow-y: scroll;
-}
-
-div.modal-content {
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-div.modal img {
-  max-height: 75%;
-}
-
-div.modal-image-caption {
-  font-family: 'Merriweather Sans', sans-serif;
-  font-size: 20px;
-  background-color: #333;
-  padding: 10px;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 760px;
-  letter-spacing: 0.5px;
-}
-
-div.modal div.commentBlock {
-  max-width: 750px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 div.feedback {
   padding-top: 0.5em;
   padding-bottom: 0.5em;
@@ -718,30 +683,62 @@ div.formValue img.preview {
 }
 
 /* == lightbox == */
-.modal {
+
+div.modal {
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
   left: 0;
   top: 0;
+  right: 0;
+  bottom: 0;
   width: 100%; /* Full width */
   height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  color: #eee;
+  background-color: rgb(30, 30, 30); /* fallback color */
+  background-color: rgba(30, 30, 30, 0.75); /* color with opacity */
+  max-height: 100%;
+  overflow-y: scroll;
 }
 
-/* Modal Content/Box */
-.modal-content {
+div.modal-content {
   background-color: #fff;
   color: #333;
   margin: auto;
-  padding: 20px;
-  border: 1px solid #888;
+  text-align: center;
   width: 80%;
-  text-align: left;
+  max-height: 100%;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 20px;
+  text-align: center;
 }
 
-.modal-content h2 {
+div.modal-content img {
+  display: inline-block;
+  /* max-width: 100%; */
+  /* height: 75%; */
+}
+
+div.modal-image-caption {
+  font-family: 'Merriweather Sans', sans-serif;
+  font-size: 20px;
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 760px;
+  letter-spacing: 0.5px;
+}
+
+div.modal div.commentBlock {
+  max-width: 750px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+div.modal-content h2 {
   margin: 0;
   padding: 0;
   font-weight: bold;
