@@ -44,30 +44,33 @@ const TripJournalList = React.createClass({
   _renderItem: function(tripId, journalId, journalDate, userList) {
     const itemDate = moment(journalDate).format('dddd M/D');
     let count = 0;
+
+    const fmtList = userList.map(function(item) {
+      let result = item;
+      const user = _.find(this.state.userList, {userId: item});
+      if (user) {
+        result = (
+          <span
+            className="userRef"
+            title={user.name}
+          >
+            {user.name.substring(0, 1)}
+          </span>
+        );
+      }
+      let prefix = '';
+      if (count) {
+        prefix = ', ';
+      }
+      count++;
+      return <span key={'u-' + count}>{prefix}{result}</span>;
+    });
+
     return (
       <li key={journalId}>
         <a href={'#/journal/' + tripId + '/' + journalId}>
          {itemDate}
-        </a> ({userList.map((item) => {
-          let result = item;
-          const user = _.find(this.state.userList, {userId: item});
-          if (user) {
-            result = (
-              <span
-                className="userRef"
-                title={user.name}
-              >
-                {user.name.substring(0, 1)}
-              </span>
-            );
-          }
-          let prefix = '';
-          if (count) {
-            prefix = ', ';
-          }
-          count++;
-          return <span key={'u-' + count}>{prefix}{result}</span>;
-        })})
+        </a> {fmtList}
       </li>
     );
   },
@@ -81,7 +84,8 @@ const TripJournalList = React.createClass({
     let tripId = this.props.tripId;
 
     if (this.state.journalList && this.state.journalList.length) {
-      this.state.journalList.map((item) => {
+      for (let i = 0; i < this.state.journalList.length; i++) {
+        item = this.state.journalList[i];
         if (journalDate && (item.journalDate !== journalDate)) {
           // need to push last entry
           const list = this._renderItem(
@@ -99,7 +103,7 @@ const TripJournalList = React.createClass({
         journalId = item.journalId;
         userList.unshift(item.userId);
         return item;
-      });
+      }
 
       if (journalDate) {
         // need to push last entry
