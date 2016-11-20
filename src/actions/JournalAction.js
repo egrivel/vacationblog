@@ -76,6 +76,14 @@ var JournalAction = {
       var data = JSON.parse(response);
       JournalAction._journalLoaded(data);
     });
+  },
+
+  clearJournal: function(tripId, journalId) {
+    TripAction.setCurrentTrip(tripId);
+    JournalAction._journalLoaded({
+      tripId: tripId,
+      journalId: journalId
+    });
   }
 };
 

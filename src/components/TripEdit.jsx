@@ -170,7 +170,7 @@ var TripEdit = React.createClass({
     this.setState({showEditLightbox: false});
   },
 
-  _saveAddLightbox: function(userId, name) {
+  _saveAddLightbox: function(userId) {
     const data = {
       tripId: this.props.params.tripId,
       userId: userId,

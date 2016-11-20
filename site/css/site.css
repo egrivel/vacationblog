@@ -186,6 +186,7 @@ div.content {
 }
 
 div.content h3 {
+  clear: both;
   font-size: 120%;
   margin-top: 1em;
   margin-bottom: 1em;
@@ -384,6 +385,10 @@ div.journalitem p.hv img.landscape {
 }
 div.journalitem p.hv img.portrait {
   width: 30.154%;
+}
+
+div.journalitem p.images img.img1 {
+  width: 100%;
 }
 
 

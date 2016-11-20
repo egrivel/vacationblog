@@ -29,7 +29,9 @@ const JournalEdit = React.createClass({
     const journalData = JournalStore.getData();
     if ((journalData.tripId !== tripId) ||
       (journalData.journalId !== journalId)) {
-      if (journalId !== '_new') {
+      if (journalId === '_new') {
+        JournalAction.clearJournal(tripId, journalId);
+      } else {
         JournalAction.loadJournal(tripId, journalId);
       }
     }

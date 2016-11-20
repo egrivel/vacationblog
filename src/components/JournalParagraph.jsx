@@ -392,7 +392,7 @@ function _paragraphMultipleImages(parent, tripId, text, images) {
  * @private
  */
 function _paragraphSingleImage(parent, tripId, mediaId) {
-  const mediaInfo = _.getMediaInfo(tripId, mediaId);
+  const mediaInfo = _getMediaInfo(tripId, mediaId);
   return React.DOM.div(
     null,
     React.DOM.p(
