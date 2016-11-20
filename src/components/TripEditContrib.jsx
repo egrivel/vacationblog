@@ -12,7 +12,7 @@ const TripEditContrib = React.createClass({
       contribId: React.PropTypes.string,
       name: React.PropTypes.string,
       profileImg: React.PropTypes.string,
-      message: React.PropTypes.string,
+      message: React.PropTypes.string
     }),
     onChange: React.PropTypes.func,
     onClose: React.PropTypes.func,

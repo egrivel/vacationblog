@@ -45,7 +45,7 @@ const TripJournalList = React.createClass({
     const itemDate = moment(journalDate).format('dddd M/D');
     let count = 0;
 
-    const fmtList = userList.map(function(item) {
+    const fmtList = userList.map((item) => {
       let result = item;
       const user = _.find(this.state.userList, {userId: item});
       if (user) {
@@ -85,7 +85,7 @@ const TripJournalList = React.createClass({
 
     if (this.state.journalList && this.state.journalList.length) {
       for (let i = 0; i < this.state.journalList.length; i++) {
-        item = this.state.journalList[i];
+        const item = this.state.journalList[i];
         if (journalDate && (item.journalDate !== journalDate)) {
           // need to push last entry
           const list = this._renderItem(
@@ -102,7 +102,6 @@ const TripJournalList = React.createClass({
         journalDate = item.journalDate;
         journalId = item.journalId;
         userList.unshift(item.userId);
-        return item;
       }
 
       if (journalDate) {

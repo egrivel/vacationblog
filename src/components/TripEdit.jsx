@@ -2,7 +2,6 @@
 
 var _ = require('lodash');
 var React = require('react');
-var router = require('react-router');
 
 var storeMixin = require('./StoreMixin');
 var TripStore = require('../stores/TripStore');

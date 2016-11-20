@@ -16,7 +16,7 @@ const TripSelectContrib = React.createClass({
 
   getInitialState: function() {
     if (this.props.userList && this.props.userList[0]) {
-      return {selectedValue: this.props.userList[0].userId}
+      return {selectedValue: this.props.userList[0].userId};
     }
     return {};
   },
@@ -25,7 +25,7 @@ const TripSelectContrib = React.createClass({
     this.setState({selectedValue: event.target.value});
   },
 
-  _onSave: function(event) {
+  _onSave: function() {
     const userId = this.state.selectedValue;
     const obj = _.find(this.props.userList, {userId: userId});
     const name = _.get(obj, 'name', '');
@@ -63,7 +63,11 @@ const TripSelectContrib = React.createClass({
           </p>
           <div className="formLabel">User</div>
           <div className="formValue">
-            <select name="users" value={this.state.selectedValue} onChange={this._onSelect}>
+            <select
+              name="users"
+              value={this.state.selectedValue}
+              onChange={this._onSelect}
+            >
               {list}
             </select>
           </div>

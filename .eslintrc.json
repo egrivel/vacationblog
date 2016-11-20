@@ -12,7 +12,8 @@
     "react"
   ],
   "rules": {
-    "arrow-parens": "always",
-    "no-unused-vars": "error"
+    "arrow-parens": ["error", "always"],
+    "no-unused-vars": "error",
+    "no-undef": "error"
   }
 }

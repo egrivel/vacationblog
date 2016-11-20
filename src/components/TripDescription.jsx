@@ -2,7 +2,6 @@
 
 var React = require('react');
 var Link = require('react-router').Link;
-var moment = require('moment-timezone');
 
 var TripAction = require('../actions/TripAction');
 var TripStore = require('../stores/TripStore');

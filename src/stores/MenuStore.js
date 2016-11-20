@@ -1,6 +1,5 @@
 'use strict';
 
-var _ = require('lodash');
 var assign = require('object-assign');
 var AppDispatcher = require('../AppDispatcher');
 var MenuActionTypes = require('../actions/MenuAction').Types;
@@ -56,41 +55,6 @@ function _selectMenuItem(list, id) {
     }
   }
   return didSelect;
-}
-
-/**
- * Recursively update the menu to make a specific item visible or invisible.
- * This function will walk down the menu tree and make all item except the
- * indicated item invisible; the indicated item will be marked as specified
- * by the isVisible parameter. When unwinding the recursion, all parents of
- * the indicated item will also be marked as specified.
- * @param {array} list - (sub-) menu structure to recursively parse.
- * @param {id} id - menu item ID of the item to update
- * @param {boolean} isVisible - specification of what the item to update must
- * be set to.
- * @return {boolean} whether the indicated item was found in the (sub-) menu.
- * @private
- */
-function _visibleMenuItem(list, id, isVisible) {
-  var didFind = false;
-  var i;
-  for (i = 0; i < list.length; i++) {
-    if (list[i].id === id) {
-      list[i].visible = isVisible;
-      didFind = true;
-    } else {
-      list[i].visible = false;
-    }
-    if (list[i].submenu) {
-      if (_visibleMenuItem(list[i].submenu, id, isVisible)) {
-        // an item in the submenu is visible, so keep the
-        // parent visible as well.
-        list[i].visible = isVisible;
-        didFind = true;
-      }
-    }
-  }
-  return didFind;
 }
 
 var MenuStore = assign({}, GenericStore, {

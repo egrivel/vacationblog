@@ -33,7 +33,7 @@ const routes = {
     {path: '/admin', component: Admin},
     {path: '/admin/trip', component: TripAdmin},
     {path: '/admin/trip/:tripId', component: TripEdit},
-    {path: '/about', component: About},
+    {path: '/about', component: About}
   ]
 };
 
