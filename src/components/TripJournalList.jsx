@@ -45,7 +45,9 @@ const TripJournalList = React.createClass({
     const itemDate = moment(journalDate).format('dddd M/D');
     let count = 0;
 
-    const fmtList = userList.map((item) => {
+    const fmtList = [];
+    for (let i = 0; i < userList.length; i++) {
+      const item = userList[i];
       let result = item;
       const user = _.find(this.state.userList, {userId: item});
       if (user) {
@@ -63,8 +65,8 @@ const TripJournalList = React.createClass({
         prefix = ', ';
       }
       count++;
-      return <span key={'u-' + count}>{prefix}{result}</span>;
-    });
+      fmtList.push(<span key={'u-' + count}>{prefix}{result}</span>);
+    }
 
     return (
       <li key={journalId}>

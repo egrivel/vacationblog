@@ -6,7 +6,6 @@ var Link = require('react-router').Link;
 var TripAction = require('../actions/TripAction');
 var TripStore = require('../stores/TripStore');
 
-// var Paragraph = require('./Paragraph');
 var TripJournalList = require('./TripJournalList.jsx');
 var utils = require('./utils');
 

@@ -13,8 +13,8 @@ var TripAdmin = require('./components/TripAdmin.jsx');
 var JournalWrapper = require('./components/JournalWrapper.jsx');
 var Search = require('./components/Search.jsx');
 var Admin = require('./components/Admin.jsx');
-var About = require('./components/About.jsx');
 var LoginWrapper = require('./components/LoginWrapper.jsx');
+var About = require('./components/About.jsx');
 
 var TripAction = require('./actions/TripAction');
 var UserAction = require('./actions/UserAction');
