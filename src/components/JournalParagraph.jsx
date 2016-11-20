@@ -63,6 +63,10 @@ function _imgWithModal(parent, tripId, mediaId, mediaInfo, className) {
     mediaInfo = _getMediaInfo(tripId, mediaId);
   }
 
+  const _onClick = function() {
+    parent.clickImg(mediaId);
+  };
+
   return (
     <Image
       tripId={tripId}
@@ -71,7 +75,7 @@ function _imgWithModal(parent, tripId, mediaId, mediaInfo, className) {
       className={className}
       key={mediaId}
       caption={mediaInfo.caption}
-      onClick={() => parent.clickImg(mediaId)}
+      onClick={_onClick}
     />
   );
 }
@@ -497,11 +501,21 @@ var JournalParagraph = React.createClass({
         />
       );
 
+      const _onClick = function() {
+        clickImg(mediaId);
+      };
+
+      const _onResize = function() {
+        this._modalResize();
+      };
+      _onResize.bind(this);
+
       return (
         <div
           key="modal"
           className="modal"
-          onClick={() => clickImg(mediaId)} onResize={() => this._modalResize()}
+          onClick={_onClick}
+          onResize={_onResize}
         >
           <div id="the-modal" className="modal-content">
             <Image
@@ -519,43 +533,11 @@ var JournalParagraph = React.createClass({
           </div>
         </div>
       );
-      // return React.DOM.div(
-      //   {
-      //     key: 'modal',
-      //     className: 'modal',
-      //     onClick: function() {
-      //       clickImg(mediaId);
-      //     }
-      //   },
-      //   React.DOM.div(
-      //     {
-      //       className: 'modal-content'
-      //     },
-      //     React.createElement(
-      //       Image,
-      //       {
-      //         className: 'modal-img',
-      //         tripId: this.props.tripId,
-      //         imageId: mediaId,
-      //         format: mediaInfo.orientation,
-      //         caption: utils.replaceEntities(mediaInfo.caption)
-      //       }
-      //     ),
-      //     React.DOM.div(
-      //       {
-      //         key: 'modal-caption',
-      //         className: 'modal-image-caption'
-      //       },
-      //       utils.replaceEntities(mediaInfo.caption)
-      //     ),
-      //     comment
-      //   )
-      // );
     }
     return null;
   },
 
-  clickImg: function clickImg(id) {
+  clickImg: function(id) {
     if (this.state && this.state.modal && this.state.modal === id) {
       this.setState({modal: ''});
     } else {
