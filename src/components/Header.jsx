@@ -106,7 +106,6 @@ var Header = React.createClass({
     }
     return (
       <div className="header">
-        <h1>{this.state.name}</h1>
         <span className="userName">
           <a className="login-link" onClick={this._doUserClick}>
             {this.state.loginDisplay}
@@ -115,6 +114,7 @@ var Header = React.createClass({
           </a>
           {userForm}
         </span>
+        <h1>{this.state.name}</h1>
         {banner}
         <Menu menuData={this.state.menuData}/>
       </div>

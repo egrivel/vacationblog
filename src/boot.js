@@ -11,6 +11,7 @@ var TripDescription = require('./components/TripDescription.jsx');
 var TripEdit = require('./components/TripEdit.jsx');
 var TripAdmin = require('./components/TripAdmin.jsx');
 var JournalWrapper = require('./components/JournalWrapper.jsx');
+var JournalEdit = require('./components/JournalEdit.jsx');
 var Search = require('./components/Search.jsx');
 var Admin = require('./components/Admin.jsx');
 var LoginWrapper = require('./components/LoginWrapper.jsx');
@@ -28,6 +29,8 @@ const routes = {
     {path: '/trip/:tripId', component: TripDescription},
     {path: '/journal/:tripId', component: JournalWrapper},
     {path: '/journal/:tripId/:journalId', component: JournalWrapper},
+    {path: '/journaledit/:tripId', component: JournalEdit},
+    {path: '/journaledit/:tripId/:journalId', component: JournalEdit},
     {path: '/search', component: Search},
     {path: '/login', component: LoginWrapper},
     {path: '/admin', component: Admin},

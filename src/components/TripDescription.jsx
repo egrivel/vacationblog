@@ -5,6 +5,7 @@ var Link = require('react-router').Link;
 
 var TripAction = require('../actions/TripAction');
 var TripStore = require('../stores/TripStore');
+var UserStore = require('../stores/UserStore');
 
 var TripJournalList = require('./TripJournalList.jsx');
 var utils = require('./utils');
@@ -17,14 +18,19 @@ var utils = require('./utils');
 function _getStateFromStores() {
   const tripData = TripStore.getTripData();
   const tripId = tripData.tripId;
+  const tripActive = tripData.active;
   const description = tripData.description;
   const firstJournalId = tripData.firstJournalId;
   const contributorList = TripStore.getTripUsers(tripId);
+  const loggedInUser = UserStore.getLoggedInUser();
+
   return {
     tripId: tripId,
+    tripActive: tripActive,
     description: description,
     firstJournalId: firstJournalId,
-    contributorList: contributorList
+    contributorList: contributorList,
+    loggedInUser: loggedInUser
   };
 }
 
@@ -43,7 +49,7 @@ function _startReadingLink(tripId, journalId) {
       {
         className: 'readJournalLink'
       },
-      'See the list of days with posts below or ',
+      'Scroll down to see a list of days where we have posts below or ',
       React.createElement(
         Link,
         {
@@ -75,11 +81,13 @@ var TripDescription = React.createClass({
 
   componentDidMount: function() {
     TripStore.addChangeListener(this._onChange);
+    UserStore.addChangeListener(this._onChange);
     this.getDataIfNeeded(this.props);
   },
 
   componentWillUnmount: function() {
     TripStore.removeChangeListener(this._onChange);
+    UserStore.removeChangeListener(this._onChange);
   },
 
   componentWillReceiveProps: function(nextProps) {
@@ -138,6 +146,39 @@ var TripDescription = React.createClass({
     }
   },
 
+  _renderNewPostLink: function() {
+    const tripId = this.state.tripId;
+    if (!tripId) {
+      return null;
+    }
+
+    if (this.state.tripActive !== 'Y') {
+      // can't post if not active
+      return null;
+    }
+
+    let isContributing = false;
+    if (this.state.loggedInUser && this.state.contributorList) {
+      for (let i = 0; i < this.state.contributorList.length; i++) {
+        if (this.state.contributorList[i].userId === this.state.loggedInUser) {
+          isContributing = true;
+          break;
+        }
+      }
+    }
+    if (!isContributing) {
+      return null;
+    }
+
+    return (
+      <p>
+        <a href={'#/journaledit/' + tripId + '/_new'}>
+          Create a New Post
+        </a>
+      </p>
+    );
+  },
+
   render: function() {
     var parCount = 0;
     var tripId = this.state.tripId;
@@ -152,6 +193,7 @@ var TripDescription = React.createClass({
         <div className="trip">
           {paragraphs}
           {_startReadingLink(tripId, this.state.firstJournalId)}
+          {this._renderNewPostLink()}
           {this._renderContributors()}
           <h3>Post List</h3>
           <p>Use the list below to jump to a specific day in the trip and start

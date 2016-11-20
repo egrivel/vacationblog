@@ -79,6 +79,18 @@ var TripEdit = React.createClass({
     TripAction.updateEditTrip(tripData);
   },
 
+  _updateActive: function(event) {
+    const tripData = _.clone(this.state.tripData);
+
+    if (event.target.checked) {
+      tripData.active = 'Y';
+    } else {
+      tripData.active = 'N';
+    }
+
+    TripAction.updateEditTrip(tripData);
+  },
+
   // When losing focus, linefeeds are to be converted
   _saveDescription: function(event) {
     const tripData = _.clone(this.state.tripData);
@@ -158,7 +170,7 @@ var TripEdit = React.createClass({
     this.setState({showEditLightbox: false});
   },
 
-  _saveAddLightbox: function(userId,  name) {
+  _saveAddLightbox: function(userId, name) {
     const data = {
       tripId: this.props.params.tripId,
       userId: userId,
@@ -345,6 +357,41 @@ var TripEdit = React.createClass({
     return result;
   },
 
+  _renderActive: function() {
+    let checked = false;
+    if (this.state.tripData.active === 'Y') {
+      checked = true;
+    }
+    const result = [];
+    result.push(
+      <div
+        key="active-label"
+        className="formLabel"
+      ></div>
+    );
+    result.push(
+      <div
+        key="active-value"
+        className="formValue"
+      >
+        <label htmlFor="active-input">
+          <input
+            type="checkbox"
+            id="active-input"
+            value="Y"
+            onChange={this._updateActive}
+            checked={checked}
+          />
+          {' '}
+          Active
+        </label>
+        {' '} (posts are allowed for this trip)
+      </div>
+    );
+
+    return result;
+  },
+
   _renderContributorList: function() {
     const contributorList = [];
     if (this.state.tripUsers) {
@@ -438,6 +485,7 @@ var TripEdit = React.createClass({
           {this._renderBannerImg()}
           {this._renderStartDate()}
           {this._renderEndDate()}
+          {this._renderActive()}
           {this._renderContributorList()}
           <input type="submit" value="Save" onClick={this._saveData}/>
           <TripEditContrib

@@ -91,9 +91,9 @@ div.header h1 {
 }
 
 div.header .userName {
-  position: absolute;
-  right: 0.5em;
-  top: 0.5em;
+  /* need to float in order to deal with long titles on a narrow screen */
+  float: right;
+  margin: 0.5em;
 }
 
 div.header img {

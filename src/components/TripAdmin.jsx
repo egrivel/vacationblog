@@ -2,13 +2,13 @@
 
 var React = require('react');
 
-var StoreMixin = require('./StoreMixin');
+var storeMixin = require('./StoreMixin');
 var TripStore = require('../stores/TripStore');
 
 var TripAdmin = React.createClass({
   displayName: 'Trip Admin',
 
-  mixins: [StoreMixin()],
+  mixins: [storeMixin()],
 
   stores: [TripStore],
 
