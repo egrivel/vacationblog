@@ -122,13 +122,17 @@ var TripEdit = React.createClass({
     const data = {};
 
     data.contribId = id;
-    _.map(this.state.tripUsers, (item) => {
-      if (item.userId === id) {
-        data.name = item.name;
-        data.profileImg = item.profileImg;
-        data.message = item.message;
+    if (this.state.tripUsers) {
+      for (let i = 0; i < this.state.tripUser.length; i++) {
+        const item = this.state.tripUsers[i];
+        if (item.userId === id) {
+          data.name = item.name;
+          data.profileImg = item.profileImg;
+          data.message = item.message;
+          break;
+        }
       }
-    });
+    }
 
     this.setState({
       showEditLightbox: true,
@@ -345,7 +349,8 @@ var TripEdit = React.createClass({
   _renderContributorList: function() {
     const contributorList = [];
     if (this.state.tripUsers) {
-      _.map(this.state.tripUsers, (item) => {
+      for (let i = 0; i < this.state.tripUsers.length; i++) {
+        const item = this.state.tripUsers[i];
         const obj = {
           _editContributor: this._editContributor,
           _deleteContributor: this._deleteContributor,
@@ -376,7 +381,7 @@ var TripEdit = React.createClass({
             />
           </li>
         );
-      });
+      }
     }
 
     const result = [];

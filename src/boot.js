@@ -30,10 +30,10 @@ const routes = {
     {path: '/journal/:tripId/:journalId', component: JournalWrapper},
     {path: '/search', component: Search},
     {path: '/login', component: LoginWrapper},
-    {path: '/about', component: About},
     {path: '/admin', component: Admin},
     {path: '/admin/trip', component: TripAdmin},
-    {path: '/admin/trip/:tripId', component: TripEdit}
+    {path: '/admin/trip/:tripId', component: TripEdit},
+    {path: '/about', component: About},
   ]
 };
 

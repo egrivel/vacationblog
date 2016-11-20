@@ -1,5 +1,6 @@
 'use strict';
 
+const _ = require('lodash');
 const React = require('react');
 
 const TripSelectContrib = React.createClass({
@@ -37,7 +38,8 @@ const TripSelectContrib = React.createClass({
     }
     const list = [];
     if (this.props.userList) {
-      _.map(this.props.userList, (item) => {
+      for (let i = 0; i < this.props.userList.length; i++) {
+        const item = this.props.userList[i];
         if (item.userId && item.name) {
           if (!_.some(this.props.existingUserList, {userId: item.userId})) {
             list.push(
@@ -47,7 +49,7 @@ const TripSelectContrib = React.createClass({
             );
           }
         }
-      });
+      }
     }
     return (
       <div className="modal">
