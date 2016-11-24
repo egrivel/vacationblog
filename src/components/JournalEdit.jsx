@@ -44,22 +44,113 @@ const JournalEdit = React.createClass({
     };
   },
 
-  _renderTitle: function(journalData) {
-    const title = _.get(journalData, 'journalTitle');
+  // ---
+  // Update functions
+  // ---
 
-    return <p>Title: {title}</p>;
+  _updateTitle: function(event) {
+    const journalData = _.clone(this.state.journalData);
+    journalData.journalTitle = event.target.value;
+    JournalAction.updateEditJournal(journalData);
   },
 
-  _renderDate: function(journalData) {
-    const date = _.get(journalData, 'journalDate');
-
-    return <p>Date: {date}</p>;
+  _updateDate: function(event) {
+    const journalData = _.clone(this.state.journalData);
+    journalData.journalDate = event.target.value;
+    JournalAction.updateEditJournal(journalData);
   },
 
-  _renderText: function(journalData) {
-    const text = _.get(journalData, 'journalText');
+  _updateText: function(event) {
+    const journalData = _.clone(this.state.journalData);
+    journalData.journalText = event.target.value;
+    JournalAction.updateEditJournal(journalData);
+  },
 
-    return <p>Text: {text}</p>;
+  // ---
+  // Render Functions
+  // ---
+
+  _renderTitle: function() {
+    const title = _.get(this.state.journalData, 'journalTitle');
+
+    const result = [];
+    result.push(
+      <div
+        key="title-label"
+        className="formLabel"
+      >
+        Title
+      </div>
+    );
+    result.push(
+      <div
+        key="title-value"
+        className="formValue"
+      >
+        <input type="text"
+          value={title}
+          onChange={this._updateTitle}/>
+      </div>
+    );
+
+    return result;
+  },
+
+  _renderDate: function() {
+    const date = _.get(this.state.journalData, 'journalDate');
+
+    const result = [];
+    result.push(
+      <div
+        key="date-label"
+        className="formLabel"
+      >
+        Title
+      </div>
+    );
+    result.push(
+      <div
+        key="date-value"
+        className="formValue"
+      >
+        <input type="text"
+          value={date}
+          onChange={this._updateDate}/>
+      </div>
+    );
+
+    return result;
+  },
+
+  _renderText: function() {
+    let text = _.get(this.state.journalData, 'journalText');
+    if (text) {
+      text = String(text).replace(/&lf;/g, '\n\n');
+    }
+
+    const result = [];
+    result.push(
+      <div
+        key="text-label"
+        className="formLabel"
+      >
+        Text
+      </div>
+    );
+    result.push(
+      <div
+        key="text-value"
+        className="formValue"
+      >
+        <textarea rows={10} cols={60}
+          value={text}
+          onChange={this._updateText}
+          onBlur={this._saveText}>
+        </textarea>
+      </div>
+    );
+
+    return result;
   },
 
   render: function() {
@@ -70,9 +161,9 @@ const JournalEdit = React.createClass({
           Edit journal trip {this.props.params.tripId}
           {' '} item {this.props.params.journalId}
         </p>
-        {this._renderTitle(journalData)}
-        {this._renderDate(journalData)}
-        {this._renderText(journalData)}
+        {this._renderTitle()}
+        {this._renderDate()}
+        {this._renderText()}
         <p>{JSON.stringify(this.state.journalData)}</p>
       </div>
     );

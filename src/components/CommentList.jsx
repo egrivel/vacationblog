@@ -45,6 +45,7 @@ var Comment = React.createClass({
 
   propTypes: {
     tripId: React.PropTypes.string.isRequired,
+    tripActive: React.PropTypes.string.isRequired,
     referenceId: React.PropTypes.string.isRequired,
     commentId: React.PropTypes.string,
     created: React.PropTypes.string,
@@ -68,6 +69,7 @@ var Comment = React.createClass({
 
   render: function render() {
     var tripId = this.props.tripId;
+    var tripActive = this.props.tripActive;
     var referenceId = this.props.referenceId;
     var commentId = this.props.commentId;
     var created = this.props.created;
@@ -92,7 +94,8 @@ var Comment = React.createClass({
     // Note: both the CommentEdit and Feedback elements are controller-views
     // and may result in too many event listners being added.
     var newComment = null;
-    if (tripId && commentId && this.props.loggedInUserId) {
+    if (tripId && (tripActive === 'Y') &&
+      commentId && this.props.loggedInUserId) {
       if (CommentStore.isEditing(tripId, commentId)) {
         newComment = React.createElement(
           CommentEdit,
@@ -122,7 +125,8 @@ var Comment = React.createClass({
     });
 
     var commentEdit = null;
-    if (CommentStore.canEditComment(commentId, this.props.loggedInUserId)) {
+    if ((tripActive === 'Y') &&
+      CommentStore.canEditComment(commentId, this.props.loggedInUserId)) {
       if (!CommentStore.isEditing('', '', commentId)) {
         commentEdit = (
           <div className="commentEdit">
@@ -153,6 +157,7 @@ var Comment = React.createClass({
       CommentList,
       {
         tripId: tripId,
+        tripActive: tripActive,
         referenceId: commentId,
         comments: comments,
         loggedInUserId: this.props.loggedInUserId
@@ -192,8 +197,9 @@ CommentList = React.createClass({
   displayName: 'CommentList',
 
   propTypes: {
-    comments: React.PropTypes.array,
-    tripId: React.PropTypes.string,
+    comments: React.PropTypes.array.isRequired,
+    tripId: React.PropTypes.string.isRequired,
+    tripActive: React.PropTypes.string.isRequired,
     referenceId: React.PropTypes.string,
     loggedInUserId: React.PropTypes.string
   },
@@ -212,11 +218,13 @@ CommentList = React.createClass({
       if (userData) {
         userName = userData.name;
       }
-      var canEdit = (userId === this.props.loggedInUserId);
+      var canEdit = (this.props.tripActive === 'Y') &&
+        (userId === this.props.loggedInUserId);
       commentList[count++] = React.createElement(
         Comment,
         {
           tripId: this.props.comments[i].tripId,
+          tripActive: this.props.tripActive,
           referenceId: this.props.comments[i].referenceId,
           commentId: this.props.comments[i].commentId,
           userId: userId,

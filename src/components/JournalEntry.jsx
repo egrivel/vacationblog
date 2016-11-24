@@ -44,6 +44,11 @@ var JournalEntry = React.createClass({
 
   mixins: [storeMixin()],
 
+  propTypes: {
+    tripId: React.PropTypes.string.isRequired,
+    journalId: React.PropTypes.string.isRequired
+  },
+
   /**
    * React lifecycle function. Called when the components is already
    * mounted and there are new props passed in.
@@ -65,6 +70,7 @@ var JournalEntry = React.createClass({
    * @private
    */
   _getStateFromStores: function() {
+    var tripData = TripStore.getTripData(this.props.tripId);
     var journalData = JournalStore.getData();
     var userName = '';
     var comments = null;
@@ -72,11 +78,20 @@ var JournalEntry = React.createClass({
     var isLoggedIn = UserStore.isUserLoggedIn();
     var loggedInUserId = UserStore.getLoggedInUser();
     var profileImg = null;
+    var tripActive = 'Y';
 
-    if (!journalData || !journalData.tripId || !journalData.journalId) {
+    if (!tripData || !tripData.active || (tripData.active !== 'Y')) {
+      tripActive = 'N';
+      canAddComment = false;
+    }
+
+    if (!journalData || !journalData.tripId || !journalData.journalId ||
+      (this.props.tripId !== journalData.tripId) ||
+      (this.props.journalId !== journalData.journalId)) {
       // There is no actual journal item. Clear out the state.
       return {
         tripId: null,
+        tripActive: tripActive,
         journalId: null,
         journalTitle: 'Not Found',
         journalText: 'The requested journal item was not found.',
@@ -117,6 +132,7 @@ var JournalEntry = React.createClass({
 
     return {
       tripId: journalData.tripId,
+      tripActive: tripActive,
       journalId: journalData.journalId,
       journalTitle: journalData.journalTitle,
       journalText: journalData.journalText,
@@ -163,8 +179,13 @@ var JournalEntry = React.createClass({
     var comments = null;
     if (tripId && journalId) {
       comments = (
-        <CommentList tripId={tripId} referenceId={journalId}
-          comments={this.state.comments} loggedInUserId={loggedInUserId}/>
+        <CommentList
+          tripId={tripId}
+          tripActive={this.state.tripActive}
+          referenceId={journalId}
+          comments={this.state.comments}
+          loggedInUserId={loggedInUserId}
+        />
       );
     }
 
