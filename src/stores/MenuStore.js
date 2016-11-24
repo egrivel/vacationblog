@@ -16,7 +16,7 @@ var UserStore = require('./UserStore');
 //  - submenu: next level menu to display when selected (non-leaf entries
 //    only)
 var _menuData = [
-  {id: 'm1', label: 'Trip', selected: false, visible: true,
+  {id: 'm1', label: 'Home', selected: false, visible: true,
     target: '#/'},
   {id: 'm2', label: 'Search', selected: false, visible: true,
     target: '#/search'},
