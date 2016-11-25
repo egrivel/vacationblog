@@ -22,7 +22,10 @@ var JournalWrapper = React.createClass({
   displayName: 'JournalWrapper',
 
   propTypes: {
-    params: React.PropTypes.object
+    params: React.PropTypes.object,
+    history: React.PropTypes.shape({
+      push: React.PropTypes.func.isRequired
+    })
   },
 
   /**
@@ -85,7 +88,7 @@ var JournalWrapper = React.createClass({
         journalId = this.props.params.journalId;
       }
     }
-    return <JournalEntry tripId={tripId} journalId={journalId}></JournalEntry>;
+    return <JournalEntry tripId={tripId} journalId={journalId} history={this.props.history}></JournalEntry>;
   }
 });
 

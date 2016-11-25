@@ -5,7 +5,6 @@
  * text and/or media.
  */
 
-var _ = require('lodash');
 var React = require('react');
 
 var MediaStore = require('../stores/MediaStore');
@@ -467,6 +466,7 @@ var JournalParagraph = React.createClass({
   propTypes: {
     // need trip ID to get media info
     tripId: React.PropTypes.string.isRequired,
+    tripActive: React.PropTypes.string.isRequired,
     text: React.PropTypes.string.isRequired
   },
 
@@ -497,6 +497,7 @@ var JournalParagraph = React.createClass({
       const comment = (
         <CommentList
           tripId={tripId}
+          tripActive={this.props.tripActive}
           referenceId={mediaId}
         />
       );

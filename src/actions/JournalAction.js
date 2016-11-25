@@ -84,6 +84,44 @@ var JournalAction = {
       tripId: tripId,
       journalId: journalId
     });
+  },
+
+  updateEditJournal: function(journalData) {
+    JournalAction._journalLoaded(journalData);
+  },
+
+  createJournal: function(tripId, journalData) {
+    const url = 'api/putJournal.php?tripId=' + tripId;
+    const data = {
+      tripId: journalData.tripId,
+      journalDate: journalData.journalDate,
+      journalTitle: journalData.journalTitle,
+      journalText: journalData.journalText
+    };
+    utils.postAsync(url, data, function(response) {
+      var data = JSON.parse(response);
+      if (data.resultCode === 200) {
+        // do something???
+      }
+    });
+  },
+
+  updateJournal: function(tripId, journalId, journalData) {
+    const url = 'api/putJournal.php?tripId=' + tripId +
+      '&journalId=' + journalId;
+    const data = {
+      tripId: journalData.tripId,
+      journalId: journalId,
+      journalDate: journalData.journalDate,
+      journalTitle: journalData.journalTitle,
+      journalText: journalData.journalText
+    };
+    utils.postAsync(url, data, function(response) {
+      var data = JSON.parse(response);
+      if (data.resultCode === 200) {
+        // do something???
+      }
+    });
   }
 };
 

@@ -215,8 +215,9 @@ var utils = {
       // Note: default to the American 12-hour time format. Allow
       // users to select a 24-hour time format in the future.
       var m = moment.tz(date, 'UTC');
-      return moment.tz(m, 'America/New_York')
+      const result = moment.tz(m, 'America/New_York')
         .format('dddd MMMM D YYYY h:mm:ssa z');
+      return result;
     }
     utils.warning('formatDate(' + JSON.stringify(date) + '): - unknown format');
     return date;

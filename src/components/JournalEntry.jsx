@@ -46,7 +46,10 @@ var JournalEntry = React.createClass({
 
   propTypes: {
     tripId: React.PropTypes.string.isRequired,
-    journalId: React.PropTypes.string.isRequired
+    journalId: React.PropTypes.string.isRequired,
+    history: React.PropTypes.shape({
+      push: React.PropTypes.func.isRequired
+    })
   },
 
   /**
@@ -93,6 +96,7 @@ var JournalEntry = React.createClass({
         tripId: null,
         tripActive: tripActive,
         journalId: null,
+        journalUserId: null,
         journalTitle: 'Not Found',
         journalText: 'The requested journal item was not found.',
         journalDate: null,
@@ -134,6 +138,7 @@ var JournalEntry = React.createClass({
       tripId: journalData.tripId,
       tripActive: tripActive,
       journalId: journalData.journalId,
+      journalUserId: journalData.userId,
       journalTitle: journalData.journalTitle,
       journalText: journalData.journalText,
       journalDate: journalData.journalDate,
@@ -158,6 +163,12 @@ var JournalEntry = React.createClass({
     event.stopPropagation();
   },
 
+  _editCallback: function() {
+    const editLink = '/journalEdit/' + this.state.tripId +
+      '/' + this.state.journalId;
+    this.props.history.push(editLink);
+  },
+
   render: function render() {
     var nr = 0;
     var tripId = this.state.tripId;
@@ -165,17 +176,31 @@ var JournalEntry = React.createClass({
     var loggedInUserId = this.state.loggedInUserId;
 
     var parList = utils.splitText(this.state.journalText);
-
     var paragraphs = null;
     if (tripId && journalId) {
-      paragraphs = parList.map(function(par) {
+      paragraphs = [];
+      for (let i = 0; i < parList.length; i++) {
+        const par = parList[i];
         nr++;
         var key = 'p-' + nr;
-        return (
-          <JournalParagraph tripId={tripId} key={key} text={par}/>
+        paragraphs.push(
+          <JournalParagraph
+            tripId={tripId}
+            tripActive={this.state.tripActive}
+            key={key}
+            text={par}
+          />
         );
-      });
+      }
     }
+
+    var editCallback = null;
+    if (this.state.tripActive &&
+      (this.state.tripActive === 'Y') &&
+      (loggedInUserId === this.state.journalUserId)) {
+      editCallback = this._editCallback;
+    }
+
     var comments = null;
     if (tripId && journalId) {
       comments = (
@@ -216,26 +241,28 @@ var JournalEntry = React.createClass({
     }
 
     var newComment = null;
-    if (this.state.canAddComment && tripId && journalId) {
-      if (CommentStore.isEditing(tripId, journalId)) {
+    if (this.state.tripActive === 'Y') {
+      if (this.state.canAddComment && tripId && journalId) {
+        if (CommentStore.isEditing(tripId, journalId)) {
+          newComment = (
+            <CommentEdit tripId={tripId} referenceId={journalId}
+              key={tripId + '-' + journalId}/>
+          );
+        } else {
+          newComment = (
+            <div className="commentEdit">
+              <a href="#" onClick={this._startEditing} className="addComment"
+                data-trip-id={tripId} data-reference-id={journalId}>
+                Add a comment
+              </a>
+            </div>
+          );
+        }
+      } else if (!this.state.isLoggedIn) {
         newComment = (
-          <CommentEdit tripId={tripId} referenceId={journalId}
-            key={tripId + '-' + journalId}/>
-        );
-      } else {
-        newComment = (
-          <div className="commentEdit">
-            <a href="#" onClick={this._startEditing} className="addComment"
-              data-trip-id={tripId} data-reference-id={journalId}>
-              Add a comment
-            </a>
-          </div>
+          <div className="commentAdd">Please login to comment.</div>
         );
       }
-    } else if (!this.state.isLoggedIn) {
-      newComment = (
-        <div className="commentAdd">Please login to comment.</div>
-      );
     }
 
     const backLink = (
@@ -249,7 +276,9 @@ var JournalEntry = React.createClass({
     return (
       <div className="journalitem">
         {backLink}
-        <JournalHeader title={this.state.journalTitle}
+        <JournalHeader
+          title={this.state.journalTitle}
+          editCallback={editCallback}
           date={this.state.journalDate}
           userName={this.state.userName}
           created={this.state.created}

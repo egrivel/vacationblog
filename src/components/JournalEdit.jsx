@@ -18,22 +18,22 @@ const JournalEdit = React.createClass({
 
   propTypes: {
     params: React.PropTypes.shape({
-      tripId: React.PropTypes.string.required,
-      journalId: React.PropTypes.string.required
+      tripId: React.PropTypes.string.isRequired,
+      journalId: React.PropTypes.string.isRequired
+    }),
+    history: React.PropTypes.shape({
+      push: React.PropTypes.func.isRequired
     })
   },
 
   componentDidMount: function() {
     const tripId = this.props.params.tripId;
     const journalId = this.props.params.journalId;
-    const journalData = JournalStore.getData();
-    if ((journalData.tripId !== tripId) ||
-      (journalData.journalId !== journalId)) {
-      if (journalId === '_new') {
-        JournalAction.clearJournal(tripId, journalId);
-      } else {
-        JournalAction.loadJournal(tripId, journalId);
-      }
+
+    if (journalId === '_new') {
+      JournalAction.clearJournal(tripId, journalId);
+    } else {
+      JournalAction.loadJournal(tripId, journalId);
     }
   },
 
@@ -67,11 +67,50 @@ const JournalEdit = React.createClass({
   },
 
   // ---
+  // Button functions
+  // ---
+
+  _save: function() {
+    const tripId = this.props.params.tripId;
+    const journalId = this.props.params.journalId;
+    const journalData = this.state.journalData;
+
+    let text = journalData.journalText;
+    text = String(text).replace(/\n\n+/g, '&lf;');
+    text = text.replace(/\n+/g, ' ');
+    text = text.replace(/\[([\d\-abcde]+)\]/g, '[IMG $1]');
+    journalData.journalText = text;
+
+    if (journalId === '_new') {
+      JournalAction.createJournal(tripId, journalData);
+      this.props.history.push('/trip/' + tripId);
+    } else {
+      JournalAction.updateJournal(tripId, journalId, journalData);
+      this.props.history.push('/journal/' + tripId + '/' + journalId);
+    }
+  },
+
+  _cancel: function() {
+    const tripId = this.props.params.tripId;
+    const journalId = this.props.params.journalId;
+
+    if (journalId === '_new') {
+      // clear the edited data
+      JournalAction.clearJournal(tripId, journalId);
+      this.props.history.push('/trip/' + tripId);
+    } else {
+      // re-load the original content of the journal entry
+      JournalAction.loadJournal(tripId, journalId);
+      this.props.history.push('/journal/' + tripId + '/' + journalId);
+    }
+  },
+
+  // ---
   // Render Functions
   // ---
 
   _renderTitle: function() {
-    const title = _.get(this.state.journalData, 'journalTitle');
+    const title = _.get(this.state.journalData, 'journalTitle', '');
 
     const result = [];
     result.push(
@@ -97,7 +136,7 @@ const JournalEdit = React.createClass({
   },
 
   _renderDate: function() {
-    const date = _.get(this.state.journalData, 'journalDate');
+    const date = _.get(this.state.journalData, 'journalDate', '');
 
     const result = [];
     result.push(
@@ -105,7 +144,7 @@ const JournalEdit = React.createClass({
         key="date-label"
         className="formLabel"
       >
-        Title
+        Date
       </div>
     );
     result.push(
@@ -123,9 +162,10 @@ const JournalEdit = React.createClass({
   },
 
   _renderText: function() {
-    let text = _.get(this.state.journalData, 'journalText');
+    let text = _.get(this.state.journalData, 'journalText', '');
     if (text) {
       text = String(text).replace(/&lf;/g, '\n\n');
+      text = text.replace(/\[IMG ([\w\-]+)\]/g, '[$1]');
     }
 
     const result = [];
@@ -153,8 +193,32 @@ const JournalEdit = React.createClass({
     return result;
   },
 
+  _renderButtons: function() {
+    const result = [];
+
+    result.push(
+      <div
+        key="buttons-label"
+        className="formLabel"
+      >
+      </div>
+    );
+
+    result.push(
+      <div
+        key="buttons-value"
+        className="formValue"
+      >
+        <button onClick={this._save}>Save</button>
+        {' '}
+        <button onClick={this._cancel}>Cancel</button>
+      </div>
+    );
+
+    return result;
+  },
+
   render: function() {
-    const journalData = this.state.journalData;
     return (
       <div>
         <p>
@@ -164,6 +228,7 @@ const JournalEdit = React.createClass({
         {this._renderTitle()}
         {this._renderDate()}
         {this._renderText()}
+        {this._renderButtons()}
         <p>{JSON.stringify(this.state.journalData)}</p>
       </div>
     );
