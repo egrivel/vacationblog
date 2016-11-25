@@ -17,12 +17,23 @@ if (!$auth->canGetJournal()) {
    if (isset($data['journalId'])) {
       $journalId = $data['journalId'];
    }
-   if (($tripId === '') || ($journalId === '')) {
+   if ($tripId === '') {
       $response = errorResponse(RESPONSE_BAD_REQUEST);
    } else {
-      $object = new Journal($tripId, $journalId);
-      if (isset($data['userId'])) {
-         $object->setUserId($data['userId']);
+      if ($journalId === '') {
+         // Create a new journal entry
+         $journalId = Journal::generateJournalId();
+         $object = new Journal($tripId, $journalId);
+         $object->setUserId($auth->getUserId());
+         $object->setDeleted('N');
+      } else {
+         $object = new Journal($tripId, $journalId);
+         if (isset($data['userId'])) {
+            $object->setUserId($data['userId']);
+         }
+         if (isset($data['deleted'])) {
+            $object->setDeleted($data['deleted']);
+         }
       }
       if (isset($data['journalDate'])) {
          $object->setJournalDate($data['journalDate']);
@@ -32,9 +43,6 @@ if (!$auth->canGetJournal()) {
       }
       if (isset($data['journalText'])) {
          $object->setJournalText($data['journalText']);
-      }
-      if (isset($data['deleted'])) {
-         $object->setDeleted($data['deleted']);
       }
       if ($object->save()) {
          $response = successResponse();
