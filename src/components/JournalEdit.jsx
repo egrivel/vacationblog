@@ -3,6 +3,10 @@
 const _ = require('lodash');
 const React = require('react');
 
+const Textbox = require('./standard/Textbox.jsx');
+const Textarea = require('./standard/Textarea.jsx');
+const ButtonBar = require('./standard/ButtonBar.jsx');
+
 const storeMixin = require('./StoreMixin');
 const TripStore = require('../stores/TripStore');
 const JournalStore = require('../stores/JournalStore');
@@ -48,21 +52,21 @@ const JournalEdit = React.createClass({
   // Update functions
   // ---
 
-  _updateTitle: function(event) {
+  _updateTitle: function(value) {
     const journalData = _.clone(this.state.journalData);
-    journalData.journalTitle = event.target.value;
+    journalData.journalTitle = value;
     JournalAction.updateEditJournal(journalData);
   },
 
-  _updateDate: function(event) {
+  _updateDate: function(value) {
     const journalData = _.clone(this.state.journalData);
-    journalData.journalDate = event.target.value;
+    journalData.journalDate = value;
     JournalAction.updateEditJournal(journalData);
   },
 
-  _updateText: function(event) {
+  _updateText: function(value) {
     const journalData = _.clone(this.state.journalData);
-    journalData.journalText = event.target.value;
+    journalData.journalText = value;
     JournalAction.updateEditJournal(journalData);
   },
 
@@ -112,53 +116,27 @@ const JournalEdit = React.createClass({
   _renderTitle: function() {
     const title = _.get(this.state.journalData, 'journalTitle', '');
 
-    const result = [];
-    result.push(
-      <div
-        key="title-label"
-        className="formLabel"
-      >
-        Title
-      </div>
+    return (
+      <Textbox
+        fieldId="title"
+        label="Title"
+        value={title}
+        onBlur={this._updateTitle}
+      />
     );
-    result.push(
-      <div
-        key="title-value"
-        className="formValue"
-      >
-        <input type="text"
-          value={title}
-          onChange={this._updateTitle}/>
-      </div>
-    );
-
-    return result;
   },
 
   _renderDate: function() {
     const date = _.get(this.state.journalData, 'journalDate', '');
 
-    const result = [];
-    result.push(
-      <div
-        key="date-label"
-        className="formLabel"
-      >
-        Date
-      </div>
+    return (
+      <Textbox
+        fieldId="date"
+        label="Date"
+        value={date}
+        onBlur={this._updateDate}
+      />
     );
-    result.push(
-      <div
-        key="date-value"
-        className="formValue"
-      >
-        <input type="text"
-          value={date}
-          onChange={this._updateDate}/>
-      </div>
-    );
-
-    return result;
   },
 
   _renderText: function() {
@@ -168,54 +146,54 @@ const JournalEdit = React.createClass({
       text = text.replace(/\[IMG ([\w\-]+)\]/g, '[$1]');
     }
 
-    const result = [];
-    result.push(
-      <div
-        key="text-label"
-        className="formLabel"
-      >
-        Text
-      </div>
+    return (
+      <Textarea
+        fieldId="text"
+        label="Text"
+        value={text}
+        onBlur={this._updateText}
+      />
     );
-    result.push(
-      <div
-        key="text-value"
-        className="formValue"
-      >
-        <textarea rows={10} cols={60}
-          value={text}
-          onChange={this._updateText}
-          onBlur={this._saveText}>
-        </textarea>
-      </div>
-    );
-
-    return result;
   },
 
   _renderButtons: function() {
-    const result = [];
+    const buttons = [];
+    buttons.push({
+      label: 'Save',
+      onClick: this._save
+    });
+    buttons.push({
+      label: 'Cancel',
+      onClick: this._cancel
+    });
 
-    result.push(
-      <div
-        key="buttons-label"
-        className="formLabel"
-      >
-      </div>
+    return (
+      <ButtonBar
+        buttons={buttons}
+      />
     );
+    // const result = [];
 
-    result.push(
-      <div
-        key="buttons-value"
-        className="formValue"
-      >
-        <button onClick={this._save}>Save</button>
-        {' '}
-        <button onClick={this._cancel}>Cancel</button>
-      </div>
-    );
+    // result.push(
+    //   <div
+    //     key="buttons-label"
+    //     className="formLabel"
+    //   >
+    //   </div>
+    // );
 
-    return result;
+    // result.push(
+    //   <div
+    //     key="buttons-value"
+    //     className="formValue"
+    //   >
+    //     <button onClick={this._save}>Save</button>
+    //     {' '}
+    //     <button onClick={this._cancel}>Cancel</button>
+    //   </div>
+    // );
+
+    // return result;
   },
 
   render: function() {
