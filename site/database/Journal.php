@@ -112,7 +112,7 @@ class Journal {
          throw new InvalidArgumentException("Must provide a trip ID");
       }
       if (!isset($journalId) || ($journalId === "")) {
-         throw new InvalidArgumentException("Must provide a valid journal ID");
+         throw new InvalidArgumentException("Must provide a journal ID");
       }
 
       $this->load($tripId, $journalId);
@@ -177,12 +177,12 @@ class Journal {
       $line = mysql_fetch_array($result, MYSQL_ASSOC);
       $this->tripId = db_sql_decode($line["tripId"]);
       $this->journalId = db_sql_decode($line["journalId"]);
-      $this->created = db_sql_decode($line["created"]);
+      $this->created = db_sql_decode($line["utc_created"]);
       if (!isset($this->created) || ($this->created === "")) {
          // For timestamp, default is null rather than empty string
          $this->created = null;
       }
-      $this->latestUpdated = db_sql_decode($line["updated"]);
+      $this->latestUpdated = db_sql_decode($line["utc_updated"]);
       if (!isset($this->latestUpdated) || ($this->latestUpdated === "")) {
          // For timestamp, default is null rather than empty string
          $this->latestUpdated = null;
@@ -224,7 +224,12 @@ class Journal {
 
       $tripIdValue = db_sql_encode($tripId);
       $journalIdValue = db_sql_encode($journalId);
-      $query = "SELECT * FROM blogJournal "
+      $query = "SELECT *, "
+         . "CONVERT_TZ(`created`, @@session.time_zone, '+00:00') "
+         .   "AS `utc_created`, "
+         . "CONVERT_TZ(`updated`, @@session.time_zone, '+00:00') "
+         .   "AS `utc_updated` "
+         . "FROM blogJournal "
          . "WHERE tripId=$tripIdValue "
          .   "AND journalId=$journalIdValue "
          . "ORDER BY updated DESC "
@@ -514,7 +519,12 @@ class Journal {
    public function getPreviousJournal() {
       $tripId = db_sql_encode($this->tripId);
       $journalId = db_sql_encode($this->journalId);
-      $created = db_sql_encode($this->created);
+      if ($this->created && ($this->created !== '0000-00-00 00:00:00')) {
+         $created = "CONVERT_TZ(" .db_sql_encode($this->created)
+            . ",'+00:00','SYSTEM')";
+      } else {
+         $created = db_sql_encode($this->created);
+      }
 
       $query = ""
          . "SELECT * "
@@ -572,7 +582,12 @@ class Journal {
    public function getNextJournal() {
       $tripId = db_sql_encode($this->tripId);
       $journalId = db_sql_encode($this->journalId);
-      $created = db_sql_encode($this->created);
+      if ($this->created && ($this->created !== '0000-00-00 00:00:00')) {
+         $created = "CONVERT_TZ(" .db_sql_encode($this->created)
+            . ",'+00:00','SYSTEM')";
+      } else {
+         $created = db_sql_encode($this->created);
+      }
 
       $query = ""
          . "SELECT * "
@@ -672,6 +687,19 @@ class Journal {
       }
 
       return $list;
+   }
+
+   /**
+    * generate a unique journal ID. The unique ID is a base-64 encoding
+    * of a random value. Since the journal IDs are at most 32 chars
+    * long, the random value is 24 characters long
+    */
+   public static function generateJournalId() {
+    $value = random_bytes(24);
+
+    $data = substr(base64_encode($value), 0, 32);
+    $data = str_replace(array('+','/','='), array('-','_',''), $data);
+    return $data;
    }
 }
 ?>

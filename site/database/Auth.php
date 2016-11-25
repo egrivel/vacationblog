@@ -122,12 +122,12 @@ class Auth {
    protected function loadFromResult($result) {
       $line = mysql_fetch_array($result, MYSQL_ASSOC);
       $this->authId = db_sql_decode($line['authId']);
-      $this->created = db_sql_decode($line["created"]);
+      $this->created = db_sql_decode($line["utc_created"]);
       if (!isset($this->created) || ($this->created === "")) {
          // For timestamp, default is null rather than empty string
          $this->created = null;
       }
-      $this->latestUpdated = db_sql_decode($line["updated"]);
+      $this->latestUpdated = db_sql_decode($line["utc_updated"]);
       if (!isset($this->latestUpdated) || ($this->latestUpdated === "")) {
          // For timestamp, default is null rather than empty string
          $this->latestUpdated = null;
@@ -157,7 +157,12 @@ class Auth {
       $this->authId = $authId;
 
       $authIdValue = db_sql_encode($authId);
-      $query = "SELECT * FROM blogAuth "
+      $query = "SELECT *, "
+         . "CONVERT_TZ(`created`, @@session.time_zone, '+00:00') "
+         .   "AS `utc_created`, "
+         . "CONVERT_TZ(`updated`, @@session.time_zone, '+00:00') "
+         .   "AS `utc_updated` "
+         . "FROM blogAuth "
          . "WHERE authId=$authIdValue "
          . "ORDER BY updated DESC "
          . "LIMIT 1";

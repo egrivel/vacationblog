@@ -192,12 +192,12 @@ class User {
       $line = mysql_fetch_array($result, MYSQL_ASSOC);
       $this->userId = db_sql_decode($line['userId']);
       $this->password = db_sql_decode($line['password']);
-      $this->created = db_sql_decode($line['created']);
+      $this->created = db_sql_decode($line['utc_created']);
       if (!isset($this->created) || ($this->created === "")) {
          // For timestamp, default is null rather than empty string
          $this->created = null;
       }
-      $this->latestUpdated = db_sql_decode($line["updated"]);
+      $this->latestUpdated = db_sql_decode($line["utc_updated"]);
       if (!isset($this->latestUpdated) || ($this->latestUpdated === "")) {
          // For timestamp, default is null rather than empty string
          $this->latestUpdated = null;
@@ -234,7 +234,12 @@ class User {
       $this->userId = $userId;
 
       $userIdValue = db_sql_encode($userId);
-      $query = "SELECT * FROM blogUser "
+      $query = "SELECT *, "
+         . "CONVERT_TZ(`created`, @@session.time_zone, '+00:00') "
+         .   "AS `utc_created`, "
+         . "CONVERT_TZ(`updated`, @@session.time_zone, '+00:00') "
+         .   "AS `utc_updated` "
+         . "FROM blogUser "
          . "WHERE userId=$userIdValue "
          . "ORDER BY updated DESC "
          . "LIMIT 1";

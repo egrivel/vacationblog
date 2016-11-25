@@ -192,12 +192,12 @@ class Comment {
       $line = mysql_fetch_array($result, MYSQL_ASSOC);
       $this->tripId = db_sql_decode($line['tripId']);
       $this->commentId = db_sql_decode($line['commentId']);
-      $this->created = db_sql_decode($line["created"]);
+      $this->created = db_sql_decode($line["utc_created"]);
       if (!isset($this->created) || ($this->created === "")) {
          // For timestamp, default is null rather than empty string
          $this->created = null;
       }
-      $this->latestUpdated = db_sql_decode($line["updated"]);
+      $this->latestUpdated = db_sql_decode($line["utc_updated"]);
       if (!isset($this->latestUpdated) || ($this->latestUpdated === "")) {
          // For timestamp, default is null rather than empty string
          $this->latestUpdated = null;
@@ -238,7 +238,12 @@ class Comment {
 
       $tripIdValue = db_sql_encode($this->tripId);
       $commentIdValue = db_sql_encode($commentId);
-      $query = "SELECT * FROM blogComment "
+      $query = "SELECT *, "
+         . "CONVERT_TZ(`created`, @@session.time_zone, '+00:00') "
+         .   "AS `utc_created`, "
+         . "CONVERT_TZ(`updated`, @@session.time_zone, '+00:00') "
+         .   "AS `utc_updated` "
+         . "FROM blogComment "
          . "WHERE tripId=$tripIdValue "
          .   "AND commentId=$commentIdValue "
          . "ORDER BY updated DESC "

@@ -158,12 +158,12 @@ class Feedback {
       $this->tripId = db_sql_decode($line["tripId"]);
       $this->referenceId = db_sql_decode($line["referenceId"]);
       $this->userId = db_sql_decode($line["userId"]);
-      $this->created = db_sql_decode($line["created"]);
+      $this->created = db_sql_decode($line["utc_created"]);
       if (!isset($this->created) || ($this->created === "")) {
          // For timestamp, default is null rather than empty string
          $this->created = null;
       }
-      $this->latestUpdated = db_sql_decode($line["updated"]);
+      $this->latestUpdated = db_sql_decode($line["utc_updated"]);
       if (!isset($this->latestUpdated) || ($this->latestUpdated === "")) {
          // For timestamp, default is null rather than empty string
          $this->latestUpdated = null;
@@ -212,7 +212,12 @@ class Feedback {
       $tripIdValue = db_sql_encode($this->tripId);
       $referenceIdValue = db_sql_encode($this->referenceId);
       $userIdValue = db_sql_encode($this->userId);
-      $query = "SELECT * FROM blogFeedback "
+      $query = "SELECT *, "
+         . "CONVERT_TZ(`created`, @@session.time_zone, '+00:00') "
+         .   "AS `utc_created`, "
+         . "CONVERT_TZ(`updated`, @@session.time_zone, '+00:00') "
+         .   "AS `utc_updated` "
+         . "FROM blogFeedback "
          . "WHERE tripId=$tripIdValue "
          .   "AND referenceId=$referenceIdValue "
          .   "AND userId=$userIdValue "

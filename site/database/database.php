@@ -121,7 +121,14 @@ function db_get_update_default() {
 function db_created($value) {
   $version = db_get_installed_version();
   if ($value) {
-    return ', created=' . db_sql_encode($value);
+    if ($value === '0000-00-00 00:00:00') {
+      $local = db_sql_encode($value);
+    } else {
+      // Convert the timestamp, which is provided in UTC, to local time,
+      // which is what mySQL is expecting as input
+      $local = "CONVERT_TZ('$value','+00:00','SYSTEM')";
+    }
+    return ", created=$local";
   } else if ($version === 'mysql-5.7') {
     return '';
   } else {
@@ -132,7 +139,14 @@ function db_created($value) {
 function db_updated($value) {
   $version = db_get_installed_version();
   if ($value) {
-    return ', updated=' . db_sql_encode($value);
+    if ($value === '0000-00-00 00:00:00') {
+      $local = db_sql_encode($value);
+    } else {
+      // Convert the timestamp, which is provided in UTC, to local time,
+      // which is what mySQL is expecting as input
+      $local = "CONVERT_TZ('$value','+00:00','SYSTEM')";
+    }
+    return ", updated=$local";
   } else if ($version === 'mysql-5.7') {
     return '';
   } else {
