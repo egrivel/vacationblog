@@ -172,28 +172,6 @@ const JournalEdit = React.createClass({
         buttons={buttons}
       />
     );
-    // const result = [];
-
-    // result.push(
-    //   <div
-    //     key="buttons-label"
-    //     className="formLabel"
-    //   >
-    //   </div>
-    // );
-
-    // result.push(
-    //   <div
-    //     key="buttons-value"
-    //     className="formValue"
-    //   >
-    //     <button onClick={this._save}>Save</button>
-    //     {' '}
-    //     <button onClick={this._cancel}>Cancel</button>
-    //   </div>
-    // );
-
-    // return result;
   },
 
   render: function() {
