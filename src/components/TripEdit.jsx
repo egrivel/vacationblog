@@ -119,13 +119,17 @@ var TripEdit = React.createClass({
     TripAction.updateEditTrip(tripData);
   },
 
-  _saveData: function() {
+  _save: function() {
     const tripData = _.clone(this.state.tripData);
     tripData.tripId = this.props.params.tripId;
     if (tripData.tripEditId) {
       tripData.tripId = tripData.tripEditId;
     }
     TripAction.saveTrip(tripData);
+    this.context.router.push('/admin/trip');
+  },
+
+  _close: function() {
     this.context.router.push('/admin/trip');
   },
 
@@ -374,14 +378,14 @@ var TripEdit = React.createClass({
         key="active-value"
         className="formValue"
       >
-        <label htmlFor="active-input">
-          <input
-            type="checkbox"
-            id="active-input"
-            value="Y"
-            onChange={this._updateActive}
-            checked={checked}
-          />
+        <input
+          type="checkbox"
+          id="active-input"
+          value="Y"
+          onChange={this._updateActive}
+          checked={checked}
+        />
+        <label className="checkbox" htmlFor="active-input">
           {' '}
           Active
         </label>
@@ -478,8 +482,8 @@ var TripEdit = React.createClass({
       }
       data = (
         <div>
-          <div className="formLabel">ID</div>
-          <div className="formValue">{id}</div>
+          <div key="id-label" className="formLabel">ID</div>
+          <div key="id-value" className="formValue">{id}</div>
           {this._renderNameInput()}
           {this._renderDescriptionInput()}
           {this._renderBannerImg()}
@@ -487,7 +491,12 @@ var TripEdit = React.createClass({
           {this._renderEndDate()}
           {this._renderActive()}
           {this._renderContributorList()}
-          <input type="submit" value="Save" onClick={this._saveData}/>
+          <div key="buttons-label" className="formLabel"></div>
+          <div key="buttons-value" className="formValue">
+            <button onClick={this._save}>Save</button>
+            {' '}
+            <button onClick={this._close}>Close</button>
+          </div>
           <TripEditContrib
             data={this.state.lightboxData}
             show={this.state.showEditLightbox}

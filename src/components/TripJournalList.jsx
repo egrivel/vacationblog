@@ -30,15 +30,9 @@ const TripJournalList = React.createClass({
   },
 
   componentDidMount: function() {
-    const tripId = this.props.tripId;
-    const journalList = TripStore.getTripJournals(tripId);
-    if (!journalList || !journalList.length) {
-      TripAction.loadTripJournals(tripId);
-    }
-    const userList = TripStore.getTripUsers(tripId);
-    if (!userList || !userList.length) {
-      TripAction.loadTripUsers(tripId);
-    }
+    // always (re-) load upon mounting.
+    TripAction.loadTripJournals(this.props.tripId);
+    TripAction.loadTripUsers(this.props.tripId);
   },
 
   _renderItem: function(tripId, journalId, journalDate, userList) {

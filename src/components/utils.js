@@ -88,8 +88,8 @@ function _recursivelyGetNodes(text, count) {
     text = text.substring(text.indexOf('['));
   }
 
-  if (text.substring(0, 4) === '[EM]') {
-    end = text.indexOf('[/EM]');
+  if (text.substring(0, 4).toUpperCase() === '[EM]') {
+    end = text.toUpperCase().indexOf('[/EM]');
     if (end > 0) {
       nodes.push(React.DOM.em({key: count},
                               _recursivelyGetNodes(text.substring(4, end),
@@ -127,7 +127,7 @@ function _recursivelyGetNodes(text, count) {
                              _recursivelyGetNodes(text.substring(3),
                                                   count + 1)));
     }
-  } else if (text.substring(0, 6) === '[LINK ') {
+  } else if (text.substring(0, 6).toUpperCase() === '[LINK ') {
     var endOpen = text.indexOf(']');
     var open = '';
     if (endOpen > 0) {
@@ -140,7 +140,7 @@ function _recursivelyGetNodes(text, count) {
     }
     if (open) {
       var href = open;
-      end = text.indexOf('[/LINK]');
+      end = text.toUpperCase().indexOf('[/LINK]');
       if (end > 0) {
         nodes.push(React.DOM.a({href: href, target: '_blank', key: count},
                                _recursivelyGetNodes(text.substring(0, end),

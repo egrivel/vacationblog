@@ -636,6 +636,13 @@ label {
   margin-right: 1em;
 }
 
+label.checkbox {
+  width: inherit;
+  text-align: left;
+  margin: 0;
+  display: inline;
+}
+
 div.buttonbar input {
   margin-right: 1em;
 }

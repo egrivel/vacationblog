@@ -32,9 +32,10 @@ var FeedbackAction = {
   setLike: function(tripId, referenceId, userId) {
     var url = 'api/putFeedback.php';
     var data = {};
-    data.tripId = encodeURIComponent(tripId);
-    data.referenceId = encodeURIComponent(referenceId);
-    data.userId = encodeURIComponent(userId);
+    // Note: do NOT encode the data for a POST
+    data.tripId = tripId;
+    data.referenceId = referenceId;
+    data.userId = userId;
     data.type = 'like';
     data.deleted = 'N';
     utils.postAsync(url, data,
@@ -44,9 +45,10 @@ var FeedbackAction = {
   clearLike: function(tripId, referenceId, userId) {
     var url = 'api/putFeedback.php';
     var data = {};
-    data.tripId = encodeURIComponent(tripId);
-    data.referenceId = encodeURIComponent(referenceId);
-    data.userId = encodeURIComponent(userId);
+    // Note: do NOT encode the data for a POST
+    data.tripId = tripId;
+    data.referenceId = referenceId;
+    data.userId = userId;
     data.type = 'like';
     data.deleted = 'Y';
     utils.postAsync(url, data,
@@ -56,9 +58,10 @@ var FeedbackAction = {
   setPlus: function(tripId, referenceId, userId) {
     var url = 'api/putFeedback.php';
     var data = {};
-    data.tripId = encodeURIComponent(tripId);
-    data.referenceId = encodeURIComponent(referenceId);
-    data.userId = encodeURIComponent(userId);
+    // Note: do NOT encode the data for a POST
+    data.tripId = tripId;
+    data.referenceId = referenceId;
+    data.userId = userId;
     data.type = 'plus';
     data.deleted = 'N';
     utils.postAsync(url, data,
@@ -68,9 +71,10 @@ var FeedbackAction = {
   clearPlus: function(tripId, referenceId, userId) {
     var url = 'api/putFeedback.php';
     var data = {};
-    data.tripId = encodeURIComponent(tripId);
-    data.referenceId = encodeURIComponent(referenceId);
-    data.userId = encodeURIComponent(userId);
+    // Note: do NOT encode the data for a POST
+    data.tripId = tripId;
+    data.referenceId = referenceId;
+    data.userId = userId;
     data.type = 'plus';
     data.deleted = 'Y';
     utils.postAsync(url, data,

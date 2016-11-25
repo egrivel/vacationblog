@@ -71,6 +71,12 @@ function _startReadingLink(tripId, journalId) {
 var TripDescription = React.createClass({
   displayName: 'TripDescription',
 
+  propTypes: {
+    params: React.PropTypes.shape({
+      tripId: React.PropTypes.string
+    })
+  },
+
   getInitialState: function() {
     return _getStateFromStores();
   },
@@ -82,6 +88,13 @@ var TripDescription = React.createClass({
   componentDidMount: function() {
     TripStore.addChangeListener(this._onChange);
     UserStore.addChangeListener(this._onChange);
+
+    if (this.props.params.tripId) {
+      TripAction.setCurrentTrip(this.props.params.tripId);
+      TripAction.loadTripUsers(this.props.params.tripId);
+    } else {
+      TripAction.setCurrentTrip(null);
+    }
     this.getDataIfNeeded(this.props);
   },
 

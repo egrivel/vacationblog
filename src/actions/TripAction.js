@@ -187,7 +187,7 @@ const TripAction = {
     sendObj.profileImg = data.profileImg;
     sendObj.message = data.message;
     sendObj.deleted = 'N';
-    utils.postAsync(url, sendObj, function(response) {
+    utils.postAsync(url, sendObj, function() {
       TripAction.loadTripUsers(data.tripId);
     });
   },
@@ -201,7 +201,7 @@ const TripAction = {
     sendObj.profileImg = data.profileImg;
     sendObj.message = data.message;
     sendObj.deleted = 'Y';
-    utils.postAsync(url, sendObj, function(response) {
+    utils.postAsync(url, sendObj, function() {
       TripAction.loadTripUsers(data.tripId);
     });
   }

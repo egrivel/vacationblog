@@ -219,17 +219,31 @@ const JournalEdit = React.createClass({
   },
 
   render: function() {
+    const journalData = this.state.journalData;
+    let itemTitle = '(untitled)';
+    let itemDate = '(without a date)';
+
+    if (journalData && journalData.journalTitle) {
+      itemTitle = journalData.journalTitle;
+    }
+    if (journalData && journalData.journalDate) {
+      itemDate = journalData.journalDate;
+    }
     return (
       <div>
         <p>
-          Edit journal trip {this.props.params.tripId}
-          {' '} item {this.props.params.journalId}
+          Edit blog post <em>{itemTitle}</em> dated {itemDate}.
+        </p>
+        <p>
+          To include photos in this post, put the photo ID in square brackets,
+          e.g. [20160101-101112]. Additional formatting: use [EM]..[/EM] for
+          emphasis (italics). Insert a link by using the [LINK (target)]
+          label [/LINK] construct.
         </p>
         {this._renderTitle()}
         {this._renderDate()}
         {this._renderText()}
         {this._renderButtons()}
-        <p>{JSON.stringify(this.state.journalData)}</p>
       </div>
     );
   }
