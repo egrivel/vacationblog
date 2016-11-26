@@ -402,7 +402,12 @@ class Journal {
          return null;
       }
       $hashValue = db_sql_encode($hash);
-      $query = "SELECT * FROM blogJournal "
+      $query = "SELECT *, "
+         . "CONVERT_TZ(`created`, @@session.time_zone, '+00:00') "
+         .   "AS `utc_created`, "
+         . "CONVERT_TZ(`updated`, @@session.time_zone, '+00:00') "
+         .   "AS `utc_updated` "
+         . "FROM blogJournal "
          . "WHERE hash=$hashValue "
          . "ORDER BY updated DESC "
          . "LIMIT 1";
@@ -428,7 +433,7 @@ class Journal {
       return null;
    }
 
-   static public function getFirstJournal($tripId = '') {
+   static public function getFirstJournalId($tripId = '') {
       $query = ""
          . "SELECT * "
          .   "FROM blogJournal "
@@ -462,17 +467,11 @@ class Journal {
          return null;
       }
 
-      // Create an instance with a special ID '-' to bypass the
-      // checks on empty ID. The ID value will be overwritten by the
-      // value coming back from the database anyway.
-      $object = new Journal('-', '-');
-      if ($object->loadFromResult($result)) {
-         return $object;
-      }
-      return null;
+      $line = mysql_fetch_array($result, MYSQL_ASSOC);
+      return db_sql_decode($line["journalId"]);
    }
 
-   static public function getLastJournal($tripId = '') {
+   static public function getLastJournalId($tripId = '') {
       $query = ""
          . "SELECT * "
          .   "FROM blogJournal "
@@ -506,19 +505,14 @@ class Journal {
          return null;
       }
 
-      // Create an instance with a special ID '-' to bypass the
-      // checks on empty ID. The ID value will be overwritten by the
-      // value coming back from the database anyway.
-      $object = new Journal('-', '-');
-      if ($object->loadFromResult($result)) {
-         return $object;
-      }
-      return null;
+      $line = mysql_fetch_array($result, MYSQL_ASSOC);
+      return db_sql_decode($line["journalId"]);
    }
 
-   public function getPreviousJournal() {
+   public function getPreviousJournalId() {
       $tripId = db_sql_encode($this->tripId);
       $journalId = db_sql_encode($this->journalId);
+      $journalDate = db_sql_encode($this->journalDate);
       if ($this->created && ($this->created !== '0000-00-00 00:00:00')) {
          $created = "CONVERT_TZ(" .db_sql_encode($this->created)
             . ",'+00:00','SYSTEM')";
@@ -545,12 +539,12 @@ class Journal {
          .     "AND blogJournal.deleted != 'Y' "
          .     "AND ( "
          .       "( "
-         .         "blogJournal.journalId = $journalId "
+         .         "blogJournal.journalDate = $journalDate "
          .         "AND blogJournal.created < $created "
          .       ") "
          .       "OR "
          .       "( "
-         .         "blogJournal.journalId < $journalId "
+         .         "blogJournal.journalDate < $journalDate "
          .       ") "
          .     ") "
          .   "ORDER BY blogJournal.journalDate DESC, "
@@ -569,19 +563,22 @@ class Journal {
          return null;
       }
 
-      // Create an instance with a special ID '-' to bypass the
-      // checks on empty ID. The ID value will be overwritten by the
-      // value coming back from the database anyway.
-      $object = new Journal('-', '-');
-      if ($object->loadFromResult($result)) {
-         return $object;
-      }
-      return null;
+      $line = mysql_fetch_array($result, MYSQL_ASSOC);
+      return db_sql_decode($line["journalId"]);
    }
 
-   public function getNextJournal() {
+   /*
+    * This should only retrieve the ID of the next journal item. Journal items
+    * are ordered by their _journal date_ and, within a date, by their
+    * _create_ timestamp
+    *
+    * The t1 table is a list of all the journal entries for this trip with,
+    * for each entry, the latest update date.
+    */
+   public function getNextJournalId() {
       $tripId = db_sql_encode($this->tripId);
       $journalId = db_sql_encode($this->journalId);
+      $journalDate = db_sql_encode($this->journalDate);
       if ($this->created && ($this->created !== '0000-00-00 00:00:00')) {
          $created = "CONVERT_TZ(" .db_sql_encode($this->created)
             . ",'+00:00','SYSTEM')";
@@ -608,12 +605,12 @@ class Journal {
          .     "AND blogJournal.deleted != 'Y' "
          .     "AND ( "
          .       "( "
-         .         "blogJournal.journalId = $journalId "
+         .         "blogJournal.journalDate = $journalDate "
          .         "AND blogJournal.created > $created "
          .       ") "
          .       "OR "
          .       "( "
-         .         "blogJournal.journalId > $journalId "
+         .         "blogJournal.journalDate > $journalDate "
          .       ") "
          .     ") "
          .   "ORDER BY blogJournal.journalDate ASC, "
@@ -632,14 +629,8 @@ class Journal {
          return null;
       }
 
-      // Create an instance with a special ID '-' to bypass the
-      // checks on empty ID. The ID value will be overwritten by the
-      // value coming back from the database anyway.
-      $object = new Journal('-', '-');
-      if ($object->loadFromResult($result)) {
-         return $object;
-      }
-      return null;
+      $line = mysql_fetch_array($result, MYSQL_ASSOC);
+      return db_sql_decode($line["journalId"]);
    }
 
    static function listTripJournalDates($tripId) {
