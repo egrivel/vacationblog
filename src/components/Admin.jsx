@@ -14,7 +14,7 @@ var Admin = React.createClass({
             <a href="#/admin/trip">Trip Administration</a>
           </li>
           <li>
-            User Administration
+            <a href="#/admin/user">User Administration</a>
           </li>
           <li>
             Site Administration

@@ -10,6 +10,8 @@ var Welcome = require('./components/Welcome.jsx');
 var TripDescription = require('./components/TripDescription.jsx');
 var TripEdit = require('./components/TripEdit.jsx');
 var TripAdmin = require('./components/TripAdmin.jsx');
+var UserEdit = require('./components/UserEdit.jsx');
+var UserAdmin = require('./components/UserAdmin.jsx');
 var JournalWrapper = require('./components/JournalWrapper.jsx');
 var JournalEdit = require('./components/JournalEdit.jsx');
 var Search = require('./components/Search.jsx');
@@ -36,6 +38,8 @@ const routes = {
     {path: '/admin', component: Admin},
     {path: '/admin/trip', component: TripAdmin},
     {path: '/admin/trip/:tripId', component: TripEdit},
+    {path: '/admin/user', component: UserAdmin},
+    {path: '/admin/user/:userId', component: UserEdit},
     {path: '/about', component: About}
   ]
 };
