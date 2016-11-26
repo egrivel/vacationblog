@@ -37,13 +37,13 @@ if (!$auth->canGetTrip()) {
          $response['active'] = $object->getActive();
          $response['deleted'] = $object->getDeleted();
          // Do NOT return the hash field on the GET service.
-         $journal = Journal::getFirstJournal($object->getTripId());
-         if ($journal !== null) {
-            $response['firstJournalId'] = $journal->getJournalId();
+         $journalId = Journal::getFirstJournalId($object->getTripId());
+         if ($journalId) {
+            $response['firstJournalId'] = $journalId;
          }
-         $journal = Journal::getLastJournal($object->getTripId());
-         if ($journal !== null) {
-            $response['lastJournalId'] = $journal->getJournalId();
+         $journalId = Journal::getLastJournalId($object->getTripId());
+         if ($journalId) {
+            $response['lastJournalId'] = $journalId;
          }
       }
    }

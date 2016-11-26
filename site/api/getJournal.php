@@ -39,11 +39,13 @@ if (!$auth->canGetJournal()) {
          $response['journalTitle'] = $object->getJournalTitle();
          $response['journalText'] = $object->getJournalText();
          $response['deleted'] = $object->getDeleted();
-         if ($temp = $object->getPreviousJournal()) {
-            $response['prevId'] = $temp->getJournalId();
+         $journalId = $object->getPreviousJournalId();
+         if ($journalId) {
+            $response['prevId'] = $journalId;
          }
-         if ($temp = $object->getNextJournal()) {
-            $response['nextId'] = $temp->getJournalId();
+         $journalId = $object->getNextJournalId();
+         if ($journalId) {
+            $response['nextId'] = $journalId;
          }
       }
    }
