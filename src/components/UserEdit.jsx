@@ -5,6 +5,8 @@ const React = require('react');
 
 const Display = require('./standard/Display.jsx');
 const Textbox = require('./standard/Textbox.jsx');
+const Droplist = require('./standard/Droplist.jsx');
+const Radiolist = require('./standard/Radiolist.jsx');
 
 const storeMixin = require('./StoreMixin');
 const UserStore = require('../stores/UserStore');
@@ -37,13 +39,19 @@ const UserEdit = React.createClass({
     };
   },
 
+  _setValue: function(value, prop) {
+    const userData = _.cloneDeep(this.state.userData);
+    userData[prop] = value;
+    UserAction.updateUser(userData);
+  },
+
   render: function() {
     const name = _.get(this.state, 'userData.name', '');
     const email = _.get(this.state, 'userData.email', '');
     const access = _.get(this.state, 'userData.access', '');
     const notification = _.get(this.state, 'userData.notification', '');
     const tempCode = _.get(this.state, 'userData.tempCode', '');
-    const externalType= _.get(this.state, 'userData.externalType', '');
+    const externalType = _.get(this.state, 'userData.externalType', '');
     const externalId = _.get(this.state, 'userData.externalId', '');
     const deleted = _.get(this.state, 'userData.deleted', '');
     return (
@@ -59,26 +67,40 @@ const UserEdit = React.createClass({
           fieldId="name"
           label="Name"
           value={name}
+          onBlur={this._setValue}
         />
         <Textbox
           fieldId="email"
           label="Email"
           value={email}
+          onBlur={this._setValue}
         />
-        <Textbox
+        <Droplist
           fieldId="access"
           label="Access"
           value={access}
+          list={[
+            {label: 'Temp', value: 'temp'},
+            {label: 'Visitor', value: 'visitor'},
+            {label: 'Administrator', value: 'admin'}
+          ]}
+          onBlur={this._setValue}
         />
-        <Textbox
+        <Radiolist
           fieldId="notification"
           label="Notification"
           value={notification}
+          list={[
+            {label: 'Yes', value: 'Y'},
+            {label: 'No', value: 'N'}
+          ]}
+          onBlur={this._setValue}
         />
         <Textbox
           fieldId="tempCode"
           label="Temp Code"
           value={tempCode}
+          onBlur={this._setValue}
         />
         <Display
           fieldId="external-type"
@@ -90,10 +112,15 @@ const UserEdit = React.createClass({
           label="External ID"
           value={externalId}
         />
-        <Textbox
+        <Radiolist
           fieldId="deleted"
           label="Deleted"
           value={deleted}
+          list={[
+            {label: 'Yes', value: 'Y'},
+            {label: 'No', value: 'N'}
+          ]}
+          onBlur={this._setValue}
         />
 
       </div>

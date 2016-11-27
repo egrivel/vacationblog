@@ -29,6 +29,13 @@ var UserAction = {
     });
   },
 
+  updateUser: function(data) {
+    AppDispatcher.dispatch({
+      type: this.Types.USER_SET_DATA,
+      data: data
+    });
+  },
+
   _userLoaded: function _userLoaded(data) {
     AppDispatcher.dispatch({
       type: this.Types.USER_SET_DATA,
