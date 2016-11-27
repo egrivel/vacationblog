@@ -222,7 +222,13 @@ sub process {
                     my $nr = 0;
                     $user{'userId'} = $value[$nr++];
                     $user{'name'} = $value[$nr++];
-                    $user{'passwordHash'} = $value[$nr++];
+                    # Prefix the hash value from the old system with "$0$" to
+                    # make it regocnizable as the "old" hash.
+                    my $pwd = $value[$nr++];
+                    $pwd =~ s/^\'//;
+                    $pwd =~ s/\'$//;
+                    $pwd = '$0$' . $pwd;
+                    $user{'passwordHash'} = "'$pwd'";
                     $user{'email'} = $value[$nr++];
                     $user{'access'} = $value[$nr++];
                     $user{'tempCode'} = $value[$nr++];
@@ -252,10 +258,16 @@ sub process {
                         # fix duplicate key
                         $user{'updated'} =~ s/^\'2012/\'2013/;
                     }
+                    $access = $user{'access'};
+                    if ($user{'access'} eq '\'maint\'') {
+                        # maintainers are visitors on the user level; they get
+                        # added as a trip user below
+                        $user{'access'} = '\'visitor\'';
+                    }
                     add_user(\%user);
-                    if (($user{'access'} eq '\'maint\'')
-                        || ($user{'access'} eq '\'admin\'')) {
-                        $user{'role'} = $user{'access'};
+                    if (($access eq '\'maint\'')
+                        || ($access eq '\'admin\'')) {
+                        $user{'role'} = $access;
                         $user{'message'} = $user{'text'};
                         if ($table eq "vak_user") {
                             $user{'tripId'} = 'vak2007';
