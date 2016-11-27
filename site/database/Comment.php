@@ -307,7 +307,9 @@ class Comment {
                   . "hash=" . db_sql_encode($this->hash)
                   . " WHERE tripId=" . db_sql_encode($this->tripId)
                   .   " AND commentId=" . db_sql_encode($this->commentId)
-                  .   " AND updated=" . db_sql_encode($this->latestUpdated);
+                  .   " AND updated="
+                  . "CONVERT_TZ(" . db_sql_encode($this->latestUpdated)
+                  . ",'+00:00','SYSTEM')";
                if (mysql_query($query)) {
                   return true;
                } else {

@@ -264,28 +264,32 @@ class Feedback {
          }
          // Saved successfully, now load fresh, including created and
          // updated values, and update the hash value
-         $this->load($this->tripId, $this->referenceId, $this->userId);
-         if ($mustUpdateHash) {
-            $value = "|"
-               . $this->created . "|"
-               . $this->latestUpdated . "|"
-               . $this->type . "|"
-               . $this->deleted . "|";
-            $this->hash = md5($value);
-            $this->latestHash = $this->hash;
-            $query = "UPDATE blogFeedback SET "
-               . "hash=" . db_sql_encode($this->hash)
-               . " WHERE tripId=" . db_sql_encode($this->tripId)
-               .   " AND referenceId=" . db_sql_encode($this->referenceId)
-               .   " AND userId=" . db_sql_encode($this->userId)
-               .   " AND updated=" . db_sql_encode($this->latestUpdated);
-            if (mysql_query($query)) {
-               return true;
-            } else {
-               print $query . "<br/>";
-               print " --> error: " . mysql_error() . "<br/>\n";
-               return false;
+         if ($this->load($this->tripId, $this->referenceId, $this->userId)) {
+            if ($mustUpdateHash) {
+               $value = "|"
+                  . $this->created . "|"
+                  . $this->latestUpdated . "|"
+                  . $this->type . "|"
+                  . $this->deleted . "|";
+               $this->hash = md5($value);
+               $this->latestHash = $this->hash;
+               $query = "UPDATE blogFeedback SET "
+                  . "hash=" . db_sql_encode($this->hash)
+                  . " WHERE tripId=" . db_sql_encode($this->tripId)
+                  .   " AND referenceId=" . db_sql_encode($this->referenceId)
+                  .   " AND userId=" . db_sql_encode($this->userId)
+                  .   " AND updated="
+                  . "CONVERT_TZ(" . db_sql_encode($this->latestUpdated)
+                  . ",'+00:00','SYSTEM')";
+               if (mysql_query($query)) {
+                  return true;
+               } else {
+                  print $query . "<br/>";
+                  print " --> error: " . mysql_error() . "<br/>\n";
+                  return false;
+               }
             }
+            return true;
          } else {
             return true;
          }
