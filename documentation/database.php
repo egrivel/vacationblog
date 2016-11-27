@@ -45,7 +45,7 @@ print pageStart("Database Layer");
   <li>2012 vacation: db = "vak2012", tables (vak12_comments, vak12_items,
     vak12_photos, vak12_user)</li>
   <li>2013, 2014 and 2015 vacations: db = "vacations", tables
-    (vacations_comments, vacations_items, vacations_photos, 
+    (vacations_comments, vacations_items, vacations_photos,
     vacations_users)</li>
 </ul>
 
@@ -72,16 +72,16 @@ print pageStart("Database Layer");
   <li><strong>tripId</strong>: identifies individual trips within the
     vacation website.</li>
   <li><strong>userid</strong>,
-    <strong>mediaId</strong>, <strong>journalId</strong> and 
+    <strong>mediaId</strong>, <strong>journalId</strong> and
     <strong>commentId</strong>: unique ID of a particular item on the
     site.</li>
   <li><strong>created</strong>: timestamp when the item was originally
     created. Any item that has been modified has multiple rows in the
     database, all with the same created timestamp but with different
-    updated timestamps. Only the latest updated row should be 
+    updated timestamps. Only the latest updated row should be
     considered.</li>
   <li><strong>updated</strong>: timestamp for this update of the item.</li>
-  <li><strong>deleted</strong>: whether the item is deleted or not. 
+  <li><strong>deleted</strong>: whether the item is deleted or not.
     Deleted items aren&rsquo;t physically deleted from the database (this
     would cause them to re-appear when the database instance is
     synchronized with another instance), but are marked as deleted so that
@@ -342,10 +342,10 @@ print pageStart("Database Layer");
         a hyphen, so they cannot conflict with any other user IDs.</li>
     </ul>
   </li>
-  <li><strong>password</strong>: encrypted password, using the PHP 
+  <li><strong>password</strong>: encrypted password, using the PHP
     password_hash() and password_verify() functions (regular users
     only).<br/>
-    Records that were imported from the old system have the MD5 hash of 
+    Records that were imported from the old system have the MD5 hash of
     the password in the database, prefixed by &ldquo;$0$&rdquo; The system
     will recognize these special cases and will automatically update to
     the newer password hash whenever an old user logs in.</li>
@@ -356,8 +356,10 @@ print pageStart("Database Layer");
     of &ldquo;facebook&rdquo; or &ldquo;google&rdquo;.</li>
   <li><strong>externalId</strong>: if this is an external user, the ID
     that the external system (facebook, google etc.) has for this user.</li>
-  <li><strong>access</strong>: access level; can be one of
-    &ldquo;visitor&rdquo; (regular visitors to the site), 
+  <li><strong>access</strong>: access level; can be one of &ldquo;temp&rdquo;
+    (for temporary access, where a tempCode has been sent but has not yet
+    been confirmed),
+    &ldquo;visitor&rdquo; (regular visitors to the site),
     &ldquo;contributor&rdquo; (person who can contribute journal entries
     to the site) or &ldquo;admin&rdquo; (site administrator).</li>
   <li><strong>email</strong>: the user&rsquo;s email address, if any.
@@ -386,14 +388,14 @@ print pageStart("Database Layer");
   the database.</p>
 
 <ul>
-  <li>Each database class has a private static method called 
+  <li>Each database class has a private static method called
     <em>createTables()</em> and a public method called
     <em>updateTables()</em>.</li>
   <li>The <em>createTables</em> method will create any database table(s)
     maintained by this class.</li>
   <li>The <em>updateTables</em> method is called with a version string
     parameter which identifies the current state of the database, and will
-    take any action necessary to update the database structure to the 
+    take any action necessary to update the database structure to the
     latest supported by the code.</li>
   <li>If called with an empty string, the system is completely fresh and
     no tables are there at all. <em>updateTables</em> will call
@@ -485,7 +487,7 @@ print pageStart("Database Layer");
   }</pre></li>
   <li><strong>setup</strong>: define the IDs of the test objects
     for the class being tested, then remove any instances of those
-    test objects from the database. Example from testing the 
+    test objects from the database. Example from testing the
     Comment object:
 <pre>   protected function setUp() {
       global $testCommentId1, $testCommentId2;
@@ -664,7 +666,7 @@ print pageStart("Database Layer");
     * test #5.
     * Save an empty object results in a row being added to the database
     * and the created, updated and hash fields getting a value. Since
-    * this is the first instance, the created and updated both have the 
+    * this is the first instance, the created and updated both have the
     * same value.
     * @depends testCreateGivesEmptyObject
     */
@@ -958,7 +960,7 @@ print pageStart("Database Layer");
     when the object is saved again, even when no data changes. Example:
 <pre>   /**
     * test #11.
-    * Automatically computed attributes (created, updated, hash) are 
+    * Automatically computed attributes (created, updated, hash) are
     * properly set on the first save, and when appropriate changed on
     * subsequent saves.
     * @depends testSaveEmptyObject
@@ -1014,7 +1016,7 @@ print pageStart("Database Layer");
       $this->assertNotEquals($hash, $object->getHash());
    }</pre></li>
 
-  <li><strong>#12</strong>: Override automatic attributes for a 
+  <li><strong>#12</strong>: Override automatic attributes for a
     new record. Example:
 <pre>   /**
     * test #12.
