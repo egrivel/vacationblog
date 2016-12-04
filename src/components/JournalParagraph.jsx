@@ -494,13 +494,6 @@ var JournalParagraph = React.createClass({
       const clickImg = this.clickImg;
       const mediaId = this.state.modal;
       const mediaInfo = _getMediaInfo(tripId, mediaId);
-      const comment = (
-        <CommentList
-          tripId={tripId}
-          tripActive={this.props.tripActive}
-          referenceId={mediaId}
-        />
-      );
 
       const _onClick = function() {
         clickImg(mediaId);
@@ -530,7 +523,6 @@ var JournalParagraph = React.createClass({
             <div className="modal-image-caption">
               {utils.replaceEntities(mediaInfo.caption)}
             </div>
-            {comment}
           </div>
         </div>
       );

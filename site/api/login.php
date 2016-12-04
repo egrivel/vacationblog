@@ -40,7 +40,7 @@ function send_conf_email($userid, $fullname, $email, $regkey) {
     . "Website Administrator\n");
 }
 
-function send_user_id_email($userid, $fullname, $email) {
+function send_user_id_email($userId, $fullname, $email) {
   send_email($email, SITE_NAME . " Retrieve User ID",
     "Dear $fullname,\n"
     . " \n"
@@ -48,17 +48,21 @@ function send_user_id_email($userid, $fullname, $email) {
     . "your user ID at the " . SITE_NAME . " website.\n"
     . " \n"
     . "Registration information:\n"
-    . "  User ID  : $userid\n"
+    . "  User ID  : $userId\n"
     . "  Full Name: $fullname\n"
     . "  Email    : $email\n"
     . "  Password : **********\n"
+    . " \n"
+    . "If you do not know the password, please use the password reset\n"
+    . "function on the website to establish a new password. Your password\n"
+    . "is stored securely, even we cannot retrieve it.\n"
     . " \n"
     . "Thank you,\n"
     . SITE_ADMIN_NAME . "\n"
     . "Website Administrator\n");
 }
 
-function send_password_email($userid, $fullname, $email, $regkey) {
+function send_password_email($userId, $fullname, $email, $regkey) {
   send_email($email, SITE_NAME . " Reset Password",
     "Dear $fullname,\n"
     . " \n"
@@ -66,7 +70,7 @@ function send_password_email($userid, $fullname, $email, $regkey) {
     . "to reset your password at the " . SITE_NAME . " website.\n"
     . " \n"
     . "Registration information:\n"
-    . "  User ID  : $userid\n"
+    . "  User ID  : $userId\n"
     . "  Full Name: $fullname\n"
     . "  Email    : $email\n"
     . " \n"
@@ -224,7 +228,7 @@ if (isPutMethod()) {
         $tempCode = random_string();
         $user->setTempCode($tempCode);
         $user->save();
-        send_password_email($userid, $name, $email, $tempCode);
+        send_password_email($userId, $name, $email, $tempCode);
         $response = successResponse();
         $response['status'] = 'OK';
       }
@@ -237,6 +241,7 @@ if (isPutMethod()) {
         $response['status'] = 'EMAIL_NOT_FOUND';
       } else {
         $name = $user->getName();
+        $userId = $user->getUserId();
         send_user_id_email($userId, $name, $email);
         $response = successResponse();
         $response['status'] = 'OK';

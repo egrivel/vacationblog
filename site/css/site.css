@@ -188,8 +188,18 @@ div.content {
 div.content h3 {
   clear: both;
   font-size: 120%;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  color: #003;
+  letter-spacing: 1px;
+}
+
+div.content h4 {
+  clear: both;
+  font-size: 100%;
+  font-weight: bold;
   margin-top: 1em;
-  margin-bottom: 1em;
+  margin-bottom: 0.5em;
   color: #003;
   letter-spacing: 1px;
 }
@@ -255,6 +265,9 @@ div.journalitem p.img-text img.landscape {
   padding-right: 1em;
   padding-bottom: 0.5em;
   padding-top: 0.15em;
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
 div.journalitem p.text img.portrait,
@@ -264,6 +277,9 @@ div.journalitem p.img-text img.portrait {
   padding-right: 1em;
   padding-bottom: 0.5em;
   padding-top: 0.15em;
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
 div.journalitem p.images {
