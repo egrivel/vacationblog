@@ -16,7 +16,6 @@ var JournalWrapper = require('./components/JournalWrapper.jsx');
 var JournalEdit = require('./components/JournalEdit.jsx');
 var Search = require('./components/Search.jsx');
 var Admin = require('./components/Admin.jsx');
-var LoginWrapper = require('./components/LoginWrapper.jsx');
 var About = require('./components/About.jsx');
 
 var TripAction = require('./actions/TripAction');
@@ -34,7 +33,6 @@ const routes = {
     {path: '/journaledit/:tripId', component: JournalEdit},
     {path: '/journaledit/:tripId/:journalId', component: JournalEdit},
     {path: '/search', component: Search},
-    {path: '/login', component: LoginWrapper},
     {path: '/admin', component: Admin},
     {path: '/admin/trip', component: TripAdmin},
     {path: '/admin/trip/:tripId', component: TripEdit},

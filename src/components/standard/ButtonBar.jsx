@@ -19,6 +19,7 @@ const ButtonBar = React.createClass({
       }
       buttonList.push(
         <button
+          type="submit"
           key={'b-' + i}
           onClick={this.props.buttons[i].onClick}
         >

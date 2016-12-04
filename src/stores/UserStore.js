@@ -11,15 +11,19 @@ var UserStore;
 
 var _userData = {};
 var _userLoggedIn = '';
-var _formStatus = '';
+var _loginState = '';
 var _formErrorMessage = '';
 var _userList = [];
 
 UserStore = assign({}, GenericStore, {
+  // Set of defined login states
   constants: {
     NONE: 'NONE',
-    LOGIN_CLEAR: 'LOGIN_CLEAR',
-    LOGIN_ERROR: 'LOGIN_ERROR',
+    LOGIN: 'LOGIN',
+    REGISTER: 'REGISTER',
+    RETRIEVE: 'RETRIEVE',
+    CONFIRM_REG: 'CONFIRM_REG',
+    CONFIRM_PWD: 'CONFIRM_PWD',
     LOGOUT: 'LOGOUT'
   },
 
@@ -39,7 +43,10 @@ UserStore = assign({}, GenericStore, {
   },
 
   getLoggedInUser: function() {
-    return _userLoggedIn;
+    if (_userLoggedIn) {
+      return _userLoggedIn;
+    }
+    return '';
   },
 
   isUserLoggedIn: function() {
@@ -67,8 +74,8 @@ UserStore = assign({}, GenericStore, {
     return '';
   },
 
-  getFormStatus: function() {
-    return _formStatus;
+  getLoginState: function() {
+    return _loginState;
   },
 
   getFormErrorMessage: function() {
@@ -80,13 +87,22 @@ UserStore = assign({}, GenericStore, {
   },
 
   _storeCallback: function(action) {
+    let userId;
     switch (action.type) {
       case UserActionTypes.USER_SET_DATA:
-        var userId = action.data.userId;
+        userId = action.data.userId;
         if (!_userData[userId] || !_.isEqual(action.data, _userData[userId])) {
           _userData[userId] = action.data;
           UserStore.emitChange();
         }
+        break;
+      case UserActionTypes.USER_SET_TEMP_CODE:
+        userId = action.userId;
+        if (!_userData[userId]) {
+          _userData[userId] = {};
+        }
+        _userData[userId].tempCode = action.tempCode;
+        UserStore.emitChange();
         break;
       case UserActionTypes.USER_SET_LOGGED_IN:
         if (_userLoggedIn !== action.userId) {
@@ -94,21 +110,15 @@ UserStore = assign({}, GenericStore, {
           UserStore.emitChange();
         }
         break;
-      case UserActionTypes.USER_SET_LOGIN_FORM_STATUS:
-        if (_formStatus !== action.status) {
-          _formStatus = action.status;
-          if (_formStatus !== UserStore.constants.LOGIN_ERROR) {
-            _formErrorMessage = '';
-          }
+      case UserActionTypes.USER_SET_LOGIN_LOGIN_STATE:
+        if (_loginState !== action.state) {
+          _loginState = action.state;
           UserStore.emitChange();
         }
         break;
       case UserActionTypes.USER_SET_LOGIN_FORM_ERROR:
         if (_formErrorMessage !== action.message) {
           _formErrorMessage = action.message;
-          if (_formErrorMessage) {
-            _formStatus = UserStore.constants.LOGIN_ERROR;
-          }
           UserStore.emitChange();
         }
         break;
@@ -123,7 +133,7 @@ UserStore = assign({}, GenericStore, {
   }
 });
 
-_formStatus = UserStore.constants.NONE;
+_loginState = UserStore.constants.NONE;
 
 UserStore.dispatchToken = AppDispatcher.register(UserStore._storeCallback);
 

@@ -3,7 +3,6 @@
 var React = require('react');
 var Menu = require('./Menu.jsx');
 var Login = require('./Login.jsx');
-var Logout = require('./Logout.jsx');
 var TripStore = require('../stores/TripStore');
 var MenuStore = require('../stores/MenuStore');
 var UserStore = require('../stores/UserStore');
@@ -19,25 +18,16 @@ var Header = React.createClass({
   mixins: [storeMixin()],
 
   _doUserClick: function() {
-    if (!this.state.isUserLoggedIn) {
-      if (this.state.loginStatus === UserStore.constants.NONE) {
-        UserAction.setLoginFormStatus(UserStore.constants.LOGIN_CLEAR);
-      } else {
-        UserAction.setLoginFormStatus(UserStore.constants.NONE);
-      }
-    } else if (this.state.loginStatus === UserStore.constants.LOGOUT) {
-      UserAction.setLoginFormStatus(UserStore.constants.NONE);
+    if (this.state.isUserLoggedIn) {
+      UserAction.setLoginState(UserStore.constants.LOGOUT);
     } else {
-      UserAction.setLoginFormStatus(UserStore.constants.LOGOUT);
+      UserAction.setLoginState(UserStore.constants.LOGIN);
     }
   },
 
   _onLoginClose: function() {
-    UserAction.setLoginFormStatus(UserStore.constants.NONE);
-  },
-
-  _onLogoutClose: function() {
-    UserAction.setLoginFormStatus(UserStore.constants.NONE);
+    UserAction.setLoginState(UserStore.constants.NONE);
+    UserAction.setLoginFormError('');
   },
 
   /**
@@ -56,14 +46,14 @@ var Header = React.createClass({
 
     const userId = UserStore.getLoggedInUser();
     const isUserLoggedIn = (userId !== '');
-    let loginDisplay = 'Login';
+    let loginDisplay = 'Login or Register';
     if (userId) {
       const data = UserStore.getData(userId);
       if (data && data.name) {
         loginDisplay = data.name;
       }
     }
-    const loginStatus = UserStore.getFormStatus();
+    const loginState = UserStore.getLoginState();
     const loginErrorMessage = UserStore.getFormErrorMessage();
 
     const menuData = MenuStore.getData();
@@ -73,7 +63,7 @@ var Header = React.createClass({
       bannerImg: img,
       loginDisplay: loginDisplay,
       isUserLoggedIn: isUserLoggedIn,
-      loginStatus: loginStatus,
+      loginState: loginState,
       loginErrorMessage: loginErrorMessage,
       menuData: menuData
     };
@@ -90,20 +80,20 @@ var Header = React.createClass({
         </div>
       );
     }
+
     var userForm = null;
-    if ((this.state.loginStatus === UserStore.constants.LOGIN_CLEAR) ||
-        (this.state.loginStatus === UserStore.constants.LOGIN_ERROR)) {
+    if (this.state.loginState !== UserStore.constants.NONE) {
       userForm = (
         <Login errorMessage={this.state.loginErrorMessage}
             onClose={this._onLoginClose}/>
       );
-    } else if (this.state.loginStatus === UserStore.constants.LOGOUT) {
-      userForm = <Logout onClose={this._onLogoutClose}/>;
     }
+
     var icon = 'fa-sign-in';
     if (this.state.isUserLoggedIn) {
       icon = 'fa-user';
     }
+
     return (
       <div className="header">
         <span className="userName">

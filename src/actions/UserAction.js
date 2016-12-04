@@ -7,9 +7,10 @@ var UserAction = {
   Types: {
     USER_SET_DATA: 'USER_SET_DATA',
     USER_SET_LOGGED_IN: 'USER_SET_LOGGED_IN',
-    USER_SET_LOGIN_FORM_STATUS: 'USER_SET_LOGIN_FORM_STATUS',
+    USER_SET_LOGIN_LOGIN_STATE: 'USER_SET_LOGIN_LOGIN_STATE',
     USER_SET_LOGIN_FORM_ERROR: 'USER_SET_LOGIN_FORM_ERROR',
-    USER_SET_LIST: 'USER_SET_LIST'
+    USER_SET_LIST: 'USER_SET_LIST',
+    USER_SET_TEMP_CODE: 'USER_SET_TEMP_CODE'
   },
 
   loadLoggedInUser: function() {
@@ -61,10 +62,10 @@ var UserAction = {
     });
   },
 
-  setLoginFormStatus: function(status) {
+  setLoginState: function(state) {
     AppDispatcher.dispatch({
-      type: this.Types.USER_SET_LOGIN_FORM_STATUS,
-      status: status
+      type: this.Types.USER_SET_LOGIN_LOGIN_STATE,
+      state: state
     });
   },
 
@@ -72,6 +73,14 @@ var UserAction = {
     AppDispatcher.dispatch({
       type: this.Types.USER_SET_LOGIN_FORM_ERROR,
       message: errorMessage
+    });
+  },
+
+  setTempCode: function(userId, tempCode) {
+    AppDispatcher.dispatch({
+      type: this.Types.USER_SET_TEMP_CODE,
+      userId: userId,
+      tempCode: tempCode
     });
   }
 };

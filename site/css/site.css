@@ -1,4 +1,4 @@
-/*
+./*
  * Basic styling (after reset.css tears everything down).
  */
 
@@ -431,6 +431,12 @@ a.login-link {
   color: #fff;
 }
 
+.modal-login {
+  max-width: 50em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .form {
   margin-left: 2em;
   margin-right: 2em;
@@ -608,7 +614,7 @@ div.feedback i.my-plus {
 }
 
 .login {
-  max-width: 25em;
+  max-width: 80%;
   margin-left: auto;
   margin-right: auto;
   border: solid 1px #666;
@@ -621,6 +627,12 @@ div.feedback i.my-plus {
   font-weight: bold;
   margin-top: 0.25em;
   margin-bottom: 0.5em;
+}
+
+.login h4 {
+  font-weight: bold;
+  margin-top: 0.25em;
+  margin-bottom: 0;
 }
 
 div.input-element {
@@ -641,6 +653,7 @@ label.checkbox {
   text-align: left;
   margin: 0;
   display: inline;
+  font-weight: normal;
 }
 
 div.buttonbar input {
@@ -689,12 +702,18 @@ div.formLabel {
   padding: 0.25em;
   padding-top: 0.35em;
   vertical-align: top;
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
 div.formValue {
   display: inline-block;
   width: 80%;
   padding: 0.25em;
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
 div.formValue img.preview {

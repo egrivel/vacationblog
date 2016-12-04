@@ -10,7 +10,7 @@ $gl_site = 'http://localhost/vacationblog/site';
 
 binmode(STDOUT, ":utf8");
 
-my $gl_do_real = 1;
+my $gl_do_real = 0;
 
 my %trip = ();
 $trip{'tripId'} = 'vak2007';
@@ -232,6 +232,10 @@ sub process {
                     $user{'email'} = $value[$nr++];
                     $user{'access'} = $value[$nr++];
                     $user{'tempCode'} = $value[$nr++];
+                    if (($user{'access'} ne "temp")
+                        && ($user{'access'} ne "'temp'")) {
+                        $user{'tempCode'} = "''";
+                    }
                     $user{'text'} = $value[$nr++];
                     if ($table eq 'vak_user') {
                         $user{'updated'} = $value[$nr++];

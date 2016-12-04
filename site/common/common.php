@@ -101,4 +101,33 @@ function successResponse() {
    return createResponse(RESPONSE_SUCCESS, 'OK');
 }
 
+/*
+ * Return a random string as a temporary code. The string is carefully
+ * created to contain only certain characters which cannot be easily
+ * confused with similar-lookng characters.
+ */
+function random_string() {
+    $str = "";
+    $set = "ACDEFGHJKLMNPRSTVXYabcdefghijkmnoprstvwz3457";
+    for ($i = 0; $i < 5; $i++){
+        $pos = rand(0, strlen($set));
+        $str .= substr($set, $pos, 1);
+    }
+    return $str;
+}
+
+function send_email($to, $subject, $message) {
+  // use the acm.org account as the From: value, otherwise gmail won't
+  // deliver...
+  $from = "vacationblog@grivel.net";
+  $reply_to = "vacationblog@grivel.net";
+  $xheaders = "";
+  $xheaders .= "From: <$from>\n";
+  $xheaders .= "X-Mailer: PHP\n"; // mailer
+  $xheaders .= "Reply-To: <$reply_to>\n";
+  $xheaders .= "Content-Type:text/plain; charset=\"iso-8859-1\"\n"; //.......
+  mail($to, $subject, $message, $xheaders, "-f $from");
+}
+
+
 ?>

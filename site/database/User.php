@@ -617,5 +617,54 @@ class User {
 
       return $list;
    }
+
+   static function findByEmail($email) {
+      if (!isset($email) || ($email === '')) {
+         return null;
+      }
+      $emailValue = db_sql_encode($email);
+
+      // Need to get an active user with the given email
+      $query = ""
+         . "SELECT *, "
+         . "CONVERT_TZ(`created`, @@session.time_zone, '+00:00') "
+         .   "AS `utc_created`, "
+         . "CONVERT_TZ(blogUser.updated, @@session.time_zone, '+00:00') "
+         .   "AS `utc_updated` "
+         .   "FROM blogUser "
+         .   "INNER JOIN ("
+         .     "SELECT "
+         .       "MAX(t1.updated) AS updated, "
+         .       "t1.userId as userId "
+         .     "FROM blogUser "
+         .     "AS t1 "
+         .     "GROUP BY t1.userId"
+         .   ") AS t2 "
+         .   "WHERE blogUser.userId = t2.userId "
+         .     "AND blogUser.updated = t2.updated "
+         .     "AND blogUser.deleted != 'Y' "
+         .     "AND blogUser.email = $emailValue "
+         .   "LIMIT 1 ";
+      $result = mysql_query($query);
+      if (!$result) {
+         // Error executing the query
+         print $query . "<br/>";
+         print " --> error: " . mysql_error() . "<br/>\n";
+         return null;
+      }
+      if (mysql_num_rows($result) <= 0) {
+         // Object does not exist
+         return null;
+      }
+
+      // Create an instance with a special ID '-' to bypass the
+      // checks on empty ID. The ID value will be overwritten by the
+      // value coming back from the database anyway.
+      $object = new User('-');
+      if ($object->loadFromResult($result)) {
+         return $object;
+      }
+      return null;
+   }
 }
 ?>
