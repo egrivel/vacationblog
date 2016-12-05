@@ -463,6 +463,13 @@ a.login-link {
   color: #000;
 }
 
+@media screen and (max-width: 480px) {
+  .form {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
 div.commentBlock {
   border-left: solid 15px;
   margin-left: 0.25em;
@@ -638,6 +645,12 @@ div.feedback i.my-plus {
   line-height: 125%;
 }
 
+@media screen and (max-width: 480px) {
+  .login {
+    max-width: 100%;
+  }
+}
+
 .login h3 {
   font-size: 125%;
   font-weight: bold;
@@ -736,6 +749,20 @@ div.formValue img.preview {
   width: 100%;
   margin-top: 0.25em;
   margin-bottom: 0.25em;
+}
+
+@media screen and (max-width: 480px) {
+  div.formLabel {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+
+  div.formValue {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
 }
 
 /* == lightbox == */
