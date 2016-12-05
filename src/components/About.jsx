@@ -10,11 +10,12 @@ var About = React.createClass({
       <div>
         <h3>Information For Testers</h3>
         <p>This website is currently being tested. It has not yet been
-          officially release. Thank you to those who have participated in
+          officially released. Thank you to those who have participated in
           testing this website.</p>
         <p>Please be aware that when the testing is concluded and the website
           is officially released, all test data will be removed. In addition,
           data can be changed or removed at any time during the testing.</p>
+
         <h4>What Works</h4>
         <p>The following functionalities should be working at this time:</p>
         <ul>
