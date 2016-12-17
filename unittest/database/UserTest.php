@@ -1052,6 +1052,22 @@ class UserTest extends PHPUnit_Framework_TestCase {
          . "SET password='$oldPasswordHash' "
          . "WHERE userId='$testUserId1'";
       mysql_query($query);
+
+      $query = "SELECT password "
+         . "FROM blogUser "
+         . "WHERE userId='$testUserId1' "
+         . "ORDER BY updated DESC "
+         . "LIMIT 1";
+      $result = mysql_query($query);
+      if ($result) {
+         $this->assertEquals(1, mysql_num_rows($result));
+         $line = mysql_fetch_array($result);
+         $dbPasswordHash = db_sql_decode($line[0]);
+         $this->assertEquals($oldPasswordHash, $dbPasswordHash);
+      } else {
+         $this->assertFalse(true, "Got error in mySQL query '$query'");
+      }
+
       $object->load($testUserId1);
 
       $rows = $this->countTestRows();
@@ -1063,16 +1079,17 @@ class UserTest extends PHPUnit_Framework_TestCase {
       $this->assertEquals($rows + 1, $this->countTestRows());
 
       // Check that the password has been re-encoded in the
-      // in the database
-      $updated = $object->getUpdated();
+      // in the database. Get the latest row and make sure the password is
+      // different from the previoius one
       $query = "SELECT password "
          . "FROM blogUser "
          . "WHERE userId='$testUserId1' "
-         .   "AND updated='$updated'";
+         . "ORDER BY updated DESC "
+         . "LIMIT 1";
       // print "$query\n";
       $result = mysql_query($query);
       if ($result) {
-         $this->assertTrue(mysql_num_rows($result) === 1);
+         $this->assertEquals(1, mysql_num_rows($result));
          $line = mysql_fetch_array($result);
          $newPasswordHash = db_sql_decode($line[0]);
          $this->assertNotEquals($oldPasswordHash, $newPasswordHash);

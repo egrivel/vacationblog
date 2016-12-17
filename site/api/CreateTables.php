@@ -32,6 +32,8 @@ function validateUser() {
    $fullname = $_POST['fullname'];
    $password = $_POST['password'];
    $password2 = $_POST['password2'];
+   $synchPassword = $_POST['synch-password'];
+   $synchPassword2 = $_POST['synch-password2'];
    $email = $_POST['email'];
 
    $errors = '';
@@ -49,6 +51,12 @@ function validateUser() {
       $errors .= "<li>Passwords do not match</li>\n";
    }
 
+   if (!$synchPassword) {
+      $errors .= "<li>Please provide a synch password</li>\n";
+   } else if ($synchPassword2 !== $synchPassword) {
+      $errors .= "<li>Synch passwords do not match</li>\n";
+   }
+
    if (!$fullname) {
       $errors .= "<li>Please provide an email address</li>\n";
    }
@@ -64,6 +72,8 @@ if ($version === "") {
    $fullname = $_POST['fullname'];
    $password = $_POST['password'];
    $password2 = $_POST['password2'];
+   $synchPassword = $_POST['synch-password'];
+   $synchPassword2 = $_POST['synch-password2'];
    $email = $_POST['email'];
    $do = $_POST['do'];
 
@@ -74,11 +84,19 @@ if ($version === "") {
          showForm($errors);
       } else {
          updateTables($version);
+
          $user = new User($name);
          $user->setName($fullname);
          $user->setPassword($password);
          $user->setAccess('admin');
          $user->setEmail($email);
+         $user->save();
+
+         $user = new User('-synch');
+         $user->setName('Synchronization User');
+         $user->setPassword($synchPassword);
+         $user->setAccess('synch');
+         $user->setEmail('dummy-email-for-synch');
          $user->save();
       }
    } else {
@@ -135,6 +153,22 @@ function showForm($errors) {
       <p>
         <label for='email'>Email:</label>
         <input type='text' name='email' id='email' value='$email' size='32' maxlength='64'/>
+      </p>
+
+      <hr/>
+      <p>Synchronization password is needed to synchronize with a different
+        instance of the website.</p>
+
+      <p>
+        <label for='synch-password'>Synch Password:</label>
+        <input type='password' name='synch-password' id='synch-password'
+          value='$synchPassword' size='32' maxlength='32'/>
+      </p>
+
+      <p>
+        <label for='synch-password2'>Repeat Sync Password:</label>
+        <input type='password' name='synch-password2' id='synch-password2'
+          value='$synchPassword2' size='32' maxlength='32'/>
       </p>
 
       <p>

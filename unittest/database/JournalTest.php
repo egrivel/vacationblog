@@ -280,7 +280,7 @@ class JournalTest extends PHPUnit_Framework_TestCase {
     * test #5.
     * Save an empty object results in a row being added to the database
     * and the created, updated and hash fields getting a value. Since
-    * this is the first instance, the created and updated both have the 
+    * this is the first instance, the created and updated both have the
     * same value.
     * @depends testCreateGivesEmptyObject
     */
@@ -593,7 +593,7 @@ class JournalTest extends PHPUnit_Framework_TestCase {
 
    /**
     * test #11.
-    * Automatically computed attributes (created, updated, hash) are 
+    * Automatically computed attributes (created, updated, hash) are
     * properly set on the first save, and when appropriate changed on
     * subsequent saves.
     * @depends testSaveEmptyObject
@@ -754,7 +754,7 @@ class JournalTest extends PHPUnit_Framework_TestCase {
       // past date for the Created and Updated fields.
       // values after first save are unchanged
       $object->setCreated('2000-01-01 10:10:10.000000');
-      $object->setUpdated('2000-01-01 10:10:11.000000');        
+      $object->setUpdated('2000-01-01 10:10:11.000000');
       $object->setUserId($testUserId2);
       $object->setJournalDate('2015-10-01');
       $object->setJournalTitle('Journal Title 2');
@@ -904,7 +904,7 @@ class JournalTest extends PHPUnit_Framework_TestCase {
       $object->setDeleted('N');
       $this->assertTrue($object->save());
       $this->assertEquals(1, $this->countTestRows());
-      
+
       $object = Journal::findByHash('non-existent hash');
       $this->assertNull($object);
       $this->assertEquals(1, $this->countTestRows());
@@ -1028,7 +1028,7 @@ class JournalTest extends PHPUnit_Framework_TestCase {
    }
 
    /**
-    * Test #18. 
+    * Test #18.
     * Iteration functions, when the journal entries have different dates
     * @depends testSaveEmptyObject
     */
@@ -1054,37 +1054,35 @@ class JournalTest extends PHPUnit_Framework_TestCase {
       $journal2->setJournalDate('2015-10-02');
       $this->assertTrue($journal2->save());
 
-      $test = Journal::getFirstJournal($testTripId1);
-      $this->assertEquals($testTripId1, $test->getTripId());
-      $this->assertEquals($testJournalId1, $test->getJournalId());
+      $test = Journal::getFirstJournalId($testTripId1);
+      $this->assertEquals($testJournalId1, $test);
 
-      $test = Journal::getLastJournal($testTripId1);
-      $this->assertEquals($testTripId1, $test->getTripId());
-      $this->assertEquals($testJournalId4, $test->getJournalId());
+      $test = Journal::getLastJournalId($testTripId1);
+      $this->assertEquals($testJournalId4, $test);
 
-      $test = $journal1->getPreviousJournal();
+      $test = $journal1->getPreviousJournalId();
       $this->assertNull($test);
-      $test = $journal1->getNextJournal();
-      $this->assertEquals($testJournalId2, $test->getJournalId());
+      $test = $journal1->getNextJournalId();
+      $this->assertEquals($testJournalId2, $test);
 
-      $test = $journal2->getPreviousJournal();
-      $this->assertEquals($testJournalId1, $test->getJournalId());
-      $test = $journal2->getNextJournal();
-      $this->assertEquals($testJournalId3, $test->getJournalId());
+      $test = $journal2->getPreviousJournalId();
+      $this->assertEquals($testJournalId1, $test);
+      $test = $journal2->getNextJournalId();
+      $this->assertEquals($testJournalId3, $test);
 
-      $test = $journal3->getPreviousJournal();
-      $this->assertEquals($testJournalId2, $test->getJournalId());
-      $test = $journal3->getNextJournal();
-      $this->assertEquals($testJournalId4, $test->getJournalId());
+      $test = $journal3->getPreviousJournalId();
+      $this->assertEquals($testJournalId2, $test);
+      $test = $journal3->getNextJournalId();
+      $this->assertEquals($testJournalId4, $test);
 
-      $test = $journal4->getPreviousJournal();
-      $this->assertEquals($testJournalId3, $test->getJournalId());
-      $test = $journal4->getNextJournal();
+      $test = $journal4->getPreviousJournalId();
+      $this->assertEquals($testJournalId3, $test);
+      $test = $journal4->getNextJournalId();
       $this->assertNull($test);
    }
 
    /**
-    * Test #19. 
+    * Test #19.
     * Iteration functions, when the journal entries have the same date
     * @depends testIterationDifferentDates
     */
@@ -1110,32 +1108,30 @@ class JournalTest extends PHPUnit_Framework_TestCase {
       $journal4->setJournalDate('2015-10-01');
       $this->assertTrue($journal4->save());
 
-      $test = Journal::getFirstJournal($testTripId1);
-      $this->assertEquals($testTripId1, $test->getTripId());
-      $this->assertEquals($testJournalId1, $test->getJournalId());
+      $test = Journal::getFirstJournalId($testTripId1);
+      $this->assertEquals($testJournalId1, $test);
 
-      $test = Journal::getLastJournal($testTripId1);
-      $this->assertEquals($testTripId1, $test->getTripId());
-      $this->assertEquals($testJournalId4, $test->getJournalId());
+      $test = Journal::getLastJournalId($testTripId1);
+      $this->assertEquals($testJournalId4, $test);
 
-      $test = $journal1->getPreviousJournal();
+      $test = $journal1->getPreviousJournalId();
       $this->assertNull($test);
-      $test = $journal1->getNextJournal();
-      $this->assertEquals($testJournalId2, $test->getJournalId());
+      $test = $journal1->getNextJournalId();
+      $this->assertEquals($testJournalId2, $test);
 
-      $test = $journal2->getPreviousJournal();
-      $this->assertEquals($testJournalId1, $test->getJournalId());
-      $test = $journal2->getNextJournal();
-      $this->assertEquals($testJournalId3, $test->getJournalId());
+      $test = $journal2->getPreviousJournalId();
+      $this->assertEquals($testJournalId1, $test);
+      $test = $journal2->getNextJournalId();
+      $this->assertEquals($testJournalId3, $test);
 
-      $test = $journal3->getPreviousJournal();
-      $this->assertEquals($testJournalId2, $test->getJournalId());
-      $test = $journal3->getNextJournal();
-      $this->assertEquals($testJournalId4, $test->getJournalId());
+      $test = $journal3->getPreviousJournalId();
+      $this->assertEquals($testJournalId2, $test);
+      $test = $journal3->getNextJournalId();
+      $this->assertEquals($testJournalId4, $test);
 
-      $test = $journal4->getPreviousJournal();
-      $this->assertEquals($testJournalId3, $test->getJournalId());
-      $test = $journal4->getNextJournal();
+      $test = $journal4->getPreviousJournalId();
+      $this->assertEquals($testJournalId3, $test);
+      $test = $journal4->getNextJournalId();
       $this->assertNull($test);
    }
 }

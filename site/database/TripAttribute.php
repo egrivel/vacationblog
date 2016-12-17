@@ -316,7 +316,12 @@ class TripAttribute {
          return null;
       }
       $hashValue = db_sql_encode($hash);
-      $query = "SELECT * FROM blogTripAttribute "
+      $query = "SELECT *, "
+         . "CONVERT_TZ(`created`, @@session.time_zone, '+00:00') "
+         .   "AS `utc_created`, "
+         . "CONVERT_TZ(`updated`, @@session.time_zone, '+00:00') "
+         .   "AS `utc_updated` "
+         . "FROM blogTripAttribute "
          . "WHERE hash=$hashValue "
          . "ORDER BY updated DESC "
          . "LIMIT 1";

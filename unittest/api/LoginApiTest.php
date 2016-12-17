@@ -57,7 +57,7 @@ class LoginApiTest extends PHPUnit_Framework_Testcase {
   public function testUserOnlyParameter() {
     global $testUserId;
 
-    $data = array('userId'=>$testUserId);
+    $data = array('action'=>'login', 'userId'=>$testUserId);
     $result = putApi('login.php', $data);
     $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
   }
@@ -66,14 +66,15 @@ class LoginApiTest extends PHPUnit_Framework_Testcase {
   public function testPasswordOnlyParameter() {
     global $testPassword;
 
-    $data = array('password'=>$testPassword);
+    $data = array('action'=>'login', 'password'=>$testPassword);
     $result = putApi('login.php', $data);
     $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
   }
 
   // Login with wrong user ID and password fails
   public function testWrongUser() {
-    $data = array('userId'=>'-test-wrong-user',
+    $data = array('action'=>'login',
+                  'userId'=>'-test-wrong-user',
                   'password'=>'foo');
     $result = putApi('login.php', $data);
     $this->assertEquals(RESPONSE_NOT_FOUND, $result['resultCode']);
@@ -83,7 +84,8 @@ class LoginApiTest extends PHPUnit_Framework_Testcase {
   public function testWrongPassword() {
     global $testUserId;
 
-    $data = array('userId'=>$testUserId,
+    $data = array('action'=>'login',
+                  'userId'=>$testUserId,
                   'password'=>'foo');
     $result = putApi('login.php', $data);
     $this->assertEquals(RESPONSE_UNAUTHORIZED, $result['resultCode']);
@@ -93,7 +95,8 @@ class LoginApiTest extends PHPUnit_Framework_Testcase {
   public function testLoginSuccess() {
     global $testUserId, $testPassword;
 
-    $data = array('userId'=>$testUserId,
+    $data = array('action'=>'login',
+                  'userId'=>$testUserId,
                   'password'=>$testPassword);
     $result = putApi('login.php', $data);
     $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
@@ -103,9 +106,11 @@ class LoginApiTest extends PHPUnit_Framework_Testcase {
   public function testGetAuthToken() {
     global $testUserId, $testPassword;
 
-    $data = array('userId'=>$testUserId,
+    $data = array('action'=>'login',
+                  'userId'=>$testUserId,
                   'password'=>$testPassword);
     $result = putApi('login.php', $data);
+    $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
     $this->assertArrayHasKey('authId', $result);
   }
 }

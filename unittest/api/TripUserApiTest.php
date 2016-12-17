@@ -129,16 +129,6 @@ class TripUserApiTest extends PHPUnit_Framework_TestCase {
       $result = getApi('getTripUser.php', $data);
       $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
 
-      $data = array('tripId'=>$testTripId1,
-                    'userId'=>null);
-      $result = getApi('getTripUser.php', $data);
-      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
-
-      $data = array('tripId'=>$testTripId1,
-                    'userId'=>'');
-      $result = getApi('getTripUser.php', $data);
-      $this->assertEquals(RESPONSE_BAD_REQUEST, $result['resultCode']);
-
       $data = array('tripId'=>null,
                     'userId'=>$testUserId1);
       $result = getApi('getTripUser.php', $data);

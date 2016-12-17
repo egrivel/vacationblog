@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../database/Trip.php');
 include_once(dirname(__FILE__) . '/../database/TripUser.php');
 
 $auth = new AuthB();
-if (!$auth->canGetMedia()) {
+if (!$auth->canGetTripUser()) {
    $response = errorResponse(RESPONSE_UNAUTHORIZED);
 } else {
    $tripId = '';
@@ -25,6 +25,8 @@ if (!$auth->canGetMedia()) {
          $response = successResponse();
          $response['tripId'] = $tripId;
          $response['userList'] = $object;
+      } else {
+         $response = errorResponse(RESPONSE_INTERNAL_ERROR);
       }
    } else {
       $object = new TripUser($tripId, $userId);
