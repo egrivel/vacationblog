@@ -88,14 +88,14 @@ if ($version === "") {
          $user = new User($name);
          $user->setName($fullname);
          $user->setPassword($password);
-         $user->setAccess('admin');
+         $user->setAccess(LEVEL_ADMIN);
          $user->setEmail($email);
          $user->save();
 
-         $user = new User('-synch');
+         $user = new User(SYNCH_USER);
          $user->setName('Synchronization User');
          $user->setPassword($synchPassword);
-         $user->setAccess('synch');
+         $user->setAccess(LEVEL_SYNCH);
          $user->setEmail('dummy-email-for-synch');
          $user->save();
       }

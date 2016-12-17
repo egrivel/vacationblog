@@ -7,10 +7,19 @@ use utf8;
 
 $gl_site = 'http://localhost/vacationblog/site';
 #$gl_site = 'http://vacationblog-egrivel.rhcloud.com/site';
+$gl_authId = '';
+
+my $pwd = shift;
+if (!defined($pwd)) {
+    print "Usage: convert_to_blog.pl <password>\n";
+    exit(0);
+}
 
 binmode(STDOUT, ":utf8");
 
-my $gl_do_real = 0;
+my $gl_do_real = 1;
+
+login('-sync', $pwd);
 
 my %trip = ();
 $trip{'tripId'} = 'vak2007';
@@ -564,6 +573,10 @@ sub add_any {
         $data{'created'} = $data{'updated'};
     }
 
+    if ($gl_authId ne "") {
+        $req->header('Cookie' => 'blogAuthId=' . html_encode($gl_authId));
+    }
+
     my $post_data = '';
     my $do_json = 1;
     if ($do_json) {
@@ -694,6 +707,46 @@ sub add_count {
             $gl_max_count_key = $key;
         }
         $key = $gl_ref{$key};
+    }
+}
+
+sub login {
+    my $user = $_[0];
+    my $password = $_[1];
+
+    my $url = "$gl_site/api/login.php";
+    my $ua = LWP::UserAgent->new;
+    my $req = HTTP::Request->new(PUT=>$url);
+
+    $req->header('content-type' => 'application/json');
+
+    my $post_data = '{"action":"login",'
+        . '"userId":"' . $user . '",'
+        . '"password":"' . $password . '"}';
+    $req->content($post_data);
+
+    my $resp = $ua->request($req);
+    if ($resp->is_success) {
+        my $message = $resp->decoded_content;
+        if (! ($message =~ /\{\"resultCode\":\"200\"/)) {
+            print "Received reply: $message\n";
+            print "Request was: $post_data\n";
+        } else {
+            if ($message =~ /\"authId\":\"(.*?)\"/) {
+                $gl_authId = $1;
+            } else {
+                print "No auth ID found in '$message'\n";
+            }
+        }
+    } else {
+        print "HTTP POST error code: ", $resp->code, "\n";
+        print "HTTP POST error message: ", $resp->message, "\n";
+        print "URL: $url\n";
+    }
+
+    if ($gl_authId eq '') {
+        print "Could not authenticate - aborting\n";
+        exit(0);
     }
 }
 

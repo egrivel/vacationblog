@@ -9,6 +9,8 @@ define('LEVEL_CONTRIB', 'contrib');
 define('LEVEL_ADMIN', 'admin');
 define('LEVEL_SYNCH', 'synch');
 
+define('SYNCH_USER', '-sync');
+
 class User {
 
    private $userId;

@@ -32,7 +32,7 @@ if (isPutMethod()) {
       if (($user->getCreated() === null)
         || ($user->getDeleted() === 'Y')) {
         $response = errorResponse(RESPONSE_NOT_FOUND);
-        $response['status'] = 'USERID_NOT_FOUND';
+        $response['status'] = 'USERID_NOT_FOUND: ' . $userId;
       } else {
         if ($user->checkPassword($password)) {
           // password matches, need to allow for hash update (if hash

@@ -471,10 +471,34 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
     * Test 8a. PUT authorization
     * @depends testPutCreate
     */
-   public function testPutAuthorization() {
-      global $visitorAuthToken;
+   public function testPutAuthorization1() {
       global $testTripId1;
       global $testCommentId1;
+      global $visitorAuthToken, $contribAuthToken;
+      global $adminAuthToken, $synchAuthToken;
+
+      $this->assertEquals(0, $this->countTestRows());
+
+      $data = array('tripId'=>$testTripId1,
+                    'commentId'=>$testCommentId1,
+                    'created'=>'2015-10-01',
+                    'updated'=>'2015-10-02',
+                    'userId'=>'user',
+                    'referenceId'=>'-reference-1',
+                    'commentText'=>'Comment Text',
+                    'deleted'=>'Y',
+                    'hash'=>'forced hash');
+
+      // Without auth token this fails
+      $result = putApi('putComment.php', $data);
+      $this->assertEquals(RESPONSE_UNAUTHORIZED, $result['resultCode']);
+   }
+
+   public function testPutAuthorization2() {
+      global $testTripId1;
+      global $testCommentId1;
+      global $visitorAuthToken, $contribAuthToken;
+      global $adminAuthToken, $synchAuthToken;
 
       $this->assertEquals(0, $this->countTestRows());
 
@@ -491,11 +515,77 @@ class CommentApiTest extends PHPUnit_Framework_TestCase {
       // With auth token this succeeds
       $result = putApi('putComment.php', $data, $visitorAuthToken);
       $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
+   }
 
-      // Without auth token this fails
-      $result = putApi('putComment.php', $data);
+   public function testPutAuthorization3() {
+      global $testTripId1;
+      global $testCommentId1;
+      global $visitorAuthToken, $contribAuthToken;
+      global $adminAuthToken, $synchAuthToken;
+
+      $this->assertEquals(0, $this->countTestRows());
+
+      $data = array('tripId'=>$testTripId1,
+                    'commentId'=>$testCommentId1,
+                    'created'=>'2015-10-01',
+                    'updated'=>'2015-10-02',
+                    'userId'=>'user',
+                    'referenceId'=>'-reference-1',
+                    'commentText'=>'Comment Text',
+                    'deleted'=>'Y',
+                    'hash'=>'forced hash');
+
+      // With auth token this succeeds
+      $result = putApi('putComment.php', $data, $contribAuthToken);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
+   }
+
+   public function testPutAuthorization4() {
+      global $testTripId1;
+      global $testCommentId1;
+      global $visitorAuthToken, $contribAuthToken;
+      global $adminAuthToken, $synchAuthToken;
+
+      $this->assertEquals(0, $this->countTestRows());
+
+      $data = array('tripId'=>$testTripId1,
+                    'commentId'=>$testCommentId1,
+                    'created'=>'2015-10-01',
+                    'updated'=>'2015-10-02',
+                    'userId'=>'user',
+                    'referenceId'=>'-reference-1',
+                    'commentText'=>'Comment Text',
+                    'deleted'=>'Y',
+                    'hash'=>'forced hash');
+
+      // With auth token this succeeds
+      $result = putApi('putComment.php', $data, $adminAuthToken);
+      $this->assertEquals(RESPONSE_SUCCESS, $result['resultCode']);
+   }
+
+   public function testPutAuthorization5() {
+      global $testTripId1;
+      global $testCommentId1;
+      global $visitorAuthToken, $contribAuthToken;
+      global $adminAuthToken, $synchAuthToken;
+
+      $this->assertEquals(0, $this->countTestRows());
+
+      $data = array('tripId'=>$testTripId1,
+                    'commentId'=>$testCommentId1,
+                    'created'=>'2015-10-01',
+                    'updated'=>'2015-10-02',
+                    'userId'=>'user',
+                    'referenceId'=>'-reference-1',
+                    'commentText'=>'Comment Text',
+                    'deleted'=>'Y',
+                    'hash'=>'forced hash');
+
+      // Sync uses does not have access
+      $result = putApi('putComment.php', $data, $synchAuthToken);
       $this->assertEquals(RESPONSE_UNAUTHORIZED, $result['resultCode']);
    }
+
    /**
     * Test #9. PUT request update existing object.
     * @depends testPutCreate
