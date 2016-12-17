@@ -18,16 +18,31 @@ var JournalAction = {
       return null;
     }
 
-    var images = [];
+    const images = [];
 
-    var list = text.split('[IMG ');
-    for (var i = 0; i < list.length; i++) {
-      var item = list[i];
+    let list = text.split('[IMG ');
+    for (let i = 0; i < list.length; i++) {
+      const item = list[i];
       if (item.indexOf(']') > 0) {
-        var img = item.substring(0, item.indexOf(']')).trim();
+        const img = item.substring(0, item.indexOf(']')).trim();
         if (img.match(/^[\d\-abc]+$/)) {
           // this is a valid image ID
           images.push(img);
+        }
+      }
+    }
+
+    list = text.split('[PANO ');
+    for (let i = 0; i < list.length; i++) {
+      const item = list[i];
+      if (item.indexOf(']') > 0) {
+        const data = item.substring(0, item.indexOf(']')).trim();
+        if (data.match(/^[\d\-abc]+(\s+[\+\-]\d+)?$/)) {
+          const img = data.substring(0, item.indexOf(' ')).trim();
+          if (img.match(/^[\d\-abc]+$/)) {
+            // this is a valid image ID for a panorama
+            images.push(img);
+          }
         }
       }
     }

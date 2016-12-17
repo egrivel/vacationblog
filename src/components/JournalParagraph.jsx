@@ -538,6 +538,37 @@ var JournalParagraph = React.createClass({
     }
   },
 
+  /**
+   * Render a panoramic image.
+   * @param {string} imageId: ID of image to render
+   * @param {string} offset: (optional) vertical offset, range from -50 to +50.
+   * Default value is 0, which centers the image vertically. An offset of -50
+   * renders the image bottom-aligned, +50 renders it top-aligned.
+   * @return {object} React rendered component.
+   */
+  _renderPanorama: function(imageId, offset) {
+    // make sure offset is in range -50 to +50 and default 0
+    if (offset) {
+      if (offset < -50) {
+        offset = -50;
+      }
+      if (offset > 50) {
+        offset = 50;
+      }
+    } else {
+      offset = 0;
+    }
+
+    return (
+      <div className="panorama">
+        <img
+          style={{top: (offset - 50) + '%'}}
+          src={'http://photos-egrivel.rhcloud.com/phimg?large=' + imageId}
+        />
+      </div>
+    );
+  },
+
   render: function() {
     if (!this.props.text) {
       return null;
@@ -548,6 +579,11 @@ var JournalParagraph = React.createClass({
 
     var images = [];
     var imageCount = 0;
+
+    const pano = text.match(/^\[PANO ([\d\-abc]+)(\s+[+\-]\d+)?\]$/);
+    if (pano) {
+      return this._renderPanorama(pano[1], pano[2]);
+    }
 
     text = text.replace('[IMGS]', '');
     var list = text.split('[IMG ');

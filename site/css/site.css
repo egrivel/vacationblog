@@ -876,3 +876,20 @@ span.userRef {
 .backlink a {
   color: #33f;
 }
+
+
+/* panoramic images */
+div.panorama {
+  margin-left: -2em;
+  margin-right: -2em;
+  padding: 16.66666666%;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+div.panorama img {
+  width: 100%;
+  position: absolute;
+  left: 0;
+}

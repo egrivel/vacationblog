@@ -38,6 +38,15 @@ var About = React.createClass({
           <li>Pressing <em>Enter</em> on inputs doesn't work consistently.</li>
           <li>The overall trip information page (describing each trip) is
             missing information and details.</li>
+          <li>Deeply nested comments on phone (narrow screen): unreadable
+            and edit buttons end up in the margins.</li>
+        </ul>
+
+        <h4>Features To Add</h4>
+        <ul>
+          <li>Connection with social network sites (facebook, google, ...)</li>
+          <li>Deleting comments (replacing by [deleted comment] placeholder
+            which is not displayed if there are no child comments)</li>
         </ul>
 
         <h3>About This Website</h3>

@@ -200,6 +200,14 @@ const JournalEdit = React.createClass({
         {this._renderDate()}
         {this._renderText()}
         {this._renderButtons()}
+        <p>Special formatting options:</p>
+        <ul>
+          <li>To include a panoramic image (full width of the display), use
+            the [PANO {'<imageid>'}] structure. Optionally, an offset (ranging
+            from -50 to +50) can be given. An offset of -50 will bottom-align
+            the panoramic image, +50 will top-align it. Default is 0 for
+            centering the image vertically.</li>
+        </ul>
       </div>
     );
   }
