@@ -69,7 +69,7 @@ function _setTripList(data) {
 /**
  * Trip store maintains information about the current trip.
  */
-var TripStore = assign({}, GenericStore, {
+const TripStore = assign({}, GenericStore, {
   /**
    * Reset the trip store (for testing only).
    */

@@ -664,5 +664,45 @@ class Trip {
       $tripId = db_sql_decode($line["tripId"]);
       return $tripId;
    }
+
+   static function getHashList() {
+      $query = ""
+         . "SELECT blogTrip.tripId, blogTrip.hash "
+         .   "FROM blogTrip "
+         .   "INNER JOIN ("
+         .     "SELECT "
+         .       "MAX(t1.updated) AS updated, "
+         .       "t1.tripId as tripId "
+         .     "FROM blogTrip "
+         .     "AS t1 "
+         .     "GROUP BY t1.tripId"
+         .   ") AS t2 "
+         .   "WHERE blogTrip.tripId = t2.tripId "
+         .     "AND blogTrip.updated = t2.updated ";
+
+      $result = mysql_query($query);
+      if (!$result) {
+         // Error executing the query
+         print $query . "<br/>";
+         print " --> error: " . mysql_error() . "<br/>\n";
+         return false;
+      }
+
+      if (mysql_num_rows($result) <= 0) {
+         // Trip does not exist
+         return false;
+      }
+
+      $list = array();
+      if (mysql_num_rows($result) > 0) {
+         $count = 0;
+         while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+            $hash = db_sql_decode($line["hash"]);
+            $list[$count++] = $hash;
+         }
+      }
+
+      return $list;
+   }
 }
 ?>

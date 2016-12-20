@@ -12,8 +12,13 @@
     "react"
   ],
   "rules": {
-    "arrow-parens": ["error", "always"],
-    "no-unused-vars": "error",
-    "no-undef": "error"
+    "arrow-parens": [2, "always"],
+    "no-unused-vars": 2,
+    "no-undef": 2,
+    "no-var": 2,
+    "prefer-const": [2, {
+        "destructuring": "any",
+        "ignoreReadBeforeAssign": false
+    }]
   }
 }

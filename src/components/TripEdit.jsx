@@ -1,19 +1,19 @@
 'use strict';
 
-var _ = require('lodash');
-var React = require('react');
+const _ = require('lodash');
+const React = require('react');
 
-var storeMixin = require('./StoreMixin');
-var TripStore = require('../stores/TripStore');
-var UserStore = require('../stores/UserStore');
+const storeMixin = require('./StoreMixin');
+const TripStore = require('../stores/TripStore');
+const UserStore = require('../stores/UserStore');
 
-var TripAction = require('../actions/TripAction');
-var UserAction = require('../actions/UserAction');
+const TripAction = require('../actions/TripAction');
+const UserAction = require('../actions/UserAction');
 
-var TripEditContrib = require('./TripEditContrib.jsx');
-var TripSelectContrib = require('./TripSelectContrib.jsx');
+const TripEditContrib = require('./TripEditContrib.jsx');
+const TripSelectContrib = require('./TripSelectContrib.jsx');
 
-var TripEdit = React.createClass({
+const TripEdit = React.createClass({
   displayName: 'Trip Edit',
 
   mixins: [storeMixin()],
@@ -74,7 +74,7 @@ var TripEdit = React.createClass({
   // While editing, leave the linefeeds as they are in the description
   _updateDescription: function(event) {
     const tripData = _.clone(this.state.tripData);
-    let description = String(event.target.value);
+    const description = String(event.target.value);
     tripData.description = description;
     TripAction.updateEditTrip(tripData);
   },

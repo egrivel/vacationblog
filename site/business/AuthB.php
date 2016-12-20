@@ -18,6 +18,26 @@ class AuthB {
       return null;
    }
 
+   public function canInitiateSynch() {
+      $user = $this->getUser();
+      if ($user) {
+         // only admin user can initiate synch
+         $access = $user->getAccess();
+         return ($access === LEVEL_ADMIN);
+      }
+      return false;
+   }
+
+   public function canSynch() {
+      $user = $this->getUser();
+      if ($user) {
+         // only synchronization user can synch
+         $access = $user->getAccess();
+         return ($access === LEVEL_SYNCH);
+      }
+      return false;
+   }
+
    // everyone but synch user can do this
    public function canGetComment($tripId = '', $commentId = '') {
       $user = $this->getUser();
@@ -242,6 +262,7 @@ class AuthB {
       }
       return false;
    }
+
    public function canSynchUser($userId = '') {
       $user = $this->getUser();
       if ($user) {

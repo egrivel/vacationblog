@@ -1,8 +1,8 @@
 'use strict';
 
-var React = require('react');
+const React = require('react');
 
-var Admin = React.createClass({
+const Admin = React.createClass({
   displayName: 'Admin',
 
   render: function() {
@@ -15,6 +15,9 @@ var Admin = React.createClass({
           </li>
           <li>
             <a href="#/admin/user">User Administration</a>
+          </li>
+          <li>
+            <a href="#/admin/sync">Synchronize with another site</a>
           </li>
           <li>
             Site Administration

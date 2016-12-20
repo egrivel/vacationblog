@@ -1,25 +1,26 @@
 'use strict';
 
-var React = require('react');
-var ReactDOM = require('react-dom');
-var Router = require('react-router').Router;
-var hashHistory = require('react-router').hashHistory;
+const React = require('react');
+const ReactDOM = require('react-dom');
+const Router = require('react-router').Router;
+const hashHistory = require('react-router').hashHistory;
 
-var App = require('./components/App.jsx');
-var Welcome = require('./components/Welcome.jsx');
-var TripDescription = require('./components/TripDescription.jsx');
-var TripEdit = require('./components/TripEdit.jsx');
-var TripAdmin = require('./components/TripAdmin.jsx');
-var UserEdit = require('./components/UserEdit.jsx');
-var UserAdmin = require('./components/UserAdmin.jsx');
-var JournalWrapper = require('./components/JournalWrapper.jsx');
-var JournalEdit = require('./components/JournalEdit.jsx');
-var Search = require('./components/Search.jsx');
-var Admin = require('./components/Admin.jsx');
-var About = require('./components/About.jsx');
+const App = require('./components/App.jsx');
+const Welcome = require('./components/Welcome.jsx');
+const TripDescription = require('./components/TripDescription.jsx');
+const TripEdit = require('./components/TripEdit.jsx');
+const TripAdmin = require('./components/TripAdmin.jsx');
+const UserEdit = require('./components/UserEdit.jsx');
+const UserAdmin = require('./components/UserAdmin.jsx');
+const JournalWrapper = require('./components/JournalWrapper.jsx');
+const JournalEdit = require('./components/JournalEdit.jsx');
+const Search = require('./components/Search.jsx');
+const Sync = require('./components/Sync.jsx');
+const Admin = require('./components/Admin.jsx');
+const About = require('./components/About.jsx');
 
-var TripAction = require('./actions/TripAction');
-var UserAction = require('./actions/UserAction');
+const TripAction = require('./actions/TripAction');
+const UserAction = require('./actions/UserAction');
 
 const routes = {
   path: '/',
@@ -38,6 +39,7 @@ const routes = {
     {path: '/admin/trip/:tripId', component: TripEdit},
     {path: '/admin/user', component: UserAdmin},
     {path: '/admin/user/:userId', component: UserEdit},
+    {path: '/admin/sync', component: Sync},
     {path: '/about', component: About}
   ]
 };
