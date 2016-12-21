@@ -472,17 +472,19 @@ class TripUser {
 
    static function getHashList() {
       $query = ""
-         . "SELECT blogTripUser.tripUserId, blogTripUser.hash "
+         . "SELECT blogTripUser.tripId, blogTripUser.userId, blogTripUser.hash "
          .   "FROM blogTripUser "
          .   "INNER JOIN ("
          .     "SELECT "
          .       "MAX(t1.updated) AS updated, "
-         .       "t1.tripUserId as tripUserId "
+         .       "t1.tripId as tripId "
+         .       "t1.userId as userId"
          .     "FROM blogTripUser "
          .     "AS t1 "
-         .     "GROUP BY t1.tripUserId"
+         .     "GROUP BY t1.tripId, t1.userId "
          .   ") AS t2 "
-         .   "WHERE blogTripUser.tripUserId = t2.tripUserId "
+         .   "WHERE blogTripUser.tripId = t2.tripId "
+         .     "AND blogTripUser.userId = t2.userId "
          .     "AND blogTripUser.updated = t2.updated ";
 
       $result = mysql_query($query);

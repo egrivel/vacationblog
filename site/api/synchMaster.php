@@ -191,7 +191,9 @@ function synchRemoteSite($site, $password) {
   );
 
   $context = stream_context_create($opts);
-  $data = json_decode(file_get_contents($url, false, $context), true);
+  $raw_data = file_get_contents($url, false, $context);
+  $data = json_decode($raw_data, true);
+  $response['raw-data'] = $raw_data;
 
   $response['synch-result'] = synchTrip($site, $authId, $data['blogTrip']);
   $response['data'] = $data;

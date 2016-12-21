@@ -465,17 +465,22 @@ class Feedback {
 
    static function getHashList() {
       $query = ""
-         . "SELECT blogFeedback.feedbackId, blogFeedback.hash "
+         . "SELECT blogFeedback.tripId, blogFeedback.referenceId, "
+         .   "blogFeedback.userId, blogFeedback.hash "
          .   "FROM blogFeedback "
          .   "INNER JOIN ("
          .     "SELECT "
          .       "MAX(t1.updated) AS updated, "
-         .       "t1.feedbackId as feedbackId "
+         .       "t1.tripId as tripId, "
+         .       "t1.referenceId as referenceId "
+         .       "t1.userId as userId "
          .     "FROM blogFeedback "
          .     "AS t1 "
-         .     "GROUP BY t1.feedbackId"
+         .     "GROUP BY t1.tripId, t1.referenceId, t1.userId "
          .   ") AS t2 "
-         .   "WHERE blogFeedback.feedbackId = t2.feedbackId "
+         .   "WHERE blogFeedback.tripId = t2.tripId "
+         .     "AND blogFeedback.referenceId = t2.referenceId "
+         .     "AND blogFeedback.userId = t2.userId "
          .     "AND blogFeedback.updated = t2.updated ";
 
       $result = mysql_query($query);
