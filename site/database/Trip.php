@@ -688,11 +688,6 @@ class Trip {
          return false;
       }
 
-      if (mysql_num_rows($result) <= 0) {
-         // Trip does not exist
-         return false;
-      }
-
       $list = array();
       if (mysql_num_rows($result) > 0) {
          $count = 0;

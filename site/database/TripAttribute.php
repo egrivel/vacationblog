@@ -346,5 +346,40 @@ class TripAttribute {
       }
       return null;
    }
+
+   static function getHashList() {
+      $query = ""
+         . "SELECT blogTripAttribute.tripAttributeId, blogTripAttribute.hash "
+         .   "FROM blogTripAttribute "
+         .   "INNER JOIN ("
+         .     "SELECT "
+         .       "MAX(t1.updated) AS updated, "
+         .       "t1.tripAttributeId as tripAttributeId "
+         .     "FROM blogTripAttribute "
+         .     "AS t1 "
+         .     "GROUP BY t1.tripAttributeId"
+         .   ") AS t2 "
+         .   "WHERE blogTripAttribute.tripAttributeId = t2.tripAttributeId "
+         .     "AND blogTripAttribute.updated = t2.updated ";
+
+      $result = mysql_query($query);
+      if (!$result) {
+         // Error executing the query
+         print $query . "<br/>";
+         print " --> error: " . mysql_error() . "<br/>\n";
+         return false;
+      }
+
+      $list = array();
+      if (mysql_num_rows($result) > 0) {
+         $count = 0;
+         while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+            $hash = db_sql_decode($line["hash"]);
+            $list[$count++] = $hash;
+         }
+      }
+
+      return $list;
+   }
 }
 ?>

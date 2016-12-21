@@ -694,5 +694,40 @@ class Journal {
     $data = str_replace(array('+','/','='), array('-','_',''), $data);
     return $data;
    }
+
+   static function getHashList() {
+      $query = ""
+         . "SELECT blogJournal.journalId, blogJournal.hash "
+         .   "FROM blogJournal "
+         .   "INNER JOIN ("
+         .     "SELECT "
+         .       "MAX(t1.updated) AS updated, "
+         .       "t1.journalId as journalId "
+         .     "FROM blogJournal "
+         .     "AS t1 "
+         .     "GROUP BY t1.journalId"
+         .   ") AS t2 "
+         .   "WHERE blogJournal.journalId = t2.journalId "
+         .     "AND blogJournal.updated = t2.updated ";
+
+      $result = mysql_query($query);
+      if (!$result) {
+         // Error executing the query
+         print $query . "<br/>";
+         print " --> error: " . mysql_error() . "<br/>\n";
+         return false;
+      }
+
+      $list = array();
+      if (mysql_num_rows($result) > 0) {
+         $count = 0;
+         while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+            $hash = db_sql_decode($line["hash"]);
+            $list[$count++] = $hash;
+         }
+      }
+
+      return $list;
+   }
 }
 ?>

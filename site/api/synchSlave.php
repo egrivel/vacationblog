@@ -19,8 +19,15 @@
 /* destination does not have to that destination site.                       */
 /* ========================================================================= */
 include_once(dirname(__FILE__) . "/../common/common.php");
-include_once(dirname(__FILE__) . "/../database/Trip.php");
 include_once(dirname(__FILE__) . '/../business/AuthB.php');
+include_once(dirname(__FILE__) . "/../database/Comment.php");
+include_once(dirname(__FILE__) . "/../database/Feedback.php");
+include_once(dirname(__FILE__) . "/../database/Journal.php");
+include_once(dirname(__FILE__) . "/../database/Media.php");
+include_once(dirname(__FILE__) . "/../database/Trip.php");
+include_once(dirname(__FILE__) . "/../database/TripAttribute.php");
+include_once(dirname(__FILE__) . "/../database/TripUser.php");
+include_once(dirname(__FILE__) . "/../database/User.php");
 
 $auth = new AuthB();
 
@@ -29,7 +36,14 @@ if (!$auth->canSynch()) {
 } else if (isGetMethod()) {
    // Need to respond with a list of all hashes
    $response = successResponse();
+   $response['blogComment'] = Comment::getHashList();
+   $response['blogFeedback'] = Feedback::getHashList();
+   $response['blogJournal'] = Journal::getHashList();
+   $response['blogMedia'] = Media::getHashList();
    $response['blogTrip'] = Trip::getHashList();
+   $response['blogTripAttribute'] = TripAttribute::getHashList();
+   $response['blogTripUser'] = TripUser::getHashList();
+   $response['blogUser'] = User::getHashList();
 } else {
    $response = errorResponse(RESPONSE_METHOD_NOT_ALLOWED, 'must be get or put');
 }

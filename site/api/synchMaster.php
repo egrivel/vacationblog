@@ -22,6 +22,116 @@
 include_once(dirname(__FILE__) . "/../common/common.php");
 include_once(dirname(__FILE__) . '/../business/AuthB.php');
 include_once(dirname(__FILE__) . '/../database/User.php');
+include_once(dirname(__FILE__) . '/../database/Trip.php');
+
+function synchTrip($site, $authId, $remoteHashes) {
+  $url = $site . '/api/synchTrip.php';
+  $localAdded = 0;
+  $remoteAdded = 0;
+  $result = '';
+
+  $localHashes = Trip::getHashList();
+  if ($remoteHashes) {
+    $diff = array_diff($localHashes, $remoteHashes);
+  } else {
+    $diff = $localHashes;
+  }
+
+  // $diff contains the local entries that must be pushed
+  foreach ($diff as $hash) {
+    $trip = Trip::findByHash($hash);
+    if ($trip) {
+      $data = Array();
+      $data['tripId'] = $trip->getTripId();
+      $data['created'] = $trip->getCreated();
+      $data['updated'] = $trip->getUpdated();
+      $data['name'] = $trip->getName();
+      $data['description'] = $trip->getDescription();
+      $data['bannerImg'] = $trip->getBannerImg();
+      $data['startDate'] = $trip->getStartDate();
+      $data['endDate'] = $trip->getEndDate();
+      $data['active'] = $trip->getActive();
+      $data['deleted'] = $trip->getDeleted();
+      $data['hash'] = $trip->getHash();
+
+      $opts = array('http' =>
+        array(
+          'method'  => 'PUT',
+          'header'  => "Content-Type: application/json\r\n".
+            "Cookie: blogAuthId=" . urlencode($authId) . "\r\n",
+          'content' => json_encode($data),
+          'timeout' => 60
+        )
+      );
+      $context  = stream_context_create($opts);
+      $putResponse = file_get_contents($url, false, $context);
+      $remoteAdded++;
+    }
+  }
+
+  $diff = array_diff($remoteHashes, $localHashes);
+  // $diff contains the remote entries that must be obtained
+  foreach ($diff as $hash) {
+    $opts = array('http' =>
+      array(
+        'method'  => 'GET',
+        'header'  => "Content-Type: application/json\r\n".
+          "Cookie: blogAuthId=" . urlencode($authId) . "\r\n",
+        'timeout' => 60
+      )
+    );
+    $context  = stream_context_create($opts);
+    $data = file_get_contents($url . '?hash=' . urlencode($hash), false, $context);
+    $data = json_decode($data, true);
+    if (isset($data['tripId'])) {
+      $trip = Trip::findByHash($data['hash']);
+      if (!$trip) {
+        // Don't have this hash yet, so add it
+        $tripId = $data['tripId'];
+        $trip = new Trip($tripId);
+        if (isset($data['created'])) {
+           $trip->setCreated($data['created']);
+        }
+        if (isset($data['updated'])) {
+           $trip->setUpdated($data['updated']);
+        }
+        if (isset($data['name'])) {
+           $trip->setName($data['name']);
+        }
+        if (isset($data['description'])) {
+           $trip->setDescription($data['description']);
+        }
+        if (isset($data['bannerImg'])) {
+           $trip->setBannerImg($data['bannerImg']);
+        }
+        if (isset($data['startDate'])) {
+           $trip->setStartDate($data['startDate']);
+        }
+        if (isset($data['endDate'])) {
+           $trip->setEndDate($data['endDate']);
+        }
+        if (isset($data['active'])) {
+           $trip->setActive($data['active']);
+        }
+        if (isset($data['deleted'])) {
+           $trip->setDeleted($data['deleted']);
+        }
+        if (isset($data['hash'])) {
+           $trip->setHash($data['hash']);
+        }
+        if ($trip->save()) {
+          $localAdded++;
+        } else {
+          $result .= 'error adding trip ' . $tripId . '   ';
+        }
+      }
+    } else {
+      $result .= 'error getting data for hash ' . $hash . '   ';
+    }
+  }
+  return 'Local added: ' . $localAdded . ', Remote added: ' . $remoteAdded
+    . ', message: ' . $result;
+}
 
 function synchRemoteSite($site, $password) {
   $response = successResponse();
@@ -81,7 +191,9 @@ function synchRemoteSite($site, $password) {
   );
 
   $context = stream_context_create($opts);
-  $data = file_get_contents($url, false, $context);
+  $data = json_decode(file_get_contents($url, false, $context), true);
+
+  $response['synch-result'] = synchTrip($site, $authId, $data['blogTrip']);
   $response['data'] = $data;
   return $response;
 }
