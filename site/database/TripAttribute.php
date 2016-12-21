@@ -356,7 +356,7 @@ class TripAttribute {
          .     "SELECT "
          .       "MAX(t1.updated) AS updated, "
          .       "t1.tripId as tripId, "
-         .       "t1.name as name, "
+         .       "t1.name as name "
          .     "FROM blogTripAttribute "
          .     "AS t1 "
          .     "GROUP BY t1.tripAttributeId"

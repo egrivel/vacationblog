@@ -478,7 +478,7 @@ class TripUser {
          .     "SELECT "
          .       "MAX(t1.updated) AS updated, "
          .       "t1.tripId as tripId, "
-         .       "t1.userId as userId"
+         .       "t1.userId as userId "
          .     "FROM blogTripUser "
          .     "AS t1 "
          .     "GROUP BY t1.tripId, t1.userId "
