@@ -472,7 +472,7 @@ class Feedback {
          .     "SELECT "
          .       "MAX(t1.updated) AS updated, "
          .       "t1.tripId as tripId, "
-         .       "t1.referenceId as referenceId "
+         .       "t1.referenceId as referenceId, "
          .       "t1.userId as userId "
          .     "FROM blogFeedback "
          .     "AS t1 "
