@@ -359,7 +359,7 @@ class TripAttribute {
          .       "t1.name as name "
          .     "FROM blogTripAttribute "
          .     "AS t1 "
-         .     "GROUP BY t1.tripAttributeId"
+         .     "GROUP BY t1.tripId, t1.name "
          .   ") AS t2 "
          .   "WHERE blogTripAttribute.tripId = t2.tripId "
          .     "AND blogTripAttribute.name = t2.name "
