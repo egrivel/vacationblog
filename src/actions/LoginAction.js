@@ -18,7 +18,7 @@ var LoginAction = {
       }
 
       if (this.userId) {
-        UserAction.setLoginState(UserStore.constants.NONE);
+        UserAction.setLoginState(UserStore.constants.LOGIN_SUCCESS);
         UserAction.setLoggedInUser(this.userId);
         UserAction.loadUser(this.userId);
       } else {

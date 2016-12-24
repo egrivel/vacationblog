@@ -20,6 +20,7 @@ UserStore = assign({}, GenericStore, {
   constants: {
     NONE: 'NONE',
     LOGIN: 'LOGIN',
+    LOGIN_SUCCESS: 'LOGIN_SUCCESS',
     REGISTER: 'REGISTER',
     RETRIEVE: 'RETRIEVE',
     CONFIRM_REG: 'CONFIRM_REG',

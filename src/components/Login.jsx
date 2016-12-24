@@ -93,9 +93,18 @@ const Login = React.createClass({
   _getStateFromStores: function() {
     const errorMessage = UserStore.getFormErrorMessage();
     const loginState = UserStore.getLoginState();
+    const userId = UserStore.getLoggedInUser();
+    let name = '';
+    if (userId) {
+      const data = UserStore.getData(userId);
+      if (data && data.name) {
+        name = data.name;
+      }
+    }
     return {
       errorMessage: errorMessage,
-      loginState: loginState
+      loginState: loginState,
+      name: name
     };
   },
 
@@ -348,12 +357,35 @@ const Login = React.createClass({
           fieldId="password"
           label="Password"
           value={this.state.password}
-          onBlur={this._setValue}
+          onChange={this._setValue}
         />
         <ButtonBar
           buttons={buttonList}
         />
         {this._renderOtherThings(UserStore.constants.LOGIN)}
+      </form>
+    );
+  },
+
+  _renderLoginSuccess: function() {
+    const name = this.state.name;
+    const buttonList = [];
+    buttonList.push({
+      label: 'OK',
+      onClick: this.props.onClose
+    });
+
+    return (
+      <form className="form login" onClick={this._noProp}
+         >
+        <h3>Login</h3>
+        <p>Close enough...</p>
+        <p>
+          Welcome, {name}, to this site!
+        </p>
+        <ButtonBar
+          buttons={buttonList}
+        />
       </form>
     );
   },
@@ -647,6 +679,8 @@ const Login = React.createClass({
       body = this._renderConfirmPwd();
     } else if (this.state.loginState === UserStore.constants.LOGOUT) {
       body = this._renderLogout();
+    } else if (this.state.loginState === UserStore.constants.LOGIN_SUCCESS) {
+      body = this._renderLoginSuccess();
     } else {
       body = this._renderLogin();
     }

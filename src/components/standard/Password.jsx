@@ -11,7 +11,8 @@ const Password = React.createClass({
     fieldId: React.PropTypes.string.isRequired,
     label: React.PropTypes.string.isRequired,
     value: React.PropTypes.string,
-    onBlur: React.PropTypes.func.isRequired
+    onChange: React.PropTypes.func,
+    onBlur: React.PropTypes.func
   },
 
   defaultProps: {
@@ -27,11 +28,16 @@ const Password = React.createClass({
   },
 
   _onChange: function(event) {
+    if (this.props.onChange) {
+      this.props.onChange(event.target.value, this.props.fieldId);
+    }
     this.setState({value: event.target.value});
   },
 
   _onBlur: function() {
-    this.props.onBlur(this.state.value, this.props.fieldId);
+    if (this.props.onBlur) {
+      this.props.onBlur(this.state.value, this.props.fieldId);
+    }
   },
 
   render: function() {
