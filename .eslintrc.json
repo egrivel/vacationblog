@@ -4,21 +4,29 @@
     "plugin:react/recommended"
   ],
   "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true
     }
+  },
+  "env": {
+    "node": true
   },
   "plugins": [
     "react"
   ],
   "rules": {
     "arrow-parens": [2, "always"],
+    "comma-dangle": [0, "never"],
+    "global-require": 2,
     "no-unused-vars": 2,
     "no-undef": 2,
     "no-var": 2,
     "prefer-const": [2, {
         "destructuring": "any",
         "ignoreReadBeforeAssign": false
-    }]
+    }],
+    "require-jsdoc": 0
   }
 }
