@@ -52,7 +52,6 @@ const Password = React.createClass({
           type="password"
           value={this.state.value}
           onChange={this._onChange}
-          onBlur={this._onBlur}
         />
       </Formrow>
     );

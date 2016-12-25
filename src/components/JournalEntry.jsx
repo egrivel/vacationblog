@@ -52,6 +52,10 @@ var JournalEntry = React.createClass({
     })
   },
 
+  contextTypes: {
+    router: React.PropTypes.object.isRequired
+  },
+
   /**
    * React lifecycle function. Called when the components is already
    * mounted and there are new props passed in.
@@ -166,7 +170,7 @@ var JournalEntry = React.createClass({
   _editCallback: function() {
     const editLink = '/journalEdit/' + this.state.tripId +
       '/' + this.state.journalId;
-    this.props.history.push(editLink);
+    this.context.router.push(editLink);
   },
 
   render: function render() {

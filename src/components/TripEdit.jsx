@@ -213,7 +213,10 @@ const TripEdit = React.createClass({
   },
 
   _renderNameInput: function() {
-    const name = this.state.tripData.name;
+    let name = this.state.tripData.name;
+    if (!name) {
+      name = '';
+    }
 
     const result = [];
     result.push(
@@ -242,6 +245,8 @@ const TripEdit = React.createClass({
     let description = this.state.tripData.description;
     if (description) {
       description = String(description).replace(/&lf;/g, '\n\n');
+    } else {
+      description = '';
     }
 
     const result = [];
@@ -270,12 +275,14 @@ const TripEdit = React.createClass({
   },
 
   _renderBannerImg() {
-    const bannerImg = this.state.tripData.bannerImg;
+    let bannerImg = this.state.tripData.bannerImg;
     let bannerPreview;
     if (bannerImg) {
       bannerPreview = (
         <img className="preview" src={'media/' + bannerImg}/>
       );
+    } else {
+      bannerImg = '';
     }
 
     const result = [];
@@ -480,6 +487,7 @@ const TripEdit = React.createClass({
             onChange={this._updateId}/>
         );
       }
+
       data = (
         <div>
           <div key="id-label" className="formLabel">ID</div>

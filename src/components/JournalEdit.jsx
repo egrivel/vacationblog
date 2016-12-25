@@ -30,6 +30,10 @@ const JournalEdit = React.createClass({
     })
   },
 
+  contextTypes: {
+    router: React.PropTypes.object.isRequired
+  },
+
   componentDidMount: function() {
     const tripId = this.props.params.tripId;
     const journalId = this.props.params.journalId;
@@ -87,10 +91,10 @@ const JournalEdit = React.createClass({
 
     if (journalId === '_new') {
       JournalAction.createJournal(tripId, journalData);
-      this.props.history.push('/trip/' + tripId);
+      this.context.router.push('/trip/' + tripId);
     } else {
       JournalAction.updateJournal(tripId, journalId, journalData);
-      this.props.history.push('/journal/' + tripId + '/' + journalId);
+      this.context.router.push('/journal/' + tripId + '/' + journalId);
     }
   },
 
@@ -101,11 +105,11 @@ const JournalEdit = React.createClass({
     if (journalId === '_new') {
       // clear the edited data
       JournalAction.clearJournal(tripId, journalId);
-      this.props.history.push('/trip/' + tripId);
+      this.context.router.push('/trip/' + tripId);
     } else {
       // re-load the original content of the journal entry
       JournalAction.loadJournal(tripId, journalId);
-      this.props.history.push('/journal/' + tripId + '/' + journalId);
+      this.context.router.push('/journal/' + tripId + '/' + journalId);
     }
   },
 

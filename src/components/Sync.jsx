@@ -18,7 +18,6 @@ const Sync = React.createClass({
 
   _getStateFromStores: function() {
     const syncInfo = SyncStore.getInfo();
-    console.log('Got info: ' + JSON.stringify(syncInfo));
     return {
       site: syncInfo.site,
       password: syncInfo.password,

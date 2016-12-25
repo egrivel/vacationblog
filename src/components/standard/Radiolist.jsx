@@ -38,9 +38,9 @@ const Radiolist = React.createClass({
     const options = [];
     for (let i = 0; i < this.props.list.length; i++) {
       const item = this.props.list[i];
-      let checked = null;
+      let checked = false;
       if (item.value === this.props.value) {
-        checked = 'checked';
+        checked = true;
       }
       options.push(
         <label
