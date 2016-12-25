@@ -94,7 +94,7 @@ const UserEdit = React.createClass({
             {label: 'Yes', value: 'Y'},
             {label: 'No', value: 'N'}
           ]}
-          onBlur={this._setValue}
+          onChange={this._setValue}
         />
         <Textbox
           fieldId="tempCode"
@@ -120,7 +120,7 @@ const UserEdit = React.createClass({
             {label: 'Yes', value: 'Y'},
             {label: 'No', value: 'N'}
           ]}
-          onBlur={this._setValue}
+          onChange={this._setValue}
         />
 
       </div>

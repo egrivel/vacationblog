@@ -1,21 +1,19 @@
 'use strict';
 
-var _ = require('lodash');
-var assign = require('object-assign');
+const _ = require('lodash');
+const assign = require('object-assign');
 
-var GenericStore = require('./GenericStore');
-var AppDispatcher = require('../AppDispatcher');
-var UserActionTypes = require('../actions/UserAction').Types;
+const GenericStore = require('./GenericStore');
+const AppDispatcher = require('../AppDispatcher');
+const UserActionTypes = require('../actions/UserAction').Types;
 
-var UserStore;
+let _userData = {};
+let _userLoggedIn = '';
+let _loginState = '';
+let _formErrorMessage = '';
+let _userList = [];
 
-var _userData = {};
-var _userLoggedIn = '';
-var _loginState = '';
-var _formErrorMessage = '';
-var _userList = [];
-
-UserStore = assign({}, GenericStore, {
+const UserStore = assign({}, GenericStore, {
   // Set of defined login states
   constants: {
     NONE: 'NONE',
@@ -39,7 +37,7 @@ UserStore = assign({}, GenericStore, {
    * @return {object} Data for the requested user.
    */
   getData: function(userId) {
-    var data = _userData[userId];
+    const data = _userData[userId];
     return data;
   },
 
@@ -67,7 +65,7 @@ UserStore = assign({}, GenericStore, {
 
   getAccess: function() {
     if (_userLoggedIn) {
-      var user = _userData[_userLoggedIn];
+      const user = _userData[_userLoggedIn];
       if (user && user.access) {
         return user.access;
       }

@@ -1,4 +1,4 @@
-./*
+/*
  * Basic styling (after reset.css tears everything down).
  */
 
@@ -678,6 +678,14 @@ label {
 }
 
 label.checkbox {
+  width: inherit;
+  text-align: left;
+  margin: 0;
+  display: inline;
+  font-weight: normal;
+}
+
+label.radiobutton {
   width: inherit;
   text-align: left;
   margin: 0;
