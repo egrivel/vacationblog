@@ -125,7 +125,7 @@ const JournalEdit = React.createClass({
         fieldId="title"
         label="Title"
         value={title}
-        onBlur={this._updateTitle}
+        onChange={this._updateTitle}
       />
     );
   },
@@ -138,7 +138,7 @@ const JournalEdit = React.createClass({
         fieldId="date"
         label="Date"
         value={date}
-        onBlur={this._updateDate}
+        onChange={this._updateDate}
       />
     );
   },
@@ -155,7 +155,7 @@ const JournalEdit = React.createClass({
         fieldId="text"
         label="Text"
         value={text}
-        onBlur={this._updateText}
+        onChange={this._updateText}
       />
     );
   },

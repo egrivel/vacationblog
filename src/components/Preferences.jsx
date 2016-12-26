@@ -118,25 +118,25 @@ const Preferences = React.createClass({
           fieldId="name"
           label="Name"
           value={name}
-          onBlur={this._setValue}
+          onChange={this._setValue}
         />
         <Textbox
           fieldId="email"
           label="Email"
           value={email}
-          onBlur={this._setValue}
+          onChange={this._setValue}
         />
         <Password
           fieldId="password"
           label="Password"
           value={password}
-          onBlur={this._setValue}
+          onChange={this._setValue}
         />
         <Password
           fieldId="password2"
           label="Repeat Password"
           value={password2}
-          onBlur={this._setValue}
+          onChange={this._setValue}
         />
         <Radiolist
           fieldId="notification"

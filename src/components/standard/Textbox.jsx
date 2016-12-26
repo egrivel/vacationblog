@@ -11,30 +11,19 @@ const Textbox = React.createClass({
     fieldId: React.PropTypes.string.isRequired,
     label: React.PropTypes.string.isRequired,
     value: React.PropTypes.string,
-    onBlur: React.PropTypes.func.isRequired
-  },
-
-  defaultProps: {
-    value: ''
-  },
-
-  getInitialState: function() {
-    return {value: this.props.value};
-  },
-
-  componentWillReceiveProps: function(nextProps) {
-    this.setState({value: nextProps.value});
+    onChange: React.PropTypes.func.isRequired
   },
 
   _onChange: function(event) {
-    this.setState({value: event.target.value});
-  },
-
-  _onBlur: function() {
-    this.props.onBlur(this.state.value, this.props.fieldId);
+    this.props.onChange(event.target.value, this.props.fieldId);
   },
 
   render: function() {
+    let value = this.props.value;
+    if (!value) {
+      value = '';
+    }
+
     return (
       <Formrow
         key={'k-' + this.props.fieldId}
@@ -44,9 +33,8 @@ const Textbox = React.createClass({
         <input
           id={this.props.fieldId}
           type="text"
-          value={this.state.value}
+          value={value}
           onChange={this._onChange}
-          onBlur={this._onBlur}
         />
       </Formrow>
     );

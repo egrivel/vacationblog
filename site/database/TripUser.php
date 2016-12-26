@@ -431,6 +431,7 @@ class TripUser {
          .   "INNER JOIN blogUser "
          .     "ON blogUser.userId = blogTripUser.userId "
          . "WHERE blogTripUser.tripId = " . db_sql_encode($tripId)
+         .   "AND blogTripUser.tripId = t2.tripId "
          .   "AND blogTripUser.userId = t2.userId "
          .   "AND blogTripUser.updated = t2.updated "
          .   "AND blogTripUser.deleted != 'Y'";

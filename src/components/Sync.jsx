@@ -53,7 +53,7 @@ const Sync = React.createClass({
         fieldId="name"
         label="Site Address"
         value={site}
-        onBlur={this._updateSite}
+        onChange={this._updateSite}
       />
     );
   },
@@ -66,7 +66,7 @@ const Sync = React.createClass({
         fieldId="password"
         label="Password"
         value={password}
-        onBlur={this._updatePassword}
+        onChange={this._updatePassword}
       />
     );
   },

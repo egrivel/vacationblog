@@ -67,13 +67,13 @@ const UserEdit = React.createClass({
           fieldId="name"
           label="Name"
           value={name}
-          onBlur={this._setValue}
+          onChange={this._setValue}
         />
         <Textbox
           fieldId="email"
           label="Email"
           value={email}
-          onBlur={this._setValue}
+          onChange={this._setValue}
         />
         <Droplist
           fieldId="access"
@@ -84,7 +84,7 @@ const UserEdit = React.createClass({
             {label: 'Visitor', value: 'visitor'},
             {label: 'Administrator', value: 'admin'}
           ]}
-          onBlur={this._setValue}
+          onChange={this._setValue}
         />
         <Radiolist
           fieldId="notification"
@@ -100,7 +100,7 @@ const UserEdit = React.createClass({
           fieldId="tempCode"
           label="Temp Code"
           value={tempCode}
-          onBlur={this._setValue}
+          onChange={this._setValue}
         />
         <Display
           fieldId="external-type"
