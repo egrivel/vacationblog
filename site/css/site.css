@@ -54,6 +54,7 @@ strong {
 /*
  * Body, header, menu and footer
  */
+
 div.body {
   background-color: #fff;
   color: #000;
@@ -124,6 +125,15 @@ div.footer p {
   letter-spacing: 0.5px;
 }
 
+@media (max-width: 480px) {
+  div.header h1 {
+    padding-left: 0.5em;
+  }
+}
+
+/**
+ * Menu bar
+ */
 .main-menu, .main-menu ul {
   position: relative;
   line-height: 1.8em;
@@ -147,6 +157,11 @@ div.footer p {
   padding-bottom: 0.5em;
   float: left;
   position: relative;
+  margin-right: 0.5em;
+}
+
+.main-menu li.icon {
+  display: none;
 }
 
 .main-menu li.first {
@@ -155,7 +170,9 @@ div.footer p {
 }
 
 .main-menu li a {
-  padding: 0 1em;
+  padding: 0;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
 }
 
 .main-menu li.selected, .main-menu li.selected:hover {
@@ -175,6 +192,36 @@ div.footer p {
   display: inline-block;
   color: inherit;
   background-color: inherit;
+}
+
+@media (max-width: 480px) {
+  .main-menu {
+    margin-left: 0.5em;
+  }
+
+  .main-menu li {
+    display: none;
+  }
+
+  .main-menu li.icon {
+    display: block;
+    background-color: #679;
+    color: #fff;
+  }
+
+  .main-menu li.icon a {
+    padding-left: 0;
+  }
+
+  .main-menu-open li {
+    display: block;
+    float: none;
+    border-top: solid 1px #fff;
+  }
+
+  .main-menu-open li.icon {
+    border-top: none;
+  }
 }
 
 /*
@@ -212,6 +259,13 @@ div.content p {
   padding-top: 0.5em;
   padding-bottom: 0.5em;
   text-align: justify;
+}
+
+@media (max-width: 480px) {
+  div.content {
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+  }
 }
 
 /*
@@ -410,7 +464,6 @@ div.journalitem p.images img.img1 {
   width: 100%;
 }
 
-
 div.journalitem p.banner {
   margin-left: -2em;
   margin-right: -2em;
@@ -479,6 +532,12 @@ div.commentBlock {
   margin-top: 0.25em;
   padding-left: 0;
   font-family: Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+@media (max-width: 480px) {
+  div.commentBlock {
+    border-left: solid 1px;
+  }
 }
 
 div.commentBlock h3 {
@@ -617,6 +676,11 @@ div.feedback i.my-plus {
   font-weight: bold;
 }
 
+div.feedback i.my-smile {
+  color: #090;
+  font-weight: bold;
+}
+
 .need-login {
   position: relative;
 }
@@ -729,6 +793,21 @@ div.commentEdit textarea.comment {
 div.commentEdit button {
   margin-right: 5px;
   margin-top: -8px;
+}
+
+@media (max-width: 480px) {
+  div.commentBlock h3 span.commentId {
+    float: none;
+  }
+  div.commentEdit {
+    margin: 0;
+    padding: 0;
+
+  }
+  div.commentEdit button {
+    margin: 0;
+    margin-top: 0.1em;
+  }
 }
 
 /*
