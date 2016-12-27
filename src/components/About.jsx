@@ -46,14 +46,14 @@ const About = React.createClass({
             forms (please report where it does not work).</li>
           <li>Feedback mechanism to "enjoy" a post or comment, similar to
             facebook's like and google's plus mechanism.</li>
+          <li>Maps were added to the overall trip information pages, where
+            applicable.</li>
         </ul>
 
         <h4>What Is Not Working</h4>
         <p>The following issues are known:</p>
         <ul>
           <li>It is not yet possible for users to change their settings.</li>
-          <li>The overall trip information page (describing each trip) is
-            missing information and details.</li>
         </ul>
 
         <h4>Features To Add</h4>
