@@ -37,6 +37,10 @@ strong {
   font-weight: bold;
 }
 
+img {
+  width: 100%;
+}
+
 /*
  * Common utility styles
  */

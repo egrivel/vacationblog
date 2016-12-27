@@ -11,8 +11,8 @@
  *    of that object.
  */
 
-var React = require('react');
-var moment = require('moment-timezone');
+const React = require('react');
+const moment = require('moment-timezone');
 
 function _replaceEntities(text) {
   text = text.replace(/&aacute;/g, '\u00e1');
@@ -74,8 +74,8 @@ function _replaceEntities(text) {
  * @private
  */
 function _recursivelyGetNodes(text, count) {
-  var nodes = [];
-  var end;
+  const nodes = [];
+  let end;
 
   if (text.indexOf('[') < 0) {
     // no markup, that's easy
@@ -128,8 +128,8 @@ function _recursivelyGetNodes(text, count) {
                                                   count + 1)));
     }
   } else if (text.substring(0, 6).toUpperCase() === '[LINK ') {
-    var endOpen = text.indexOf(']');
-    var open = '';
+    const endOpen = text.indexOf(']');
+    let open = '';
     if (endOpen > 0) {
       open = text.substring(6, endOpen);
       text = text.substring(endOpen + 1);
@@ -139,7 +139,7 @@ function _recursivelyGetNodes(text, count) {
       text = text.substring(6);
     }
     if (open) {
-      var href = open;
+      const href = open;
       end = text.toUpperCase().indexOf('[/LINK]');
       if (end > 0) {
         nodes.push(React.DOM.a({href: href, target: '_blank', key: count},
@@ -154,24 +154,41 @@ function _recursivelyGetNodes(text, count) {
     } else {
       nodes.push(_recursivelyGetNodes(text, count + 1));
     }
+  } else if (text.substring(0, 7).toUpperCase() === '[MEDIA ') {
+    const endOpen = text.indexOf(']');
+    let open = '';
+    if (endOpen > 0) {
+      open = text.substring(7, endOpen);
+      text = text.substring(endOpen + 1);
+    } else {
+      // open tag doesn't end; just remove open tag and keep rest of
+      // the text
+      text = text.substring(7);
+    }
+    if (open) {
+      const src = open.trim();
+      nodes.push(React.DOM.img(
+        {src: 'media/' + src, key: count}
+      ));
+    }
   } else {
     nodes.push(text);
   }
   return nodes;
 }
 
-var utils = {
+const utils = {
   orientation: {
     PORTRAIT: 'portrait',
     LANDSCAPE: 'landscape'
   },
 
-  replaceEntities: function replaceEntities(text) {
+  replaceEntities: function(text) {
     return _replaceEntities(text);
   },
 
-  buildTextNode: function buildTextNode(type, className, key, text) {
-    var nodes = _recursivelyGetNodes(text, 0);
+  buildTextNode: function(type, className, key, text) {
+    const nodes = _recursivelyGetNodes(text, 0);
     if (className === '') {
       className = null;
     }
@@ -199,7 +216,7 @@ var utils = {
    * @param {date} date - date-time in internal format.
    * @return {string} human-readable representation of the date or date-time.
    */
-  formatDate: function formatDate(date) {
+  formatDate: function(date) {
     if (!date) {
       return null;
     } else if (date.length === 8) {
@@ -214,7 +231,7 @@ var utils = {
       // to Eastern time (the moment library will take care of DST)
       // Note: default to the American 12-hour time format. Allow
       // users to select a 24-hour time format in the future.
-      var m = moment.tz(date, 'UTC');
+      const m = moment.tz(date, 'UTC');
       const result = moment.tz(m, 'America/New_York')
         .format('dddd MMMM D YYYY h:mm:ssa z');
       return result;

@@ -30,7 +30,7 @@ $trip{'startDate'} = '2007-06-20';
 $trip{'endDate'} = '2007-08-17';
 $trip{'active'} = 'N';
 $trip{'bannerImg'} = 'vak2007-banner.png';
-$trip{'description'} = "In the summer of 2007, our family spent eight weeks traveling around the United States. Our trip took us over 15,000 miles (almost 25,000 kilometers), enough to drive more than halfway around the world. We visited 36 of the 48 contiguous United States (75%). The map below shows our route:\n\nmap\n\nOur journey started on Saturday, June 23 and we returned home on Friday, August 17. We regularly updated the website and exchanged comments with friends and family. Read about our exploits by clicking on the Trip Diary link, or enjoy a selection of the Photos.";
+$trip{'description'} = "In the summer of 2007, our family spent eight weeks traveling around the United States. Our trip took us over 15,000 miles (almost 25,000 kilometers), enough to drive more than halfway around the world. We visited 36 of the 48 contiguous United States (75%). The map below shows our route:\n\n[MEDIA vak2007-map.png]\n\nOur journey started on Saturday, June 23 and we returned home on Friday, August 17. We regularly updated the website and exchanged comments with friends and family.";
 add_trip(\%trip);
 
 %trip = ();
@@ -42,7 +42,7 @@ $trip{'startDate'} = '2012-09-01';
 $trip{'endDate'} = '2012-09-30';
 $trip{'active'} = 'N';
 $trip{'bannerImg'} = 'vak2012-banner.png';
-$trip{'description'} = "We are dedicating the year 2012 as the year of I-70. The plan is to explore the entire almost 2200 miles of Interstate 70, in a number of trips.\n\nEver since the Maryland Highway Administration placed a sign close to the start of westbound I-70 with the tantalizing text Columbus 420 — St Louis 845 — Denver 1700 — Cove Fort 2200 we have been wanting to go to the other end of this Interstate. Over the winter we decided that this year is going to be the year. We will be reading books about I-70, but also about places and events surrounding it. We expect to make several I-70 related day trips, a one-week vacation in the spring to explore the first part (Pennsylvania through Ohio), and finally “the big one,” where we will be spending most of the month of September along the I-70.\n\nJust like we did with our 2007 trip around the United States we are creating a website were we will be blogging about our progress and our impressions. Links to our respective diaries are at the top.\n\nWe are also planning to write “essays” about what we discover and experience. These essays will a little bit more in-depth than the diary entries and include references to additional information.\n\nWe hope that our friends will again join us on this adventure, and maybe we will all learn a little bit about America...";
+$trip{'description'} = "We are dedicating the year 2012 as the [EM]year of I-70[/EM]. The plan is to explore the entire almost 2200 miles of Interstate 70, in a number of trips.\n\nEver since the Maryland Highway Administration placed a sign close to the start of westbound I-70 with the tantalizing text [EM]Columbus 420 — St Louis 845 — Denver 1700 — Cove Fort 2200[/EM] we have been wanting to go to the other end of this Interstate. Over the winter we decided that this year is going to be the year. We will be reading books about I-70, but also about places and events surrounding it. We expect to make several I-70 related day trips, a one-week vacation in the spring to explore the first part (Pennsylvania through Ohio), and finally “the big one,” where we will be spending most of the month of September along the I-70.\n\nJust like we did with our 2007 trip around the United States we are creating a website were we will be blogging about our progress and our impressions. Links to our respective diaries are at the top.\n\nWe are also planning to write “essays” about what we discover and experience. These essays will a little bit more in-depth than the diary entries and include references to additional information.\n\nWe hope that our friends will again join us on this adventure, and maybe we will all learn a little bit about America...\n\n[B]Map of Photos[/B]\n\nThe map below shows all the places where I have taken photos from September 4 through 22. Not all photos are posted on this site; many are only in my private photo archive. But the map still gives are reasonable idea of this trip....\n\n[MEDIA vak2012-map.png]";
 add_trip(\%trip);
 
 %trip = ();
@@ -54,7 +54,7 @@ $trip{'startDate'} = '2013-09-01';
 $trip{'endDate'} = '2013-09-30';
 $trip{'active'} = 'N';
 $trip{'bannerImg'} = 'vak2013-banner.png';
-$trip{'description'} = "This is the website for our 2013 vacation, where we will be traveling up the eastcoast and visit the state of Maine for the first time.\n\nJust like we did with our 2007 trip around the United States and our 2012 I-70 trip, we are creating a website were we will be blogging about our progress and our impressions. Links to our respective diaries are at the top.\n\nWe hope that our friends will again join us on this adventure, and maybe we will all learn a little bit about America...";
+$trip{'description'} = "This is the website for our 2013 vacation, where we will be traveling up the eastcoast and visit the state of Maine for the first time.\n\nJust like we did with our 2007 trip [EM]around the United States[/EM] and our 2012 [EM]I-70[EM] trip, we are creating a website were we will be blogging about our progress and our impressions. Links to our respective diaries are at the top.\n\nWe hope that our friends will again join us on this adventure, and maybe we will all learn a little bit about America...";
 add_trip(\%trip);
 
 %trip = ();
@@ -78,7 +78,7 @@ $trip{'startDate'} = '2015-09-01';
 $trip{'endDate'} = '2015-09-30';
 $trip{'active'} = 'N';
 $trip{'bannerImg'} = 'vak2015-banner.png';
-$trip{'description'} = "This is the website for our 2015 vacation, where traveled to Alabama, Arkansas and Oklahoma (and various other states on the way). The map below shows our route; click on the map for an interactive version where you can zoom in for details (opens in a new window).";
+$trip{'description'} = "This is the website for our 2015 vacation, where traveled to Alabama, Arkansas and Oklahoma (and various other states on the way). The map below shows our route.\n\n[MEDIA vak2015-map.png]";
 add_trip(\%trip);
 
 sub getTripId {
@@ -330,7 +330,7 @@ sub to_title {
 #    $text =~ s/&eacute;/\x{00e9}/g;
 #    $text =~ s/&amp;eacute;/\x{00e9}/g;
 
-    
+
     if ($text =~ /(\&\w+;)/) {
         print "to_title: '$1' left in $text\n";
     }
@@ -370,7 +370,7 @@ sub process_text {
 
     $text =~ s/\s*<b>\s*(.*?)\s*$/ \[B\]$1\[\/B\]/ig;
     $text =~ s/^\s*(.*?)\s*<\/b>\s*/\[B\]$1\[\/B\] /ig;
-    
+
 
     $text =~ s/^\s+//;
     $text =~ s/\s\s+/ /g;
@@ -496,7 +496,7 @@ sub to_standard_format {
             $out .= "\n";
         }
     }
-    
+
     #print $out;
 #    $text =~ s/&aacute;/\x{00e1}/g;
 #    $text =~ s/&agrave;/\x{00e0}/g;
@@ -536,7 +536,7 @@ sub to_standard_format {
 
 #    $text =~ s/&lf;/\n/g;
 #    $text =~ s/&nl;//g;
-    
+
 #    if ($text =~ /(&amp;\w+;)/) {
 #        print "to_standard_format: '$1' left\n";
 #    } elsif ($text =~ /(&\w+;)/) {
