@@ -1,14 +1,16 @@
 'use strict';
 
-var React = require('react');
-var Link = require('react-router').Link;
+const React = require('react');
+const Link = require('react-router').Link;
 
-var TripAction = require('../actions/TripAction');
-var TripStore = require('../stores/TripStore');
-var UserStore = require('../stores/UserStore');
+const TripAction = require('../actions/TripAction');
+const TripStore = require('../stores/TripStore');
+const UserStore = require('../stores/UserStore');
+const MenuAction = require('../actions/MenuAction');
+const MenuStore = require('../stores/MenuStore');
 
-var TripJournalList = require('./TripJournalList.jsx');
-var utils = require('./utils');
+const TripJournalList = require('./TripJournalList.jsx');
+const utils = require('./utils');
 
 /**
  * Get the state from the stores.
@@ -43,7 +45,7 @@ function _getStateFromStores() {
  * @private
  */
 function _startReadingLink(tripId, journalId) {
-  var journalPart = '(no journal entries)';
+  let journalPart = '(no journal entries)';
   if (journalId) {
     journalPart = React.DOM.span(
       {
@@ -68,7 +70,7 @@ function _startReadingLink(tripId, journalId) {
   );
 }
 
-var TripDescription = React.createClass({
+const TripDescription = React.createClass({
   displayName: 'TripDescription',
 
   propTypes: {
@@ -96,11 +98,13 @@ var TripDescription = React.createClass({
       TripAction.setCurrentTrip(null);
     }
     this.getDataIfNeeded(this.props);
+    MenuAction.selectItem(MenuStore.menuIds.HOME);
   },
 
   componentWillUnmount: function() {
     TripStore.removeChangeListener(this._onChange);
     UserStore.removeChangeListener(this._onChange);
+    MenuAction.unselectItem(MenuStore.menuIds.HOME);
   },
 
   componentWillReceiveProps: function(nextProps) {
@@ -108,7 +112,7 @@ var TripDescription = React.createClass({
   },
 
   getDataIfNeeded: function(props) {
-    var currentTripId = TripStore.getCurrentTripId();
+    const currentTripId = TripStore.getCurrentTripId();
     if (props && props.params && props.params.tripId) {
       if (props.params.tripId !== currentTripId) {
         TripAction.setCurrentTrip(props.params.tripId);
@@ -147,7 +151,7 @@ var TripDescription = React.createClass({
           </h3>
         );
         if (item.message) {
-          var parList = utils.splitText(item.message);
+          const parList = utils.splitText(item.message);
           for (let j = 0; j < parList.length; j++) {
             parCount++;
             messages.push(utils.buildTextNode('p', 'text noclear',
@@ -193,12 +197,12 @@ var TripDescription = React.createClass({
   },
 
   render: function() {
-    var parCount = 0;
-    var tripId = this.state.tripId;
+    let parCount = 0;
+    const tripId = this.state.tripId;
 
     if (tripId) {
-      var parList = utils.splitText(this.state.description);
-      var paragraphs = parList.map(function(par) {
+      const parList = utils.splitText(this.state.description);
+      const paragraphs = parList.map(function(par) {
         parCount++;
         return utils.buildTextNode('p', 'text', 'p-' + parCount, par);
       });

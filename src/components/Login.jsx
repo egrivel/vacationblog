@@ -90,6 +90,10 @@ const Login = React.createClass({
     onClose: React.PropTypes.func.isRequired
   },
 
+  contextTypes: {
+    router: React.PropTypes.object
+  },
+
   _getStateFromStores: function() {
     const errorMessage = UserStore.getFormErrorMessage();
     const loginState = UserStore.getLoginState();
@@ -109,7 +113,8 @@ const Login = React.createClass({
   },
 
   componentDidMount: function() {
-    const element = document.getElementById('userId'); // eslint-disable-line no-undef
+    // eslint-disable-next-line no-undef
+    const element = document.getElementById('userId');
     if (element) {
       element.focus();
     }
@@ -202,7 +207,7 @@ const Login = React.createClass({
     } else if (password.length < 6) {
       UserAction.setLoginFormError(
         'Please enter a password of at least 6 characters.');
-    } else if (password !== password2) { // eslint-disable-line no-negated-condition
+    } else if (password !== password2) {
       UserAction.setLoginFormError(
         'Please repeat the exact same password.');
     } else {
@@ -252,7 +257,7 @@ const Login = React.createClass({
     } else if (password.length < 6) {
       UserAction.setLoginFormError(
         'Please enter a password of at least 6 characters.');
-    } else if (password !== password2) { // eslint-disable-line no-negated-condition
+    } else if (password !== password2) {
       UserAction.setLoginFormError(
         'Please repeat the exact same password.');
     } else {
@@ -282,7 +287,7 @@ const Login = React.createClass({
   // ========================================================================
 
   _renderOtherThings: function(status) {
-    let list = [];
+    const list = [];
     if (status !== UserStore.constants.LOGIN) {
       list.push(<li key="login">If you already have a user ID and password,
         you can <a href="#/login" onClick={this._goLogin}>login</a>.</li>);

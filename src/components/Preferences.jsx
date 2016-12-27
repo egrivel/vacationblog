@@ -1,6 +1,5 @@
 'use strict';
 
-const _ = require('lodash');
 const React = require('react');
 
 const ButtonBar = require('./standard/ButtonBar.jsx');
@@ -12,6 +11,8 @@ const Textbox = require('./standard/Textbox.jsx');
 const storeMixin = require('./StoreMixin');
 const UserStore = require('../stores/UserStore');
 const UserAction = require('../actions/UserAction');
+const MenuAction = require('../actions/MenuAction');
+const MenuStore = require('../stores/MenuStore');
 
 const Preferences = React.createClass({
   displayName: 'Preferences',
@@ -19,6 +20,28 @@ const Preferences = React.createClass({
   mixins: [storeMixin()],
 
   stores: [UserStore],
+
+  contextTypes: {
+    router: React.PropTypes.object
+  },
+
+  getInitialState: function() {
+    return {
+      error: ''
+    };
+  },
+
+  componentDidMount: function() {
+    const userId = UserStore.getLoggedInUser();
+    UserAction.initEdit(userId);
+    MenuAction.selectItem(MenuStore.menuIds.PREFERENCES);
+  },
+
+  componentWillUnmount: function() {
+    const userId = UserStore.getLoggedInUser();
+    UserAction.clearEdit(userId);
+    MenuAction.unselectItem(MenuStore.menuIds.PREFERENCES);
+  },
 
   _getStateFromStores: function() {
     const userId = UserStore.getLoggedInUser();
@@ -29,27 +52,25 @@ const Preferences = React.createClass({
     let notification = '';
 
     if (userId) {
-      const userData = UserStore.getData(userId);
+      const userData = UserStore.getEditData(userId);
       if (userData) {
         // console.log('Data for user ' + userId + ' is: ' +
         //     JSON.stringify(userData));
-        if (userData.editName) {
-          name = userData.editName;
-        } else {
+        if (userData.name) {
           name = userData.name;
         }
-        if (userData.editEmail) {
-          email = userData.editEmail;
-        } else {
+        if (userData.email) {
           email = userData.email;
         }
-        if (userData.editNotification) {
-          notification = userData.editNotification;
-        } else {
+        if (userData.notification) {
           notification = userData.notification;
         }
-        password = userData.editPassword;
-        password2 = userData.editPassword2;
+        if (userData.password) {
+          password = userData.password;
+        }
+        if (userData.password2) {
+          password2 = userData.password2;
+        }
       }
     }
     return {
@@ -64,30 +85,54 @@ const Preferences = React.createClass({
 
   _setValue: function(value, prop) {
     const userId = UserStore.getLoggedInUser();
-    const userData = _.cloneDeep(UserStore.getData(userId));
-    if (prop === 'name') {
-      userData.editName = value;
-    } else if (prop === 'email') {
-      userData.editEmail = value;
-    } else if (prop === 'password') {
-      userData.editPassword = value;
-    } else if (prop === 'password2') {
-      userData.editPassword2 = value;
-    } else if (prop === 'notification') {
-      userData.editNotification = value;
-    }
-    UserAction.updateUser(userData);
+    UserAction.setEdit(userId, prop, value);
   },
 
   _onChangeValues: function() {
     // not yet implemented
+    let error = '';
+    if (this.state.name === '') {
+      error = 'You must enter a name and an email.';
+    } else if (this.state.email === '') {
+      error = 'You must enter a name and an email.';
+    } else if ((this.state.password !== '') || (this.state.password2 !== '')) {
+      if (this.state.password.length < 6) {
+        error = 'Please enter a password of at least 6 characters.';
+      } else if (this.state.password !== this.state.password2) {
+        error = 'Please repeat the exact same password.';
+      }
+    }
+    this.setState({errorMessage: error});
+
+    if (error !== '') {
+      // got an error, so we're done
+      return;
+    }
+
+    const userId = UserStore.getLoggedInUser();
+    const currentData = UserStore.getData(userId);
+    if ((this.state.name !== currentData.name) ||
+      (this.state.notification !== currentData.notification)) {
+      UserAction.updatePrefs(userId, this.state.name, this.state.notification);
+    }
+    if (this.state.email !== currentData.email) {
+      UserAction.updateEmail(userId, this.state.email);
+    }
+    if (this.state.password !== '') {
+      UserAction.updatePassword(userId, this.state.password);
+    }
   },
 
   _onCancel: function() {
-    // not yet implemented
+    this.context.router.push('/');
   },
 
   render: function() {
+    let errors = null;
+    if (this.state.errorMessage !== '') {
+      errors = <div className="errorMessage">{this.state.errorMessage}</div>;
+    }
+
     const userId = this.state.userId;
     const name = this.state.name;
     const email = this.state.email;
@@ -107,6 +152,7 @@ const Preferences = React.createClass({
 
     return (
       <div>
+        {errors}
         <p>Change your preferences. If you change your email, you will have
           to verify the new email address.</p>
         <Display

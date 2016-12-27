@@ -20,6 +20,7 @@
     "arrow-parens": [2, "always"],
     "comma-dangle": [0, "never"],
     "global-require": 2,
+    "no-const-assign": 2,
     "no-unused-vars": 2,
     "no-undef": 2,
     "no-var": 2,

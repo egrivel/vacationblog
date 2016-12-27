@@ -8,6 +8,7 @@ const AppDispatcher = require('../AppDispatcher');
 const UserActionTypes = require('../actions/UserAction').Types;
 
 let _userData = {};
+let _userEditData = {};
 let _userLoggedIn = '';
 let _loginState = '';
 let _formErrorMessage = '';
@@ -28,6 +29,7 @@ const UserStore = assign({}, GenericStore, {
 
   _reset: function() {
     _userData = {};
+    _userEditData = {};
     _userList = [];
   },
 
@@ -39,6 +41,16 @@ const UserStore = assign({}, GenericStore, {
   getData: function(userId) {
     const data = _userData[userId];
     return data;
+  },
+
+  getEditData: function(userId) {
+    if (_userEditData[userId]) {
+      return _userEditData[userId];
+    }
+    if (_userData[userId]) {
+      return _userData[userId];
+    }
+    return {};
   },
 
   getLoggedInUser: function() {
@@ -123,6 +135,21 @@ const UserStore = assign({}, GenericStore, {
         break;
       case UserActionTypes.USER_SET_LIST:
         _userList = action.list;
+        UserStore.emitChange();
+        break;
+      case UserActionTypes.USER_INIT_EDIT:
+        _userEditData[action.userId] = _.cloneDeep(_userData[action.userId]);
+        UserStore.emitChange();
+        break;
+      case UserActionTypes.USER_SET_EDIT:
+        if (!_userEditData[action.userId]) {
+          _userEditData[action.userId] = _.cloneDeep(_userData[action.userId]);
+        }
+        _userEditData[action.userId][action.prop] = action.value;
+        UserStore.emitChange();
+        break;
+      case UserActionTypes.USER_CLEAR_EDIT:
+        _userEditData[action.userId] = {};
         UserStore.emitChange();
         break;
       default:

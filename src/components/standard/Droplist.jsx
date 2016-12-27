@@ -24,17 +24,16 @@ const Droplist = React.createClass({
 
   render: function() {
     const options = [];
+    let value = this.props.value;
+    if (!value) {
+      value = '';
+    }
     for (let i = 0; i < this.props.list.length; i++) {
       const item = this.props.list[i];
-      let selected = false;
-      if (item.value === this.props.value) {
-        selected = true;
-      }
       options.push(
         <option
           key={'o-' + i}
           value={item.value}
-          selected={selected}
         >
           {item.label}
         </option>
@@ -49,6 +48,7 @@ const Droplist = React.createClass({
         <select
           id={this.props.fieldId}
           onChange={this._onChange}
+          value={value}
         >
           {options}
         </select>

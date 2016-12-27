@@ -7,6 +7,14 @@ const UserActionTypes = require('../actions/UserAction').Types;
 const GenericStore = require('./GenericStore');
 const UserStore = require('./UserStore');
 
+const menuIds = {
+  HOME: 'm1',
+  SEARCH: 'm2',
+  PREFERENCES: 'm3',
+  ADMIN: 'm4',
+  ABOUT: 'm5'
+};
+
 // The menu structure. It uses the following attributes:
 //  - id: unique ID for the menu item
 //  - label: display label for the menu item
@@ -16,16 +24,16 @@ const UserStore = require('./UserStore');
 //  - submenu: next level menu to display when selected (non-leaf entries
 //    only)
 const _menuData = [
-  {id: 'm1', label: 'Home', selected: false, visible: true,
-    target: '#/'},
-  {id: 'm2', label: 'Search', selected: false, visible: false,
-    target: '#/search'},
-  {id: 'm3', label: 'Preferences', selected: false, visible: false,
-    target: '#/prefs'},
-  {id: 'm4', label: 'Admin', selected: false, visible: false,
-    target: '#/admin'},
-  {id: 'm5', label: 'About', selected: false, visible: true,
-    target: '#/about'}
+  {id: menuIds.HOME, label: 'Home', selected: false,
+    visible: true, target: '#/'},
+  {id: menuIds.SEARCH, label: 'Search', selected: false,
+    visible: false, target: '#/search'},
+  {id: menuIds.PREFERENCES, label: 'Preferences', selected: false,
+    visible: false, target: '#/prefs'},
+  {id: menuIds.ADMIN, label: 'Admin', selected: false,
+    visible: false, target: '#/admin'},
+  {id: menuIds.ABOUT, label: 'About', selected: false,
+    visible: true, target: '#/about'}
 ];
 
 /**
@@ -74,17 +82,19 @@ function _updateMenu(access) {
  * All items other than the indicated item will be de-selected.
  * @param {array} list - (sub-) menu to recursively walk through.
  * @param {id} id - menu ID of the item to select.
+ * @param {boolean} status - status to which to set visibility
  * @return {boolean} indicator whether the specified item was found in the
  * (sub-) menu.
  * @private
  */
-function _selectMenuItem(list, id) {
+function _selectMenuItem(list, id, status) {
   let didSelect = false;
   for (let i = 0; i < list.length; i++) {
     if (list[i].id === id) {
-      list[i].selected = true;
+      list[i].selected = status;
       didSelect = true;
-    } else {
+    } else if (status) {
+      // only unselect the others if selecting the specific item
       list[i].selected = false;
     }
     if (list[i].submenu) {
@@ -100,6 +110,8 @@ function _selectMenuItem(list, id) {
 }
 
 const MenuStore = assign({}, GenericStore, {
+  menuIds: menuIds,
+
   getData: function() {
     return _menuData;
   },
@@ -109,7 +121,12 @@ const MenuStore = assign({}, GenericStore, {
 
     switch (action.type) {
       case MenuActionTypes.MENU_SELECT:
-        _selectMenuItem(_menuData, action.data.id);
+        _selectMenuItem(_menuData, action.data.id, true);
+        MenuStore.emitChange();
+        break;
+
+      case MenuActionTypes.MENU_UNSELECT:
+        _selectMenuItem(_menuData, action.data.id, false);
         MenuStore.emitChange();
         break;
 

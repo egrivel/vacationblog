@@ -10,7 +10,8 @@ const ButtonBar = require('./standard/ButtonBar.jsx');
 const storeMixin = require('./StoreMixin');
 const TripStore = require('../stores/TripStore');
 const JournalStore = require('../stores/JournalStore');
-
+const MenuAction = require('../actions/MenuAction');
+const MenuStore = require('../stores/MenuStore');
 const JournalAction = require('../actions/JournalAction');
 
 const JournalEdit = React.createClass({
@@ -34,6 +35,13 @@ const JournalEdit = React.createClass({
     router: React.PropTypes.object.isRequired
   },
 
+  _getStateFromStores: function() {
+    const journalData = JournalStore.getData();
+    return {
+      journalData: journalData
+    };
+  },
+
   componentDidMount: function() {
     const tripId = this.props.params.tripId;
     const journalId = this.props.params.journalId;
@@ -43,13 +51,11 @@ const JournalEdit = React.createClass({
     } else {
       JournalAction.loadJournal(tripId, journalId);
     }
+    MenuAction.selectItem(MenuStore.menuIds.HOME);
   },
 
-  _getStateFromStores: function() {
-    const journalData = JournalStore.getData();
-    return {
-      journalData: journalData
-    };
+  componentWillUnmount: function() {
+    MenuAction.unselectItem(MenuStore.menuIds.HOME);
   },
 
   // ---

@@ -141,18 +141,16 @@ div.footer p {
 
 .main-menu li {
   display: block;
-  border: 1px solid #679;
   background-color: #679;
   color: #fff;
-  margin-top: 0.25em;
-  margin-bottom: 0.5em;
+  padding-top: 0.25em;
+  padding-bottom: 0.5em;
   float: left;
   position: relative;
 }
 
 .main-menu li.first {
   margin-left: 1em;
-  x-height: 1.8em;
   padding: 0;
 }
 
@@ -160,8 +158,13 @@ div.footer p {
   padding: 0 1em;
 }
 
-.main-menu li:hover {
+.main-menu li.selected, .main-menu li.selected:hover {
   background-color: #fff;
+  color: #333b4b;
+}
+
+.main-menu li:hover {
+  background-color: #eee;
   color: #333b4b;
 }
 

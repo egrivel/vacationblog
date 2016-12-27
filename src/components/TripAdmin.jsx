@@ -1,16 +1,26 @@
 'use strict';
 
-var React = require('react');
+const React = require('react');
 
-var storeMixin = require('./StoreMixin');
-var TripStore = require('../stores/TripStore');
+const storeMixin = require('./StoreMixin');
+const TripStore = require('../stores/TripStore');
+const MenuAction = require('../actions/MenuAction');
+const MenuStore = require('../stores/MenuStore');
 
-var TripAdmin = React.createClass({
+const TripAdmin = React.createClass({
   displayName: 'Trip Admin',
 
   mixins: [storeMixin()],
 
   stores: [TripStore],
+
+  componentDidMount: function() {
+    MenuAction.selectItem(MenuStore.menuIds.ADMIN);
+  },
+
+  componentWillUnmount: function() {
+    MenuAction.unselectItem(MenuStore.menuIds.ADMIN);
+  },
 
   _getStateFromStores: function() {
     const tripList = TripStore.getTripList();

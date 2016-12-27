@@ -1,9 +1,20 @@
 'use strict';
 
-var React = require('react');
+const React = require('react');
 
-var About = React.createClass({
+const MenuAction = require('../actions/MenuAction');
+const MenuStore = require('../stores/MenuStore');
+
+const About = React.createClass({
   displayName: 'About',
+
+  componentDidMount: function() {
+    MenuAction.selectItem(MenuStore.menuIds.ABOUT);
+  },
+
+  componentWillUnmount: function() {
+    MenuAction.unselectItem(MenuStore.menuIds.ABOUT);
+  },
 
   render: function() {
     return (

@@ -5,6 +5,8 @@ const React = require('react');
 const storeMixin = require('./StoreMixin');
 const UserStore = require('../stores/UserStore');
 const UserAction = require('../actions/UserAction');
+const MenuAction = require('../actions/MenuAction');
+const MenuStore = require('../stores/MenuStore');
 
 const UserAdmin = React.createClass({
   displayName: 'User Admin',
@@ -15,6 +17,11 @@ const UserAdmin = React.createClass({
 
   componentDidMount: function() {
     UserAction.loadAllUsers();
+    MenuAction.selectItem(MenuStore.menuIds.ADMIN);
+  },
+
+  componentWillUnmount: function() {
+    MenuAction.unselectItem(MenuStore.menuIds.ADMIN);
   },
 
   _getStateFromStores: function() {

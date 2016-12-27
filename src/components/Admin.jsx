@@ -2,8 +2,19 @@
 
 const React = require('react');
 
+const MenuAction = require('../actions/MenuAction');
+const MenuStore = require('../stores/MenuStore');
+
 const Admin = React.createClass({
   displayName: 'Admin',
+
+  componentDidMount: function() {
+    MenuAction.selectItem(MenuStore.menuIds.ADMIN);
+  },
+
+  componentWillUnmount: function() {
+    MenuAction.unselectItem(MenuStore.menuIds.ADMIN);
+  },
 
   render: function() {
     return (

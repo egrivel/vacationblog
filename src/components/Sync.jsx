@@ -8,6 +8,8 @@ const Password = require('./standard/Password.jsx');
 const ButtonBar = require('./standard/ButtonBar.jsx');
 const SyncStore = require('../stores/SyncStore');
 const SyncAction = require('../actions/SyncAction');
+const MenuAction = require('../actions/MenuAction');
+const MenuStore = require('../stores/MenuStore');
 
 const Sync = React.createClass({
   displayName: 'Sync',
@@ -15,6 +17,14 @@ const Sync = React.createClass({
   mixins: [storeMixin()],
 
   stores: [SyncStore],
+
+  componentDidMount: function() {
+    MenuAction.selectItem(MenuStore.menuIds.ADMIN);
+  },
+
+  componentWillUnmount: function() {
+    MenuAction.unselectItem(MenuStore.menuIds.ADMIN);
+  },
 
   _getStateFromStores: function() {
     const syncInfo = SyncStore.getInfo();

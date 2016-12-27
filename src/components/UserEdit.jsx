@@ -3,6 +3,7 @@
 const _ = require('lodash');
 const React = require('react');
 
+const ButtonBar = require('./standard/ButtonBar.jsx');
 const Display = require('./standard/Display.jsx');
 const Textbox = require('./standard/Textbox.jsx');
 const Droplist = require('./standard/Droplist.jsx');
@@ -25,6 +26,10 @@ const UserEdit = React.createClass({
     })
   },
 
+  contextTypes: {
+    router: React.PropTypes.object.isRequired
+  },
+
   componentWillMount: function() {
     const userData = UserStore.getData(this.props.params.userId);
     if (!userData) {
@@ -45,6 +50,14 @@ const UserEdit = React.createClass({
     UserAction.updateUser(userData);
   },
 
+  _doSave: function() {
+    console.log('save not yet implemented.');
+  },
+
+  _doCancel: function() {
+    this.context.router.push('/admin/user');
+  },
+
   render: function() {
     const name = _.get(this.state, 'userData.name', '');
     const email = _.get(this.state, 'userData.email', '');
@@ -54,9 +67,18 @@ const UserEdit = React.createClass({
     const externalType = _.get(this.state, 'userData.externalType', '');
     const externalId = _.get(this.state, 'userData.externalId', '');
     const deleted = _.get(this.state, 'userData.deleted', '');
+    const buttons = [];
+    buttons.push({
+      label: 'Save',
+      onClick: this._doSave
+    });
+    buttons.push({
+      label: 'Cancel',
+      onClick: this._doCancel
+    });
     return (
       <div>
-        <p>Edit user {this.props.params.userId}</p>
+        <p>Edit user <em>{name}</em></p>
 
         <Display
           fieldId="id"
@@ -122,7 +144,7 @@ const UserEdit = React.createClass({
           ]}
           onChange={this._setValue}
         />
-
+        <ButtonBar buttons={buttons}/>
       </div>
     );
   }

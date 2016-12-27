@@ -1,8 +1,8 @@
 'use strict';
 
-var React = require('react');
+const React = require('react');
 
-var MenuList = React.createClass({
+const MenuList = React.createClass({
   displayName: 'MenuList',
 
   propTypes: {
@@ -10,14 +10,17 @@ var MenuList = React.createClass({
   },
 
   render: function() {
-    var children = [];
+    const children = [];
 
-    var i;
     if (this.props.list) {
-      for (i = 0; this.props.list[i]; i++) {
+      for (let i = 0; this.props.list[i]; i++) {
         if (this.props.list[i].visible) {
+          let className = null;
+          if (this.props.list[i].selected) {
+            className = 'selected';
+          }
           children.push(
-            <li key={this.props.list[i].id}>
+            <li key={this.props.list[i].id} className={className}>
               <a href={this.props.list[i].target}>
                 {this.props.list[i].label}
               </a>
