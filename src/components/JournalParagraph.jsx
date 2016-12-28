@@ -5,15 +5,15 @@
  * text and/or media.
  */
 
-var React = require('react');
+const React = require('react');
 
-var MediaStore = require('../stores/MediaStore');
-var MediaAction = require('../actions/MediaAction');
-var CommentList = require('./CommentList.jsx');
-var Image = require('./Image.jsx');
+const MediaStore = require('../stores/MediaStore');
+const MediaAction = require('../actions/MediaAction');
+// const CommentList = require('./CommentList.jsx');
+const Image = require('./Image.jsx');
 
-var utils = require('./utils');
-var Orientation = utils.orientation;
+const utils = require('./utils');
+const Orientation = utils.orientation;
 
 /**
  * Get the media info for a media element.
@@ -23,13 +23,13 @@ var Orientation = utils.orientation;
  * @private
  */
 function _getMediaInfo(tripId, mediaId) {
-  var result = {
+  const result = {
     orientation: Orientation.LANDSCAPE,
     caption: '',
     imageId: mediaId
   };
 
-  var mediaInfo = MediaStore.getData(tripId, mediaId);
+  const mediaInfo = MediaStore.getData(tripId, mediaId);
   if (mediaInfo) {
     result.width = mediaInfo.width;
     result.height = mediaInfo.height;
@@ -103,14 +103,14 @@ function _standardParagraph(parent, tripId, text, mediaId) {
       {_imgWithModal(parent, tripId, mediaId, mediaInfo, '')}
     </span>
   );
-  var value = utils.buildTextNode('span', 'value', 'value', text);
-  var clear = React.DOM.span(
+  const value = utils.buildTextNode('span', 'value', 'value', text);
+  const clear = React.DOM.span(
     {
       key: 'clear',
       className: 'clear'
     }
   );
-  var modal = parent.buildModal();
+  const modal = parent.buildModal();
 
   return React.DOM.div(
     null,
@@ -140,16 +140,16 @@ function _standardParagraph(parent, tripId, text, mediaId) {
  */
 function _lineThreeImages(parent, tripId, images,
                          mediaInfo, start) {
-  var img1 = images[start];
-  var img2 = images[start + 1];
-  var img3 = images[start + 2];
+  const img1 = images[start];
+  const img2 = images[start + 1];
+  const img3 = images[start + 2];
 
-  var orientation1 = mediaInfo[start].orientation;
-  var orientation2 = mediaInfo[start + 1].orientation;
-  var orientation3 = mediaInfo[start + 2].orientation;
+  const orientation1 = mediaInfo[start].orientation;
+  const orientation2 = mediaInfo[start + 1].orientation;
+  const orientation3 = mediaInfo[start + 2].orientation;
 
-  var nrHor = 0;
-  var nrVert = 0;
+  let nrHor = 0;
+  let nrVert = 0;
   if (orientation1 === Orientation.LANDSCAPE) {
     nrHor++;
   } else {
@@ -166,7 +166,7 @@ function _lineThreeImages(parent, tripId, images,
     nrVert++;
   }
 
-  var className = '';
+  let className = '';
   switch (nrHor) {
     case 3:
       className += 'h';
@@ -232,14 +232,14 @@ function _lineThreeImages(parent, tripId, images,
  */
 function _lineTwoImages(parent, tripId, images,
                        mediaInfo, start) {
-  var img1 = images[start];
-  var img2 = images[start + 1];
+  const img1 = images[start];
+  const img2 = images[start + 1];
 
-  var orientation1 = mediaInfo[start].orientation;
-  var orientation2 = mediaInfo[start + 1].orientation;
+  const orientation1 = mediaInfo[start].orientation;
+  const orientation2 = mediaInfo[start + 1].orientation;
 
-  var nrHor = 0;
-  var nrVert = 0;
+  let nrHor = 0;
+  let nrVert = 0;
   if (orientation1 === Orientation.LANDSCAPE) {
     nrHor++;
   } else {
@@ -251,7 +251,7 @@ function _lineTwoImages(parent, tripId, images,
     nrVert++;
   }
 
-  var className = '';
+  let className = '';
   switch (nrHor) {
     case 2:
       className += 'h';
@@ -316,16 +316,15 @@ function _paragraphTextOnly(parent, text) {
  * @private
  */
 function _paragraphMultipleImages(parent, tripId, text, images) {
-  var result = [];
-  var resultCount = 0;
+  const result = [];
+  let resultCount = 0;
 
-  var mediaInfo = [];
-  var i;
-  for (i = 0; i < images.length; i++) {
+  const mediaInfo = [];
+  for (let i = 0; i < images.length; i++) {
     mediaInfo[i] = _getMediaInfo(tripId, images[i]);
   }
 
-  var textPart = null;
+  let textPart = null;
   // if there is text, handle that
   if (text) {
     textPart = _paragraphTextOnly(parent, text, 'textline');
@@ -340,7 +339,7 @@ function _paragraphMultipleImages(parent, tripId, text, images) {
   //    one with two 'img2' entries
   //  - five or more images: take the first three in a paragraph
   //    with three 'img3' entries, then do the above for the rest
-  var currentImg = 0;
+  let currentImg = 0;
   while ((images.length - currentImg) >= 5) {
     result[resultCount] = _lineThreeImages(parent, tripId, images, mediaInfo,
                                            currentImg, 'line-' + resultCount);
@@ -370,7 +369,7 @@ function _paragraphMultipleImages(parent, tripId, text, images) {
     currentImg += 2;
   }
 
-  var realResult = React.DOM.div(
+  const realResult = React.DOM.div(
     {className: 'result'},
     textPart,
     result,
@@ -409,58 +408,7 @@ function _paragraphSingleImage(parent, tripId, mediaId) {
   );
 }
 
-/**
- * Make sure the images in the modal window are appropriately sized. Handling
- * a maximum vertical size through CSS doesn't seem to be working, so have
- * this sizing function which looks at the original size of the image and the
- * current window size, and makes sure the actual height of the image does not
- * exceed 75% of the window height.
- */
-function _sizeModalImg() {
-  if (this.state && this.state.modal && this.state.modal !== '') {
-    // The modal is displayed. Get the image
-    /* global document */
-    const containerElement = document.getElementById('the-modal');
-    const imgElement = document.getElementById('the-modal-image');
-    if (containerElement && imgElement) {
-      const orientation = _getMediaInfo(this.props.tripId,
-        this.state.modal).orientation;
-
-      // Determine underlying image size and width/height ration
-      let imageHeight = 600;
-      let imageWidthMult = 1.5;
-      if (orientation === Orientation.PORTRAIT) {
-        imageHeight = 900;
-        imageWidthMult = (2 / 3);
-      }
-
-      // First the image height is limited to 75% of the window height
-      const windowHeight = window.innerHeight;
-      if (imageHeight > (0.75 * windowHeight)) {
-        imageHeight = 0.75 * windowHeight;
-      }
-
-      // Calculate the image width based on the (possibly limited) height
-      let imageWidth = imageHeight * imageWidthMult;
-
-      // Available width is the container width minus 20px padding on
-      // each side
-      const availableWidth = containerElement.clientWidth - 40;
-
-      // If window width exceeds available width, adjust both width and height
-      if (imageWidth > availableWidth) {
-        imageWidth = availableWidth;
-        imageHeight = imageWidth / imageWidthMult;
-      }
-
-      // Set calculated size
-      imgElement.style.height = String(imageHeight) + 'px';
-      imgElement.style.width = String(imageWidth) + 'px';
-    }
-  }
-}
-
-var JournalParagraph = React.createClass({
+const JournalParagraph = React.createClass({
   displayName: 'JournalParagraph',
 
   propTypes: {
@@ -474,21 +422,77 @@ var JournalParagraph = React.createClass({
   // update size upon resizing
   componentDidMount: function() {
     /* global window */
-    window.addEventListener('resize', _sizeModalImg.bind(this), false);
+    window.addEventListener('resize', this._sizeModalImg, false);
   },
 
   // Handling dynamic sizing of images in modal: remove the event handler to
   // update size upon resizing
   componentWillUnmount: function() {
-    window.removeEventListener('resize', _sizeModalImg);
+    window.removeEventListener('resize', this._sizeModalImg);
   },
 
   // Handling dynamic sizing of images in modal: size right upon render
   componentDidUpdate: function() {
-    _sizeModalImg.bind(this)();
+    this._sizeModalImg();
   },
 
-  buildModal: function buildModal() {
+  /**
+   * Make sure the images in the modal window are appropriately sized. Handling
+   * a maximum vertical size through CSS doesn't seem to be working, so have
+   * this sizing function which looks at the original size of the image and the
+   * current window size, and makes sure the actual height of the image does not
+   * exceed 75% of the window height.
+   */
+  _sizeModalImg: function() {
+    if (this.state && this.state.modal && this.state.modal !== '') {
+      // The modal is displayed. Get the image
+      /* global document */
+      const containerElement = document.getElementById('the-modal');
+      const imgElement = document.getElementById('the-modal-image');
+      if (containerElement && imgElement) {
+        const orientation = _getMediaInfo(this.props.tripId,
+          this.state.modal).orientation;
+
+        // Determine underlying image size and width/height ration
+        let imageHeight = 600;
+        let imageWidthMult = 1.5;
+        if (orientation === Orientation.PORTRAIT) {
+          imageHeight = 900;
+          imageWidthMult = (2 / 3);
+        }
+
+        // First the image height is limited to 75% of the window height
+        const windowHeight = window.innerHeight;
+        const windowWidth = window.innerWidth;
+        if (imageHeight > (0.75 * windowHeight)) {
+          imageHeight = 0.75 * windowHeight;
+        }
+
+        // Calculate the image width based on the (possibly limited) height
+        let imageWidth = imageHeight * imageWidthMult;
+
+        // Available width is the container width minus padding on
+        // each side
+        // For small windows, the padding is 2 pixels, for large, it is 20
+        let availableWidth = containerElement.clientWidth - 4;
+        if (windowWidth > 480) {
+          availableWidth -= 36;
+        }
+
+        // If window width exceeds available width, adjust both width and height
+        if (imageWidth > availableWidth) {
+          imageWidth = availableWidth;
+          imageHeight = imageWidth / imageWidthMult;
+        }
+
+        // Set calculated size
+        imgElement.style.height = String(imageHeight) + 'px';
+        imgElement.style.width = String(imageWidth) + 'px';
+      }
+    }
+  },
+
+  buildModal: function() {
     if (this.state && this.state.modal && this.state.modal !== '') {
       const tripId = this.props.tripId;
       const clickImg = this.clickImg;
@@ -499,17 +503,11 @@ var JournalParagraph = React.createClass({
         clickImg(mediaId);
       };
 
-      const _onResize = function() {
-        this._modalResize();
-      };
-      _onResize.bind(this);
-
       return (
         <div
           key="modal"
           className="modal"
           onClick={_onClick}
-          onResize={_onResize}
         >
           <div id="the-modal" className="modal-content">
             <Image
@@ -574,11 +572,11 @@ var JournalParagraph = React.createClass({
       return null;
     }
 
-    var text = utils.replaceEntities(this.props.text);
-    var tripId = this.props.tripId;
+    let text = utils.replaceEntities(this.props.text);
+    const tripId = this.props.tripId;
 
-    var images = [];
-    var imageCount = 0;
+    const images = [];
+    let imageCount = 0;
 
     const pano = text.match(/^\[PANO ([\d\-abc]+)(\s+[+\-]\d+)?\]$/);
     if (pano) {
@@ -586,12 +584,12 @@ var JournalParagraph = React.createClass({
     }
 
     text = text.replace('[IMGS]', '');
-    var list = text.split('[IMG ');
-    var outtext = list[0];
-    for (var i = 1; i < list.length; i++) {
-      var item = list[i];
+    const list = text.split('[IMG ');
+    let outtext = list[0];
+    for (let i = 1; i < list.length; i++) {
+      const item = list[i];
       if (item.indexOf(']') > 0) {
-        var img = item.substring(0, item.indexOf(']'));
+        const img = item.substring(0, item.indexOf(']'));
         if (img.match(/^[\d\-abc]+$/)) {
           images[imageCount++] = img;
           outtext += ' ' + item.substring(item.indexOf(']') + 1);

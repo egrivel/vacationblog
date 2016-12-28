@@ -106,6 +106,7 @@ class Auth {
       case "v0.15":
       case "v0.16":
       case "v0.17":
+      case "v0.18":
          // current version
          break;
       default:

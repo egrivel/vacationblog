@@ -5,9 +5,10 @@ const React = require('react');
 
 const ButtonBar = require('./standard/ButtonBar.jsx');
 const Display = require('./standard/Display.jsx');
-const Textbox = require('./standard/Textbox.jsx');
 const Droplist = require('./standard/Droplist.jsx');
+const Password = require('./standard/Password.jsx');
 const Radiolist = require('./standard/Radiolist.jsx');
+const Textbox = require('./standard/Textbox.jsx');
 
 const storeMixin = require('./StoreMixin');
 const UserStore = require('../stores/UserStore');
@@ -31,27 +32,55 @@ const UserEdit = React.createClass({
   },
 
   componentWillMount: function() {
-    const userData = UserStore.getData(this.props.params.userId);
-    if (!userData) {
+    UserAction.initEdit(this.props.params.userId);
+    const userData = UserStore.getEditData(this.props.params.userId);
+    if (!userData || !userData.userId) {
       UserAction.loadUser(this.props.params.userId);
     }
   },
 
+  // Why do we need this componentDidMount? It seems like the getInitialState
+  // call from the store mixin isn't working...
+  componentDidMount: function() {
+    this.setState(this._getStateFromStores());
+  },
+
+  componentWillUnmount: function() {
+    UserAction.clearEdit(this.props.params.userId);
+  },
+
   _getStateFromStores: function() {
-    const userData = UserStore.getData(this.props.params.userId);
+    const userData = UserStore.getEditData(this.props.params.userId);
     return {
       userData: userData
     };
   },
 
   _setValue: function(value, prop) {
-    const userData = _.cloneDeep(this.state.userData);
-    userData[prop] = value;
-    UserAction.updateUser(userData);
+    UserAction.setEdit(this.props.params.userId, prop, value);
   },
 
   _doSave: function() {
-    console.log('save not yet implemented.');
+    let errorMessage = '';
+    if ((this.state.userData.name === '') ||
+      (this.state.userData.email === '')) {
+      errorMessage = 'You must enter a name and an email.';
+    } else if (this.state.userData.password || this.state.userData.password2) {
+      if (this.state.userData.password.length < 6) {
+        errorMessage = 'Password must be at least 6 characters.';
+      } else if (this.state.userData.password !==
+          this.state.userData.password2) {
+        errorMessage = 'Passwords do not match.';
+      }
+    }
+
+    this.setState({errorMessage});
+
+    if (errorMessage === '') {
+      UserAction.saveUser(this.props.params.userId, this.state.userData);
+      UserAction.setEdit(this.props.params.userId, 'password', '');
+      UserAction.setEdit(this.props.params.userId, 'password2', '');
+    }
   },
 
   _doCancel: function() {
@@ -61,11 +90,11 @@ const UserEdit = React.createClass({
   render: function() {
     const name = _.get(this.state, 'userData.name', '');
     const email = _.get(this.state, 'userData.email', '');
+    const password = _.get(this.state, 'userData.password', '');
+    const password2 = _.get(this.state, 'userData.password2', '');
     const access = _.get(this.state, 'userData.access', '');
     const notification = _.get(this.state, 'userData.notification', '');
     const tempCode = _.get(this.state, 'userData.tempCode', '');
-    const externalType = _.get(this.state, 'userData.externalType', '');
-    const externalId = _.get(this.state, 'userData.externalId', '');
     const deleted = _.get(this.state, 'userData.deleted', '');
     const buttons = [];
     buttons.push({
@@ -76,10 +105,19 @@ const UserEdit = React.createClass({
       label: 'Cancel',
       onClick: this._doCancel
     });
+
+    let error = null;
+    if (this.state.errorMessage) {
+      error = <div className="errorMessage">{this.state.errorMessage}</div>;
+    }
+
+    if (UserStore.getAccess() !== 'admin') {
+      return <div>No access</div>;
+    }
     return (
       <div>
         <p>Edit user <em>{name}</em></p>
-
+        {error}
         <Display
           fieldId="id"
           label="User ID"
@@ -95,6 +133,18 @@ const UserEdit = React.createClass({
           fieldId="email"
           label="Email"
           value={email}
+          onChange={this._setValue}
+        />
+        <Password
+          fieldId="password"
+          label="Password"
+          value={password}
+          onChange={this._setValue}
+        />
+        <Password
+          fieldId="password2"
+          label="Repeat password"
+          value={password2}
           onChange={this._setValue}
         />
         <Droplist
@@ -123,16 +173,6 @@ const UserEdit = React.createClass({
           label="Temp Code"
           value={tempCode}
           onChange={this._setValue}
-        />
-        <Display
-          fieldId="external-type"
-          label="External Type"
-          value={externalType}
-        />
-        <Display
-          fieldId="external-id"
-          label="External ID"
-          value={externalId}
         />
         <Radiolist
           fieldId="deleted"

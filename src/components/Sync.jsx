@@ -10,6 +10,7 @@ const SyncStore = require('../stores/SyncStore');
 const SyncAction = require('../actions/SyncAction');
 const MenuAction = require('../actions/MenuAction');
 const MenuStore = require('../stores/MenuStore');
+const UserStore = require('../stores/UserStore');
 
 const Sync = React.createClass({
   displayName: 'Sync',
@@ -87,6 +88,9 @@ const Sync = React.createClass({
       label: 'Sync',
       onClick: this._doSync
     });
+    if (UserStore.getAccess() !== 'admin') {
+      return <div>No access</div>;
+    }
     return (
       <div>
         <p>This function is to synchronize with an external system.</p>

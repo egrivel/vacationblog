@@ -28,6 +28,8 @@ if (!$auth->canSynchUser()) {
             $response['email'] = $object->getEmail();
             $response['notification'] = $object->getNotification();
             $response['tempCode'] = $object->getTempCode();
+            $response['tempEmail'] = $object->getTempEmail();
+            $response['tempEmailCode'] = $object->getTempEmailCode();
             $response['deleted'] = $object->getDeleted();
             $response['hash'] = $object->getHash();
          }
@@ -69,6 +71,12 @@ if (!$auth->canSynchUser()) {
       }
       if (isset($data['tempCode'])) {
          $object->setTempCode($data['tempCode']);
+      }
+      if (isset($data['tempEmail'])) {
+         $object->setTempCode($data['tempEmail']);
+      }
+      if (isset($data['tempEmailCode'])) {
+         $object->setTempCode($data['tempEmailCode']);
       }
       if (isset($data['deleted'])) {
          $object->setDeleted($data['deleted']);

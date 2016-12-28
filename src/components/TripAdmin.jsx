@@ -6,6 +6,7 @@ const storeMixin = require('./StoreMixin');
 const TripStore = require('../stores/TripStore');
 const MenuAction = require('../actions/MenuAction');
 const MenuStore = require('../stores/MenuStore');
+const UserStore = require('../stores/UserStore');
 
 const TripAdmin = React.createClass({
   displayName: 'Trip Admin',
@@ -37,6 +38,9 @@ const TripAdmin = React.createClass({
         </li>
       );
     });
+    if (UserStore.getAccess() !== 'admin') {
+      return <div>No access</div>;
+    }
     return (
       <div>
         <h3>Trip Administration</h3>

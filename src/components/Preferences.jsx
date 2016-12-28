@@ -120,6 +120,8 @@ const Preferences = React.createClass({
     }
     if (this.state.password !== '') {
       UserAction.updatePassword(userId, this.state.password);
+      UserAction.setEdit(userId, 'password', '');
+      UserAction.setEdit(userId, 'password2', '');
     }
   },
 
@@ -150,11 +152,18 @@ const Preferences = React.createClass({
       onClick: this._onCancel
     });
 
+    const access = UserStore.getAccess();
+    if ((access !== 'admin') && (access !== 'visitor')) {
+      return <div>No access</div>;
+    }
     return (
       <div>
         {errors}
         <p>Change your preferences. If you change your email, you will have
           to verify the new email address.</p>
+        <p>For security reasons, it is not currently possible to change the
+          previously selected email address. If you do need to change your
+          email address, please contact the website administrator.</p>
         <Display
           fieldId="id"
           label="User ID"
@@ -166,11 +175,10 @@ const Preferences = React.createClass({
           value={name}
           onChange={this._setValue}
         />
-        <Textbox
+        <Display
           fieldId="email"
           label="Email"
           value={email}
-          onChange={this._setValue}
         />
         <Password
           fieldId="password"

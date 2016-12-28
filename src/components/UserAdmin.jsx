@@ -42,6 +42,9 @@ const UserAdmin = React.createClass({
         </li>
       );
     }
+    if (UserStore.getAccess() !== 'admin') {
+      return <div>No access</div>;
+    }
     return (
       <div>
         <h3>User Administration</h3>

@@ -534,6 +534,9 @@ const TripEdit = React.createClass({
         </div>
       );
     }
+    if (UserStore.getAccess() !== 'admin') {
+      return <div>No access</div>;
+    }
     return (
       <div>
         <p>

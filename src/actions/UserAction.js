@@ -33,6 +33,28 @@ const UserAction = {
     });
   },
 
+  saveUser: function(userId, data) {
+    const url = 'api/putUser.php';
+    const submitData = {
+      userId: userId,
+      name: data.name,
+      email: data.email,
+      access: data.access,
+      notification: data.notification,
+      tempCode: data.tempCode,
+      deleted: data.deleted
+    };
+    if (data.password && (data.password.length >= 6)) {
+      submitData.password = data.password;
+    }
+    utils.postAsync(url, submitData, function(response) {
+      const responseData = JSON.parse(response, true);
+      if (!responseData.resultCode || (responseData.resultCode !== '200')) {
+        console.log('Got response ' + response);
+      }
+    });
+  },
+
   updateUser: function(data) {
     AppDispatcher.dispatch({
       type: this.Types.USER_SET_DATA,
@@ -111,7 +133,18 @@ const UserAction = {
   },
 
   updatePrefs: function(userId, name, notification) {
-    console.log('pref changes not implemented');
+    const url = 'api/putUser.php';
+    const submitData = {
+      userId: userId,
+      name: name,
+      notification: notification
+    };
+    utils.postAsync(url, submitData, function(response) {
+      const responseData = JSON.parse(response, true);
+      if (!responseData.resultCode || (responseData.resultCode !== '200')) {
+        console.log('Got response ' + response);
+      }
+    });
   },
 
   updateEmail: function(userId, newEmail) {
@@ -119,7 +152,17 @@ const UserAction = {
   },
 
   updatePassword: function(userId, password) {
-    console.log('password change not implemented');
+    const url = 'api/putUser.php';
+    const submitData = {
+      userId: userId,
+      password: password
+    };
+    utils.postAsync(url, submitData, function(response) {
+      const responseData = JSON.parse(response, true);
+      if (!responseData.resultCode || (responseData.resultCode !== '200')) {
+        console.log('Got response ' + response);
+      }
+    });
   }
 };
 

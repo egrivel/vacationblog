@@ -139,6 +139,7 @@ class TripUser {
          }
          break;
       case "v0.17":
+      case "v0.18":
          // current version
          break;
       default:

@@ -3,7 +3,7 @@
  * call to log into the system
  */
 
-include_once(dirname(__FILE__) . "/../common/common.php");
+include_once(dirname(__FILE__) . '/../common/common.php');
 include_once(dirname(__FILE__) . '/../business/AuthB.php');
 include_once(dirname(__FILE__) . '/../database/Auth.php');
 include_once(dirname(__FILE__) . '/../database/User.php');
@@ -149,7 +149,7 @@ if (isPutMethod()) {
         $tempCode = random_string();
         $user->setTempCode($tempCode);
         $user->save();
-        send_password_email($userId, $name, $email, $tempCode);
+        send_password_reset_email($userId, $name, $email, $tempCode);
         $response = successResponse();
         $response['status'] = 'OK';
       }

@@ -25,6 +25,8 @@ class User {
    private $email;
    private $notification;
    private $tempCode;
+   private $tempEmail;
+   private $tempEmailCode;
    private $deleted;
    private $latestDeleted;
    private $hash;
@@ -49,6 +51,8 @@ class User {
       $this->email = "";
       $this->notification = "";
       $this->tempCode = "";
+      $this->tempEmail = "";
+      $this->tempEmailCode = "";
       $this->deleted = "N";
       $this->hash = "";
       $this->latestHash = "";
@@ -84,6 +88,8 @@ class User {
          . "email CHAR(64), "
          . "notification CHAR(1), "
          . "tempCode CHAR(32), "
+         . "tempEmail CHAR(64), "
+         . "tempEmailCode CHAR(32), "
          . "deleted CHAR(1), "
          . "hash CHAR(32), "
          . "PRIMARY KEY(userId, updated), "
@@ -111,6 +117,18 @@ class User {
    private static function addNotificationColumn() {
       $query = "ALTER TABLE blogUser "
          . "ADD COLUMN notification CHAR(1)";
+      if (!mysql_query($query)) {
+         print $query . "<br/>";
+         print "Error: " . mysql_error() . "<br/>";
+         return false;
+      }
+      return true;
+   }
+
+   private static function addTempEmailColumns() {
+      $query = "ALTER TABLE blogUser "
+         . "ADD COLUMN tempEmail CHAR(64), "
+         . "ADD COLUMN tempEmailCode CHAR(32)";
       if (!mysql_query($query)) {
          print $query . "<br/>";
          print "Error: " . mysql_error() . "<br/>";
@@ -177,8 +195,12 @@ class User {
       case "v0.15":
       case "v0.16":
       case "v0.17":
-         // current version
-         break;
+         if (!User::addTempEmailColumns()) {
+            return false;
+         }
+      case "v0.18":
+        // current version
+        break;
       default:
          // no provision for this version, should not happen
          print "User::updateTables($dataVersion): don't know this version.\n";
@@ -212,6 +234,8 @@ class User {
       $this->email = db_sql_decode($line["email"]);
       $this->notification = db_sql_decode($line["notification"]);
       $this->tempCode = db_sql_decode($line["tempCode"]);
+      $this->tempEmail = db_sql_decode($line["tempEmail"]);
+      $this->tempEmailCode = db_sql_decode($line["tempEmailCode"]);
       $this->deleted = db_sql_decode($line["deleted"]);
       $this->hash = db_sql_decode($line["hash"]);
       $this->latestHash = $this->hash;
@@ -328,6 +352,8 @@ class User {
          . ", email=" . db_sql_encode($this->email)
          . ", notification=" . db_sql_encode($this->notification)
          . ", tempCode=" . db_sql_encode($this->tempCode)
+         . ", tempEmail=" . db_sql_encode($this->tempEmail)
+         . ", tempEmailCode=" . db_sql_encode($this->tempEmailCode)
          . ", deleted=" . db_sql_encode($this->deleted)
          . ", hash=" . db_sql_encode($this->hash);
       // print "Saving to database: $query<br/>\n";
@@ -353,6 +379,8 @@ class User {
                   . $this->email . "|"
                   . $this->notification . "|"
                   . $this->tempCode . "|"
+                  . $this->tempEmail . "|"
+                  . $this->tempEmailCode . "|"
                   . $this->deleted . "|";
                $this->hash = md5($value);
                $this->latestHash = $this->hash;
@@ -525,6 +553,22 @@ class User {
       $this->tempCode = $value;
    }
 
+   public function getTempEmail() {
+      return $this->tempEmail;
+   }
+
+   public function setTempEmail($value) {
+      $this->tempEmail = $value;
+   }
+
+   public function getTempEmailCode() {
+      return $this->tempEmailCode;
+   }
+
+   public function setTempEmailCode($value) {
+      $this->tempEmailCode = $value;
+   }
+
    public function getDeleted() {
       return $this->deleted;
    }
@@ -600,7 +644,6 @@ class User {
          .   ") AS t2 "
          .   "WHERE blogUser.userId = t2.userId "
          .     "AND blogUser.updated = t2.updated "
-         .     "AND blogUser.deleted != 'Y' "
          .   "ORDER BY blogUser.name ";
 
       $result = mysql_query($query);

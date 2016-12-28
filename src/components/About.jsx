@@ -48,12 +48,15 @@ const About = React.createClass({
             facebook's like and google's plus mechanism.</li>
           <li>Maps were added to the overall trip information pages, where
             applicable.</li>
+          <li>It is now possible for users to update their name, change their
+            password and their notification preference.</li>
         </ul>
 
         <h4>What Is Not Working</h4>
         <p>The following issues are known:</p>
         <ul>
-          <li>It is not yet possible for users to change their settings.</li>
+          <li>No known issues. Known issues will be added here when
+            they are discovered.</li>
         </ul>
 
         <h4>Features To Add</h4>

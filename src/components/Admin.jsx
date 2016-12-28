@@ -4,6 +4,7 @@ const React = require('react');
 
 const MenuAction = require('../actions/MenuAction');
 const MenuStore = require('../stores/MenuStore');
+const UserStore = require('../stores/UserStore');
 
 const Admin = React.createClass({
   displayName: 'Admin',
@@ -17,6 +18,9 @@ const Admin = React.createClass({
   },
 
   render: function() {
+    if (UserStore.getAccess() !== 'admin') {
+      return <div>No access</div>;
+    }
     return (
       <div>
         <p>Choose from one of the following options:</p>
