@@ -85,8 +85,8 @@ function synchComment($site, $authId, $remoteHashes) {
       )
     );
     $context  = stream_context_create($opts);
-    $data = file_get_contents($url . '?hash=' . urlencode($hash), false, $context);
-    $data = json_decode($data, true);
+    $rawdata = file_get_contents($url . '?hash=' . urlencode($hash), false, $context);
+    $data = json_decode($rawdata, true);
     if (isset($data['tripid']) && isset($data['commentId'])) {
       $item = Comment::findByHash($data['hash']);
       if (!$item) {
@@ -119,7 +119,8 @@ function synchComment($site, $authId, $remoteHashes) {
         }
       }
     } else {
-      $result .= 'error getting comment data for hash ' . $hash . '   ';
+      $result .= 'error getting comment data for hash ' . $hash .
+        ': ' . $rawdata . '   ';
     }
   }
   return 'Comment: Local added: ' . $localAdded . ', Remote added: ' . $remoteAdded
@@ -180,8 +181,8 @@ function synchFeedback($site, $authId, $remoteHashes) {
       )
     );
     $context  = stream_context_create($opts);
-    $data = file_get_contents($url . '?hash=' . urlencode($hash), false, $context);
-    $data = json_decode($data, true);
+    $rawdata = file_get_contents($url . '?hash=' . urlencode($hash), false, $context);
+    $data = json_decode($rawdata, true);
     if (isset($data['tripId']) && isset($data['referenceId']) && isset($data['userId'])) {
       $item = Feedback::findByHash($data['hash']);
       if (!$item) {
@@ -212,7 +213,7 @@ function synchFeedback($site, $authId, $remoteHashes) {
         }
       }
     } else {
-      $result .= 'error getting feedback data for hash ' . $hash . ', data = ' . json_encode($data) . '   ';
+      $result .= 'error getting feedback data for hash ' . $hash . ', data = ' . $rawdata . '   ';
     }
   }
   return 'Feedback: Local added: ' . $localAdded . ', Remote added: ' . $remoteAdded
@@ -275,8 +276,8 @@ function synchJournal($site, $authId, $remoteHashes) {
       )
     );
     $context  = stream_context_create($opts);
-    $data = file_get_contents($url . '?hash=' . urlencode($hash), false, $context);
-    $data = json_decode($data, true);
+    $rawdata = file_get_contents($url . '?hash=' . urlencode($hash), false, $context);
+    $data = json_decode($rawdata, true);
     if (isset($data['tripId']) && isset($data['journalId'])) {
       $item = Journal::findByHash($data['hash']);
       if (!$item) {
@@ -315,7 +316,8 @@ function synchJournal($site, $authId, $remoteHashes) {
         }
       }
     } else {
-      $result .= 'error getting journal data for hash ' . $hash . '   ';
+      $result .= 'error getting journal data for hash ' . $hash . ': ' .
+        $rawdata . '   ';
     }
   }
   return 'Journal: Local added: ' . $localAdded . ', Remote added: ' . $remoteAdded
@@ -380,8 +382,8 @@ function synchMedia($site, $authId, $remoteHashes) {
       )
     );
     $context  = stream_context_create($opts);
-    $data = file_get_contents($url . '?hash=' . urlencode($hash), false, $context);
-    $data = json_decode($data, true);
+    $rawdata = file_get_contents($url . '?hash=' . urlencode($hash), false, $context);
+    $data = json_decode($rawdata, true);
     if (isset($data['tripId']) && isset($data['mediaId'])) {
       $item = Media::findByHash($data['hash']);
       if (!$item) {
@@ -426,7 +428,8 @@ function synchMedia($site, $authId, $remoteHashes) {
         }
       }
     } else {
-      $result .= 'error getting media data for hash ' . $hash . '   ';
+      $result .= 'error getting media data for hash ' . $hash . ': ' .
+        $rawdata . '   ';
     }
   }
   return 'Media: Local added: ' . $localAdded . ', Remote added: ' . $remoteAdded
@@ -490,8 +493,8 @@ function synchTrip($site, $authId, $remoteHashes) {
       )
     );
     $context  = stream_context_create($opts);
-    $data = file_get_contents($url . '?hash=' . urlencode($hash), false, $context);
-    $data = json_decode($data, true);
+    $rawdata = file_get_contents($url . '?hash=' . urlencode($hash), false, $context);
+    $data = json_decode($rawdata, true);
     if (isset($data['tripId'])) {
       $trip = Trip::findByHash($data['hash']);
       if (!$trip) {
@@ -535,7 +538,8 @@ function synchTrip($site, $authId, $remoteHashes) {
         }
       }
     } else {
-      $result .= 'error getting trip data for hash ' . $hash . '   ';
+      $result .= 'error getting trip data for hash ' . $hash . ': ' .
+        $rawdata . '   ';
     }
   }
   return 'Local added: ' . $localAdded . ', Remote added: ' . $remoteAdded
@@ -595,8 +599,8 @@ function synchTripAttribute($site, $authId, $remoteHashes) {
       )
     );
     $context  = stream_context_create($opts);
-    $data = file_get_contents($url . '?hash=' . urlencode($hash), false, $context);
-    $data = json_decode($data, true);
+    $rawdata = file_get_contents($url . '?hash=' . urlencode($hash), false, $context);
+    $data = json_decode($rawdata, true);
     if (isset($data['tripId']) && isset($data['name'])) {
       $item = TripAttribute::findByHash($data['hash']);
       if (!$item) {
@@ -626,7 +630,8 @@ function synchTripAttribute($site, $authId, $remoteHashes) {
         }
       }
     } else {
-      $result .= 'error getting trip attribute data for hash ' . $hash . '   ';
+      $result .= 'error getting trip attribute data for hash ' . $hash . ': ' .
+        $rawdata . '   ';
     }
   }
   return 'TripAttribute: Local added: ' . $localAdded . ', Remote added: ' . $remoteAdded
@@ -688,8 +693,8 @@ function synchTripUser($site, $authId, $remoteHashes) {
       )
     );
     $context  = stream_context_create($opts);
-    $data = file_get_contents($url . '?hash=' . urlencode($hash), false, $context);
-    $data = json_decode($data, true);
+    $rawdata = file_get_contents($url . '?hash=' . urlencode($hash), false, $context);
+    $data = json_decode($rawdata, true);
     if (isset($data['tripId']) && isset($data['userId'])) {
       $item = TripUser::findByHash($data['hash']);
       if (!$item) {
@@ -725,7 +730,8 @@ function synchTripUser($site, $authId, $remoteHashes) {
         }
       }
     } else {
-      $result .= 'error getting trip user data for hash ' . $hash . '   ';
+      $result .= 'error getting trip user data for hash ' . $hash . ': ' .
+        $rawdata . '   ';
     }
   }
   return 'TripUser: Local added: ' . $localAdded . ', Remote added: ' . $remoteAdded
@@ -791,8 +797,8 @@ function synchUser($site, $authId, $remoteHashes) {
       )
     );
     $context  = stream_context_create($opts);
-    $data = file_get_contents($url . '?hash=' . urlencode($hash), false, $context);
-    $data = json_decode($data, true);
+    $rawdata = file_get_contents($url . '?hash=' . urlencode($hash), false, $context);
+    $data = json_decode($rawdata, true);
     if (isset($data['userId'])) {
       $item = User::findByHash($data['hash']);
       if (!$item) {
@@ -842,7 +848,8 @@ function synchUser($site, $authId, $remoteHashes) {
         }
       }
     } else {
-      $result .= 'error getting user data for hash ' . $hash . '   ';
+      $result .= 'error getting user data for hash ' . $hash . ': ' .
+        $rawdata . '   ';
     }
   }
   return 'User: Local added: ' . $localAdded . ', Remote added: ' . $remoteAdded

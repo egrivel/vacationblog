@@ -1,4 +1,5 @@
 <?php
+include_once("../database//database.php");
 include_once("../database/Auth.php");
 include_once("../database/Comment.php");
 include_once("../database/Feedback.php");
@@ -62,48 +63,6 @@ function validateUser() {
    }
 
    return $errors;
-}
-
-if ($version === "") {
-   // There are no tables yet, so tables must be created. To create,
-   // we need to have the initial user information.
-
-   $name = $_POST['name'];
-   $fullname = $_POST['fullname'];
-   $password = $_POST['password'];
-   $password2 = $_POST['password2'];
-   $synchPassword = $_POST['synch-password'];
-   $synchPassword2 = $_POST['synch-password2'];
-   $email = $_POST['email'];
-   $do = $_POST['do'];
-
-   if ($do) {
-      // got user input, check it
-      $errors = validateUser();
-      if ($errors) {
-         showForm($errors);
-      } else {
-         updateTables($version);
-
-         $user = new User($name);
-         $user->setName($fullname);
-         $user->setPassword($password);
-         $user->setAccess(LEVEL_ADMIN);
-         $user->setEmail($email);
-         $user->save();
-
-         $user = new User(SYNCH_USER);
-         $user->setName('Synchronization User');
-         $user->setPassword($synchPassword);
-         $user->setAccess(LEVEL_SYNCH);
-         $user->setEmail('dummy-email-for-synch');
-         $user->save();
-      }
-   } else {
-      showForm('');
-   }
-} else {
-   updateTables($version);
 }
 
 function showForm($errors) {
@@ -182,6 +141,48 @@ function showForm($errors) {
    print "<!DOCTYPE html\n";
    print "<html>\n";
    exit(0);
+}
+
+if ($version === "") {
+   // There are no tables yet, so tables must be created. To create,
+   // we need to have the initial user information.
+
+   $name = $_POST['name'];
+   $fullname = $_POST['fullname'];
+   $password = $_POST['password'];
+   $password2 = $_POST['password2'];
+   $synchPassword = $_POST['synch-password'];
+   $synchPassword2 = $_POST['synch-password2'];
+   $email = $_POST['email'];
+   $do = $_POST['do'];
+
+   if ($do) {
+      // got user input, check it
+      $errors = validateUser();
+      if ($errors) {
+         showForm($errors);
+      } else {
+         updateTables($version);
+
+         $user = new User($name);
+         $user->setName($fullname);
+         $user->setPassword($password);
+         $user->setAccess(LEVEL_ADMIN);
+         $user->setEmail($email);
+         $user->save();
+
+         $user = new User(SYNCH_USER);
+         $user->setName('Synchronization User');
+         $user->setPassword($synchPassword);
+         $user->setAccess(LEVEL_SYNCH);
+         $user->setEmail('dummy-email-for-synch');
+         $user->save();
+      }
+   } else {
+      showForm('');
+   }
+} else {
+   updateTables($version);
 }
 
 ?>
