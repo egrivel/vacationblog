@@ -1,12 +1,13 @@
 'use strict';
 
-var React = require('react');
+const React = require('react');
 
-var JournalStore = require('../stores/JournalStore');
-var TripStore = require('../stores/TripStore');
-var JournalAction = require('../actions/JournalAction');
-var TripAction = require('../actions/TripAction');
-var JournalEntry = require('./JournalEntry.jsx');
+const JournalStore = require('../stores/JournalStore');
+const TripStore = require('../stores/TripStore');
+const JournalAction = require('../actions/JournalAction');
+const TripAction = require('../actions/TripAction');
+const JournalEntry = require('./JournalEntry.jsx');
+const utils = require('../utils');
 
 /**
  * Journal wrapper component. This component wraps a journal entry and
@@ -18,7 +19,7 @@ var JournalEntry = require('./JournalEntry.jsx');
  * to display.
  */
 
-var JournalWrapper = React.createClass({
+const JournalWrapper = React.createClass({
   displayName: 'JournalWrapper',
 
   propTypes: {
@@ -35,6 +36,15 @@ var JournalWrapper = React.createClass({
    */
   componentDidMount: function() {
     this.getDataIfNeeded(this.props);
+
+    let cookieValue = '';
+    if (this.props.params.tripId) {
+      cookieValue += 'journal/' + this.props.params.tripId;
+    }
+    if (this.props.params.journalId) {
+      cookieValue += '/' + this.props.params.journalId;
+    }
+    utils.setCookie(utils.cookies.ENTRY, cookieValue, 1000);
   },
 
   /**
@@ -45,6 +55,15 @@ var JournalWrapper = React.createClass({
    */
   componentWillReceiveProps: function(nextProps) {
     this.getDataIfNeeded(nextProps);
+
+    let cookieValue = '';
+    if (this.props.params.tripId) {
+      cookieValue += 'journal/' + this.props.params.tripId;
+    }
+    if (this.props.params.journalId) {
+      cookieValue += '/' + this.props.params.journalId;
+    }
+    utils.setCookie(utils.cookies.ENTRY, cookieValue, 1000);
   },
 
   /*
@@ -52,9 +71,9 @@ var JournalWrapper = React.createClass({
    * @param {object} props - props to use in the comparison.
    */
   getDataIfNeeded: function(props) {
-    var data = JournalStore.getData();
-    var tripId = '';
-    var journalId = '';
+    const data = JournalStore.getData();
+    let tripId = '';
+    let journalId = '';
 
     if (props && props.params) {
       tripId = props.params.tripId;
@@ -77,8 +96,8 @@ var JournalWrapper = React.createClass({
    * @return {React} JournalEntry element.
    */
   render: function() {
-    var tripId;
-    var journalId;
+    let tripId;
+    let journalId;
 
     if (this.props && this.props.params) {
       if (this.props.params.tripId) {
@@ -88,7 +107,14 @@ var JournalWrapper = React.createClass({
         journalId = this.props.params.journalId;
       }
     }
-    return <JournalEntry tripId={tripId} journalId={journalId} history={this.props.history}></JournalEntry>;
+    return (
+      <JournalEntry
+        tripId={tripId}
+        journalId={journalId}
+        history={this.props.history}
+      >
+      </JournalEntry>
+    );
   }
 });
 

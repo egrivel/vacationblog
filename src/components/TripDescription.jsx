@@ -11,6 +11,7 @@ const MenuStore = require('../stores/MenuStore');
 
 const TripJournalList = require('./TripJournalList.jsx');
 const utils = require('./utils');
+const cookieUtils = require('../utils');
 
 /**
  * Get the state from the stores.
@@ -99,6 +100,12 @@ const TripDescription = React.createClass({
     }
     this.getDataIfNeeded(this.props);
     MenuAction.selectItem(MenuStore.menuIds.HOME);
+
+    let cookieValue = '';
+    if (this.props.params.tripId) {
+      cookieValue += 'trip/' + this.props.params.tripId;
+    }
+    cookieUtils.setCookie(cookieUtils.cookies.ENTRY, cookieValue, 1000);
   },
 
   componentWillUnmount: function() {
@@ -109,6 +116,12 @@ const TripDescription = React.createClass({
 
   componentWillReceiveProps: function(nextProps) {
     this.getDataIfNeeded(nextProps);
+
+    let cookieValue = '';
+    if (this.props.params.tripId) {
+      cookieValue += 'trip/' + this.props.params.tripId;
+    }
+    cookieUtils.setCookie(cookieUtils.cookies.ENTRY, cookieValue, 1000);
   },
 
   getDataIfNeeded: function(props) {

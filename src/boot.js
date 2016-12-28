@@ -23,14 +23,14 @@ const About = require('./components/About.jsx');
 const TripAction = require('./actions/TripAction');
 const UserAction = require('./actions/UserAction');
 
+const utils = require('./utils');
+
 const routes = {
   path: '/',
   component: App,
   childRoutes: [
     {path: '/', component: Welcome},
-    {path: '/trip', component: TripDescription},
     {path: '/trip/:tripId', component: TripDescription},
-    {path: '/journal/:tripId', component: JournalWrapper},
     {path: '/journal/:tripId/:journalId', component: JournalWrapper},
     {path: '/journaledit/:tripId', component: JournalEdit},
     {path: '/journaledit/:tripId/:journalId', component: JournalEdit},
@@ -59,15 +59,34 @@ ReactDOM.render(
 
 // Load the default trip on startup (until we have a better default)
 TripAction.loadTripList();
-// setInterval(TripAction.loadTripList, 30000);
 
 // Check if logged in
-var cookies = document.cookie.split(';');
-for (var i = 0; i < cookies.length; i++) {
-  var nameValue = cookies[i].split('=');
-  if (nameValue[0] === 'blogAuthId') {
-    UserAction.loadLoggedInUser();
-    break;
-  }
+const loginCookie = utils.getCookie(utils.cookies.AUTH);
+if (loginCookie) {
+  UserAction.loadLoggedInUser();
 }
 
+// Return where we left off (by default; maybe offer option to disable this
+// later)
+const lastEntryCookie = utils.getCookie(utils.cookies.ENTRY);
+if (lastEntryCookie) {
+  // eslint-disable-next-line no-undef
+  let location = String(window.location);
+  let originalDestination = '';
+  for (let i = 0; i < location.length; i++) {
+    if (location.charAt(i) === '#') {
+      originalDestination = location.substring(i + 1);
+      location = location.substring(0, i) + '#/' + lastEntryCookie;
+      break;
+    }
+  }
+
+  // "location" now contains the desired location, but only go there if the
+  // initial location was at the root of the application. If the application
+  // was started with a different URL than the root, changes are the user
+  // followed a specific link so we don't want to interfere with that.
+  if ((originalDestination === '') || (originalDestination === '/')) {
+    // eslint-disable-next-line no-undef
+    window.location = location;
+  }
+}
