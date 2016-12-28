@@ -50,6 +50,10 @@ const About = React.createClass({
             applicable.</li>
           <li>It is now possible for users to update their name, change their
             password and their notification preference.</li>
+          <li>Return to where you left off. If you use the original link to the
+            site, you are automatically returned to the last post you were
+            reading before. This should make it easier to follow us when we're
+            on vacation...</li>
         </ul>
 
         <h4>What Is Not Working</h4>
