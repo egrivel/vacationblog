@@ -28,6 +28,8 @@ const LoginAction = {
           }, 4000);
         } else {
           UserAction.setLoginState(UserStore.constants.NONE);
+          UserAction.setLoggedInUser(this.userId);
+          UserAction.loadUser(this.userId);
         }
       } else {
         UserAction.setLoggedInUser('');
