@@ -18,13 +18,17 @@ const LoginAction = {
       }
 
       if (this.userId) {
-        UserAction.setLoginState(UserStore.constants.LOGIN_SUCCESS);
-        UserAction.setLoggedInUser(this.userId);
-        UserAction.loadUser(this.userId);
-        // Login is success, but remove the message after a few seconds
-        setTimeout(function() {
+        if (this.userId === 'j.tong') {
+          UserAction.setLoginState(UserStore.constants.LOGIN_SUCCESS);
+          UserAction.setLoggedInUser(this.userId);
+          UserAction.loadUser(this.userId);
+          // Login is success, but remove the message after a few seconds
+          setTimeout(function() {
+            UserAction.setLoginState(UserStore.constants.NONE);
+          }, 4000);
+        } else {
           UserAction.setLoginState(UserStore.constants.NONE);
-        }, 4000);
+        }
       } else {
         UserAction.setLoggedInUser('');
       }
