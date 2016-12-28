@@ -18,26 +18,28 @@
 // Add 'window' to the eslint globals for this file.
 /* global window */
 
-var React = require('react');
+const React = require('react');
 
-var TripStore = require('../stores/TripStore');
-var JournalStore = require('../stores/JournalStore');
-var UserStore = require('../stores/UserStore');
-var CommentStore = require('../stores/CommentStore');
-var MediaStore = require('../stores/MediaStore');
-var storeMixin = require('./StoreMixin');
+const TripStore = require('../stores/TripStore');
+const JournalStore = require('../stores/JournalStore');
+const UserStore = require('../stores/UserStore');
+const CommentStore = require('../stores/CommentStore');
+const MediaStore = require('../stores/MediaStore');
+const storeMixin = require('./StoreMixin');
+const MenuAction = require('../actions/MenuAction');
+const MenuStore = require('../stores/MenuStore');
 
-var CommentAction = require('../actions/CommentAction');
+const CommentAction = require('../actions/CommentAction');
 
-var JournalParagraph = require('./JournalParagraph.jsx');
-var CommentList = require('./CommentList.jsx');
-var CommentEdit = require('./CommentEdit.jsx');
-var Feedback = require('./Feedback.jsx');
-var JournalHeader = require('./JournalHeader.jsx');
-var JournalPrevNext = require('./JournalPrevNext.jsx');
-var utils = require('./utils');
+const JournalParagraph = require('./JournalParagraph.jsx');
+const CommentList = require('./CommentList.jsx');
+const CommentEdit = require('./CommentEdit.jsx');
+const Feedback = require('./Feedback.jsx');
+const JournalHeader = require('./JournalHeader.jsx');
+const JournalPrevNext = require('./JournalPrevNext.jsx');
+const utils = require('./utils');
 
-var JournalEntry = React.createClass({
+const JournalEntry = React.createClass({
   displayName: 'JournalEntry',
 
   stores: [TripStore, JournalStore, UserStore, CommentStore, MediaStore],
@@ -50,6 +52,10 @@ var JournalEntry = React.createClass({
     history: React.PropTypes.shape({
       push: React.PropTypes.func.isRequired
     })
+  },
+
+  contextTypes: {
+    router: React.PropTypes.object.isRequired
   },
 
   /**
@@ -67,21 +73,30 @@ var JournalEntry = React.createClass({
   },
   /* eslint-enable no-unused-vars */
 
+  componentDidMount: function() {
+    MenuAction.selectItem(MenuStore.menuIds.HOME);
+  },
+
+  componentWillUnmount: function() {
+    MenuAction.unselectItem(MenuStore.menuIds.HOME);
+  },
+
   /**
    * Get the state from the stores.
    * @return {object} new state.
    * @private
    */
   _getStateFromStores: function() {
-    var tripData = TripStore.getTripData(this.props.tripId);
-    var journalData = JournalStore.getData();
-    var userName = '';
-    var comments = null;
-    var canAddComment = UserStore.canAddComment();
-    var isLoggedIn = UserStore.isUserLoggedIn();
-    var loggedInUserId = UserStore.getLoggedInUser();
-    var profileImg = null;
-    var tripActive = 'Y';
+    const tripData = TripStore.getTripData(this.props.tripId);
+    const journalData = JournalStore.getData();
+    const isLoggedIn = UserStore.isUserLoggedIn();
+    const loggedInUserId = UserStore.getLoggedInUser();
+
+    let userName = '';
+    let comments = null;
+    let canAddComment = UserStore.canAddComment();
+    let profileImg = null;
+    let tripActive = 'Y';
 
     if (!tripData || !tripData.active || (tripData.active !== 'Y')) {
       tripActive = 'N';
@@ -113,7 +128,7 @@ var JournalEntry = React.createClass({
     }
 
     if (journalData.userId) {
-      var userData = UserStore.getData(journalData.userId);
+      const userData = UserStore.getData(journalData.userId);
       if (userData) {
         userName = userData.name;
       } else {
@@ -124,7 +139,7 @@ var JournalEntry = React.createClass({
 
     comments = CommentStore.getRecursiveList(journalData.tripId,
                                              journalData.journalId);
-    var userList = TripStore.getTripUsers(journalData.tripId);
+    const userList = TripStore.getTripUsers(journalData.tripId);
     if (userList) {
       for (let i = 0; i < userList.length; i++) {
         const item = userList[i];
@@ -155,9 +170,9 @@ var JournalEntry = React.createClass({
   },
 
   _startEditing: function(event) {
-    var tripId = event.target.getAttribute('data-trip-id');
-    var referenceId = event.target.getAttribute('data-reference-id');
-    var commentId = event.target.getAttribute('data-comment-id');
+    const tripId = event.target.getAttribute('data-trip-id');
+    const referenceId = event.target.getAttribute('data-reference-id');
+    const commentId = event.target.getAttribute('data-comment-id');
     CommentAction.setEditing(tripId, referenceId, commentId, true);
     event.preventDefault();
     event.stopPropagation();
@@ -166,23 +181,23 @@ var JournalEntry = React.createClass({
   _editCallback: function() {
     const editLink = '/journalEdit/' + this.state.tripId +
       '/' + this.state.journalId;
-    this.props.history.push(editLink);
+    this.context.router.push(editLink);
   },
 
   render: function render() {
-    var nr = 0;
-    var tripId = this.state.tripId;
-    var journalId = this.state.journalId;
-    var loggedInUserId = this.state.loggedInUserId;
+    let nr = 0;
+    const tripId = this.state.tripId;
+    const journalId = this.state.journalId;
+    const loggedInUserId = this.state.loggedInUserId;
 
-    var parList = utils.splitText(this.state.journalText);
-    var paragraphs = null;
+    const parList = utils.splitText(this.state.journalText);
+    let paragraphs = null;
     if (tripId && journalId) {
       paragraphs = [];
       for (let i = 0; i < parList.length; i++) {
         const par = parList[i];
         nr++;
-        var key = 'p-' + nr;
+        const key = 'p-' + nr;
         paragraphs.push(
           <JournalParagraph
             tripId={tripId}
@@ -194,14 +209,14 @@ var JournalEntry = React.createClass({
       }
     }
 
-    var editCallback = null;
+    let editCallback = null;
     if (this.state.tripActive &&
       (this.state.tripActive === 'Y') &&
       (loggedInUserId === this.state.journalUserId)) {
       editCallback = this._editCallback;
     }
 
-    var comments = null;
+    let comments = null;
     if (tripId && journalId) {
       comments = (
         <CommentList
@@ -214,7 +229,7 @@ var JournalEntry = React.createClass({
       );
     }
 
-    var feedback = null;
+    let feedback = null;
     if (tripId && journalId) {
       feedback = React.createElement(Feedback, {
         tripId: tripId,
@@ -223,8 +238,8 @@ var JournalEntry = React.createClass({
       });
     }
 
-    var prevNext1 = null;
-    var prevNext2 = null;
+    let prevNext1 = null;
+    let prevNext2 = null;
     if (tripId) {
       prevNext1 = (
         <JournalPrevNext tripId={tripId}
@@ -240,7 +255,7 @@ var JournalEntry = React.createClass({
       );
     }
 
-    var newComment = null;
+    let newComment = null;
     if (this.state.tripActive === 'Y') {
       if (this.state.canAddComment && tripId && journalId) {
         if (CommentStore.isEditing(tripId, journalId)) {

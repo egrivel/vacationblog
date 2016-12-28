@@ -10,7 +10,8 @@ const ButtonBar = require('./standard/ButtonBar.jsx');
 const storeMixin = require('./StoreMixin');
 const TripStore = require('../stores/TripStore');
 const JournalStore = require('../stores/JournalStore');
-
+const MenuAction = require('../actions/MenuAction');
+const MenuStore = require('../stores/MenuStore');
 const JournalAction = require('../actions/JournalAction');
 
 const JournalEdit = React.createClass({
@@ -30,6 +31,17 @@ const JournalEdit = React.createClass({
     })
   },
 
+  contextTypes: {
+    router: React.PropTypes.object.isRequired
+  },
+
+  _getStateFromStores: function() {
+    const journalData = JournalStore.getData();
+    return {
+      journalData: journalData
+    };
+  },
+
   componentDidMount: function() {
     const tripId = this.props.params.tripId;
     const journalId = this.props.params.journalId;
@@ -39,13 +51,11 @@ const JournalEdit = React.createClass({
     } else {
       JournalAction.loadJournal(tripId, journalId);
     }
+    MenuAction.selectItem(MenuStore.menuIds.HOME);
   },
 
-  _getStateFromStores: function() {
-    const journalData = JournalStore.getData();
-    return {
-      journalData: journalData
-    };
+  componentWillUnmount: function() {
+    MenuAction.unselectItem(MenuStore.menuIds.HOME);
   },
 
   // ---
@@ -87,10 +97,10 @@ const JournalEdit = React.createClass({
 
     if (journalId === '_new') {
       JournalAction.createJournal(tripId, journalData);
-      this.props.history.push('/trip/' + tripId);
+      this.context.router.push('/trip/' + tripId);
     } else {
       JournalAction.updateJournal(tripId, journalId, journalData);
-      this.props.history.push('/journal/' + tripId + '/' + journalId);
+      this.context.router.push('/journal/' + tripId + '/' + journalId);
     }
   },
 
@@ -101,11 +111,11 @@ const JournalEdit = React.createClass({
     if (journalId === '_new') {
       // clear the edited data
       JournalAction.clearJournal(tripId, journalId);
-      this.props.history.push('/trip/' + tripId);
+      this.context.router.push('/trip/' + tripId);
     } else {
       // re-load the original content of the journal entry
       JournalAction.loadJournal(tripId, journalId);
-      this.props.history.push('/journal/' + tripId + '/' + journalId);
+      this.context.router.push('/journal/' + tripId + '/' + journalId);
     }
   },
 
@@ -121,7 +131,7 @@ const JournalEdit = React.createClass({
         fieldId="title"
         label="Title"
         value={title}
-        onBlur={this._updateTitle}
+        onChange={this._updateTitle}
       />
     );
   },
@@ -134,7 +144,7 @@ const JournalEdit = React.createClass({
         fieldId="date"
         label="Date"
         value={date}
-        onBlur={this._updateDate}
+        onChange={this._updateDate}
       />
     );
   },
@@ -151,7 +161,7 @@ const JournalEdit = React.createClass({
         fieldId="text"
         label="Text"
         value={text}
-        onBlur={this._updateText}
+        onChange={this._updateText}
       />
     );
   },

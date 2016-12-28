@@ -1,9 +1,20 @@
 'use strict';
 
-var React = require('react');
+const React = require('react');
 
-var About = React.createClass({
+const MenuAction = require('../actions/MenuAction');
+const MenuStore = require('../stores/MenuStore');
+
+const About = React.createClass({
   displayName: 'About',
+
+  componentDidMount: function() {
+    MenuAction.selectItem(MenuStore.menuIds.ABOUT);
+  },
+
+  componentWillUnmount: function() {
+    MenuAction.unselectItem(MenuStore.menuIds.ABOUT);
+  },
 
   render: function() {
     return (
@@ -28,18 +39,24 @@ var About = React.createClass({
             lost.</li>
           <li>The <em>Oklahoma</em> trip has been activated, allowing for
             new posts, comments and "likes".</li>
+          <li>Improved support for phones in portrait mode (narrow screens)
+            with reduced margins, a custom navigation menu and handling of
+            deeply nested comments.</li>
+          <li>Pressing <em>Enter</em> should now work to submit various
+            forms (please report where it does not work).</li>
+          <li>Feedback mechanism to "enjoy" a post or comment, similar to
+            facebook's like and google's plus mechanism.</li>
+          <li>Maps were added to the overall trip information pages, where
+            applicable.</li>
+          <li>It is now possible for users to update their name, change their
+            password and their notification preference.</li>
         </ul>
 
         <h4>What Is Not Working</h4>
         <p>The following issues are known:</p>
         <ul>
-          <li>Search functionality is not available.</li>
-          <li>It is not yet possible for users to change their settings.</li>
-          <li>Pressing <em>Enter</em> on inputs doesn't work consistently.</li>
-          <li>The overall trip information page (describing each trip) is
-            missing information and details.</li>
-          <li>Deeply nested comments on phone (narrow screen): unreadable
-            and edit buttons end up in the margins.</li>
+          <li>No known issues. Known issues will be added here when
+            they are discovered.</li>
         </ul>
 
         <h4>Features To Add</h4>

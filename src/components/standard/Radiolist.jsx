@@ -15,7 +15,7 @@ const Radiolist = React.createClass({
       value: React.PropTypes.string.isRequired,
       label: React.PropTypes.string.isRequired
     })).isRequired,
-    onBlur: React.PropTypes.func.isRequired
+    onChange: React.PropTypes.func.isRequired
   },
 
   defaultProps: {
@@ -31,33 +31,33 @@ const Radiolist = React.createClass({
   },
 
   _onChange: function(event) {
-    this.setState({value: event.target.value});
-  },
-
-  _onBlur: function() {
-    this.props.onBlur(this.state.value, this.props.fieldId);
+    this.props.onChange(event.target.value, this.props.fieldId);
   },
 
   render: function() {
     const options = [];
     for (let i = 0; i < this.props.list.length; i++) {
       const item = this.props.list[i];
-      let checked = null;
+      let checked = false;
       if (item.value === this.props.value) {
-        checked = 'checked';
+        checked = true;
       }
       options.push(
-        <span key={'r-' + i}>
+        <label
+          className="radiobutton"
+          htmlFor={this.props.fieldId + '-' + i}
+          key={'r-' + i}
+        >
           <input
+            id={this.props.fieldId + '-' + i}
             name={this.props.fieldId}
             type="radio"
             value={item.value}
             checked={checked}
             onChange={this._onChange}
-            onBlur={this._onBlur}
           />
           {item.label + ' '}
-        </span>
+        </label>
       );
     }
     return (

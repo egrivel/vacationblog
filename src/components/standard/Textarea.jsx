@@ -11,30 +11,19 @@ const Textarea = React.createClass({
     fieldId: React.PropTypes.string.isRequired,
     label: React.PropTypes.string.isRequired,
     value: React.PropTypes.string,
-    onBlur: React.PropTypes.func.isRequired
-  },
-
-  defaultProps: {
-    value: ''
-  },
-
-  getInitialState: function() {
-    return {value: this.props.value};
-  },
-
-  componentWillReceiveProps: function(nextProps) {
-    this.setState({value: nextProps.value});
+    onChange: React.PropTypes.func.isRequired
   },
 
   _onChange: function(event) {
-    this.setState({value: event.target.value});
-  },
-
-  _onBlur: function() {
-    this.props.onBlur(this.state.value, this.props.fieldId);
+    this.props.onChange(event.target.value, this.props.fieldId);
   },
 
   render: function() {
+    let value = this.props.value;
+    if (!value) {
+      value = '';
+    }
+
     return (
       <Formrow
         key={'k-' + this.props.fieldId}
@@ -43,9 +32,8 @@ const Textarea = React.createClass({
       >
         <textarea rows={10} cols={60}
           id={this.props.fieldId}
-          value={this.state.value}
-          onChange={this._onChange}
-          onBlur={this._onBlur}>
+          value={value}
+          onChange={this._onChange}>
         </textarea>
       </Formrow>
     );

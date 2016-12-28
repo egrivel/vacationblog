@@ -1,15 +1,15 @@
 'use strict';
 
-var _ = require('lodash');
-var assign = require('object-assign');
+const _ = require('lodash');
+const assign = require('object-assign');
 
-var AppDispatcher = require('../AppDispatcher');
-var GenericStore = require('./GenericStore');
-var FeedbackActionTypes = require('../actions/FeedbackAction').Types;
+const AppDispatcher = require('../AppDispatcher');
+const GenericStore = require('./GenericStore');
+const FeedbackActionTypes = require('../actions/FeedbackAction').Types;
 
-var _data = {};
+const _data = {};
 
-var FeedbackStore = {};
+let FeedbackStore = {};
 
 /**
  * Make an ID
@@ -33,7 +33,7 @@ function _makeId(tripId, referenceId, userId) {
  * @param {array} list - list of feedbacks
  */
 function _load(tripId, referenceId, list) {
-  var itemId = _makeId(tripId, referenceId);
+  const itemId = _makeId(tripId, referenceId);
   if (_data[itemId]) {
     if (_.isEqual(_data[itemId], list)) {
       // no need to do anything
@@ -47,12 +47,11 @@ function _load(tripId, referenceId, list) {
 
 FeedbackStore = assign({}, GenericStore, {
   getLikeCount: function(tripId, referenceId) {
-    var count = 0;
-    var itemId = _makeId(tripId, referenceId);
-    var list = _data[itemId];
+    let count = 0;
+    const itemId = _makeId(tripId, referenceId);
+    const list = _data[itemId];
     if (list) {
-      var i;
-      for (i = 0; i < list.length; i++) {
+      for (let i = 0; i < list.length; i++) {
         if (list[i].type === 'like') {
           count++;
         }
@@ -62,12 +61,11 @@ FeedbackStore = assign({}, GenericStore, {
   },
 
   getPlusCount: function(tripId, referenceId) {
-    var count = 0;
-    var itemId = _makeId(tripId, referenceId);
-    var list = _data[itemId];
+    let count = 0;
+    const itemId = _makeId(tripId, referenceId);
+    const list = _data[itemId];
     if (list) {
-      var i;
-      for (i = 0; i < list.length; i++) {
+      for (let i = 0; i < list.length; i++) {
         if (list[i].type === 'plus') {
           count++;
         }
@@ -76,13 +74,26 @@ FeedbackStore = assign({}, GenericStore, {
     return count;
   },
 
-  doesUserLike: function(tripId, referenceId, userId) {
-    var doesLike = false;
-    var itemId = _makeId(tripId, referenceId);
-    var list = _data[itemId];
+  getSmileCount: function(tripId, referenceId) {
+    let count = 0;
+    const itemId = _makeId(tripId, referenceId);
+    const list = _data[itemId];
     if (list) {
-      var i;
-      for (i = 0; i < list.length; i++) {
+      for (let i = 0; i < list.length; i++) {
+        if (list[i].type === 'smile') {
+          count++;
+        }
+      }
+    }
+    return count;
+  },
+
+  doesUserLike: function(tripId, referenceId, userId) {
+    let doesLike = false;
+    const itemId = _makeId(tripId, referenceId);
+    const list = _data[itemId];
+    if (list) {
+      for (let i = 0; i < list.length; i++) {
         if ((list[i].type === 'like') &&
             (list[i].userId === userId)) {
           doesLike++;
@@ -93,12 +104,11 @@ FeedbackStore = assign({}, GenericStore, {
   },
 
   doesUserPlus: function(tripId, referenceId, userId) {
-    var doesPlus = false;
-    var itemId = _makeId(tripId, referenceId);
-    var list = _data[itemId];
+    let doesPlus = false;
+    const itemId = _makeId(tripId, referenceId);
+    const list = _data[itemId];
     if (list) {
-      var i;
-      for (i = 0; i < list.length; i++) {
+      for (let i = 0; i < list.length; i++) {
         if ((list[i].type === 'plus') &&
             (list[i].userId === userId)) {
           doesPlus++;
@@ -108,16 +118,30 @@ FeedbackStore = assign({}, GenericStore, {
     return doesPlus;
   },
 
+  doesUserSmile: function(tripId, referenceId, userId) {
+    let doesSmile = false;
+    const itemId = _makeId(tripId, referenceId);
+    const list = _data[itemId];
+    if (list) {
+      for (let i = 0; i < list.length; i++) {
+        if ((list[i].type === 'smile') &&
+            (list[i].userId === userId)) {
+          doesSmile++;
+        }
+      }
+    }
+    return doesSmile;
+  },
+
   getLikeList: function(tripId, referenceId, userId) {
     if (!userId) {
       userId = '';
     }
-    var result = '';
-    var itemId = _makeId(tripId, referenceId);
-    var list = _data[itemId];
+    let result = '';
+    const itemId = _makeId(tripId, referenceId);
+    const list = _data[itemId];
     if (list) {
-      var i;
-      for (i = 0; i < list.length; i++) {
+      for (let i = 0; i < list.length; i++) {
         if ((list[i].type === 'like') &&
             (list[i].userId !== userId)) {
           if (result !== '') {
@@ -134,13 +158,33 @@ FeedbackStore = assign({}, GenericStore, {
     if (!userId) {
       userId = '';
     }
-    var result = '';
-    var itemId = _makeId(tripId, referenceId);
-    var list = _data[itemId];
+    let result = '';
+    const itemId = _makeId(tripId, referenceId);
+    const list = _data[itemId];
     if (list) {
-      var i;
-      for (i = 0; i < list.length; i++) {
+      for (let i = 0; i < list.length; i++) {
         if ((list[i].type === 'plus') &&
+            (list[i].userId !== userId)) {
+          if (result !== '') {
+            result += ', ';
+          }
+          result += list[i].userName;
+        }
+      }
+    }
+    return result;
+  },
+
+  getSmileList: function(tripId, referenceId, userId) {
+    if (!userId) {
+      userId = '';
+    }
+    let result = '';
+    const itemId = _makeId(tripId, referenceId);
+    const list = _data[itemId];
+    if (list) {
+      for (let i = 0; i < list.length; i++) {
+        if ((list[i].type === 'smile') &&
             (list[i].userId !== userId)) {
           if (result !== '') {
             result += ', ';

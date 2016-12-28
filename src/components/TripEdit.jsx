@@ -10,6 +10,9 @@ const UserStore = require('../stores/UserStore');
 const TripAction = require('../actions/TripAction');
 const UserAction = require('../actions/UserAction');
 
+const ButtonBar = require('./standard/ButtonBar.jsx');
+const Display = require('./standard/Display.jsx');
+
 const TripEditContrib = require('./TripEditContrib.jsx');
 const TripSelectContrib = require('./TripSelectContrib.jsx');
 
@@ -213,7 +216,10 @@ const TripEdit = React.createClass({
   },
 
   _renderNameInput: function() {
-    const name = this.state.tripData.name;
+    let name = this.state.tripData.name;
+    if (!name) {
+      name = '';
+    }
 
     const result = [];
     result.push(
@@ -242,6 +248,8 @@ const TripEdit = React.createClass({
     let description = this.state.tripData.description;
     if (description) {
       description = String(description).replace(/&lf;/g, '\n\n');
+    } else {
+      description = '';
     }
 
     const result = [];
@@ -269,13 +277,15 @@ const TripEdit = React.createClass({
     return result;
   },
 
-  _renderBannerImg() {
-    const bannerImg = this.state.tripData.bannerImg;
+  _renderBannerImg: function() {
+    let bannerImg = this.state.tripData.bannerImg;
     let bannerPreview;
     if (bannerImg) {
       bannerPreview = (
         <img className="preview" src={'media/' + bannerImg}/>
       );
+    } else {
+      bannerImg = '';
     }
 
     const result = [];
@@ -417,7 +427,8 @@ const TripEdit = React.createClass({
         contributorList.push(
           <li key={'lnk-' + item.userId}>
             <a
-              href={'#/admin/trip/' + this.props.params.tripId + '/' + item.userId}
+              href={'#/admin/trip/' + this.props.params.tripId +
+                '/' + item.userId}
               onClick={editFunc}
             >
               {item.name}
@@ -480,10 +491,24 @@ const TripEdit = React.createClass({
             onChange={this._updateId}/>
         );
       }
+
+      const buttonList = [];
+      buttonList.push({
+        label: 'Save',
+        onClick: this._save
+      });
+      buttonList.push({
+        label: 'Close',
+        onClick: this._close
+      });
+
       data = (
         <div>
-          <div key="id-label" className="formLabel">ID</div>
-          <div key="id-value" className="formValue">{id}</div>
+          <Display
+            fieldId="id"
+            label="ID"
+            value={id}
+          />
           {this._renderNameInput()}
           {this._renderDescriptionInput()}
           {this._renderBannerImg()}
@@ -491,12 +516,7 @@ const TripEdit = React.createClass({
           {this._renderEndDate()}
           {this._renderActive()}
           {this._renderContributorList()}
-          <div key="buttons-label" className="formLabel"></div>
-          <div key="buttons-value" className="formValue">
-            <button onClick={this._save}>Save</button>
-            {' '}
-            <button onClick={this._close}>Close</button>
-          </div>
+          <ButtonBar buttons={buttonList}/>
           <TripEditContrib
             data={this.state.lightboxData}
             show={this.state.showEditLightbox}
@@ -513,6 +533,9 @@ const TripEdit = React.createClass({
           />
         </div>
       );
+    }
+    if (UserStore.getAccess() !== 'admin') {
+      return <div>No access</div>;
     }
     return (
       <div>

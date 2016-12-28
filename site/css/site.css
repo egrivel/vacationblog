@@ -1,4 +1,4 @@
-./*
+/*
  * Basic styling (after reset.css tears everything down).
  */
 
@@ -37,6 +37,10 @@ strong {
   font-weight: bold;
 }
 
+img {
+  width: 100%;
+}
+
 /*
  * Common utility styles
  */
@@ -54,6 +58,7 @@ strong {
 /*
  * Body, header, menu and footer
  */
+
 div.body {
   background-color: #fff;
   color: #000;
@@ -124,6 +129,15 @@ div.footer p {
   letter-spacing: 0.5px;
 }
 
+@media (max-width: 480px) {
+  div.header h1 {
+    padding-left: 0.5em;
+  }
+}
+
+/**
+ * Menu bar
+ */
 .main-menu, .main-menu ul {
   position: relative;
   line-height: 1.8em;
@@ -141,27 +155,37 @@ div.footer p {
 
 .main-menu li {
   display: block;
-  border: 1px solid #679;
   background-color: #679;
   color: #fff;
-  margin-top: 0.25em;
-  margin-bottom: 0.5em;
+  padding-top: 0.25em;
+  padding-bottom: 0.5em;
   float: left;
   position: relative;
+  margin-right: 0.5em;
+}
+
+.main-menu li.icon {
+  display: none;
 }
 
 .main-menu li.first {
   margin-left: 1em;
-  x-height: 1.8em;
   padding: 0;
 }
 
 .main-menu li a {
-  padding: 0 1em;
+  padding: 0;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+
+.main-menu li.selected, .main-menu li.selected:hover {
+  background-color: #fff;
+  color: #333b4b;
 }
 
 .main-menu li:hover {
-  background-color: #fff;
+  background-color: #eee;
   color: #333b4b;
 }
 
@@ -172,6 +196,36 @@ div.footer p {
   display: inline-block;
   color: inherit;
   background-color: inherit;
+}
+
+@media (max-width: 480px) {
+  .main-menu {
+    margin-left: 0.5em;
+  }
+
+  .main-menu li {
+    display: none;
+  }
+
+  .main-menu li.icon {
+    display: block;
+    background-color: #679;
+    color: #fff;
+  }
+
+  .main-menu li.icon a {
+    padding-left: 0;
+  }
+
+  .main-menu-open li {
+    display: block;
+    float: none;
+    border-top: solid 1px #fff;
+  }
+
+  .main-menu-open li.icon {
+    border-top: none;
+  }
 }
 
 /*
@@ -192,6 +246,7 @@ div.content h3 {
   margin-bottom: 0.5em;
   color: #003;
   letter-spacing: 1px;
+  line-height: 1.3em;
 }
 
 div.content h4 {
@@ -211,6 +266,13 @@ div.content p {
   text-align: justify;
 }
 
+@media (max-width: 480px) {
+  div.content {
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+  }
+}
+
 /*
  * Journal
  */
@@ -218,12 +280,15 @@ div.content p {
 img.journal-entry-profile-thumbnail {
   float: right;
   width: 100px;
+  margin: 0.2em;
+  margin-right: 0;
 }
 
 div.journalitem .subtitle {
   display: block;
   font-size: 80%;
   padding-top: 0.25em;
+  line-height: 1.3em;
 }
 
 div.journalitem .lastupdate {
@@ -407,7 +472,6 @@ div.journalitem p.images img.img1 {
   width: 100%;
 }
 
-
 div.journalitem p.banner {
   margin-left: -2em;
   margin-right: -2em;
@@ -476,6 +540,12 @@ div.commentBlock {
   margin-top: 0.25em;
   padding-left: 0;
   font-family: Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+@media (max-width: 480px) {
+  div.commentBlock {
+    border-left: solid 1px;
+  }
 }
 
 div.commentBlock h3 {
@@ -586,6 +656,162 @@ div.commentBlock h3 {
   background-color: #aee;
 }
 
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock {
+  border-left-color: #bcf;
+  background-color: #eef2ff;
+}
+
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock h3 {
+  background-color: #bcf;
+}
+
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock {
+  border-left-color: #cfb;
+  background-color: #f2ffee;
+}
+
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock h3 {
+  background-color: #cfb;
+}
+
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock {
+  border-left-color: #feb;
+  background-color: #fffaee;
+}
+
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock h3 {
+  background-color: #feb;
+}
+
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock {
+  border-left-color: #efa;
+  background-color: #faffe7;
+}
+
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock h3 {
+  background-color: #efa;
+}
+
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock {
+  border-left-color: #eae;
+  background-color: #fae7fa;
+}
+
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock h3 {
+  background-color: #eae;
+}
+
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock {
+  border-left-color: #aee;
+  background-color: #e7fafa;
+}
+
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock
+div.commentBlock h3 {
+  background-color: #aee;
+}
+
 span.nested-paragraph {
   display: block;
 }
@@ -611,6 +837,11 @@ div.feedback i.my-like {
 
 div.feedback i.my-plus {
   color: #f33;
+  font-weight: bold;
+}
+
+div.feedback i.my-smile {
+  color: #39f;
   font-weight: bold;
 }
 
@@ -685,6 +916,14 @@ label.checkbox {
   font-weight: normal;
 }
 
+label.radiobutton {
+  width: inherit;
+  text-align: left;
+  margin: 0;
+  display: inline;
+  font-weight: normal;
+}
+
 div.buttonbar input {
   margin-right: 1em;
 }
@@ -718,6 +957,21 @@ div.commentEdit textarea.comment {
 div.commentEdit button {
   margin-right: 5px;
   margin-top: -8px;
+}
+
+@media (max-width: 480px) {
+  div.commentBlock h3 span.commentId {
+    float: none;
+  }
+  div.commentEdit {
+    margin: 0;
+    padding: 0;
+
+  }
+  div.commentEdit button {
+    margin: 0;
+    margin-top: 0.1em;
+  }
 }
 
 /*
@@ -813,6 +1067,13 @@ div.modal-image-caption {
   margin-right: auto;
   max-width: 760px;
   letter-spacing: 0.5px;
+}
+
+@media screen and (max-width: 480px) {
+  div.modal-content {
+    width: 98%;
+    padding: 2px;
+  }
 }
 
 div.modal div.commentBlock {

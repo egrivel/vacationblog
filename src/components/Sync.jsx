@@ -8,6 +8,9 @@ const Password = require('./standard/Password.jsx');
 const ButtonBar = require('./standard/ButtonBar.jsx');
 const SyncStore = require('../stores/SyncStore');
 const SyncAction = require('../actions/SyncAction');
+const MenuAction = require('../actions/MenuAction');
+const MenuStore = require('../stores/MenuStore');
+const UserStore = require('../stores/UserStore');
 
 const Sync = React.createClass({
   displayName: 'Sync',
@@ -16,9 +19,16 @@ const Sync = React.createClass({
 
   stores: [SyncStore],
 
+  componentDidMount: function() {
+    MenuAction.selectItem(MenuStore.menuIds.ADMIN);
+  },
+
+  componentWillUnmount: function() {
+    MenuAction.unselectItem(MenuStore.menuIds.ADMIN);
+  },
+
   _getStateFromStores: function() {
     const syncInfo = SyncStore.getInfo();
-    console.log('Got info: ' + JSON.stringify(syncInfo));
     return {
       site: syncInfo.site,
       password: syncInfo.password,
@@ -54,7 +64,7 @@ const Sync = React.createClass({
         fieldId="name"
         label="Site Address"
         value={site}
-        onBlur={this._updateSite}
+        onChange={this._updateSite}
       />
     );
   },
@@ -67,7 +77,7 @@ const Sync = React.createClass({
         fieldId="password"
         label="Password"
         value={password}
-        onBlur={this._updatePassword}
+        onChange={this._updatePassword}
       />
     );
   },
@@ -78,6 +88,9 @@ const Sync = React.createClass({
       label: 'Sync',
       onClick: this._doSync
     });
+    if (UserStore.getAccess() !== 'admin') {
+      return <div>No access</div>;
+    }
     return (
       <div>
         <p>This function is to synchronize with an external system.</p>

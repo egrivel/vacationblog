@@ -15,6 +15,7 @@ const UserAdmin = require('./components/UserAdmin.jsx');
 const JournalWrapper = require('./components/JournalWrapper.jsx');
 const JournalEdit = require('./components/JournalEdit.jsx');
 const Search = require('./components/Search.jsx');
+const Preferences = require('./components/Preferences.jsx');
 const Sync = require('./components/Sync.jsx');
 const Admin = require('./components/Admin.jsx');
 const About = require('./components/About.jsx');
@@ -34,6 +35,7 @@ const routes = {
     {path: '/journaledit/:tripId', component: JournalEdit},
     {path: '/journaledit/:tripId/:journalId', component: JournalEdit},
     {path: '/search', component: Search},
+    {path: '/prefs', component: Preferences},
     {path: '/admin', component: Admin},
     {path: '/admin/trip', component: TripAdmin},
     {path: '/admin/trip/:tripId', component: TripEdit},

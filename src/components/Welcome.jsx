@@ -1,12 +1,14 @@
 'use strict';
 
-var React = require('react');
+const React = require('react');
 
-var storeMixin = require('./StoreMixin');
-var TripAction = require('../actions/TripAction');
-var TripStore = require('../stores/TripStore');
+const storeMixin = require('./StoreMixin');
+const TripAction = require('../actions/TripAction');
+const TripStore = require('../stores/TripStore');
+const MenuAction = require('../actions/MenuAction');
+const MenuStore = require('../stores/MenuStore');
 
-var Welcome = React.createClass({
+const Welcome = React.createClass({
   displayName: 'Welcome',
 
   mixins: [storeMixin()],
@@ -14,24 +16,29 @@ var Welcome = React.createClass({
   stores: [TripStore],
 
   _getStateFromStores: function() {
-    var tripList = TripStore.getTripList();
+    const tripList = TripStore.getTripList();
     return {
       tripList: tripList
     };
   },
 
   componentDidMount: function() {
-    var currentTripId = TripStore.getCurrentTripId();
+    const currentTripId = TripStore.getCurrentTripId();
     if (currentTripId) {
       TripAction.setCurrentTrip(null);
     }
+    MenuAction.selectItem(MenuStore.menuIds.HOME);
+  },
+
+  componentWillUnmount: function() {
+    MenuAction.unselectItem(MenuStore.menuIds.HOME);
   },
 
   _getTripList: function() {
-    var list = this.state.tripList;
+    const list = this.state.tripList;
     if (list && list.length) {
-      var count = 0;
-      var listItems = list.map(function(item) {
+      let count = 0;
+      const listItems = list.map(function(item) {
         count++;
         return (
           <li key={count}>

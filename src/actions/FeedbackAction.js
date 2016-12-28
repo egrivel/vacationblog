@@ -1,9 +1,9 @@
 'use strict';
 
-var AppDispatcher = require('../AppDispatcher');
-var utils = require('./utils');
+const AppDispatcher = require('../AppDispatcher');
+const utils = require('./utils');
 
-var FeedbackAction = {
+const FeedbackAction = {
   Types: {
     FEEDBACK_LOAD: 'FEEDBACK_LOAD'
   },
@@ -15,11 +15,11 @@ var FeedbackAction = {
   },
 
   loadData: function(tripId, referenceId) {
-    var url = 'api/getFeedback.php?';
+    let url = 'api/getFeedback.php?';
     url += 'tripId=' + encodeURIComponent(tripId);
     url += '&referenceId=' + encodeURIComponent(referenceId);
     utils.getAsync(url, function(response) {
-      var data = JSON.parse(response);
+      const data = JSON.parse(response);
       AppDispatcher.dispatch({
         type: FeedbackAction.Types.FEEDBACK_LOAD,
         tripId: data.tripId,
@@ -30,8 +30,8 @@ var FeedbackAction = {
   },
 
   setLike: function(tripId, referenceId, userId) {
-    var url = 'api/putFeedback.php';
-    var data = {};
+    const url = 'api/putFeedback.php';
+    const data = {};
     // Note: do NOT encode the data for a POST
     data.tripId = tripId;
     data.referenceId = referenceId;
@@ -43,8 +43,8 @@ var FeedbackAction = {
   },
 
   clearLike: function(tripId, referenceId, userId) {
-    var url = 'api/putFeedback.php';
-    var data = {};
+    const url = 'api/putFeedback.php';
+    const data = {};
     // Note: do NOT encode the data for a POST
     data.tripId = tripId;
     data.referenceId = referenceId;
@@ -56,8 +56,8 @@ var FeedbackAction = {
   },
 
   setPlus: function(tripId, referenceId, userId) {
-    var url = 'api/putFeedback.php';
-    var data = {};
+    const url = 'api/putFeedback.php';
+    const data = {};
     // Note: do NOT encode the data for a POST
     data.tripId = tripId;
     data.referenceId = referenceId;
@@ -69,13 +69,39 @@ var FeedbackAction = {
   },
 
   clearPlus: function(tripId, referenceId, userId) {
-    var url = 'api/putFeedback.php';
-    var data = {};
+    const url = 'api/putFeedback.php';
+    const data = {};
     // Note: do NOT encode the data for a POST
     data.tripId = tripId;
     data.referenceId = referenceId;
     data.userId = userId;
     data.type = 'plus';
+    data.deleted = 'Y';
+    utils.postAsync(url, data,
+      this._getCallback(tripId, referenceId));
+  },
+
+  setSmile: function(tripId, referenceId, userId) {
+    const url = 'api/putFeedback.php';
+    const data = {};
+    // Note: do NOT encode the data for a POST
+    data.tripId = tripId;
+    data.referenceId = referenceId;
+    data.userId = userId;
+    data.type = 'smile';
+    data.deleted = 'N';
+    utils.postAsync(url, data,
+      this._getCallback(tripId, referenceId));
+  },
+
+  clearSmile: function(tripId, referenceId, userId) {
+    const url = 'api/putFeedback.php';
+    const data = {};
+    // Note: do NOT encode the data for a POST
+    data.tripId = tripId;
+    data.referenceId = referenceId;
+    data.userId = userId;
+    data.type = 'smile';
     data.deleted = 'Y';
     utils.postAsync(url, data,
       this._getCallback(tripId, referenceId));

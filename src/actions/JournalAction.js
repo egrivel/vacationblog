@@ -58,7 +58,8 @@ var JournalAction = {
 
     var tripId = data.tripId;
     var journalId = data.journalId;
-    if (tripId && journalId) {
+    if (tripId && journalId && (journalId !== '_new')) {
+      // Only load comments if not a new entry
       CommentAction.recursivelyLoadComments(tripId, journalId);
     }
 

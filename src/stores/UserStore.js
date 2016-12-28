@@ -1,21 +1,20 @@
 'use strict';
 
-var _ = require('lodash');
-var assign = require('object-assign');
+const _ = require('lodash');
+const assign = require('object-assign');
 
-var GenericStore = require('./GenericStore');
-var AppDispatcher = require('../AppDispatcher');
-var UserActionTypes = require('../actions/UserAction').Types;
+const GenericStore = require('./GenericStore');
+const AppDispatcher = require('../AppDispatcher');
+const UserActionTypes = require('../actions/UserAction').Types;
 
-var UserStore;
+let _userData = {};
+let _userEditData = {};
+let _userLoggedIn = '';
+let _loginState = '';
+let _formErrorMessage = '';
+let _userList = [];
 
-var _userData = {};
-var _userLoggedIn = '';
-var _loginState = '';
-var _formErrorMessage = '';
-var _userList = [];
-
-UserStore = assign({}, GenericStore, {
+const UserStore = assign({}, GenericStore, {
   // Set of defined login states
   constants: {
     NONE: 'NONE',
@@ -30,6 +29,7 @@ UserStore = assign({}, GenericStore, {
 
   _reset: function() {
     _userData = {};
+    _userEditData = {};
     _userList = [];
   },
 
@@ -39,8 +39,18 @@ UserStore = assign({}, GenericStore, {
    * @return {object} Data for the requested user.
    */
   getData: function(userId) {
-    var data = _userData[userId];
+    const data = _userData[userId];
     return data;
+  },
+
+  getEditData: function(userId) {
+    if (_userEditData[userId]) {
+      return _userEditData[userId];
+    }
+    if (_userData[userId]) {
+      return _userData[userId];
+    }
+    return {};
   },
 
   getLoggedInUser: function() {
@@ -67,7 +77,7 @@ UserStore = assign({}, GenericStore, {
 
   getAccess: function() {
     if (_userLoggedIn) {
-      var user = _userData[_userLoggedIn];
+      const user = _userData[_userLoggedIn];
       if (user && user.access) {
         return user.access;
       }
@@ -125,6 +135,21 @@ UserStore = assign({}, GenericStore, {
         break;
       case UserActionTypes.USER_SET_LIST:
         _userList = action.list;
+        UserStore.emitChange();
+        break;
+      case UserActionTypes.USER_INIT_EDIT:
+        _userEditData[action.userId] = _.cloneDeep(_userData[action.userId]);
+        UserStore.emitChange();
+        break;
+      case UserActionTypes.USER_SET_EDIT:
+        if (!_userEditData[action.userId]) {
+          _userEditData[action.userId] = _.cloneDeep(_userData[action.userId]);
+        }
+        _userEditData[action.userId][action.prop] = action.value;
+        UserStore.emitChange();
+        break;
+      case UserActionTypes.USER_CLEAR_EDIT:
+        _userEditData[action.userId] = {};
         UserStore.emitChange();
         break;
       default:

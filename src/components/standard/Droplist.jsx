@@ -15,31 +15,19 @@ const Droplist = React.createClass({
       value: React.PropTypes.string.isRequired,
       label: React.PropTypes.string.isRequired
     })).isRequired,
-    onBlur: React.PropTypes.func.isRequired
-  },
-
-  defaultProps: {
-    value: ''
-  },
-
-  getInitialState: function() {
-    return {value: this.props.value};
-  },
-
-  componentWillReceiveProps: function(nextProps) {
-    this.setState({value: nextProps.value});
+    onChange: React.PropTypes.func.isRequired
   },
 
   _onChange: function(event) {
-    this.setState({value: event.target.value});
-  },
-
-  _onBlur: function() {
-    this.props.onBlur(this.state.value, this.props.fieldId);
+    this.props.onChange(event.target.value, this.props.fieldId);
   },
 
   render: function() {
     const options = [];
+    let value = this.props.value;
+    if (!value) {
+      value = '';
+    }
     for (let i = 0; i < this.props.list.length; i++) {
       const item = this.props.list[i];
       options.push(
@@ -59,9 +47,8 @@ const Droplist = React.createClass({
       >
         <select
           id={this.props.fieldId}
-          value={this.state.value}
           onChange={this._onChange}
-          onBlur={this._onBlur}
+          value={value}
         >
           {options}
         </select>

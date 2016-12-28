@@ -2,15 +2,15 @@
 
 /* global document */
 
-var UserAction = require('./UserAction');
-var UserStore = require('../stores/UserStore');
-var utils = require('./utils');
+const UserAction = require('./UserAction');
+const UserStore = require('../stores/UserStore');
+const utils = require('./utils');
 
-var LoginAction = {
+const LoginAction = {
   _doLoginCallback: function(response) {
-    var data = JSON.parse(response);
+    const data = JSON.parse(response);
     if (data.resultCode === '200') {
-      var authId = data.authId;
+      const authId = data.authId;
       if (authId) {
         document.cookie = 'blogAuthId=' + encodeURIComponent(authId);
       } else {
@@ -21,6 +21,10 @@ var LoginAction = {
         UserAction.setLoginState(UserStore.constants.LOGIN_SUCCESS);
         UserAction.setLoggedInUser(this.userId);
         UserAction.loadUser(this.userId);
+        // Login is success, but remove the message after a few seconds
+        setTimeout(function() {
+          UserAction.setLoginState(UserStore.constants.NONE);
+        }, 4000);
       } else {
         UserAction.setLoggedInUser('');
       }
@@ -34,7 +38,7 @@ var LoginAction = {
   },
 
   _doRegisterCallback: function(response) {
-    var data = JSON.parse(response);
+    const data = JSON.parse(response);
     // Default error message in case something happened that
     // isn't handled below
     let errorMessage = 'Something went wrong...';
@@ -63,7 +67,7 @@ var LoginAction = {
   },
 
   _doRetrieveCallback: function(response) {
-    var data = JSON.parse(response);
+    const data = JSON.parse(response);
     // Default error message in case something happened that
     // isn't handled below
     let errorMessage = 'Something went wrong...';
@@ -92,7 +96,7 @@ var LoginAction = {
   },
 
   _doConfirmRegCallback: function(response) {
-    var data = JSON.parse(response);
+    const data = JSON.parse(response);
     let errorMessage = 'Something went wrong...';
     if (data && data.status) {
       if (data.status === 'MISSING_DATA') {
@@ -121,7 +125,7 @@ var LoginAction = {
   },
 
   _doConfirmPwdCallback: function(response) {
-    var data = JSON.parse(response);
+    const data = JSON.parse(response);
     let errorMessage = 'Something went wrong...';
     if (data && data.status) {
       if ((data.status === 'MISSING_DATA') ||

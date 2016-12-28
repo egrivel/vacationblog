@@ -23,7 +23,7 @@ var CommentParagraph = React.createClass({
 
   propTypes: {
     text: React.PropTypes.string.isRequired,
-    key: React.PropTypes.string
+    parKey: React.PropTypes.string
   },
 
   render: function() {
@@ -36,7 +36,7 @@ var CommentParagraph = React.createClass({
       return null;
     }
 
-    return utils.buildTextNode('p', 'text', this.props.key, text);
+    return utils.buildTextNode('p', 'text', this.props.parKey, text);
   }
 });
 
@@ -172,10 +172,11 @@ var Comment = React.createClass({
     } else {
       commentBody = parList.map(function(par) {
         parCount++;
-        var key = 'p-' + parCount;
+        var parKey = 'p-' + parCount;
         return React.createElement(CommentParagraph, {
           tripId: tripId,
-          key: key,
+          key: parKey,
+          parKey: parKey,
           text: par
         });
       });

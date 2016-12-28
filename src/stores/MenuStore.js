@@ -1,11 +1,19 @@
 'use strict';
 
-var assign = require('object-assign');
-var AppDispatcher = require('../AppDispatcher');
-var MenuActionTypes = require('../actions/MenuAction').Types;
-var UserActionTypes = require('../actions/UserAction').Types;
-var GenericStore = require('./GenericStore');
-var UserStore = require('./UserStore');
+const assign = require('object-assign');
+const AppDispatcher = require('../AppDispatcher');
+const MenuActionTypes = require('../actions/MenuAction').Types;
+const UserActionTypes = require('../actions/UserAction').Types;
+const GenericStore = require('./GenericStore');
+const UserStore = require('./UserStore');
+
+const menuIds = {
+  HOME: 'm1',
+  SEARCH: 'm2',
+  PREFERENCES: 'm3',
+  ADMIN: 'm4',
+  ABOUT: 'm5'
+};
 
 // The menu structure. It uses the following attributes:
 //  - id: unique ID for the menu item
@@ -15,34 +23,78 @@ var UserStore = require('./UserStore');
 //  - target: target ref to invoke when the menu is selected (leaf entries only)
 //  - submenu: next level menu to display when selected (non-leaf entries
 //    only)
-var _menuData = [
-  {id: 'm1', label: 'Home', selected: false, visible: true,
-    target: '#/'},
-  {id: 'm2', label: 'Search', selected: false, visible: true,
-    target: '#/search'},
-  {id: 'm4', label: 'Admin', selected: false, visible: false,
-    target: '#/admin'},
-  {id: 'm5', label: 'About', selected: false, visible: true,
-    target: '#/about'}
+const _menuData = [
+  {id: menuIds.HOME, label: 'Home', selected: false,
+    visible: true, target: '#/'},
+  {id: menuIds.SEARCH, label: 'Search', selected: false,
+    visible: false, target: '#/search'},
+  {id: menuIds.PREFERENCES, label: 'Preferences', selected: false,
+    visible: false, target: '#/prefs'},
+  {id: menuIds.ADMIN, label: 'Admin', selected: false,
+    visible: false, target: '#/admin'},
+  {id: menuIds.ABOUT, label: 'About', selected: false,
+    visible: true, target: '#/about'}
 ];
+
+/**
+ * Find a particular item in the menu given its ID.
+ * @param {string} id - ID of the menu item.
+ * @return {object} menu item or null if the menu item isn't found.
+ */
+function _findMenu(id) {
+  for (let i = 0; i < _menuData.length; i++) {
+    if (_menuData[i].id === id) {
+      return _menuData[i];
+    }
+  }
+  return null;
+}
+
+/**
+ * Update the menu based on the access level.
+ * @param {string} access - new access level.
+ * @return {boolean} true if the menu changed, false if it didn't.
+ */
+function _updateMenu(access) {
+  let result = false;
+  let item;
+  let visible;
+
+  item = _findMenu('m3');
+  visible = ((access === 'visitor') || (access === 'admin'));
+  if (item && item.visible !== visible) {
+    item.visible = visible;
+    result = true;
+  }
+
+  item = _findMenu('m4');
+  visible = (access === 'admin');
+  if (item && item.visible !== visible) {
+    item.visible = visible;
+    result = true;
+  }
+
+  return result;
+}
 
 /**
  * Recursively walk the menu structure to select a specific menu item.
  * All items other than the indicated item will be de-selected.
  * @param {array} list - (sub-) menu to recursively walk through.
  * @param {id} id - menu ID of the item to select.
+ * @param {boolean} status - status to which to set visibility
  * @return {boolean} indicator whether the specified item was found in the
  * (sub-) menu.
  * @private
  */
-function _selectMenuItem(list, id) {
-  var didSelect = false;
-  var i;
-  for (i = 0; i < list.length; i++) {
+function _selectMenuItem(list, id, status) {
+  let didSelect = false;
+  for (let i = 0; i < list.length; i++) {
     if (list[i].id === id) {
-      list[i].selected = true;
+      list[i].selected = status;
       didSelect = true;
-    } else {
+    } else if (status) {
+      // only unselect the others if selecting the specific item
       list[i].selected = false;
     }
     if (list[i].submenu) {
@@ -57,15 +109,24 @@ function _selectMenuItem(list, id) {
   return didSelect;
 }
 
-var MenuStore = assign({}, GenericStore, {
+const MenuStore = assign({}, GenericStore, {
+  menuIds: menuIds,
+
   getData: function() {
     return _menuData;
   },
 
   _storeCallback: function(action) {
+    let access;
+
     switch (action.type) {
       case MenuActionTypes.MENU_SELECT:
-        _selectMenuItem(_menuData, action.data.id);
+        _selectMenuItem(_menuData, action.data.id, true);
+        MenuStore.emitChange();
+        break;
+
+      case MenuActionTypes.MENU_UNSELECT:
+        _selectMenuItem(_menuData, action.data.id, false);
         MenuStore.emitChange();
         break;
 
@@ -77,13 +138,8 @@ var MenuStore = assign({}, GenericStore, {
       case UserActionTypes.USER_SET_DATA:
       case UserActionTypes.USER_SET_LOGGED_IN:
         AppDispatcher.waitFor([UserStore.dispatchToken]);
-        var visible = false;
-        var access = UserStore.getAccess();
-        if (access === 'admin') {
-          visible = true;
-        }
-        if (visible !== _menuData[2].visible) {
-          _menuData[2].visible = visible;
+        access = UserStore.getAccess();
+        if (_updateMenu(access)) {
           MenuStore.emitChange();
         }
         break;

@@ -1,13 +1,13 @@
 'use strict';
 
-var React = require('react');
+const React = require('react');
 
-var UserStore = require('../stores/UserStore');
-var FeedbackStore = require('../stores/FeedbackStore');
-var FeedbackAction = require('../actions/FeedbackAction');
-var storeMixin = require('./StoreMixin');
+const UserStore = require('../stores/UserStore');
+const FeedbackStore = require('../stores/FeedbackStore');
+const FeedbackAction = require('../actions/FeedbackAction');
+const storeMixin = require('./StoreMixin');
 
-var Feedback = React.createClass({
+const Feedback = React.createClass({
   displayName: 'Feedback',
 
   stores: [FeedbackStore, UserStore],
@@ -19,42 +19,57 @@ var Feedback = React.createClass({
     referenceId: React.PropTypes.string
   },
 
-  _getStateFromStores: function() {
-    var tripId = this.props.tripId;
-    var referenceId = this.props.referenceId;
-    var userId = UserStore.getLoggedInUser();
+  componentWillMount: function() {
+    if (this.props.tripId && this.props.referenceId) {
+      FeedbackAction.loadData(this.props.tripId, this.props.referenceId);
+    }
+  },
 
-    var likeCount = 0;
-    var plusCount = 0;
-    var doesUserLike = false;
-    var doesUserPlus = false;
-    var likeList = '';
-    var plusList = '';
+  _getStateFromStores: function() {
+    const tripId = this.props.tripId;
+    const referenceId = this.props.referenceId;
+    const userId = UserStore.getLoggedInUser();
+
+    let likeCount = 0;
+    let plusCount = 0;
+    let smileCount = 0;
+    let doesUserLike = false;
+    let doesUserPlus = false;
+    let doesUserSmile = false;
+    let likeList = '';
+    let plusList = '';
+    let smileList = '';
 
     if (tripId && referenceId) {
       likeCount = FeedbackStore.getLikeCount(tripId, referenceId);
       plusCount = FeedbackStore.getPlusCount(tripId, referenceId);
+      smileCount = FeedbackStore.getSmileCount(tripId, referenceId);
       doesUserLike = FeedbackStore.doesUserLike(tripId, referenceId, userId);
       doesUserPlus = FeedbackStore.doesUserPlus(tripId, referenceId, userId);
+      doesUserSmile = FeedbackStore.doesUserSmile(tripId, referenceId, userId);
       likeList = FeedbackStore.getLikeList(tripId, referenceId, userId);
       plusList = FeedbackStore.getPlusList(tripId, referenceId, userId);
+      smileList = FeedbackStore.getSmileList(tripId, referenceId, userId);
     }
 
     return {
       likeCount: likeCount,
       plusCount: plusCount,
+      smileCount: smileCount,
       doesUserLike: doesUserLike,
       doesUserPlus: doesUserPlus,
+      doesUserSmile: doesUserSmile,
       userId: userId,
       likeList: likeList,
-      plusList: plusList
+      plusList: plusList,
+      smileList: smileList
     };
   },
 
   clickLike: function() {
-    var tripId = this.props.tripId;
-    var referenceId = this.props.referenceId;
-    var userId = UserStore.getLoggedInUser();
+    const tripId = this.props.tripId;
+    const referenceId = this.props.referenceId;
+    const userId = UserStore.getLoggedInUser();
 
     if (userId && tripId && referenceId) {
       if (FeedbackStore.doesUserLike(tripId, referenceId, userId)) {
@@ -66,9 +81,9 @@ var Feedback = React.createClass({
   },
 
   clickPlus: function() {
-    var tripId = this.props.tripId;
-    var referenceId = this.props.referenceId;
-    var userId = UserStore.getLoggedInUser();
+    const tripId = this.props.tripId;
+    const referenceId = this.props.referenceId;
+    const userId = UserStore.getLoggedInUser();
     if (userId && tripId && referenceId) {
       if (FeedbackStore.doesUserPlus(tripId, referenceId, userId)) {
         FeedbackAction.clearPlus(tripId, referenceId, userId);
@@ -78,58 +93,101 @@ var Feedback = React.createClass({
     }
   },
 
-  componentWillMount: function() {
-    if (this.props.tripId && this.props.referenceId) {
-      FeedbackAction.loadData(this.props.tripId, this.props.referenceId);
+  clickSmile: function() {
+    const tripId = this.props.tripId;
+    const referenceId = this.props.referenceId;
+    const userId = UserStore.getLoggedInUser();
+    if (userId && tripId && referenceId) {
+      if (FeedbackStore.doesUserSmile(tripId, referenceId, userId)) {
+        FeedbackAction.clearSmile(tripId, referenceId, userId);
+      } else {
+        FeedbackAction.setSmile(tripId, referenceId, userId);
+      }
     }
   },
 
   render: function render() {
-    var fbClassname = 'fa';
-    var googleClassname = 'fa';
+    let likeClassname = 'fa';
+    let plusClassname = 'fa';
+    let smileClassname = 'fa';
 
-    var fbTitle = '';
-    var googleTitle = '';
+    let likeTitle = '';
+    let plusTitle = '';
+    let smileTitle = '';
 
     if (this.state.doesUserLike) {
-      fbClassname += ' my-like';
+      likeClassname += ' my-like';
       if (this.state.likeList) {
-        fbTitle = 'You and ' + this.state.likeList + ' like this.';
+        likeTitle = 'You and ' + this.state.likeList + ' like this.';
       } else {
-        fbTitle = 'You like this.';
+        likeTitle = 'You like this.';
       }
     } else if (this.state.likeList) {
-      fbTitle = this.state.likeList + ' like this.';
+      likeTitle = this.state.likeList + ' like this.';
     }
 
     if (this.state.doesUserPlus) {
-      googleClassname += ' my-plus';
+      plusClassname += ' my-plus';
       if (this.state.plusList) {
-        googleTitle = 'You and ' + this.state.plusList + ' plussed this.';
+        plusTitle = 'You and ' + this.state.plusList + ' plussed this.';
       } else {
-        googleTitle = 'You plussed this.';
+        plusTitle = 'You plussed this.';
       }
     } else if (this.state.plusList) {
-      googleTitle = this.state.plusList + ' plussed this.';
+      plusTitle = this.state.plusList + ' plussed this.';
+    }
+
+    if (this.state.doesUserSmile) {
+      smileClassname += ' my-smile';
+      if (this.state.smileList) {
+        smileTitle = 'You and ' + this.state.smileList + ' enjoyed this.';
+      } else {
+        smileTitle = 'You enjoyed this.';
+      }
+    } else if (this.state.smileList) {
+      smileTitle = this.state.smileList + ' enjoyed this.';
     }
 
     if (this.state.userId) {
-      fbClassname += ' select';
-      googleClassname += ' select';
+      likeClassname += ' select';
+      plusClassname += ' select';
+      smileClassname += ' select';
     }
+
+    // Note: reserved for future use
+    // eslint-disable-next-line no-unused-vars
+    const likeBlock = (
+      <span onClick={this.clickLike}>
+        <i className={likeClassname} title={likeTitle}>
+          {'\uf087'} {this.state.likeCount}
+        </i>
+        &nbsp; facebook &nbsp;
+      </span>
+    );
+
+    // Note: reserved for future use
+    // eslint-disable-next-line no-unused-vars
+    const plusBlock = (
+      <span onClick={this.clickPlus}>
+        <i className={plusClassname} title={plusTitle}>
+          {'\uf067'} {this.state.plusCount}
+        </i>
+        &nbsp; Google &nbsp;
+      </span>
+    );
+
+    const smileBlock = (
+      <span onClick={this.clickSmile}>
+        <i className={smileClassname} title={smileTitle}>
+          {'\uf118'} {this.state.smileCount}
+        </i>
+        &nbsp; enjoy &nbsp;
+      </span>
+    );
 
     return (
       <div className="feedback">
-        <i className={fbClassname} onClick={this.clickLike}
-          title={fbTitle}>
-          {'\uf087'} {this.state.likeCount}
-        </i>
-        &nbsp; facebook. &nbsp;
-        <i className={googleClassname} onClick={this.clickPlus}
-          title={googleTitle}>
-          {'\uf067'} {this.state.plusCount}
-        </i>
-        &nbsp; Google.
+        {smileBlock}
       </div>
     );
   }

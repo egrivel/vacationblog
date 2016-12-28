@@ -90,6 +90,10 @@ const Login = React.createClass({
     onClose: React.PropTypes.func.isRequired
   },
 
+  contextTypes: {
+    router: React.PropTypes.object
+  },
+
   _getStateFromStores: function() {
     const errorMessage = UserStore.getFormErrorMessage();
     const loginState = UserStore.getLoginState();
@@ -109,7 +113,8 @@ const Login = React.createClass({
   },
 
   componentDidMount: function() {
-    const element = document.getElementById('userId'); // eslint-disable-line no-undef
+    // eslint-disable-next-line no-undef
+    const element = document.getElementById('userId');
     if (element) {
       element.focus();
     }
@@ -202,7 +207,7 @@ const Login = React.createClass({
     } else if (password.length < 6) {
       UserAction.setLoginFormError(
         'Please enter a password of at least 6 characters.');
-    } else if (password !== password2) { // eslint-disable-line no-negated-condition
+    } else if (password !== password2) {
       UserAction.setLoginFormError(
         'Please repeat the exact same password.');
     } else {
@@ -252,7 +257,7 @@ const Login = React.createClass({
     } else if (password.length < 6) {
       UserAction.setLoginFormError(
         'Please enter a password of at least 6 characters.');
-    } else if (password !== password2) { // eslint-disable-line no-negated-condition
+    } else if (password !== password2) {
       UserAction.setLoginFormError(
         'Please repeat the exact same password.');
     } else {
@@ -282,7 +287,7 @@ const Login = React.createClass({
   // ========================================================================
 
   _renderOtherThings: function(status) {
-    let list = [];
+    const list = [];
     if (status !== UserStore.constants.LOGIN) {
       list.push(<li key="login">If you already have a user ID and password,
         you can <a href="#/login" onClick={this._goLogin}>login</a>.</li>);
@@ -351,7 +356,7 @@ const Login = React.createClass({
           fieldId="userId"
           label="User ID"
           value={this.state.userId}
-          onBlur={this._setValue}
+          onChange={this._setValue}
         />
         <Password
           fieldId="password"
@@ -424,38 +429,38 @@ const Login = React.createClass({
           fieldId="userId"
           label="User ID"
           value={userId}
-          onBlur={this._setValue}
+          onChange={this._setValue}
         />
         <Textbox
           fieldId="name"
           label="Full Name"
           value={name}
-          onBlur={this._setValue}
+          onChange={this._setValue}
         />
         <Textbox
           fieldId="email"
           label="Email Address"
           value={email}
-          onBlur={this._setValue}
+          onChange={this._setValue}
         />
         <Password
           fieldId="password"
           label="Password"
           value={password}
-          onBlur={this._setValue}
+          onChange={this._setValue}
         />
         <Password
           fieldId="password2"
           label="Repeat Password"
           value={password2}
-          onBlur={this._setValue}
+          onChange={this._setValue}
         />
         <Checkbox
           fieldId="notification"
           label={'Please send me an email notification when this website ' +
             'is updated'}
           selected={notification}
-          onBlur={this._setValue}
+          onChange={this._setValue}
         />
         <ButtonBar
           buttons={buttonList}
@@ -503,7 +508,7 @@ const Login = React.createClass({
               fieldId="email"
               label="Email Address"
               value={email}
-              onBlur={this._setValue}
+              onChange={this._setValue}
             />
         <ButtonBar
           buttons={buttonList}
@@ -519,7 +524,7 @@ const Login = React.createClass({
               fieldId="userId"
               label="User ID"
               value={userId}
-              onBlur={this._setValue}
+              onChange={this._setValue}
             />
         <ButtonBar
           buttons={buttonList}
@@ -566,13 +571,13 @@ const Login = React.createClass({
           fieldId="userId"
           label="User ID"
           value={this.state.userId}
-          onBlur={this._setValue}
+          onChange={this._setValue}
         />
         <Textbox
           fieldId="confCode"
           label="Confirmation Code"
           value={this.state.confCode}
-          onBlur={this._setValue}
+          onChange={this._setValue}
         />
         <ButtonBar
           buttons={buttonList}
@@ -612,25 +617,25 @@ const Login = React.createClass({
           fieldId="userId"
           label="User ID"
           value={this.state.userId}
-          onBlur={this._setValue}
+          onChange={this._setValue}
         />
         <Textbox
           fieldId="confCode"
           label="Confirmation Code"
           value={this.state.confCode}
-          onBlur={this._setValue}
+          onChange={this._setValue}
         />
         <Password
           fieldId="password"
           label="Password"
           value={this.state.password}
-          onBlur={this._setValue}
+          onChange={this._setValue}
         />
         <Password
           fieldId="password2"
           label="Repeat Password"
           value={this.state.password2}
-          onBlur={this._setValue}
+          onChange={this._setValue}
         />
         <ButtonBar
           buttons={buttonList}

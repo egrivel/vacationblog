@@ -1,32 +1,57 @@
 'use strict';
 
-var AppDispatcher = require('../AppDispatcher');
-var utils = require('./utils');
+const AppDispatcher = require('../AppDispatcher');
+const utils = require('./utils');
 
-var UserAction = {
+const UserAction = {
   Types: {
     USER_SET_DATA: 'USER_SET_DATA',
     USER_SET_LOGGED_IN: 'USER_SET_LOGGED_IN',
     USER_SET_LOGIN_LOGIN_STATE: 'USER_SET_LOGIN_LOGIN_STATE',
     USER_SET_LOGIN_FORM_ERROR: 'USER_SET_LOGIN_FORM_ERROR',
     USER_SET_LIST: 'USER_SET_LIST',
-    USER_SET_TEMP_CODE: 'USER_SET_TEMP_CODE'
+    USER_SET_TEMP_CODE: 'USER_SET_TEMP_CODE',
+    USER_INIT_EDIT: 'USER_INIT_EDIT',
+    USER_SET_EDIT: 'USER_SET_EDIT',
+    USER_CLEAR_EDIT: 'USER_CLEAR_EDIT'
   },
 
   loadLoggedInUser: function() {
-    var url = 'api/getUser.php';
+    const url = 'api/getUser.php';
     utils.getAsync(url, function(response) {
-      var data = JSON.parse(response);
+      const data = JSON.parse(response);
       UserAction._userLoaded(data);
       UserAction.setLoggedInUser(data.userId);
     });
   },
 
   loadUser: function loadUser(userId) {
-    var url = 'api/getUser.php?userId=' + userId;
+    const url = 'api/getUser.php?userId=' + userId;
     utils.getAsync(url, function(response) {
-      var data = JSON.parse(response);
+      const data = JSON.parse(response);
       UserAction._userLoaded(data);
+    });
+  },
+
+  saveUser: function(userId, data) {
+    const url = 'api/putUser.php';
+    const submitData = {
+      userId: userId,
+      name: data.name,
+      email: data.email,
+      access: data.access,
+      notification: data.notification,
+      tempCode: data.tempCode,
+      deleted: data.deleted
+    };
+    if (data.password && (data.password.length >= 6)) {
+      submitData.password = data.password;
+    }
+    utils.postAsync(url, submitData, function(response) {
+      const responseData = JSON.parse(response, true);
+      if (!responseData.resultCode || (responseData.resultCode !== '200')) {
+        console.log('Got response ' + response);
+      }
     });
   },
 
@@ -47,7 +72,7 @@ var UserAction = {
   loadAllUsers: function() {
     const url = 'api/findUsers.php';
     utils.getAsync(url, function(response) {
-      var data = JSON.parse(response);
+      const data = JSON.parse(response);
       AppDispatcher.dispatch({
         type: UserAction.Types.USER_SET_LIST,
         list: data.resultSet
@@ -81,6 +106,62 @@ var UserAction = {
       type: this.Types.USER_SET_TEMP_CODE,
       userId: userId,
       tempCode: tempCode
+    });
+  },
+
+  initEdit: function(userId) {
+    AppDispatcher.dispatch({
+      type: this.Types.USER_INIT_EDIT,
+      userId: userId
+    });
+  },
+
+  setEdit: function(userId, prop, value) {
+    AppDispatcher.dispatch({
+      type: this.Types.USER_SET_EDIT,
+      userId: userId,
+      prop: prop,
+      value: value
+    });
+  },
+
+  clearEdit: function(userId) {
+    AppDispatcher.dispatch({
+      type: this.Types.USER_CLEAR_EDIT,
+      userId: userId
+    });
+  },
+
+  updatePrefs: function(userId, name, notification) {
+    const url = 'api/putUser.php';
+    const submitData = {
+      userId: userId,
+      name: name,
+      notification: notification
+    };
+    utils.postAsync(url, submitData, function(response) {
+      const responseData = JSON.parse(response, true);
+      if (!responseData.resultCode || (responseData.resultCode !== '200')) {
+        console.log('Got response ' + response);
+      }
+    });
+  },
+
+  updateEmail: function(userId, newEmail) {
+    console.log('email change not implemented');
+  },
+
+  updatePassword: function(userId, password) {
+    const url = 'api/putUser.php';
+    const submitData = {
+      userId: userId,
+      password: password
+    };
+    utils.postAsync(url, submitData, function(response) {
+      const responseData = JSON.parse(response, true);
+      if (!responseData.resultCode || (responseData.resultCode !== '200')) {
+        console.log('Got response ' + response);
+      }
     });
   }
 };
