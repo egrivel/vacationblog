@@ -75,6 +75,17 @@ const UserStore = assign({}, GenericStore, {
     return (_userLoggedIn && (_userLoggedIn !== ''));
   },
 
+  canEditMedia: function() {
+    if (_userLoggedIn) {
+      const user = _userData[_userLoggedIn];
+      if (user && user.access) {
+        const access = user.access;
+        return (access === 'admin');
+      }
+    }
+    return false;
+  },
+
   getAccess: function() {
     if (_userLoggedIn) {
       const user = _userData[_userLoggedIn];

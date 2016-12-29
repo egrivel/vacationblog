@@ -54,6 +54,8 @@ const About = React.createClass({
             site, you are automatically returned to the last post you were
             reading before. This should make it easier to follow us when we're
             on vacation...</li>
+          <li>On login, presented with an option to stay logged in. This should
+            only be used on "safe" devices.</li>
         </ul>
 
         <h4>What Is Not Working</h4>

@@ -11,6 +11,7 @@ const MediaStore = require('../stores/MediaStore');
 const MediaAction = require('../actions/MediaAction');
 // const CommentList = require('./CommentList.jsx');
 const Image = require('./Image.jsx');
+const UserStore = require('../stores/UserStore');
 
 const utils = require('./utils');
 const Orientation = utils.orientation;
@@ -66,6 +67,14 @@ function _imgWithModal(parent, tripId, mediaId, mediaInfo, className) {
     parent.clickImg(mediaId);
   };
 
+  let _onEdit = null;
+
+  if (UserStore.canEditMedia()) {
+    _onEdit = function() {
+      console.log('Editing ' + mediaId);
+    };
+  }
+
   return (
     <Image
       tripId={tripId}
@@ -75,6 +84,7 @@ function _imgWithModal(parent, tripId, mediaId, mediaInfo, className) {
       key={mediaId}
       caption={mediaInfo.caption}
       onClick={_onClick}
+      onEdit={_onEdit}
     />
   );
 }
@@ -538,13 +548,14 @@ const JournalParagraph = React.createClass({
 
   /**
    * Render a panoramic image.
+   * @param {string} tripId: ID of the trip.
    * @param {string} imageId: ID of image to render
    * @param {string} offset: (optional) vertical offset, range from -50 to +50.
    * Default value is 0, which centers the image vertically. An offset of -50
    * renders the image bottom-aligned, +50 renders it top-aligned.
    * @return {object} React rendered component.
    */
-  _renderPanorama: function(imageId, offset) {
+  _renderPanorama: function(tripId, imageId, offset) {
     // make sure offset is in range -50 to +50 and default 0
     if (offset) {
       if (offset < -50) {
@@ -560,8 +571,8 @@ const JournalParagraph = React.createClass({
     return (
       <div className="panorama">
         <img
+          src={'http://photos-egrivel.rhcloud.com/phimg?large=' +imageId}
           style={{top: (offset - 50) + '%'}}
-          src={'http://photos-egrivel.rhcloud.com/phimg?large=' + imageId}
         />
       </div>
     );
@@ -578,9 +589,9 @@ const JournalParagraph = React.createClass({
     const images = [];
     let imageCount = 0;
 
-    const pano = text.match(/^\[PANO ([\d\-abc]+)(\s+[+\-]\d+)?\]$/);
+    const pano = text.match(/^\s*\[PANO ([\d\-abc]+)(\s+[+\-]\d+)?\]\s*$/);
     if (pano) {
-      return this._renderPanorama(pano[1], pano[2]);
+      return this._renderPanorama(tripId, pano[1], pano[2]);
     }
 
     text = text.replace('[IMGS]', '');
@@ -619,6 +630,7 @@ const JournalParagraph = React.createClass({
     } else if (images.length === 1) {
       return _paragraphSingleImage(this, tripId, images[0]);
     }
+
     // default if nothing applies
     return null;
   }

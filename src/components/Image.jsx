@@ -5,13 +5,13 @@
  * focuses on the display of a single image.
  */
 
-var _ = require('lodash');
-var React = require('react');
+const _ = require('lodash');
+const React = require('react');
 
-var utils = require('./utils');
-var Orientation = utils.orientation;
+const utils = require('./utils');
+const Orientation = utils.orientation;
 
-var Image = React.createClass({
+const Image = React.createClass({
   displayName: 'Image',
 
   propTypes: {
@@ -24,14 +24,18 @@ var Image = React.createClass({
     // Image format: either 'portrait' or 'landscape'
     format: React.PropTypes.oneOf([
       Orientation.PORTRAIT,
-      Orientation.LANDSCAPE
+      Orientation.LANDSCAPE,
+      Orientation.PANO
     ]).isRequired,
     // CSS class name
     className: React.PropTypes.string,
+    // Style (used for panorama)
+    style: React.PropTypes.object,
     // Caption, if available
     caption: React.PropTypes.string,
     // Callback when clicked on the image
-    onClick: React.PropTypes.func
+    onClick: React.PropTypes.func,
+    onEdit: React.PropTypes.func
   },
 
   getDefaultProps: function() {
@@ -43,16 +47,32 @@ var Image = React.createClass({
   },
 
   render: function() {
-    var fullClassname = _.trim(this.props.format + ' ' + this.props.className);
-    return React.DOM.img(
-      {
-        id: this.props.elementId,
-        className: fullClassname,
-        title: this.props.caption,
-        // src: 'http://173.64.119.113:31415/cgi-bin/photos/phimg?large=' + this.props.imageId,
-        src: 'http://photos-egrivel.rhcloud.com/phimg?large=' + this.props.imageId,
-        onClick: this.props.onClick
-      }
+    const fullClassname =
+      _.trim(this.props.format + ' ' + this.props.className);
+    const baseUrl = 'http://photos-egrivel.rhcloud.com/phimg?large=';
+    const url = baseUrl + this.props.imageId;
+    let editButton = null;
+    if (this.props.onEdit) {
+      editButton = (
+        <input
+          type='button'
+          className="imageEdit"
+          onClick={this.props.onEdit}
+          value="Edit"
+        />
+      );
+    }
+    return (
+      <span className="imageWrapper">
+        <img
+          id={this.props.elementId}
+          className={fullClassname}
+          title={this.props.caption}
+          src={url}
+          onClick={this.props.onClick}
+        />
+        {editButton}
+      </span>
     );
   }
 });

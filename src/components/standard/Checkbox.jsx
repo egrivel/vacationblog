@@ -18,6 +18,10 @@ const Checkbox = React.createClass({
     this.props.onChange(event.target.checked, this.props.fieldId);
   },
 
+  _toggleValue: function() {
+    this.props.onChange(!this.props.selected, this.props.fieldId);
+  },
+
   render: function() {
     const selected = this.props.selected;
     return (

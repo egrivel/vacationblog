@@ -9,7 +9,8 @@ const utils = {
       expires = '; expires=' + date.toUTCString();
     }
     // eslint-disable-next-line no-undef
-    document.cookie = name + '=' + value + expires + '; path=/';
+    document.cookie = name + '=' + encodeURIComponent(value) +
+      expires + '; path=/';
   },
 
   cookies: {
@@ -36,7 +37,7 @@ const utils = {
   },
 
   eraseCookie: function(name) {
-    utils.createCookie(name, '', -1);
+    utils.setCookie(name, '', -1);
   }
 };
 

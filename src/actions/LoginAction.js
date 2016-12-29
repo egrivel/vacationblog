@@ -1,10 +1,9 @@
 'use strict';
 
-/* global document */
-
 const UserAction = require('./UserAction');
 const UserStore = require('../stores/UserStore');
 const utils = require('./utils');
+const cookieUtils = require('../utils');
 
 const LoginAction = {
   _doLoginCallback: function(response) {
@@ -12,9 +11,13 @@ const LoginAction = {
     if (data.resultCode === '200') {
       const authId = data.authId;
       if (authId) {
-        document.cookie = 'blogAuthId=' + encodeURIComponent(authId);
+        if (this.stayLoggedIn) {
+          cookieUtils.setCookie(cookieUtils.cookies.AUTH, authId, 1000);
+        } else {
+          cookieUtils.setCookie(cookieUtils.cookies.AUTH, authId);
+        }
       } else {
-        document.cookie = 'blogAuthId=';
+        cookieUtils.eraseCookie(cookieUtils.cookies.AUTH);
       }
 
       if (this.userId) {
@@ -154,7 +157,7 @@ const LoginAction = {
     }
   },
 
-  doLogin: function(userId, password) {
+  doLogin: function(userId, password, stayLoggedIn) {
     const url = 'api/login.php';
     const data = {
       action: 'login',
@@ -162,6 +165,7 @@ const LoginAction = {
       password: password
     };
     this.userId = userId;
+    this.stayLoggedIn = stayLoggedIn;
     utils.postAsync(url, data, this._doLoginCallback.bind(this));
   },
 

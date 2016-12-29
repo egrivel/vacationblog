@@ -180,7 +180,8 @@ function _recursivelyGetNodes(text, count) {
 const utils = {
   orientation: {
     PORTRAIT: 'portrait',
-    LANDSCAPE: 'landscape'
+    LANDSCAPE: 'landscape',
+    PANO: 'pano'
   },
 
   replaceEntities: function(text) {

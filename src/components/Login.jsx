@@ -183,12 +183,13 @@ const Login = React.createClass({
   _onLogin: function(event) {
     const userId = this.state.userId;
     const password = this.state.password;
+    const stayLoggedIn = this.state.stayLoggedIn;
     if (!userId || !password) {
       UserAction.setLoginFormError(
         'You need to enter all the information on this screen.');
     } else {
       UserAction.setLoginFormError('');
-      LoginAction.doLogin(userId, password);
+      LoginAction.doLogin(userId, password, stayLoggedIn);
     }
     this._noProp(event);
   },
@@ -362,6 +363,12 @@ const Login = React.createClass({
           fieldId="password"
           label="Password"
           value={this.state.password}
+          onChange={this._setValue}
+        />
+        <Checkbox
+          fieldId="stayLoggedIn"
+          label="Keep me logged in"
+          selected={this.state.stayLoggedIn}
           onChange={this._setValue}
         />
         <ButtonBar

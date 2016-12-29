@@ -491,6 +491,24 @@ div.journalitem p.prevnext {
   font-family: 'Meriweather Sans', sans-serif;
 }
 
+span.imageWrapper {
+  position: relative;
+}
+
+span.imageWrapper input.imageEdit {
+  position: absolute;
+  bottom: 15px;
+  left: 5px;
+  display: none;
+}
+
+span.imageWrapper:hover input.imageEdit {
+  position: absolute;
+  bottom: 15px;
+  left: 5px;
+  display: inline;
+}
+
 /*
  * Modal
  */
