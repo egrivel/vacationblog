@@ -15,8 +15,6 @@ const Image = React.createClass({
   displayName: 'Image',
 
   propTypes: {
-    // Unique trip ID
-    tripId: React.PropTypes.string.isRequired,
     // Unique image ID
     imageId: React.PropTypes.string.isRequired,
     // optional element ID
@@ -30,12 +28,13 @@ const Image = React.createClass({
     // CSS class name
     className: React.PropTypes.string,
     // Style (used for panorama)
-    style: React.PropTypes.object,
+    offset: React.PropTypes.number,
     // Caption, if available
     caption: React.PropTypes.string,
     // Callback when clicked on the image
     onClick: React.PropTypes.func,
-    onEdit: React.PropTypes.func
+    onEdit: React.PropTypes.func,
+    url: React.PropTypes.string
   },
 
   getDefaultProps: function() {
@@ -49,8 +48,11 @@ const Image = React.createClass({
   render: function() {
     const fullClassname =
       _.trim(this.props.format + ' ' + this.props.className);
-    const baseUrl = 'http://photos-egrivel.rhcloud.com/phimg?large=';
-    const url = baseUrl + this.props.imageId;
+    let url = this.props.url;
+    if (!url) {
+      const baseUrl = 'http://photos-egrivel.rhcloud.com/phimg?large=';
+      url = baseUrl + this.props.imageId;
+    }
     let editButton = null;
     if (this.props.onEdit) {
       editButton = (
@@ -62,6 +64,10 @@ const Image = React.createClass({
         />
       );
     }
+    let style = null;
+    if (this.props.format === 'pano') {
+      style = {top: (this.props.offset - 50) + '%'};
+    }
     return (
       <span className="imageWrapper">
         <img
@@ -70,6 +76,7 @@ const Image = React.createClass({
           title={this.props.caption}
           src={url}
           onClick={this.props.onClick}
+          style={style}
         />
         {editButton}
       </span>

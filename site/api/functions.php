@@ -25,6 +25,12 @@ function fillMediaItem($item, $object) {
    $item['width'] = $object->getWidth();
    $item['height'] = $object->getHeight();
    $item['deleted'] = $object->getDeleted();
+
+   if ($item['location'] === 'grivel') {
+      $item['url'] = 'http://www.grivel.net/blogphotos/' . $item['mediaId'] . '.jpg';
+   } else {
+      $item['url'] = 'http://photos-egrivel.rhcloud.com/phimg?large=' .$item['mediaId'];
+   }
    return $item;
 }
 

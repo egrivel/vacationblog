@@ -38,7 +38,8 @@ const MediaAction = {
       mediaId: mediaId,
       width: info.width,
       height: info.height,
-      caption: info.caption
+      caption: info.caption,
+      location: info.location
     };
     AppDispatcher.dispatch({
       type: this.Types.MEDIA_DATA,

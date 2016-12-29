@@ -1163,9 +1163,9 @@ span.userRef {
   color: #33f;
 }
 
-
 /* panoramic images */
-div.panorama {
+div.panorama span.imageWrapper {
+  display: block;
   margin-left: -2em;
   margin-right: -2em;
   padding: 16.66666666%;
@@ -1174,7 +1174,7 @@ div.panorama {
   overflow: hidden;
 }
 
-div.panorama img {
+div.panorama span.imageWrapper img {
   width: 100%;
   position: absolute;
   left: 0;

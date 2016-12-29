@@ -17,7 +17,9 @@ function _getMediaInfo(tripId, mediaId) {
   const result = {
     orientation: Orientation.LANDSCAPE,
     caption: '',
-    imageId: mediaId
+    location: '',
+    imageId: mediaId,
+    url: ''
   };
 
   const mediaInfo = MediaStore.getData(tripId, mediaId);
@@ -25,6 +27,8 @@ function _getMediaInfo(tripId, mediaId) {
     result.width = mediaInfo.width;
     result.height = mediaInfo.height;
     result.caption = mediaInfo.caption;
+    result.location = mediaInfo.location;
+    result.url = mediaInfo.url;
     if (mediaInfo.height > mediaInfo.width) {
       result.orientation = Orientation.PORTRAIT;
     }
@@ -41,7 +45,9 @@ const JournalImage = React.createClass({
   propTypes: {
     tripId: React.PropTypes.string,
     mediaId: React.PropTypes.string,
-    className: React.PropTypes.string
+    className: React.PropTypes.string,
+    offset: React.PropTypes.number,
+    format: React.PropTypes.string
   },
 
   getInitialState: function() {
@@ -83,7 +89,8 @@ const JournalImage = React.createClass({
       imageModal: false,
       width: mediaInfo.width,
       height: mediaInfo.height,
-      caption: mediaInfo.caption
+      caption: mediaInfo.caption,
+      location: mediaInfo.location
     });
   },
 
@@ -95,7 +102,8 @@ const JournalImage = React.createClass({
     MediaAction.saveMedia(this.props.tripId, this.props.mediaId, {
       width: this.state.width,
       height: this.state.height,
-      caption: this.state.caption
+      caption: this.state.caption,
+      location: this.state.location
     });
     this.setState({editModal: false});
   },
@@ -176,6 +184,12 @@ const JournalImage = React.createClass({
             value={this.state.caption}
             onChange={this._onChange}
           />
+          <Textbox
+            fieldId="location"
+            label="Location"
+            value={this.state.location}
+            onChange={this._onChange}
+          />
           <ButtonBar buttons={buttons}/>
         </div>
       </div>
@@ -248,10 +262,21 @@ const JournalImage = React.createClass({
     const mediaId = this.props.mediaId;
     const className = this.props.className;
     const mediaInfo = _getMediaInfo(tripId, mediaId);
+    const offset = this.props.offset;
+    let format = this.props.format;
+    if (!format) {
+      format = mediaInfo.orientation;
+    }
 
     let onEdit = null;
     if (UserStore.canEditMedia()) {
       onEdit = this._onEdit;
+    }
+
+    let onClick = this._onClick;
+    if (format === 'pano') {
+      // don't do a modal window for panoramas
+      onClick = null;
     }
 
     return (
@@ -259,12 +284,14 @@ const JournalImage = React.createClass({
         <Image
           tripId={tripId}
           imageId={mediaId}
-          format={mediaInfo.orientation}
+          format={format}
           className={className}
           key={mediaId}
           caption={mediaInfo.caption}
-          onClick={this._onClick}
+          offset={offset}
+          onClick={onClick}
           onEdit={onEdit}
+          url={mediaInfo.url}
         />
         {editModal}
         {imageModal}
