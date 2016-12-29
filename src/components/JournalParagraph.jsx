@@ -9,9 +9,7 @@ const React = require('react');
 
 const MediaStore = require('../stores/MediaStore');
 const MediaAction = require('../actions/MediaAction');
-// const CommentList = require('./CommentList.jsx');
-const Image = require('./Image.jsx');
-const UserStore = require('../stores/UserStore');
+const JournalImage = require('./JournalImage.jsx');
 
 const utils = require('./utils');
 const Orientation = utils.orientation;
@@ -46,50 +44,6 @@ function _getMediaInfo(tripId, mediaId) {
 }
 
 /**
- * Get a React element for an image which displays a modal window
- * when clicked.
- * @param {object} parent - object that handles the click to display a
- * modal window with the image.
- * @param {id} tripId - unique trip ID.
- * @param {id} mediaId - unique media ID.
- * @param {object} mediaInfo - info about the media.
- * @param {string} className - className to apply to the image.
- * @param {string} key - React key to use for the image.
- * @return {object} React element for the image.
- * @private
- */
-function _imgWithModal(parent, tripId, mediaId, mediaInfo, className) {
-  if (!mediaInfo) {
-    mediaInfo = _getMediaInfo(tripId, mediaId);
-  }
-
-  const _onClick = function() {
-    parent.clickImg(mediaId);
-  };
-
-  let _onEdit = null;
-
-  if (UserStore.canEditMedia()) {
-    _onEdit = function() {
-      console.log('Editing ' + mediaId);
-    };
-  }
-
-  return (
-    <Image
-      tripId={tripId}
-      imageId={mediaId}
-      format={mediaInfo.orientation}
-      className={className}
-      key={mediaId}
-      caption={mediaInfo.caption}
-      onClick={_onClick}
-      onEdit={_onEdit}
-    />
-  );
-}
-
-/**
  * Standard paragraph with a single image.
  * @param {object} parent - object that handles the click to display a
  * modal window with the image.
@@ -110,7 +64,11 @@ function _standardParagraph(parent, tripId, text, mediaId) {
   }
   const label = (
     <span className={'label-' + orientation}>
-      {_imgWithModal(parent, tripId, mediaId, mediaInfo, '')}
+      <JournalImage
+        tripId={tripId}
+        mediaId={mediaId}
+        className=""
+      />
     </span>
   );
   const value = utils.buildTextNode('span', 'value', 'value', text);
@@ -120,19 +78,17 @@ function _standardParagraph(parent, tripId, text, mediaId) {
       className: 'clear'
     }
   );
-  const modal = parent.buildModal();
 
   return React.DOM.div(
     null,
-    React.DOM.p(
+    React.DOM.div(
       {
         className: 'img-text'
       },
       label,
       value,
       clear
-    ),
-    modal
+    )
   );
 }
 
@@ -148,8 +104,7 @@ function _standardParagraph(parent, tripId, text, mediaId) {
  * @return {object} React element for the line with three images
  * @private
  */
-function _lineThreeImages(parent, tripId, images,
-                         mediaInfo, start) {
+function _lineThreeImages(parent, tripId, images, mediaInfo, start) {
   const img1 = images[start];
   const img2 = images[start + 1];
   const img3 = images[start + 2];
@@ -211,20 +166,30 @@ function _lineThreeImages(parent, tripId, images,
       // nothing
   }
 
-  return React.DOM.p(
-    {
-      className: 'images three ' + className,
-      key: 'p-' + start
-    },
-    _imgWithModal(parent, tripId, img1, mediaInfo[start], 'img3'), ' ',
-    _imgWithModal(parent, tripId, img2, mediaInfo[start + 1], 'img3'), ' ',
-    _imgWithModal(parent, tripId, img3, mediaInfo[start + 2], 'img3'),
-    React.DOM.span(
-      {
-        key: 'clear',
-        className: 'clear'
-      }
-    )
+  return (
+    <div
+      className={'images three ' + className}
+      key={'p-' + start}
+    >
+      <JournalImage
+        tripId={tripId}
+        mediaId={img1}
+        className="img3"
+      />
+      {' '}
+      <JournalImage
+        tripId={tripId}
+        mediaId={img2}
+        className="img3"
+      />
+      {' '}
+      <JournalImage
+        tripId={tripId}
+        mediaId={img3}
+        className="img3"
+      />
+      <span className="clear"></span>
+    </div>
   );
 }
 
@@ -240,8 +205,7 @@ function _lineThreeImages(parent, tripId, images,
  * @return {object} React element for the line with three images
  * @private
  */
-function _lineTwoImages(parent, tripId, images,
-                       mediaInfo, start) {
+function _lineTwoImages(parent, tripId, images, mediaInfo, start) {
   const img1 = images[start];
   const img2 = images[start + 1];
 
@@ -288,16 +252,24 @@ function _lineTwoImages(parent, tripId, images,
       // nothing
   }
 
-  return React.DOM.p(
-    {
-      className: 'images two ' + className,
-      key: 'p-' + start
-    },
-    _imgWithModal(parent, tripId, img1, mediaInfo[start], 'img2'), ' ',
-    _imgWithModal(parent, tripId, img2, mediaInfo[start + 1], 'img2'),
-    React.DOM.span(
-      {className: 'clear'}
-    )
+  return (
+    <div
+      className={'images two ' + className}
+      key={'p-' + start}
+    >
+      <JournalImage
+        tripId={tripId}
+        mediaId={img1}
+        className="img2"
+      />
+      {' '}
+      <JournalImage
+        tripId={tripId}
+        mediaId={img2}
+        className="img2"
+      />
+      <span className="clear"></span>
+    </div>
   );
 }
 
@@ -383,7 +355,7 @@ function _paragraphMultipleImages(parent, tripId, text, images) {
     {className: 'result'},
     textPart,
     result,
-    parent.buildModal()
+    null // parent.buildModal()
   );
   return realResult;
 }
@@ -400,21 +372,17 @@ function _paragraphMultipleImages(parent, tripId, text, images) {
  * @private
  */
 function _paragraphSingleImage(parent, tripId, mediaId) {
-  const mediaInfo = _getMediaInfo(tripId, mediaId);
-  return React.DOM.div(
-    null,
-    React.DOM.p(
-      {
-        className: 'images'
-      },
-      _imgWithModal(parent, tripId, mediaId, mediaInfo, 'img1'),
-      React.DOM.span(
-        {
-          className: 'clear'
-        }
-      )
-    ),
-    parent.buildModal()
+  return (
+    <div>
+      <div className="images">
+        <JournalImage
+          tripId={tripId}
+          mediaId={mediaId}
+          className="img1"
+        />
+        <span className="clear"></span>
+      </div>
+    </div>
   );
 }
 
@@ -499,50 +467,6 @@ const JournalParagraph = React.createClass({
         imgElement.style.height = String(imageHeight) + 'px';
         imgElement.style.width = String(imageWidth) + 'px';
       }
-    }
-  },
-
-  buildModal: function() {
-    if (this.state && this.state.modal && this.state.modal !== '') {
-      const tripId = this.props.tripId;
-      const clickImg = this.clickImg;
-      const mediaId = this.state.modal;
-      const mediaInfo = _getMediaInfo(tripId, mediaId);
-
-      const _onClick = function() {
-        clickImg(mediaId);
-      };
-
-      return (
-        <div
-          key="modal"
-          className="modal"
-          onClick={_onClick}
-        >
-          <div id="the-modal" className="modal-content">
-            <Image
-              elementId="the-modal-image"
-              className="modal-img"
-              tripId={tripId}
-              imageId={mediaId}
-              format={mediaInfo.orientation}
-              caption={utils.replaceEntities(mediaInfo.caption)}
-            />
-            <div className="modal-image-caption">
-              {utils.replaceEntities(mediaInfo.caption)}
-            </div>
-          </div>
-        </div>
-      );
-    }
-    return null;
-  },
-
-  clickImg: function(id) {
-    if (this.state && this.state.modal && this.state.modal === id) {
-      this.setState({modal: ''});
-    } else {
-      this.setState({modal: id});
     }
   },
 

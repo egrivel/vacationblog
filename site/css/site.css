@@ -284,6 +284,11 @@ img.journal-entry-profile-thumbnail {
   margin-right: 0;
 }
 
+div.journalitem {
+  letter-spacing: 1px;
+  line-height: 140%;
+}
+
 div.journalitem .subtitle {
   display: block;
   font-size: 80%;
@@ -295,37 +300,29 @@ div.journalitem .lastupdate {
   display: none;
 }
 
-div.journalitem p.text span.label-landscape,
-div.journalitem p.img-text span.label-landscape {
+div.journalitem .text span.label-landscape,
+div.journalitem .img-text span.label-landscape {
   display: inline-block;
   float: left;
   width: 30%;
-  font-family: Lato, serif;
-  font-weight: bold;
-  font-size: 160%;
-  line-height: 120%;
 }
 
-div.journalitem p.text span.label-portrait,
-div.journalitem p.img-text span.label-portrait {
+div.journalitem .text span.label-portrait,
+div.journalitem .img-text span.label-portrait {
   display: inline-block;
   float: left;
   width: 20%;
-  font-family: Lato, serif;
-  font-weight: bold;
-  font-size: 160%;
-  line-height: 120%;
 }
 
-div.journalitem p.text span.value,
-div.journalitem p.img-text span.value {
+div.journalitem .text span.value,
+div.journalitem .img-text span.value {
   display: inline;
   x-float: right;
   x-width: 68%;
 }
 
-div.journalitem p.text img.landscape,
-div.journalitem p.img-text img.landscape {
+div.journalitem .text img.landscape,
+div.journalitem .img-text img.landscape {
   width: 100%;
   padding-right: 1em;
   padding-bottom: 0.5em;
@@ -335,8 +332,8 @@ div.journalitem p.img-text img.landscape {
   box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
-div.journalitem p.text img.portrait,
-div.journalitem p.img-text img.portrait {
+div.journalitem .text img.portrait,
+div.journalitem .img-text img.portrait {
   float: right;
   width: 100%;
   padding-right: 1em;
@@ -347,16 +344,16 @@ div.journalitem p.img-text img.portrait {
   box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
-div.journalitem p.images {
+div.journalitem .images {
   text-align: justify;
   text-align-last: justify;
   padding: 0;
   line-height: 1;
 }
 
-div.journalitem p.images img.img1,
-div.journalitem p.images img.img2,
-div.journalitem p.images img.img3 {
+div.journalitem .images img.img1,
+div.journalitem .images img.img2,
+div.journalitem .images img.img3 {
   display: inline;
   padding-top: 5px;
   padding-bottom: 5px;
@@ -383,8 +380,8 @@ div.journalitem p.images img.img3 {
 /*
  * Three horizontal or three vertical area easy: each is 1/3 of 96% wide.
  */
-div.journalitem p.hhh img.landscape,
-div.journalitem p.vvv img.portrait {
+div.journalitem .hhh img.landscape,
+div.journalitem .vvv img.portrait {
   width: 32%;
 }
 
@@ -404,10 +401,10 @@ div.journalitem p.vvv img.portrait {
  *  w1 = 39.272727...
  *  w3 = 17.454545...
  */
-div.journalitem p.hhv img.landscape {
+div.journalitem .hhv img.landscape {
   width: 39.2727%;
 }
-div.journalitem p.hhv img.portrait {
+div.journalitem .hhv img.portrait {
   width: 17.4545%;
 }
 
@@ -427,10 +424,10 @@ div.journalitem p.hhv img.portrait {
  *  w1 = 50.8235294118
  *  w3 = 22.5882352941
  */
-div.journalitem p.hvv img.landscape {
+div.journalitem .hvv img.landscape {
   width: 50.824%;
 }
-div.journalitem p.hvv img.portrait {
+div.journalitem .hvv img.portrait {
   width: 22.588%;
 }
 
@@ -441,8 +438,8 @@ div.journalitem p.hvv img.portrait {
 /*
  * Two horizontal or two vertical is easy. Each is 1/2 of 98% = 49% wide.
  */
-div.journalitem p.hh img.landscape,
-div.journalitem p.vv img.portrait {
+div.journalitem .hh img.landscape,
+div.journalitem .vv img.portrait {
   width: 49%;
 }
 
@@ -461,18 +458,18 @@ div.journalitem p.vv img.portrait {
  *  w1 = 67.8461538462
  *  w2 = 30.1538461538
  */
-div.journalitem p.hv img.landscape {
+div.journalitem .hv img.landscape {
   width: 67.846%;
 }
-div.journalitem p.hv img.portrait {
+div.journalitem .hv img.portrait {
   width: 30.154%;
 }
 
-div.journalitem p.images img.img1 {
+div.journalitem .images img.img1 {
   width: 100%;
 }
 
-div.journalitem p.banner {
+div.journalitem .banner {
   margin-left: -2em;
   margin-right: -2em;
   text-align: center;
@@ -481,11 +478,11 @@ div.journalitem p.banner {
   color: #444;
 }
 
-div.journalitem p.banner img {
+div.journalitem .banner img {
   width: 100%;
 }
 
-div.journalitem p.prevnext {
+div.journalitem .prevnext {
   font-size: 100%;
   text-align: center;
   font-family: 'Meriweather Sans', sans-serif;
@@ -1039,7 +1036,8 @@ div.formValue img.preview {
 
 /* == lightbox == */
 
-div.modal {
+.modal {
+  display: block;
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
   left: 0;
@@ -1055,7 +1053,8 @@ div.modal {
   overflow-y: scroll;
 }
 
-div.modal-content {
+.modal-content {
+  display: block;
   background-color: #fff;
   color: #333;
   margin: auto;
@@ -1066,16 +1065,24 @@ div.modal-content {
   top: 50%;
   transform: translateY(-50%);
   padding: 20px;
+}
+
+.image-modal {
   text-align: center;
+  text-align-last: center;
 }
 
-div.modal-content img {
+.edit-modal {
+  text-align: left;
+  text-align-last: left;
+}
+
+.modal-content img {
   display: inline-block;
-  /* max-width: 100%; */
-  /* height: 75%; */
 }
 
-div.modal-image-caption {
+.modal-image-caption {
+  display: block;
   font-family: 'Merriweather Sans', sans-serif;
   font-size: 20px;
   background-color: #333;
@@ -1088,19 +1095,19 @@ div.modal-image-caption {
 }
 
 @media screen and (max-width: 480px) {
-  div.modal-content {
+  .modal-content {
     width: 98%;
     padding: 2px;
   }
 }
 
-div.modal div.commentBlock {
+.modal div.commentBlock {
   max-width: 750px;
   margin-left: auto;
   margin-right: auto;
 }
 
-div.modal-content h2 {
+.modal-content h2 {
   margin: 0;
   padding: 0;
   font-weight: bold;
