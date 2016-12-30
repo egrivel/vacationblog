@@ -232,8 +232,8 @@ const utils = {
       // to Eastern time (the moment library will take care of DST)
       // Note: default to the American 12-hour time format. Allow
       // users to select a 24-hour time format in the future.
-      const m = moment.tz(date, 'UTC');
-      const result = moment.tz(m, 'America/New_York')
+      const m = moment.utc(date);
+      const result = moment.tz(m, moment.tz.guess())
         .format('dddd MMMM D YYYY h:mm:ssa z');
       return result;
     }

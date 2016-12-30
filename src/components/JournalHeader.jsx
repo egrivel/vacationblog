@@ -4,10 +4,10 @@
  * Display the header for a journal entry.
  */
 
-var React = require('react');
-var utils = require('./utils');
+const React = require('react');
+const utils = require('./utils');
 
-var JournalHeader = React.createClass({
+const JournalHeader = React.createClass({
   displayName: 'JournalHeader',
 
   propTypes: {
@@ -28,7 +28,7 @@ var JournalHeader = React.createClass({
    * @return {react} element representing the title.
    */
   _constructTitle: function(title, date, profileImg) {
-    var titleText = '';
+    let titleText = '';
 
     if (title) {
       titleText = utils.replaceEntities(title);
@@ -79,8 +79,8 @@ var JournalHeader = React.createClass({
     }
 
     if (userName || created) {
-      var byElement = null;
-      var createdText = null;
+      let byElement = null;
+      let createdText = null;
 
       if (userName) {
         byElement = <em>by</em>;
@@ -104,9 +104,9 @@ var JournalHeader = React.createClass({
   },
 
   render: function() {
-    var title = this._constructTitle(this.props.title, this.props.date,
+    const title = this._constructTitle(this.props.title, this.props.date,
       this.props.profileImg);
-    var subtitle = this._constructSubtitle(this.props.created,
+    const subtitle = this._constructSubtitle(this.props.created,
       this.props.userName);
 
     return (
