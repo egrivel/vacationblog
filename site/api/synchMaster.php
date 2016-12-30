@@ -930,6 +930,24 @@ function synchRemoteSite($site, $password) {
   return $response;
 }
 
+function uploadLocalMedia() {
+  $list = Media::getLocalMedia();
+  for ($i = 0; isset($list[$i]); $i++) {
+    $tripId = $list[$i]['tripId'];
+    $mediaId = $list[$i]['mediaId'];
+    $setId = substr($mediaId, 0, 8);
+    $localFile = "/mnt/lincoln/d1/photos/$setId/large/$mediaId.jpg";
+    if (file_exists($localFile)) {
+      $cmd = "curl -i -X POST -F submit=1 -F fileToUpload=@$localFile http://www.grivel.net/blogphotos/sync-up-files.php";
+      exec($cmd);
+      $item = new Media($tripId, $mediaId);
+      $item->setLocation('grivel');
+      $item->save();
+      echo "Set $tripId:$mediaId to grivel location\n";
+    }
+  }
+}
+
 $auth = new AuthB();
 if (!$auth->canInitiateSynch()) {
    $response = errorResponse(RESPONSE_UNAUTHORIZED);
@@ -937,6 +955,7 @@ if (!$auth->canInitiateSynch()) {
    $data = getPostData();
    if (isset($data['site']) && isset($data['password'])
       && ($data['site'] !== '') && ($data['password'] !== '')) {
+      uploadLocalMedia();
       $response = synchRemoteSite($data['site'], $data['password']);
     } else {
       $response = errorResponse(RESPONSE_BAD_REQUEST);

@@ -534,5 +534,46 @@ class Media {
 
       return $list;
    }
+
+   static function getlocalMedia() {
+      $query = ""
+         . "SELECT blogMedia.tripId, blogMedia.mediaId, "
+         .   "blogMedia.location, blogMedia.updated "
+         .   "FROM blogMedia "
+         .   "INNER JOIN ("
+         .     "SELECT "
+         .       "MAX(t1.updated) AS updated, "
+         .       "t1.mediaId AS mediaId "
+         .     "FROM blogMedia "
+         .     "AS t1 "
+         .     "GROUP BY t1.mediaId"
+         .   ") AS t2 "
+         .   "WHERE blogMedia.mediaId = t2.mediaId "
+         .     "AND blogMedia.updated = t2.updated "
+         .     "AND blogMedia.location = 'local'";
+
+      $result = mysql_query($query);
+      if (!$result) {
+         // Error executing the query
+         print $query . "<br/>";
+         print " --> error: " . mysql_error() . "<br/>\n";
+         return false;
+      }
+
+      $list = array();
+      if (mysql_num_rows($result) > 0) {
+         $count = 0;
+         while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+            $tripId = db_sql_decode($line["tripId"]);
+            $mediaId = db_sql_decode($line["mediaId"]);
+            $obj = array();
+            $obj['tripId'] = $tripId;
+            $obj['mediaId'] = $mediaId;
+            $list[$count++] = $obj;
+         }
+      }
+
+      return $list;
+   }
 }
 ?>
