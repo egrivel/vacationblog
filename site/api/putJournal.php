@@ -3,6 +3,7 @@ include_once(dirname(__FILE__) . "/../common/common.php");
 include_once(dirname(__FILE__) . '/../business/AuthB.php');
 include_once(dirname(__FILE__) . '/../database/Trip.php');
 include_once(dirname(__FILE__) . '/../database/Journal.php');
+include_once(dirname(__FILE__) . '/functions.php');
 
 $auth = new AuthB();
 if (!$auth->canGetJournal()) {
@@ -43,6 +44,7 @@ if (!$auth->canGetJournal()) {
       }
       if (isset($data['journalText'])) {
          $object->setJournalText($data['journalText']);
+         processJournalForMedia($tripId, $data['journalText']);
       }
       if ($object->save()) {
          $response = successResponse();

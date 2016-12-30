@@ -1,4 +1,5 @@
 <?php
+include_once(dirname(__FILE__) . '/../database/Media.php');
 
 function fillCommentItem($item, $object) {
    $item['tripId'] = $object->getTripId();
@@ -26,12 +27,42 @@ function fillMediaItem($item, $object) {
    $item['height'] = $object->getHeight();
    $item['deleted'] = $object->getDeleted();
 
-   if ($item['location'] === 'grivel') {
-      $item['url'] = 'http://www.grivel.net/blogphotos/' . $item['mediaId'] . '.jpg';
-   } else {
-      $item['url'] = 'http://photos-egrivel.rhcloud.com/phimg?large=' .$item['mediaId'];
+   $mediaId = $item['mediaId'];
+
+   $url = "http://photos-egrivel.rhcloud.com/phimg?large=$mediaId";
+   if ($item['location'] === 'local') {
+     $url = "/cgi-bin/photos/phimg?large=$mediaId";
+   } else if ($item['location'] === 'grivel') {
+      $url = "http://www.grivel.net/blogphotos/$mediaId.jpg";
    }
+   $item['url'] = $url;
+
    return $item;
+}
+
+function addMediaIfNotExist($tripId, $mediaId) {
+   $object = new Media($tripId, $mediaId);
+   if (!$object->getCreated()) {
+      $setId = substr($mediaId, 0, 8);
+      $localFile = "/mnt/lincoln/d1/photos/$setId/large/$mediaId.jpg";
+      if (file_exists($localFile)) {
+         $object->setLocation('local');
+         list($width, $height, $type, $attr) = getimagesize($localFile);
+         $object->setWidth($width);
+         $object->setHeight($height);
+         $object->setType('photo');
+      }
+      $object->save();
+   }
+}
+
+function processJournalForMedia($tripId, $journalText) {
+   $list = explode('[IMG ', $journalText);
+   for ($i = 0; isset($list[$i]); $i++) {
+      if (preg_match('/^\s*(\d\d\d\d\d\d\d\d-\d\d\d\d\d\d\w?)/', $list[$i], $matches)) {
+         addMediaIfNotExist($tripId, $matches[0]);
+      }
+   }
 }
 
 ?>

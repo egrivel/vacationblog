@@ -90,7 +90,8 @@ const JournalImage = React.createClass({
       width: mediaInfo.width,
       height: mediaInfo.height,
       caption: mediaInfo.caption,
-      location: mediaInfo.location
+      location: mediaInfo.location,
+      url: mediaInfo.url
     });
   },
 
@@ -103,7 +104,8 @@ const JournalImage = React.createClass({
       width: this.state.width,
       height: this.state.height,
       caption: this.state.caption,
-      location: this.state.location
+      location: this.state.location,
+      url: this.state.url
     });
     this.setState({editModal: false});
   },
@@ -135,6 +137,7 @@ const JournalImage = React.createClass({
             className="modal-img"
             tripId={tripId}
             imageId={mediaId}
+            url={mediaInfo.url}
             format={mediaInfo.orientation}
             caption={utils.replaceEntities(mediaInfo.caption)}
           />
