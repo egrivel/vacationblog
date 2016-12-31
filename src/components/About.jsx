@@ -56,6 +56,8 @@ const About = React.createClass({
             on vacation...</li>
           <li>On login, presented with an option to stay logged in. This should
             only be used on "safe" devices.</li>
+          <li>Timestamps are now displayed in the user's local time, and in
+            their time preference (12/24 hour clock) -- hopefully.</li>
         </ul>
 
         <h4>What Is Not Working</h4>
