@@ -229,12 +229,16 @@ const utils = {
     } else if (date.length === 26) {
       // date in yyyy-mm-dd hh:mm:ss.mmmmmm microsecond format
       // In this format, the date is in UTC and needs to be converted
-      // to Eastern time (the moment library will take care of DST)
+      // to local time (the moment library will take care of DST)
       // Note: default to the American 12-hour time format. Allow
       // users to select a 24-hour time format in the future.
       const m = moment.utc(date);
+      // const result = moment.tz(m, moment.tz.guess())
+      //   .format('dddd MMMM D YYYY h:mm:ssa z');
+      // Use the "LTS" string in moment to generate a format that will
+      // be 12 or 24 hour depending on the user's locale's conventions.
       const result = moment.tz(m, moment.tz.guess())
-        .format('dddd MMMM D YYYY h:mm:ssa z');
+        .format('dddd MMMM D YYYY LTS z');
       return result;
     }
     utils.warning('formatDate(' + JSON.stringify(date) + '): - unknown format');
