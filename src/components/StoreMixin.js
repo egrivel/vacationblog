@@ -41,11 +41,15 @@ function StoreMixin() {
       delete this._changeCount;
     },
 
-    _onChangeOriginal: function() {
+    _onChange: function() {
       this.setState(this._getStateFromStores());
     },
 
-    _onChange: function() {
+    // The timer thing causes issues in combination with typing in a text
+    // area. When you type fast enough, re-renders aren't happening between
+    // characters, which has the result that React moves the cursor to the end
+    // of the text area. Very annoing.
+    _onChangeWithTimer: function() {
       this._totalChangeEvents++;
       if (this._changeCount === undefined) {
         // not on a timer yet. Re-render, but then set a timer to capture all

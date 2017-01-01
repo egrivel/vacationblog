@@ -87,7 +87,7 @@ function synchComment($site, $authId, $remoteHashes) {
     $context  = stream_context_create($opts);
     $rawdata = file_get_contents($url . '?hash=' . urlencode($hash), false, $context);
     $data = json_decode($rawdata, true);
-    if (isset($data['tripid']) && isset($data['commentId'])) {
+    if (isset($data['tripId']) && isset($data['commentId'])) {
       $item = Comment::findByHash($data['hash']);
       if (!$item) {
         // Don't have this hash yet, so add it
