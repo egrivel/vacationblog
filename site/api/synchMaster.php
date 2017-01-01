@@ -100,6 +100,9 @@ function synchComment($site, $authId, $remoteHashes) {
         if (isset($data['updated'])) {
            $item->setUpdated($data['updated']);
         }
+        if (isset($data['userId'])) {
+           $item->setUserId($data['userId']);
+        }
         if (isset($data['referenceId'])) {
            $item->setReferenceId($data['referenceId']);
         }
