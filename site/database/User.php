@@ -266,7 +266,7 @@ class User {
          . "CONVERT_TZ(`updated`, @@session.time_zone, '+00:00') "
          .   "AS `utc_updated` "
          . "FROM blogUser "
-         . "WHERE userId=$userIdValue "
+         . "WHERE BINARY userId=$userIdValue "
          . "ORDER BY updated DESC "
          . "LIMIT 1";
       $result = mysql_query($query);

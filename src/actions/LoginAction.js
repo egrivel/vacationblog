@@ -42,7 +42,9 @@ const LoginAction = {
       UserAction.setLoginFormError(
         'You cannot log in until you have confirmed your email address.');
     } else {
-      UserAction.setLoginFormError('Please check the information you entered.');
+      UserAction.setLoginFormError(
+        'Please check the information you entered. Both user ID and password ' +
+        'are case-sensitive!');
     }
   },
 

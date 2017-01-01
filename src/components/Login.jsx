@@ -367,7 +367,7 @@ const Login = React.createClass({
         />
         <Checkbox
           fieldId="stayLoggedIn"
-          label="Keep me logged in"
+          label="Keep me logged in (do not use this on public computers)"
           selected={this.state.stayLoggedIn}
           onChange={this._setValue}
         />
