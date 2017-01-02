@@ -30,12 +30,13 @@ if (!$auth->canGetJournal()) {
          $response = errorResponse(RESPONSE_NOT_FOUND);
       } else {
          $response = successResponse();
+         $journalDate = $object->getJournalDate();
          $response['tripId'] = $object->getTripId();
          $response['journalId'] = $object->getJournalId();
          $response['created'] = $object->getCreated();
          $response['updated'] = $object->getUpdated();
          $response['userId'] = $object->getUserId();
-         $response['journalDate'] = $object->getJournalDate();
+         $response['journalDate'] = $journalDate;
          $response['journalTitle'] = $object->getJournalTitle();
          $response['journalText'] = $object->getJournalText();
          $response['deleted'] = $object->getDeleted();
@@ -46,6 +47,11 @@ if (!$auth->canGetJournal()) {
          $journalId = $object->getNextJournalId();
          if ($journalId) {
             $response['nextId'] = $journalId;
+         }
+
+         $journalDate = str_replace('-', '', $journalDate);
+         if (file_exists("../maps/$journalDate.html")) {
+            $response['map'] = "./maps/$journalDate.html";
          }
       }
    }

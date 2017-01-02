@@ -284,6 +284,12 @@ img.journal-entry-profile-thumbnail {
   margin-right: 0;
 }
 
+img.journal-entry-map {
+  float: right;
+  width: 40px;
+  margin: 0.2em;
+}
+
 div.journalitem {
   letter-spacing: 1px;
   line-height: 140%;
@@ -1178,4 +1184,11 @@ div.panorama span.imageWrapper img {
   width: 100%;
   position: absolute;
   left: 0;
+}
+
+div.map {
+  width: 920px;
+  height: 620px;
+  margin-left: auto;
+  margin-right: auto;
 }

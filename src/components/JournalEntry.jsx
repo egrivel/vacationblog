@@ -123,7 +123,8 @@ const JournalEntry = React.createClass({
         canAddComment: canAddComment,
         loggedInUserId: loggedInUserId,
         isLoggedIn: isLoggedIn,
-        profileImg: profileImg
+        profileImg: profileImg,
+        map: null
       };
     }
 
@@ -149,6 +150,8 @@ const JournalEntry = React.createClass({
       }
     }
 
+    const map = journalData.map;
+
     return {
       tripId: journalData.tripId,
       tripActive: tripActive,
@@ -165,7 +168,8 @@ const JournalEntry = React.createClass({
       canAddComment: canAddComment,
       loggedInUserId: loggedInUserId,
       isLoggedIn: isLoggedIn,
-      profileImg: profileImg
+      profileImg: profileImg,
+      map: map
     };
   },
 
@@ -297,7 +301,9 @@ const JournalEntry = React.createClass({
           date={this.state.journalDate}
           userName={this.state.userName}
           created={this.state.created}
-          profileImg={this.state.profileImg}/>
+          profileImg={this.state.profileImg}
+          map={this.state.map}
+        />
         {prevNext1}
         {paragraphs}
         {newComment}

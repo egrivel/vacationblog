@@ -16,7 +16,12 @@ const JournalHeader = React.createClass({
     date: React.PropTypes.string,
     userName: React.PropTypes.string,
     created: React.PropTypes.string,
-    profileImg: React.PropTypes.string
+    profileImg: React.PropTypes.string,
+    map: React.PropTypes.string
+  },
+
+  _mapCallback: function() {
+    this.setState({mapDisplay: true});
   },
 
   /**
@@ -27,7 +32,7 @@ const JournalHeader = React.createClass({
    * @param {string} editLink - target of edit, if any
    * @return {react} element representing the title.
    */
-  _constructTitle: function(title, date, profileImg) {
+  _constructTitle: function(title, date, profileImg, map) {
     let titleText = '';
 
     if (title) {
@@ -57,12 +62,46 @@ const JournalHeader = React.createClass({
       );
     }
 
+    let mapImgElement;
+    if (map) {
+      mapImgElement = (
+        <img className="journal-entry-map"
+          title="View a map of today"
+          onClick={this._mapCallback}
+          src={'media/map.png'}/>
+      );
+    }
+
     return (
       <span className="title">
         {titleText}
         {' '} {editButton}
         {profileImgElement}
+        {mapImgElement}
       </span>
+    );
+  },
+
+  _onCloseMap: function() {
+    this.setState({mapDisplay: false});
+  },
+
+  _renderMap: function(map) {
+    if (!this.state || !this.state.mapDisplay || !map) {
+      return null;
+    }
+    return (
+      <div className="modal" onClick={this._onCloseMap}>
+        <div className="map">
+          <iframe
+            className="map"
+            width="920"
+            height="620"
+            src={map}
+          >
+          </iframe>
+        </div>
+      </div>
     );
   },
 
@@ -105,7 +144,7 @@ const JournalHeader = React.createClass({
 
   render: function() {
     const title = this._constructTitle(this.props.title, this.props.date,
-      this.props.profileImg);
+      this.props.profileImg, this.props.map);
     const subtitle = this._constructSubtitle(this.props.created,
       this.props.userName);
 
@@ -113,6 +152,7 @@ const JournalHeader = React.createClass({
       <h3>
         {title}
         {subtitle}
+        {this._renderMap(this.props.map)}
       </h3>
     );
   }
