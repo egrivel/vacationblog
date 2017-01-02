@@ -57,7 +57,16 @@ function addMediaIfNotExist($tripId, $mediaId) {
 }
 
 function processJournalForMedia($tripId, $journalText) {
+   // Extract regular images from the journal text
    $list = explode('[IMG ', $journalText);
+   for ($i = 0; isset($list[$i]); $i++) {
+      if (preg_match('/^\s*(\d\d\d\d\d\d\d\d-\d\d\d\d\d\d\w?)/', $list[$i], $matches)) {
+         addMediaIfNotExist($tripId, $matches[0]);
+      }
+   }
+
+   // extract panoramas from the journal text
+   $list = explode('[PANO ', $journalText);
    for ($i = 0; isset($list[$i]); $i++) {
       if (preg_match('/^\s*(\d\d\d\d\d\d\d\d-\d\d\d\d\d\d\w?)/', $list[$i], $matches)) {
          addMediaIfNotExist($tripId, $matches[0]);
