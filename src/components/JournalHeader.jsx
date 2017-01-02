@@ -20,8 +20,93 @@ const JournalHeader = React.createClass({
     map: React.PropTypes.string
   },
 
-  _mapCallback: function() {
+  // Handling dynamic sizing of images in modal: set the event handler to
+  // update size upon resizing
+  componentDidMount: function() {
+    /* global window */
+    window.addEventListener('resize', this._sizeMapFrame, false);
+  },
+
+  // Handling dynamic sizing of images in modal: remove the event handler to
+  // update size upon resizing
+  componentWillUnmount: function() {
+    window.removeEventListener('resize', this._sizeMapFrame);
+  },
+
+  // Handling dynamic sizing of images in modal: size right upon render
+  componentDidUpdate: function() {
+    this._sizeMapFrame();
+  },
+
+  _onOpenMap: function() {
     this.setState({mapDisplay: true});
+  },
+
+  _onCloseMap: function() {
+    this.setState({mapDisplay: false});
+  },
+
+  /**
+   * Make sure the images in the modal window are appropriately sized. Handling
+   * a maximum vertical size through CSS doesn't seem to be working, so have
+   * this sizing function which looks at the original size of the image and the
+   * current window size, and makes sure the actual height of the image does not
+   * exceed 75% of the window height.
+   */
+  _sizeMapFrame: function() {
+    if (this.state && this.state.mapDisplay) {
+      // The modal is displayed. Get the image
+      // eslint-disable-next-line no-undef
+      const containerElement = document.getElementById('the-modal');
+      // eslint-disable-next-line no-undef
+      const mapElement = document.getElementById('the-modal-map');
+      if (containerElement && mapElement) {
+        // First the image height is limited to 75% of the window height
+        // eslint-disable-next-line no-undef
+        const windowHeight = window.innerHeight;
+        // eslint-disable-next-line no-undef
+        const windowWidth = window.innerWidth;
+
+        let mapHeight = windowHeight - 50;
+        let mapTop = 25;
+        let mapWidth = windowWidth - 50;
+
+        if (mapHeight < 50) {
+          mapHeight = windowHeight;
+          mapTop = 0;
+        }
+        if (mapWidth < 50) {
+          mapWidth = windowWidth;
+        }
+
+        // Set calculated size
+        mapElement.style.height = String(mapHeight) + 'px';
+        mapElement.style.width = String(mapWidth) + 'px';
+        mapElement.style.top = String(mapTop) + 'px';
+      }
+    }
+  },
+
+  _renderMap: function(map) {
+    if (!this.state || !this.state.mapDisplay || !map) {
+      return null;
+    }
+    return (
+      <div id="the-modal" className="modal" onClick={this._onCloseMap}>
+        <button id="the-modal-close" onClick={this._onCloseMap}>
+          <i className="fa fa-times"></i>
+        </button>
+        <div id="the-modal-map">
+          <iframe
+            className="map"
+            width="100%"
+            height="100%"
+            src={map}
+          >
+          </iframe>
+        </div>
+      </div>
+    );
   },
 
   /**
@@ -29,7 +114,7 @@ const JournalHeader = React.createClass({
    * @param {string} title - entry title.
    * @param {string} date - entry date.
    * @param {string} profileImg - addres of profile img, if any.
-   * @param {string} editLink - target of edit, if any
+   * @param {string} map - location of map, if any.
    * @return {react} element representing the title.
    */
   _constructTitle: function(title, date, profileImg, map) {
@@ -67,7 +152,7 @@ const JournalHeader = React.createClass({
       mapImgElement = (
         <img className="journal-entry-map"
           title="View a map of today"
-          onClick={this._mapCallback}
+          onClick={this._onOpenMap}
           src={'media/map.png'}/>
       );
     }
@@ -79,29 +164,6 @@ const JournalHeader = React.createClass({
         {profileImgElement}
         {mapImgElement}
       </span>
-    );
-  },
-
-  _onCloseMap: function() {
-    this.setState({mapDisplay: false});
-  },
-
-  _renderMap: function(map) {
-    if (!this.state || !this.state.mapDisplay || !map) {
-      return null;
-    }
-    return (
-      <div className="modal" onClick={this._onCloseMap}>
-        <div className="map">
-          <iframe
-            className="map"
-            width="920"
-            height="620"
-            src={map}
-          >
-          </iframe>
-        </div>
-      </div>
     );
   },
 

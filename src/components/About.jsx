@@ -58,6 +58,8 @@ const About = React.createClass({
             only be used on "safe" devices.</li>
           <li>Timestamps are now displayed in the user's local time, and in
             their time preference (12/24 hour clock) -- hopefully.</li>
+          <li>Daily maps are working again! those from the 2014 and 2015 trips
+            have been imported and new onces can be created.</li>
         </ul>
 
         <h4>What Is Not Working</h4>

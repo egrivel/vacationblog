@@ -1186,9 +1186,25 @@ div.panorama span.imageWrapper img {
   left: 0;
 }
 
-div.map {
-  width: 920px;
-  height: 620px;
+div#the-modal {
+  overflow: hidden;
+}
+
+div#the-modal-map {
+  position: relative;
   margin-left: auto;
   margin-right: auto;
+  background-color: #fee;
+}
+
+button#the-modal-close {
+  position: absolute;
+  display: block;
+  top: 40px;
+  right: 40px;
+  z-index: 20;
+}
+
+button#the-modal-close i {
+  font-size: 200%;
 }

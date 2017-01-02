@@ -14,7 +14,6 @@ const MenuList = React.createClass({
   },
 
   _openMenu: function(event) {
-    console.log('Open the menu');
     this.setState({open: !this.state.open});
     // event.stopPropagation();
     event.preventDefault();
