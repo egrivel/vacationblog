@@ -30,7 +30,8 @@ const utils = {
           cookie = cookie.substring(1, cookie.length);
         }
         if (cookie.indexOf(nameEQ) == 0) {
-          return cookie.substring(nameEQ.length, cookie.length);
+          const cookieValue = cookie.substring(nameEQ.length, cookie.length);
+          return decodeURIComponent(cookieValue);
         }
     }
     return null;

@@ -19,6 +19,7 @@
 /* global window */
 
 const React = require('react');
+const Link = require('react-router').Link;
 
 const TripStore = require('../stores/TripStore');
 const JournalStore = require('../stores/JournalStore');
@@ -49,6 +50,7 @@ const JournalEntry = React.createClass({
   propTypes: {
     tripId: React.PropTypes.string.isRequired,
     journalId: React.PropTypes.string.isRequired,
+    dispMap: React.PropTypes.bool,
     history: React.PropTypes.shape({
       push: React.PropTypes.func.isRequired
     })
@@ -112,8 +114,8 @@ const JournalEntry = React.createClass({
         tripActive: tripActive,
         journalId: null,
         journalUserId: null,
-        journalTitle: 'Not Found',
-        journalText: 'The requested journal item was not found.',
+        journalTitle: 'Loading',
+        journalText: 'Loading the information...',
         journalDate: null,
         created: null,
         userName: null,
@@ -286,9 +288,9 @@ const JournalEntry = React.createClass({
 
     const backLink = (
       <div className="backlink">
-        <a href={'#/trip/' + tripId}>
+        <Link href={'#/trip/' + tripId}>
           <i className="fa fa-arrow-left"></i> Back to trip
-        </a>
+        </Link>
       </div>
     );
 
@@ -296,6 +298,8 @@ const JournalEntry = React.createClass({
       <div className="journalitem">
         {backLink}
         <JournalHeader
+          tripId={this.props.tripId}
+          journalId={this.props.journalId}
           title={this.state.journalTitle}
           editCallback={editCallback}
           date={this.state.journalDate}
@@ -303,6 +307,7 @@ const JournalEntry = React.createClass({
           created={this.state.created}
           profileImg={this.state.profileImg}
           map={this.state.map}
+          dispMap={this.props.dispMap}
         />
         {prevNext1}
         {paragraphs}

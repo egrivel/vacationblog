@@ -32,6 +32,7 @@ const routes = {
     {path: '/', component: Welcome},
     {path: '/trip/:tripId', component: TripDescription},
     {path: '/journal/:tripId/:journalId', component: JournalWrapper},
+    {path: '/journal/:tripId/:journalId/:map', component: JournalWrapper},
     {path: '/journaledit/:tripId', component: JournalEdit},
     {path: '/journaledit/:tripId/:journalId', component: JournalEdit},
     {path: '/search', component: Search},

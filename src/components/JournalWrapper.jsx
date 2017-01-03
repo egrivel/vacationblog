@@ -98,6 +98,7 @@ const JournalWrapper = React.createClass({
   render: function() {
     let tripId;
     let journalId;
+    let dispMap = false;
 
     if (this.props && this.props.params) {
       if (this.props.params.tripId) {
@@ -106,12 +107,16 @@ const JournalWrapper = React.createClass({
       if (this.props.params.journalId) {
         journalId = this.props.params.journalId;
       }
+      if (this.props.params.map) {
+        dispMap = true;
+      }
     }
     return (
       <JournalEntry
         tripId={tripId}
         journalId={journalId}
         history={this.props.history}
+        dispMap={dispMap}
       >
       </JournalEntry>
     );

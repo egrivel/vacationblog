@@ -5,19 +5,27 @@
  */
 
 const React = require('react');
+const Link = require('react-router').Link;
 const utils = require('./utils');
 
 const JournalHeader = React.createClass({
   displayName: 'JournalHeader',
 
   propTypes: {
+    tripId: React.PropTypes.string,
+    journalId: React.PropTypes.string,
     title: React.PropTypes.string,
     editCallback: React.PropTypes.func,
     date: React.PropTypes.string,
     userName: React.PropTypes.string,
     created: React.PropTypes.string,
     profileImg: React.PropTypes.string,
-    map: React.PropTypes.string
+    map: React.PropTypes.string,
+    dispMap: React.PropTypes.bool
+  },
+
+  contextTypes: {
+    router: React.PropTypes.object
   },
 
   // Handling dynamic sizing of images in modal: set the event handler to
@@ -43,7 +51,9 @@ const JournalHeader = React.createClass({
   },
 
   _onCloseMap: function() {
-    this.setState({mapDisplay: false});
+    // this.setState({mapDisplay: false});
+    this.context.router.push('/journal/' + this.props.tripId +
+      '/' + this.props.journalId);
   },
 
   /**
@@ -54,7 +64,7 @@ const JournalHeader = React.createClass({
    * exceed 75% of the window height.
    */
   _sizeMapFrame: function() {
-    if (this.state && this.state.mapDisplay) {
+    if (this.props && this.props.dispMap) {
       // The modal is displayed. Get the image
       // eslint-disable-next-line no-undef
       const containerElement = document.getElementById('the-modal');
@@ -88,14 +98,16 @@ const JournalHeader = React.createClass({
   },
 
   _renderMap: function(map) {
-    if (!this.state || !this.state.mapDisplay || !map) {
+    if (!this.props || !this.props.dispMap || !map) {
       return null;
     }
     return (
       <div id="the-modal" className="modal" onClick={this._onCloseMap}>
-        <button id="the-modal-close" onClick={this._onCloseMap}>
+        <Link
+          className="the-modal-close"
+          to={'/journal/' + this.props.tripId + '/' + this.props.journalId}>
           <i className="fa fa-times"></i>
-        </button>
+        </Link>
         <div id="the-modal-map">
           <iframe
             className="map"
@@ -150,10 +162,13 @@ const JournalHeader = React.createClass({
     let mapImgElement;
     if (map) {
       mapImgElement = (
-        <img className="journal-entry-map"
-          title="View a map of today"
-          onClick={this._onOpenMap}
-          src={'media/map.png'}/>
+        <Link href={'#/journal/' + this.props.tripId +
+            '/' + this.props.journalId + '/1'}>
+          <img className="journal-entry-map"
+            title="View a map of today"
+            onClick={this._onOpenMap}
+            src={'media/map.png'}/>
+        </Link>
       );
     }
 

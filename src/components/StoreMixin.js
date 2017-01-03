@@ -5,7 +5,7 @@
  * @return {object} mixin.
  */
 function StoreMixin() {
-  var Mixin = {
+  const Mixin = {
     getInitialState: function() {
       return this._getStateFromStores();
     },
@@ -15,15 +15,14 @@ function StoreMixin() {
       this._totalChangeEvents = 0;
       this._totalRendersSaved = 0;
 
-      var i;
-      for (i = 0; i < this.stores.length; i++) {
+      for (let i = 0; i < this.stores.length; i++) {
         this.stores[i].addChangeListener(this._onChange);
       }
     },
 
     componentWillUnmount: function() {
       this.isMounted = false;
-      for (var i = 0; i < this.stores.length; i++) {
+      for (let i = 0; i < this.stores.length; i++) {
         this.stores[i].removeChangeListener(this._onChange);
       }
     },
@@ -42,7 +41,10 @@ function StoreMixin() {
     },
 
     _onChange: function() {
-      this.setState(this._getStateFromStores());
+      const state = this._getStateFromStores();
+      if (this.isMounted) {
+        this.setState(state);
+      }
     },
 
     // The timer thing causes issues in combination with typing in a text

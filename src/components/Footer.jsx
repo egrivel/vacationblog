@@ -62,14 +62,14 @@ var Footer = React.createClass({
   },
 
   render: function() {
-    var footerText = this._getFooterText();
+    const footerText = this._getFooterText();
     return (
       React.DOM.div(
         {
           className: 'footer'
         },
         React.DOM.p(null, footerText +
-                    ' Website design \u00A92015-16 by Eric Grivel.' +
+                    ' Website design \u00A92015-17 by Eric Grivel.' +
                     ' All rights reserved.')
       )
     );
