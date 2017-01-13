@@ -1,11 +1,11 @@
 'use strict';
 
-var expect = require('chai').expect;
-var sinon = require('sinon');
+const expect = require('chai').expect;
+const sinon = require('sinon');
 
-var ReactDOMServer = require('react-dom/server');
+const ReactDOMServer = require('react-dom/server');
 
-var utils = require('../../src/components/utils');
+const utils = require('../../src/components/utils');
 
 /**
  * Test for a single entity
@@ -14,9 +14,9 @@ var utils = require('../../src/components/utils');
  */
 function entity(text, result) {
   it('entity ' + text, function() {
-    var mark1 = 'use the symbol [';
-    var mark2 = '] in a string';
-    var data = utils.replaceEntities(mark1 + text + mark2);
+    const mark1 = 'use the symbol [';
+    const mark2 = '] in a string';
+    const data = utils.replaceEntities(mark1 + text + mark2);
     expect(data).to.equal(mark1 + result + mark2);
   });
 }
@@ -29,78 +29,78 @@ function entity(text, result) {
  */
 function markupTests(description, tag, replacement) {
   describe(description, function() {
-    var testClassname = '';
-    var testKey = '';
+    const testClassname = '';
+    const testKey = '';
 
     it('single instance', function() {
-      var testText = 'This is [' + tag + ']important[/' + tag + '] text.';
-      var element = utils.buildTextNode('p', testClassname, testKey,
+      const testText = 'This is [' + tag + ']important[/' + tag + '] text.';
+      const element = utils.buildTextNode('p', testClassname, testKey,
         testText);
-      var markup = ReactDOMServer.renderToStaticMarkup(element);
+      const markup = ReactDOMServer.renderToStaticMarkup(element);
       expect(markup).to.equal('<p>This is <' + replacement + '>important</' +
         replacement + '> text.</p>');
     });
 
     it('multiple instance', function() {
-      var testText = 'This is [' + tag + ']important[/' + tag +
+      const testText = 'This is [' + tag + ']important[/' + tag +
         '] text [' + tag + ']really[/' + tag + '].';
-      var element = utils.buildTextNode('p', testClassname, testKey,
+      const element = utils.buildTextNode('p', testClassname, testKey,
         testText);
-      var markup = ReactDOMServer.renderToStaticMarkup(element);
+      const markup = ReactDOMServer.renderToStaticMarkup(element);
       expect(markup).to.equal('<p>This is <' + replacement + '>important</' +
         replacement + '> text ' +
         '<' + replacement + '>really</' + replacement + '>.</p>');
     });
 
     it('handles missing open tag', function() {
-      var testText = 'This is important[/' + tag + '] text.';
-      var element = utils.buildTextNode('p', testClassname, testKey,
+      const testText = 'This is important[/' + tag + '] text.';
+      const element = utils.buildTextNode('p', testClassname, testKey,
         testText);
-      var markup = ReactDOMServer.renderToStaticMarkup(element);
+      const markup = ReactDOMServer.renderToStaticMarkup(element);
       expect(markup).to.equal('<p>This is important[/' + tag + '] text.</p>');
     });
 
     it('handles missing close tag', function() {
-      var testText = 'This is [' + tag + ']important text.';
-      var element = utils.buildTextNode('p', testClassname, testKey,
+      const testText = 'This is [' + tag + ']important text.';
+      const element = utils.buildTextNode('p', testClassname, testKey,
         testText);
-      var markup = ReactDOMServer.renderToStaticMarkup(element);
+      const markup = ReactDOMServer.renderToStaticMarkup(element);
       expect(markup).to.equal('<p>This is <' + replacement +
         '>important text.</' + replacement + '></p>');
     });
 
     it('handles mangled open tag 1', function() {
-      var testText = 'This is ' + tag + ']important[/' + tag + '] text.';
-      var element = utils.buildTextNode('p', testClassname, testKey,
+      const testText = 'This is ' + tag + ']important[/' + tag + '] text.';
+      const element = utils.buildTextNode('p', testClassname, testKey,
         testText);
-      var markup = ReactDOMServer.renderToStaticMarkup(element);
+      const markup = ReactDOMServer.renderToStaticMarkup(element);
       expect(markup).to.equal('<p>This is ' + tag + ']important[/' + tag +
         '] text.</p>');
     });
 
     it('handles mangled open tag 2', function() {
-      var testText = 'This is [' + tag + 'important[/' + tag + '] text.';
-      var element = utils.buildTextNode('p', testClassname, testKey,
+      const testText = 'This is [' + tag + 'important[/' + tag + '] text.';
+      const element = utils.buildTextNode('p', testClassname, testKey,
         testText);
-      var markup = ReactDOMServer.renderToStaticMarkup(element);
+      const markup = ReactDOMServer.renderToStaticMarkup(element);
       expect(markup).to.equal('<p>This is [' + tag + 'important[/' + tag +
         '] text.</p>');
     });
 
     it('handles mangled close tag 1', function() {
-      var testText = 'This is [' + tag + ']important/' + tag + '] text.';
-      var element = utils.buildTextNode('p', testClassname, testKey,
+      const testText = 'This is [' + tag + ']important/' + tag + '] text.';
+      const element = utils.buildTextNode('p', testClassname, testKey,
         testText);
-      var markup = ReactDOMServer.renderToStaticMarkup(element);
+      const markup = ReactDOMServer.renderToStaticMarkup(element);
       expect(markup).to.equal('<p>This is <' + replacement + '>important/' +
         tag + '] text.</' + replacement + '></p>');
     });
 
     it('handles mangled close tag 2', function() {
-      var testText = 'This is [' + tag + ']important[/' + tag + ' text.';
-      var element = utils.buildTextNode('p', testClassname, testKey,
+      const testText = 'This is [' + tag + ']important[/' + tag + ' text.';
+      const element = utils.buildTextNode('p', testClassname, testKey,
         testText);
-      var markup = ReactDOMServer.renderToStaticMarkup(element);
+      const markup = ReactDOMServer.renderToStaticMarkup(element);
       expect(markup).to.equal('<p>This is <' + replacement + '>important[/' +
         tag + ' text.</' + replacement + '></p>');
     });
@@ -111,8 +111,8 @@ describe('components/utils', function() {
   describe('#replaceEntities', function() {
     describe('non-entities', function() {
       it('plain string is unchanged', function() {
-        var plainString = ' This is a plain string without entities. ';
-        var replaced = utils.replaceEntities(plainString);
+        const plainString = ' This is a plain string without entities. ';
+        const replaced = utils.replaceEntities(plainString);
         expect(replaced).to.equal(plainString);
       });
     });
@@ -238,55 +238,55 @@ describe('components/utils', function() {
   });
 
   describe('#buildTextNode', function() {
-    var testClassname = 'test-classname';
-    var testKey = 'test-key';
+    const testClassname = 'test-classname';
+    const testKey = 'test-key';
     describe('simple text', function() {
-      var testText1 = 'This is a simple test.';
+      const testText1 = 'This is a simple test.';
       it('returns p for type p', function() {
-        var element = utils.buildTextNode('p', testClassname, testKey,
+        const element = utils.buildTextNode('p', testClassname, testKey,
           testText1);
-        var markup = ReactDOMServer.renderToStaticMarkup(element);
+        const markup = ReactDOMServer.renderToStaticMarkup(element);
         expect(markup).to.contain('<p');
       });
 
       it('includes classname for type p', function() {
-        var element = utils.buildTextNode('p', testClassname, testKey,
+        const element = utils.buildTextNode('p', testClassname, testKey,
           testText1);
-        var markup = ReactDOMServer.renderToStaticMarkup(element);
+        const markup = ReactDOMServer.renderToStaticMarkup(element);
         expect(markup).to.contain('class=');
         expect(markup).to.contain(testClassname);
       });
 
       it('does not include empty classname for type p', function() {
-        var element = utils.buildTextNode('p', '', testKey,
+        const element = utils.buildTextNode('p', '', testKey,
           testText1);
-        var markup = ReactDOMServer.renderToStaticMarkup(element);
+        const markup = ReactDOMServer.renderToStaticMarkup(element);
         expect(markup).to.not.contain('class=');
       });
 
       it('returns span for type span', function() {
-        var element = utils.buildTextNode('span', testClassname, testKey,
+        const element = utils.buildTextNode('span', testClassname, testKey,
           testText1);
-        var markup = ReactDOMServer.renderToStaticMarkup(element);
+        const markup = ReactDOMServer.renderToStaticMarkup(element);
         expect(markup).to.contain('<span');
       });
 
       it('does not include empty classname for type span', function() {
-        var element = utils.buildTextNode('span', '', testKey,
+        const element = utils.buildTextNode('span', '', testKey,
           testText1);
-        var markup = ReactDOMServer.renderToStaticMarkup(element);
+        const markup = ReactDOMServer.renderToStaticMarkup(element);
         expect(markup).to.not.contain('class=');
       });
 
       it('includes classname for type span', function() {
-        var element = utils.buildTextNode('span', testClassname, testKey,
+        const element = utils.buildTextNode('span', testClassname, testKey,
           testText1);
-        var markup = ReactDOMServer.renderToStaticMarkup(element);
+        const markup = ReactDOMServer.renderToStaticMarkup(element);
         expect(markup).to.contain(testClassname);
       });
 
       it('returns nothing for other type', function() {
-        var element = utils.buildTextNode('foo', testClassname, testKey,
+        const element = utils.buildTextNode('foo', testClassname, testKey,
           testText1);
         expect(element).to.be.undefined;
       });
@@ -297,123 +297,123 @@ describe('components/utils', function() {
     markupTests('handles underline', 'U', 'u');
 
     describe('handles link', function() {
-      var testClassname = '';
-      var testKey = '';
+      const testClassname = '';
+      const testKey = '';
       it('single instance', function() {
-        var testText = 'This is [LINK http://foo/bar]important[/LINK] text.';
-        var element = utils.buildTextNode('p', testClassname, testKey,
+        const testText = 'This is [LINK http://foo/bar]important[/LINK] text.';
+        const element = utils.buildTextNode('p', testClassname, testKey,
           testText);
-        var markup = ReactDOMServer.renderToStaticMarkup(element);
+        const markup = ReactDOMServer.renderToStaticMarkup(element);
         expect(markup).to.equal('<p>This is ' +
           '<a href="http://foo/bar" target="_blank">important</a> text.</p>');
       });
 
       it('multiple instance', function() {
-        var testText = 'This is [LINK http://foo/bar]important[/LINK] text ' +
+        const testText = 'This is [LINK http://foo/bar]important[/LINK] text ' +
         '[LINK http://one.two/three#four]really[/LINK].';
-        var element = utils.buildTextNode('p', testClassname, testKey,
+        const element = utils.buildTextNode('p', testClassname, testKey,
           testText);
-        var markup = ReactDOMServer.renderToStaticMarkup(element);
+        const markup = ReactDOMServer.renderToStaticMarkup(element);
         expect(markup).to.equal('<p>This is ' +
           '<a href="http://foo/bar" target="_blank">important</a> text ' +
           '<a href="http://one.two/three#four" target="_blank">really</a>.</p>');
       });
 
       it('handles missing open tag', function() {
-        var testText = 'This is important[/LINK] text.';
-        var element = utils.buildTextNode('p', testClassname, testKey,
+        const testText = 'This is important[/LINK] text.';
+        const element = utils.buildTextNode('p', testClassname, testKey,
           testText);
-        var markup = ReactDOMServer.renderToStaticMarkup(element);
+        const markup = ReactDOMServer.renderToStaticMarkup(element);
         expect(markup).to.equal('<p>This is ' +
           'important[/LINK] text.</p>');
       });
 
       it('handles missing close tag', function() {
-        var testText = 'This is [LINK http://foo/bar]important text.';
-        var element = utils.buildTextNode('p', testClassname, testKey,
+        const testText = 'This is [LINK http://foo/bar]important text.';
+        const element = utils.buildTextNode('p', testClassname, testKey,
           testText);
-        var markup = ReactDOMServer.renderToStaticMarkup(element);
+        const markup = ReactDOMServer.renderToStaticMarkup(element);
         expect(markup).to.equal('<p>This is ' +
           '<a href="http://foo/bar" target="_blank">important text.</a></p>');
       });
 
       it('handles missing open tag open bracket', function() {
-        var testText = 'This is LINK http://foo/bar]important[/LINK] text.';
-        var element = utils.buildTextNode('p', testClassname, testKey,
+        const testText = 'This is LINK http://foo/bar]important[/LINK] text.';
+        const element = utils.buildTextNode('p', testClassname, testKey,
           testText);
-        var markup = ReactDOMServer.renderToStaticMarkup(element);
+        const markup = ReactDOMServer.renderToStaticMarkup(element);
         expect(markup).to.equal('<p>This is LINK http://foo/bar]important' +
           '[/LINK] text.</p>');
       });
 
       it('handles missing open tag close bracket', function() {
-        var testText = 'This is [LINK http://foo/barimportant[/LINK] text.';
-        var element = utils.buildTextNode('p', testClassname, testKey,
+        const testText = 'This is [LINK http://foo/barimportant[/LINK] text.';
+        const element = utils.buildTextNode('p', testClassname, testKey,
           testText);
-        var markup = ReactDOMServer.renderToStaticMarkup(element);
+        const markup = ReactDOMServer.renderToStaticMarkup(element);
         expect(markup).to.equal('<p>This is ' +
           '<a href="http://foo/barimportant[/LINK" target="_blank"> ' +
           'text.</a></p>');
       });
 
       it('handles missing open tag close bracket and close tag', function() {
-        var testText = 'This is [LINK http://foo/barimportant text.';
-        var element = utils.buildTextNode('p', testClassname, testKey,
+        const testText = 'This is [LINK http://foo/barimportant text.';
+        const element = utils.buildTextNode('p', testClassname, testKey,
           testText);
-        var markup = ReactDOMServer.renderToStaticMarkup(element);
+        const markup = ReactDOMServer.renderToStaticMarkup(element);
         expect(markup).to.equal('<p>This is http://foo/barimportant text.</p>');
       });
 
       it('handles missing close tag open bracket', function() {
-        var testText = 'This is [LINK http://foo/bar]important/LINK] text.';
-        var element = utils.buildTextNode('p', testClassname, testKey,
+        const testText = 'This is [LINK http://foo/bar]important/LINK] text.';
+        const element = utils.buildTextNode('p', testClassname, testKey,
           testText);
-        var markup = ReactDOMServer.renderToStaticMarkup(element);
+        const markup = ReactDOMServer.renderToStaticMarkup(element);
         expect(markup).to.equal('<p>This is ' +
           '<a href="http://foo/bar" target="_blank">important/LINK] ' +
           'text.</a></p>');
       });
 
       it('handles missing close tag close bracket', function() {
-        var testText = 'This is [LINK http://foo/bar]important[/LINK text.';
-        var element = utils.buildTextNode('p', testClassname, testKey,
+        const testText = 'This is [LINK http://foo/bar]important[/LINK text.';
+        const element = utils.buildTextNode('p', testClassname, testKey,
           testText);
-        var markup = ReactDOMServer.renderToStaticMarkup(element);
+        const markup = ReactDOMServer.renderToStaticMarkup(element);
         expect(markup).to.equal('<p>This is ' +
           '<a href="http://foo/bar" target="_blank">important[/LINK ' +
           'text.</a></p>');
       });
 
       it('handles missing space-url', function() {
-        var testText = 'This is [LINK]important[/LINK] text.';
-        var element = utils.buildTextNode('p', testClassname, testKey,
+        const testText = 'This is [LINK]important[/LINK] text.';
+        const element = utils.buildTextNode('p', testClassname, testKey,
           testText);
-        var markup = ReactDOMServer.renderToStaticMarkup(element);
+        const markup = ReactDOMServer.renderToStaticMarkup(element);
         expect(markup).to.equal('<p>This is [LINK]important[/LINK] text.</p>');
       });
 
       it('handles missing url', function() {
-        var testText = 'This is [LINK ]important[/LINK] text.';
-        var element = utils.buildTextNode('p', testClassname, testKey,
+        const testText = 'This is [LINK ]important[/LINK] text.';
+        const element = utils.buildTextNode('p', testClassname, testKey,
           testText);
-        var markup = ReactDOMServer.renderToStaticMarkup(element);
+        const markup = ReactDOMServer.renderToStaticMarkup(element);
         expect(markup).to.equal('<p>This is important[/LINK] text.</p>');
       });
     });
 
     describe('handle nested', function() {
       it('bold italic underline', function() {});
-      var testText = '[B]This is [EM]important[/EM] and [EM][U]really ' +
+      const testText = '[B]This is [EM]important[/EM] and [EM][U]really ' +
         'important[/U][/EM] text.[/B]';
-      var element = utils.buildTextNode('p', '', '', testText);
-      var markup = ReactDOMServer.renderToStaticMarkup(element);
+      const element = utils.buildTextNode('p', '', '', testText);
+      const markup = ReactDOMServer.renderToStaticMarkup(element);
       expect(markup).to.equal('<p><strong>This is <em>important</em> and ' +
         '<em><u>really important</u></em> text.</strong></p>');
     });
   });
 
   describe('#formatDate', function() {
-    var warningStub;
+    let warningStub;
     beforeEach(function() {
       warningStub = sinon.stub(utils, 'warning');
     });
@@ -423,44 +423,44 @@ describe('components/utils', function() {
     });
 
     it('missing date gives null', function() {
-      var result = utils.formatDate();
+      const result = utils.formatDate();
       expect(result).to.be.null;
       expect(warningStub.callCount).to.equal(0);
     });
 
     it('empty date gives null', function() {
-      var result = utils.formatDate();
+      const result = utils.formatDate();
       expect(result).to.be.null;
       expect(warningStub.callCount).to.equal(0);
     });
 
     it('date in yyyymmdd format', function() {
-      var result = utils.formatDate('20160102');
+      const result = utils.formatDate('20160102');
       expect(result).to.equal('Saturday January 2 2016');
       expect(warningStub.callCount).to.equal(0);
     });
 
     it('date in yyyy-mm-dd format', function() {
-      var result = utils.formatDate('2016-02-03');
+      const result = utils.formatDate('2016-02-03');
       expect(result).to.equal('Wednesday February 3 2016');
       expect(warningStub.callCount).to.equal(0);
     });
 
     it('date in yyyy-mm-dd hh:mm:ss.mmmmmm format', function() {
-      var result = utils.formatDate('2016-04-05 06:07:08.333333');
+      const result = utils.formatDate('2016-04-05 06:07:08.333333');
       expect(result).to.equal('Tuesday April 5 2016 2:07:08am EDT');
       expect(warningStub.callCount).to.equal(0);
     });
 
     it('date in invalid format', function() {
-      var result = utils.formatDate('anything else');
+      const result = utils.formatDate('anything else');
       expect(result).to.equal('anything else');
       expect(warningStub.callCount).to.equal(1);
     });
   });
 
   describe('#warning', function() {
-    var consoleStub;
+    let consoleStub;
     beforeEach(function() {
       consoleStub = sinon.stub(console, 'log');
     });
@@ -470,7 +470,7 @@ describe('components/utils', function() {
     });
 
     it('logs to the console', function() {
-      var text = 'this is a warning';
+      const text = 'this is a warning';
       utils.warning(text);
       expect(consoleStub.callCount).to.equal(1);
       expect(consoleStub.args[0].length).to.equal(1);
@@ -480,40 +480,40 @@ describe('components/utils', function() {
 
   describe('#splitText', function() {
     it('empty line', function() {
-      var text = '';
-      var result = utils.splitText(text);
+      const text = '';
+      const result = utils.splitText(text);
       expect(result.length).to.be.equal(0);
     });
 
     it('spaces only', function() {
-      var text = ' ';
-      var result = utils.splitText(text);
+      const text = ' ';
+      const result = utils.splitText(text);
       expect(result.length).to.be.equal(1);
       expect(result[0]).to.be.equal(text);
     });
 
     it('single line', function() {
-      var text = 'This is one line';
-      var result = utils.splitText(text);
+      const text = 'This is one line';
+      const result = utils.splitText(text);
       expect(result.length).to.be.equal(1);
       expect(result[0]).to.be.equal(text);
     });
 
     it('two lines', function() {
-      var text1 = 'This is one line';
-      var text2 = 'This is another line';
-      var text = text1 + '&lf;' + text2;
-      var result = utils.splitText(text);
+      const text1 = 'This is one line';
+      const text2 = 'This is another line';
+      const text = text1 + '&lf;' + text2;
+      const result = utils.splitText(text);
       expect(result.length).to.be.equal(2);
       expect(result[0]).to.be.equal(text1);
       expect(result[1]).to.be.equal(text2);
     });
 
     it('three lines', function() {
-      var text1 = 'This is one line';
-      var text2 = 'This is another line';
-      var text = text1 + '&lf;&lf;' + text2;
-      var result = utils.splitText(text);
+      const text1 = 'This is one line';
+      const text2 = 'This is another line';
+      const text = text1 + '&lf;&lf;' + text2;
+      const result = utils.splitText(text);
       expect(result.length).to.be.equal(3);
       expect(result[0]).to.be.equal(text1);
       expect(result[1]).to.be.equal('');

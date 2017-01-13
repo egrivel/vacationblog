@@ -1,16 +1,16 @@
 'use strict';
 
-var expect = require('chai').expect;
-var sinon = require('sinon');
+const expect = require('chai').expect;
+const sinon = require('sinon');
 
-var utils = require('../../src/actions/utils');
+const utils = require('../../src/actions/utils');
 
 describe('actions/utils', function() {
-  var xhr;
-  var requests;
-  var callback;
-  var testUrl;
-  var testResponse;
+  let xhr;
+  let requests;
+  let callback;
+  let testUrl;
+  let testResponse;
 
   beforeEach(function() {
     xhr = sinon.useFakeXMLHttpRequest();
@@ -57,7 +57,7 @@ describe('actions/utils', function() {
   });
 
   describe('#postAsync', function() {
-    var testData;
+    let testData;
 
     beforeEach(function() {
       testData = {

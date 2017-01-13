@@ -1,16 +1,16 @@
 'use strict';
 
-var expect = require('chai').expect;
-var sinon = require('sinon');
+const expect = require('chai').expect;
+const sinon = require('sinon');
 
-var utils = require('../../src/actions/utils');
-var AppDispatcher = require('../../src/AppDispatcher');
-var TripAction = require('../../src/actions/TripAction');
+const utils = require('../../src/actions/utils');
+const AppDispatcher = require('../../src/AppDispatcher');
+const TripAction = require('../../src/actions/TripAction');
 
 describe('actions/TripAction', function() {
   describe('#setCurrentTrip', function() {
-    var dispatchStub;
-    var loadTripStub;
+    let dispatchStub;
+    let loadTripStub;
 
     beforeEach(function() {
       dispatchStub = sinon.stub(AppDispatcher, 'dispatch');
@@ -23,17 +23,17 @@ describe('actions/TripAction', function() {
     });
 
     it('dispatch is called with right info', function() {
-      var testTripId = 'trip-1';
+      const testTripId = 'trip-1';
       TripAction.setCurrentTrip(testTripId);
 
       expect(dispatchStub.args[0].length).to.be.equal(1);
-      var action = dispatchStub.args[0][0];
+      const action = dispatchStub.args[0][0];
       expect(action.type).to.be.equal(TripAction.Types.TRIP_SET_CURRENT);
       expect(action.data).to.be.equal(testTripId);
     });
 
     it('loads the current trip data', function() {
-      var testTripId = 'trip-1';
+      const testTripId = 'trip-1';
 
       TripAction.setCurrentTrip(testTripId);
 
@@ -43,11 +43,11 @@ describe('actions/TripAction', function() {
   });
 
   describe('#initialLoadTrip', function() {
-    var firstTripId = 'trip-1';
-    var asyncStub;
-    var setCurrentTripStub;
-    var tripLoadedStub;
-    var testData = {
+    const firstTripId = 'trip-1';
+    let asyncStub;
+    let setCurrentTripStub;
+    let tripLoadedStub;
+    const testData = {
       tripId: firstTripId,
       data: 'more data'
     };
@@ -92,10 +92,10 @@ describe('actions/TripAction', function() {
   });
 
   describe('#loadTrip', function() {
-    var testTripId = 'trip-1';
-    var asyncStub;
-    var tripLoadedStub;
-    var testData = {
+    const testTripId = 'trip-1';
+    let asyncStub;
+    let tripLoadedStub;
+    const testData = {
       tripId: testTripId,
       data: 'more data'
     };
@@ -131,9 +131,9 @@ describe('actions/TripAction', function() {
   });
 
   describe('#loadTripList', function() {
-    var asyncStub;
-    var tripListLoadedStub;
-    var testData = {
+    let asyncStub;
+    let tripListLoadedStub;
+    const testData = {
       resultSet: [
         'more data'
       ]
@@ -169,7 +169,7 @@ describe('actions/TripAction', function() {
   });
 
   describe('#_tripLoaded', function() {
-    var dispatchStub;
+    let dispatchStub;
 
     beforeEach(function() {
       dispatchStub = sinon.stub(AppDispatcher, 'dispatch');
@@ -180,20 +180,20 @@ describe('actions/TripAction', function() {
     });
 
     it('dispatch is called with right info', function() {
-      var data = {
+      const data = {
         data: 'some data'
       };
       TripAction._tripLoaded(data);
 
       expect(dispatchStub.args[0].length).to.be.equal(1);
-      var action = dispatchStub.args[0][0];
+      const action = dispatchStub.args[0][0];
       expect(action.type).to.be.equal(TripAction.Types.TRIP_LOAD_DATA);
       expect(action.data).to.be.deep.eql(data);
     });
   });
 
   describe('#tripListLoaded', function() {
-    var dispatchStub;
+    let dispatchStub;
 
     beforeEach(function() {
       dispatchStub = sinon.stub(AppDispatcher, 'dispatch');
@@ -204,13 +204,13 @@ describe('actions/TripAction', function() {
     });
 
     it('dispatch is called with right info', function() {
-      var data = {
+      const data = {
         data: 'some data'
       };
       TripAction._tripListLoaded(data);
 
       expect(dispatchStub.args[0].length).to.be.equal(1);
-      var action = dispatchStub.args[0][0];
+      const action = dispatchStub.args[0][0];
       expect(action.type).to.be.equal(TripAction.Types.TRIP_LOAD_LIST);
       expect(action.data).to.be.deep.eql(data);
     });

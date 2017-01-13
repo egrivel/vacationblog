@@ -1,14 +1,14 @@
 'use strict';
 
-var AppDispatcher = require('../AppDispatcher');
-var utils = require('./utils');
+const AppDispatcher = require('../AppDispatcher');
+const utils = require('./utils');
 
-var TripAction = require('./TripAction');
-var CommentAction = require('./CommentAction');
-var MediaAction = require('./MediaAction');
-var UserAction = require('./UserAction');
+const TripAction = require('./TripAction');
+const CommentAction = require('./CommentAction');
+const MediaAction = require('./MediaAction');
+const UserAction = require('./UserAction');
 
-var JournalAction = {
+const JournalAction = {
   Types: {
     JOURNAL_DATA: 'JOURNAL_DATA'
   },
@@ -56,8 +56,8 @@ var JournalAction = {
       data: data
     });
 
-    var tripId = data.tripId;
-    var journalId = data.journalId;
+    const tripId = data.tripId;
+    const journalId = data.journalId;
     if (tripId && journalId && (journalId !== '_new')) {
       // Only load comments if not a new entry
       CommentAction.recursivelyLoadComments(tripId, journalId);
@@ -67,11 +67,11 @@ var JournalAction = {
       UserAction.loadUser(data.userId);
     }
 
-    var journalText = data.journalText;
+    const journalText = data.journalText;
     if (tripId && journalId && journalText) {
-      var mediaList = this._getMediaFromText(journalText);
+      const mediaList = this._getMediaFromText(journalText);
       if (mediaList && mediaList.length) {
-        var i;
+        let i;
         for (i = 0; i < mediaList.length; i++) {
           MediaAction.loadMedia(tripId, mediaList[i]);
           CommentAction.recursivelyLoadComments(tripId, mediaList[i]);
@@ -82,14 +82,14 @@ var JournalAction = {
 
   loadJournal: function(tripId, journalId) {
     TripAction.setCurrentTrip(tripId);
-    var url = 'api/getJournal.php?tripId=' + tripId;
+    let url = 'api/getJournal.php?tripId=' + tripId;
     if (!journalId || journalId === '') {
       url += '&latest';
     } else {
       url += '&journalId=' + journalId;
     }
     utils.getAsync(url, function(response) {
-      var data = JSON.parse(response);
+      const data = JSON.parse(response);
       JournalAction._journalLoaded(data);
     });
   },
@@ -115,7 +115,7 @@ var JournalAction = {
       journalText: journalData.journalText
     };
     utils.postAsync(url, data, function(response) {
-      var data = JSON.parse(response);
+      const data = JSON.parse(response);
       if (data.resultCode === 200) {
         // do something???
       }
@@ -133,7 +133,7 @@ var JournalAction = {
       journalText: journalData.journalText
     };
     utils.postAsync(url, data, function(response) {
-      var data = JSON.parse(response);
+      const data = JSON.parse(response);
       if (data.resultCode === 200) {
         // do something???
       }

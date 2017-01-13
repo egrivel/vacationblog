@@ -1,15 +1,15 @@
 'use strict';
 
-var _ = require('lodash');
-var assign = require('object-assign');
+const _ = require('lodash');
+const assign = require('object-assign');
 
-var GenericStore = require('./GenericStore');
-var AppDispatcher = require('../AppDispatcher');
-var MediaActionTypes = require('../actions/MediaAction').Types;
+const GenericStore = require('./GenericStore');
+const AppDispatcher = require('../AppDispatcher');
+const MediaActionTypes = require('../actions/MediaAction').Types;
 
-var _mediaData = {};
+let _mediaData = {};
 
-var MediaStore = assign({}, GenericStore, {
+const MediaStore = assign({}, GenericStore, {
   _reset: function() {
     _mediaData = {};
   },
@@ -21,7 +21,7 @@ var MediaStore = assign({}, GenericStore, {
    * @return {object} information about the media item.
    */
   getData: function getData(tripId, mediaId) {
-    var data = _mediaData[tripId + '|' + mediaId];
+    const data = _mediaData[tripId + '|' + mediaId];
     return data;
   },
 
@@ -39,8 +39,8 @@ var MediaStore = assign({}, GenericStore, {
         var count = action.data.count;
         var list = action.data.list;
         var updateCount = 0;
-        for (var i = 0; i < count; i++) {
-          var id = list[i].tripId + '|' + list[i].mediaId;
+        for (let i = 0; i < count; i++) {
+          const id = list[i].tripId + '|' + list[i].mediaId;
           if (!_mediaData[id] || !_.isEqual(_mediaData[id], list[i])) {
             _mediaData[id] = list[i];
             updateCount++;

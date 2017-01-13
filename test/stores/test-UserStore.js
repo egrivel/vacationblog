@@ -1,20 +1,20 @@
 'use strict';
 
-var expect = require('chai').expect;
-var sinon = require('sinon');
+const expect = require('chai').expect;
+const sinon = require('sinon');
 
-var UserActionTypes = require('../../src/actions/UserAction').Types;
-var UserStore = require('../../src/stores/UserStore');
+const UserActionTypes = require('../../src/actions/UserAction').Types;
+const UserStore = require('../../src/stores/UserStore');
 
-var testUserId1 = 'test-user-1';
-var testUserId2 = 'test-user-2';
+const testUserId1 = 'test-user-1';
+const testUserId2 = 'test-user-2';
 
-var testUser1 = {
+const testUser1 = {
   userId: testUserId1,
   name: 'Test User 1',
   property: 'test prop 1'
 };
-var testUser2 = {
+const testUser2 = {
   userId: testUserId2,
   name: 'Test User 2',
   property: 'test prop 2'
@@ -40,17 +40,17 @@ describe('stores/UserStore', function() {
   });
 
   describe('with test user loaded', function() {
-    var cb;
+    let cb;
 
-    var userAction1 = {
+    const userAction1 = {
       type: UserActionTypes.USER_SET_DATA,
       data: testUser1
     };
-    var userAction2 = {
+    const userAction2 = {
       type: UserActionTypes.USER_SET_DATA,
       data: testUser2
     };
-    var randomAction = {
+    const randomAction = {
       type: 'foo',
       data: testUser1
     };

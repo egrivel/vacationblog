@@ -2,9 +2,9 @@
 
 /* global XMLHttpRequest */
 
-var utils = {
+const utils = {
   getAsync: function getAsync(url, callback) {
-    var xmlHttp = new XMLHttpRequest();
+    const xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() {
       if ((xmlHttp.readyState === 4) && (xmlHttp.status === 200)) {
         callback(xmlHttp.responseText);
@@ -15,7 +15,7 @@ var utils = {
     xmlHttp.send(null);
   },
   postAsync: function(url, data, callback) {
-    var xmlHttp = new XMLHttpRequest();
+    const xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() {
       if ((xmlHttp.readyState === 4) && (xmlHttp.status === 200)) {
         callback(xmlHttp.responseText);

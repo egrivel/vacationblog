@@ -6,19 +6,19 @@
  * Provide information about the currently displayed journal entry.
  */
 
-var _ = require('lodash');
-var assign = require('object-assign');
+const _ = require('lodash');
+const assign = require('object-assign');
 
-var AppDispatcher = require('../AppDispatcher');
-var GenericStore = require('./GenericStore');
-var JournalActionTypes = require('../actions/JournalAction').Types;
+const AppDispatcher = require('../AppDispatcher');
+const GenericStore = require('./GenericStore');
+const JournalActionTypes = require('../actions/JournalAction').Types;
 
 // ---
 // All the data about the current journal.
 // ---
-var _journalData = {};
+let _journalData = {};
 
-var JournalStore = assign({}, GenericStore, {
+const JournalStore = assign({}, GenericStore, {
   /**
    * Reset the store contents, for testing purposes.
    */

@@ -1,37 +1,37 @@
 'use strict';
 
-var expect = require('chai').expect;
-var sinon = require('sinon');
-var React = require('react');
-var ReactDOMServer = require('react-dom/server');
-var TestUtils = require('react-addons-test-utils');
+const expect = require('chai').expect;
+const sinon = require('sinon');
+const React = require('react');
+const ReactDOMServer = require('react-dom/server');
+const TestUtils = require('react-addons-test-utils');
 
-var JournalEntry = require('../../src/components/JournalEntry.jsx');
-var FeedbackAction = require('../../src/actions/FeedbackAction');
+const JournalEntry = require('../../src/components/JournalEntry.jsx');
+const FeedbackAction = require('../../src/actions/FeedbackAction');
 
-var JournalStore = require('../../src/stores/JournalStore');
-var UserStore = require('../../src/stores/UserStore');
-var CommentStore = require('../../src/stores/CommentStore');
+const JournalStore = require('../../src/stores/JournalStore');
+const UserStore = require('../../src/stores/UserStore');
+const CommentStore = require('../../src/stores/CommentStore');
 
 describe('components/JournalEntry', function() {
-  var getJournalDataStub;
-  var getUserDataStub;
-  var getCommentDataStub;
-  var loadFeedbackStub;
+  let getJournalDataStub;
+  let getUserDataStub;
+  let getCommentDataStub;
+  let loadFeedbackStub;
 
-  var testUserId = 'test-user-1';
-  var testUserName = 'Test User';
-  var testTripId = 'test-trip-1';
-  var testJournalId = 'test-journal-1';
-  var testTitle = 'test-title';
-  var testText = 'test-text';
-  var testDate = '2016-01-01';
-  var testCreated = '2016-02-02';
-  var testPrevId = 'prev-id';
-  var testNextId = 'next-id';
-  var testCommentId = 'test-comment-1';
-  var testCommentText = 'test comment text';
-  var journalData;
+  const testUserId = 'test-user-1';
+  const testUserName = 'Test User';
+  const testTripId = 'test-trip-1';
+  const testJournalId = 'test-journal-1';
+  const testTitle = 'test-title';
+  const testText = 'test-text';
+  const testDate = '2016-01-01';
+  const testCreated = '2016-02-02';
+  const testPrevId = 'prev-id';
+  const testNextId = 'next-id';
+  const testCommentId = 'test-comment-1';
+  const testCommentText = 'test comment text';
+  let journalData;
 
   beforeEach(function() {
     getJournalDataStub = sinon.stub(JournalStore, 'getData',
@@ -77,8 +77,8 @@ describe('components/JournalEntry', function() {
   });
 
   describe('render journal entry', function() {
-    var element;
-    var props = {
+    let element;
+    const props = {
       tripId: testTripId,
       journalId: testJournalId
     };
@@ -88,16 +88,16 @@ describe('components/JournalEntry', function() {
 
     describe('structure', function() {
       it('<h3> elements', function() {
-        var journal = TestUtils.renderIntoDocument(element);
-        var h3List = TestUtils.scryRenderedDOMComponentsWithTag(journal, 'h3');
+        const journal = TestUtils.renderIntoDocument(element);
+        const h3List = TestUtils.scryRenderedDOMComponentsWithTag(journal, 'h3');
         expect(h3List.length).to.be.equal(2);
         expect(h3List[0].className).to.be.equal('');
         expect(h3List[1].className).to.be.equal('');
       });
 
       it('<p> elements', function() {
-        var journal = TestUtils.renderIntoDocument(element);
-        var parList = TestUtils.scryRenderedDOMComponentsWithTag(journal, 'p');
+        const journal = TestUtils.renderIntoDocument(element);
+        const parList = TestUtils.scryRenderedDOMComponentsWithTag(journal, 'p');
         expect(parList.length).to.be.equal(4);
         expect(parList[0].className).to.be.equal('prevnext');
         expect(parList[1].className).to.be.equal('text');
@@ -106,8 +106,8 @@ describe('components/JournalEntry', function() {
       });
 
       it('<div> elements', function() {
-        var journal = TestUtils.renderIntoDocument(element);
-        var divList = TestUtils.scryRenderedDOMComponentsWithTag(journal,
+        const journal = TestUtils.renderIntoDocument(element);
+        const divList = TestUtils.scryRenderedDOMComponentsWithTag(journal,
           'div');
         expect(divList.length).to.be.equal(6);
         expect(divList[0].className).to.be.equal('journalitem');
@@ -121,51 +121,51 @@ describe('components/JournalEntry', function() {
 
     describe('render title', function() {
       it('uses <h3>', function() {
-        var journal = TestUtils.renderIntoDocument(element);
-        var h3List = TestUtils.scryRenderedDOMComponentsWithTag(journal, 'h3');
+        const journal = TestUtils.renderIntoDocument(element);
+        const h3List = TestUtils.scryRenderedDOMComponentsWithTag(journal, 'h3');
         expect(h3List.length).to.be.equal(2);
       });
 
       it('contains title text', function() {
-        var markup = ReactDOMServer.renderToStaticMarkup(element);
+        const markup = ReactDOMServer.renderToStaticMarkup(element);
         expect(markup).to.contain(testTitle);
       });
 
       it('contains author name', function() {
-        var markup = ReactDOMServer.renderToStaticMarkup(element);
+        const markup = ReactDOMServer.renderToStaticMarkup(element);
         expect(markup).to.contain(testUserName);
       });
 
       it('contains author ID if name is not there', function() {
         journalData.userId = 'fake-user-ud';
         element = React.createElement(JournalEntry, props);
-        var markup = ReactDOMServer.renderToStaticMarkup(element);
+        const markup = ReactDOMServer.renderToStaticMarkup(element);
         expect(markup).to.not.contain(testUserName);
         expect(markup).to.contain(journalData.userId);
       });
 
       it('contains date', function() {
-        var markup = ReactDOMServer.renderToStaticMarkup(element);
+        const markup = ReactDOMServer.renderToStaticMarkup(element);
         expect(markup).to.contain('Friday January 1 2016');
       });
 
       it('contains created', function() {
-        var markup = ReactDOMServer.renderToStaticMarkup(element);
+        const markup = ReactDOMServer.renderToStaticMarkup(element);
         expect(markup).to.contain('Tuesday February 2 2016');
       });
     });
 
     describe('render prev-next', function() {
       it('render first prevnext', function() {
-        var journal = TestUtils.renderIntoDocument(element);
-        var parList = TestUtils.scryRenderedDOMComponentsWithTag(journal, 'p');
+        const journal = TestUtils.renderIntoDocument(element);
+        const parList = TestUtils.scryRenderedDOMComponentsWithTag(journal, 'p');
         expect(parList.length).to.be.equal(4);
         expect(parList[0].className).to.be.equal('prevnext');
       });
 
       it('render second prevnext', function() {
-        var journal = TestUtils.renderIntoDocument(element);
-        var parList = TestUtils.scryRenderedDOMComponentsWithTag(journal, 'p');
+        const journal = TestUtils.renderIntoDocument(element);
+        const parList = TestUtils.scryRenderedDOMComponentsWithTag(journal, 'p');
         expect(parList.length).to.be.equal(4);
         expect(parList[3].className).to.be.equal('prevnext');
       });
@@ -173,15 +173,15 @@ describe('components/JournalEntry', function() {
 
     describe('render content', function() {
       it('render paragraph', function() {
-        var journal = TestUtils.renderIntoDocument(element);
-        var parList = TestUtils.scryRenderedDOMComponentsWithTag(journal, 'p');
+        const journal = TestUtils.renderIntoDocument(element);
+        const parList = TestUtils.scryRenderedDOMComponentsWithTag(journal, 'p');
         expect(parList.length).to.be.equal(4);
         expect(parList[1].className).to.be.equal('text');
       });
 
       it('contains journal text', function() {
-        var journal = TestUtils.renderIntoDocument(element);
-        var parList = TestUtils.scryRenderedDOMComponentsWithTag(journal, 'p');
+        const journal = TestUtils.renderIntoDocument(element);
+        const parList = TestUtils.scryRenderedDOMComponentsWithTag(journal, 'p');
         expect(parList.length).to.be.equal(4);
         expect(parList[1].innerHTML).to.contain(testText);
       });
@@ -189,8 +189,8 @@ describe('components/JournalEntry', function() {
 
     describe('render feedback', function() {
       it('render div', function() {
-        var journal = TestUtils.renderIntoDocument(element);
-        var divList = TestUtils.scryRenderedDOMComponentsWithTag(journal,
+        const journal = TestUtils.renderIntoDocument(element);
+        const divList = TestUtils.scryRenderedDOMComponentsWithTag(journal,
           'div');
         expect(divList.length).to.be.equal(6);
         expect(divList[2].className).to.be.equal('feedback');
@@ -199,8 +199,8 @@ describe('components/JournalEntry', function() {
 
     describe('render comments', function() {
       it('render div', function() {
-        var journal = TestUtils.renderIntoDocument(element);
-        var divList = TestUtils.scryRenderedDOMComponentsWithTag(journal,
+        const journal = TestUtils.renderIntoDocument(element);
+        const divList = TestUtils.scryRenderedDOMComponentsWithTag(journal,
           'div');
         expect(divList.length).to.be.equal(6);
         expect(divList[3].className).to.be.equal('comments');
@@ -209,8 +209,8 @@ describe('components/JournalEntry', function() {
       });
 
       it('render text', function() {
-        var journal = TestUtils.renderIntoDocument(element);
-        var divList = TestUtils.scryRenderedDOMComponentsWithTag(journal,
+        const journal = TestUtils.renderIntoDocument(element);
+        const divList = TestUtils.scryRenderedDOMComponentsWithTag(journal,
           'div');
         expect(divList.length).to.be.equal(6);
         expect(divList[4].className).to.be.equal('commentBlock');

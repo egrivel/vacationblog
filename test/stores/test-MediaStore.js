@@ -1,22 +1,22 @@
 'use strict';
 
-var expect = require('chai').expect;
-var sinon = require('sinon');
+const expect = require('chai').expect;
+const sinon = require('sinon');
 
-var MediaActionTypes = require('../../src/actions/MediaAction').Types;
-var MediaStore = require('../../src/stores/MediaStore');
+const MediaActionTypes = require('../../src/actions/MediaAction').Types;
+const MediaStore = require('../../src/stores/MediaStore');
 
-var testTripId1 = '-test-trip-1';
-var testMediaId1 = '-test-media-1';
-var testMediaId2 = '-test-media-2';
+const testTripId1 = '-test-trip-1';
+const testMediaId1 = '-test-media-1';
+const testMediaId2 = '-test-media-2';
 
-var testMedia1 = {
+const testMedia1 = {
   tripId: testTripId1,
   mediaId: testMediaId1,
   mediaText: 'media text 1'
 };
 
-var testMedia2 = {
+const testMedia2 = {
   tripId: testTripId1,
   mediaId: testMediaId2,
   mediaText: 'media text 2'
@@ -86,7 +86,7 @@ describe('stores/MediaStore', function() {
       });
 
       describe('checking change emitter', function() {
-        var cb;
+        let cb;
 
         beforeEach(function() {
           cb = sinon.spy();
@@ -125,19 +125,19 @@ describe('stores/MediaStore', function() {
   });
 
   describe('Loading media in bulk', function() {
-    var mediaItem1 = {
+    const mediaItem1 = {
       tripId: testTripId1,
       mediaId: testMediaId1,
       title: 'title 1'
     };
 
-    var mediaItem2 = {
+    const mediaItem2 = {
       tripId: testTripId1,
       mediaId: testMediaId2,
       title: 'title 2'
     };
 
-    var bulkAction = {
+    const bulkAction = {
       type: MediaActionTypes.MEDIA_BULK_DATA,
       data: {
         count: 2,
@@ -158,7 +158,7 @@ describe('stores/MediaStore', function() {
     });
 
     describe('checking change emitter', function() {
-      var cb;
+      let cb;
 
       beforeEach(function() {
         cb = sinon.spy();

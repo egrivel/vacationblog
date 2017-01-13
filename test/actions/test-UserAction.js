@@ -1,18 +1,18 @@
 'use strict';
 
-var expect = require('chai').expect;
-var sinon = require('sinon');
+const expect = require('chai').expect;
+const sinon = require('sinon');
 
-var utils = require('../../src/actions/utils');
-var AppDispatcher = require('../../src/AppDispatcher');
-var UserAction = require('../../src/actions/UserAction');
+const utils = require('../../src/actions/utils');
+const AppDispatcher = require('../../src/AppDispatcher');
+const UserAction = require('../../src/actions/UserAction');
 
 describe('actions/UserAction', function() {
   describe('#loadUser', function() {
-    var testUserId = 'user-1';
-    var asyncStub;
-    var userLoadedStub;
-    var testData = {
+    const testUserId = 'user-1';
+    let asyncStub;
+    let userLoadedStub;
+    const testData = {
       userId: testUserId,
       data: 'more data'
     };
@@ -48,7 +48,7 @@ describe('actions/UserAction', function() {
   });
 
   describe('#_userLoaded', function() {
-    var dispatchStub;
+    let dispatchStub;
 
     beforeEach(function() {
       dispatchStub = sinon.stub(AppDispatcher, 'dispatch');
@@ -59,20 +59,20 @@ describe('actions/UserAction', function() {
     });
 
     it('dispatch is called with right info', function() {
-      var data = {
+      const data = {
         data: 'some data'
       };
       UserAction._userLoaded(data);
 
       expect(dispatchStub.args[0].length).to.be.equal(1);
-      var action = dispatchStub.args[0][0];
+      const action = dispatchStub.args[0][0];
       expect(action.type).to.be.equal(UserAction.Types.USER_SET_DATA);
       expect(action.data).to.be.deep.eql(data);
     });
   });
 
   describe('#setLoggedInUser', function() {
-    var dispatchStub;
+    let dispatchStub;
 
     beforeEach(function() {
       dispatchStub = sinon.stub(AppDispatcher, 'dispatch');
@@ -83,11 +83,11 @@ describe('actions/UserAction', function() {
     });
 
     it('dispatch is called with right info', function() {
-      var testUserId = 'test-user';
+      const testUserId = 'test-user';
       UserAction.setLoggedInUser(testUserId);
 
       expect(dispatchStub.args[0].length).to.be.equal(1);
-      var action = dispatchStub.args[0][0];
+      const action = dispatchStub.args[0][0];
       expect(action.type).to.be.equal(UserAction.Types.USER_SET_LOGGED_IN);
       expect(action.userId).to.be.equal(testUserId);
     });

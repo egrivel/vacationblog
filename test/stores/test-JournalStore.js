@@ -1,19 +1,19 @@
 'use strict';
 
-var expect = require('chai').expect;
-var sinon = require('sinon');
+const expect = require('chai').expect;
+const sinon = require('sinon');
 
-var JournalStore = require('../../src/stores/JournalStore');
-var JournalActionTypes = require('../../src/actions/JournalAction').Types;
+const JournalStore = require('../../src/stores/JournalStore');
+const JournalActionTypes = require('../../src/actions/JournalAction').Types;
 
-var testTripId1 = '-test-trip-1';
+const testTripId1 = '-test-trip-1';
 
-var testJournal1 = {
+const testJournal1 = {
   tripId: testTripId1,
   journalText: 'journal text 1'
 };
 
-var testJournal2 = {
+const testJournal2 = {
   tripId: testTripId1,
   journalText: 'journal text 2'
 };
@@ -66,7 +66,7 @@ describe('stores/JournalStore', function() {
       });
 
       it('setting existing journal does not emit change', function() {
-        var cb = sinon.spy();
+        const cb = sinon.spy();
         JournalStore.addChangeListener(cb);
 
         expect(cb.callCount).to.be.equal(0);
@@ -79,7 +79,7 @@ describe('stores/JournalStore', function() {
 
       it('setting existing journal with new content does emit change',
         function() {
-          var cb = sinon.spy();
+          const cb = sinon.spy();
           JournalStore.addChangeListener(cb);
 
           testJournal1.journalText = 'some other text';
@@ -93,7 +93,7 @@ describe('stores/JournalStore', function() {
       );
 
       it('setting new journal does emit change', function() {
-        var cb = sinon.spy();
+        const cb = sinon.spy();
         JournalStore.addChangeListener(cb);
 
         expect(cb.callCount).to.be.equal(0);
@@ -107,7 +107,7 @@ describe('stores/JournalStore', function() {
       });
 
       it('sending different action does not emit change', function() {
-        var cb = sinon.spy();
+        const cb = sinon.spy();
         JournalStore.addChangeListener(cb);
 
         expect(cb.callCount).to.be.equal(0);

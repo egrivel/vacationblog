@@ -1,9 +1,9 @@
 'use strict';
 
-var expect = require('chai').expect;
-var sinon = require('sinon');
+const expect = require('chai').expect;
+const sinon = require('sinon');
 
-var GenericStore = require('../../src/stores/GenericStore');
+const GenericStore = require('../../src/stores/GenericStore');
 
 describe('stores/GenericStore', function() {
   beforeEach(function() {
@@ -11,7 +11,7 @@ describe('stores/GenericStore', function() {
   });
 
   it('registered change listener gets called', function() {
-    var cb = sinon.spy();
+    const cb = sinon.spy();
 
     GenericStore.addChangeListener(cb);
     expect(cb.callCount).to.be.equal(0);
@@ -23,7 +23,7 @@ describe('stores/GenericStore', function() {
   });
 
   it('removed change listener does not get called', function() {
-    var cb = sinon.spy();
+    const cb = sinon.spy();
 
     // Register a change listener and make sure it is getting called
     GenericStore.addChangeListener(cb);
@@ -40,9 +40,9 @@ describe('stores/GenericStore', function() {
   });
 
   it('multiple change listeners all get called', function() {
-    var cb1 = sinon.spy();
-    var cb2 = sinon.spy();
-    var cb3 = sinon.spy();
+    const cb1 = sinon.spy();
+    const cb2 = sinon.spy();
+    const cb3 = sinon.spy();
 
     // Register a change listener and make sure it is getting called
     GenericStore.addChangeListener(cb1);

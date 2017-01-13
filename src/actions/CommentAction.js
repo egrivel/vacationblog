@@ -1,11 +1,11 @@
 'use strict';
 
-var AppDispatcher = require('../AppDispatcher');
-var UserAction = require('./UserAction');
-var UserStore = require('../stores/UserStore');
-var utils = require('./utils');
+const AppDispatcher = require('../AppDispatcher');
+const UserAction = require('./UserAction');
+const UserStore = require('../stores/UserStore');
+const utils = require('./utils');
 
-var CommentAction = {
+const CommentAction = {
   Types: {
     COMMENT_DATA: 'COMMENT_DATA',
     COMMENT_SET_EDITING: 'COMMENT_SET_EDITING',
@@ -18,12 +18,12 @@ var CommentAction = {
    * @param {id} referenceId - unique ID of the specified item.
    */
   loadComments: function(tripId, referenceId) {
-    var url = 'api/getComment.php?' +
+    const url = 'api/getComment.php?' +
       'tripId=' + encodeURIComponent(tripId) +
       '&referenceId=' + encodeURIComponent(referenceId);
 
     utils.getAsync(url, function(response) {
-      var data = JSON.parse(response);
+      const data = JSON.parse(response);
       CommentAction._commentsLoaded(tripId, referenceId, data);
     });
   },
@@ -55,11 +55,11 @@ var CommentAction = {
    * @param {ID} referenceId - reference ID for item to load
    */
   recursivelyLoadComments: function(tripId, referenceId) {
-    var url = 'api/getComment.php?' +
+    const url = 'api/getComment.php?' +
       'tripId=' + encodeURIComponent(tripId) +
       '&referenceId=' + encodeURIComponent(referenceId);
     utils.getAsync(url, function(response) {
-      var data = JSON.parse(response);
+      const data = JSON.parse(response);
       CommentAction._recursiveCommentsLoaded(tripId, referenceId, data);
     });
   },
@@ -83,7 +83,7 @@ var CommentAction = {
       }
     });
 
-    for (var i = 0; i < data.count; i++) {
+    for (let i = 0; i < data.count; i++) {
       if (data.list[i].userId) {
         UserAction.loadUser(data.list[i].userId);
       }
@@ -92,8 +92,8 @@ var CommentAction = {
   },
 
   postComment: function(tripId, referenceId, commentId, text) {
-    var userId = UserStore.getLoggedInUser();
-    var data = {
+    const userId = UserStore.getLoggedInUser();
+    const data = {
       userId: userId,
       tripId: tripId,
       referenceId: referenceId,
@@ -101,7 +101,7 @@ var CommentAction = {
       commentText: text
     };
     utils.postAsync('api/putComment.php', data, function(response) {
-      var data = JSON.parse(response);
+      const data = JSON.parse(response);
       if (data.resultCode === '200') {
         CommentAction.recursivelyLoadComments(tripId, referenceId);
       }

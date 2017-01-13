@@ -1,26 +1,26 @@
 'use strict';
 
-var _ = require('lodash');
-var sinon = require('sinon');
-var expect = require('chai').expect;
-var React = require('react');
-var TestUtils = require('react-addons-test-utils');
+const _ = require('lodash');
+const sinon = require('sinon');
+const expect = require('chai').expect;
+const React = require('react');
+const TestUtils = require('react-addons-test-utils');
 
-var Image = require('../../src/components/Image.jsx');
-var Orientation = require('../../src/components/utils').orientation;
+const Image = require('../../src/components/Image.jsx');
+const Orientation = require('../../src/components/utils').orientation;
 
 describe('components/Image', function() {
-  var testTripId1 = 'test-tripid-1';
-  var testImageId1 = 'test-imageid-1';
-  var testImageId2 = 'test-imageid-2';
-  var testFormat1 = Orientation.LANDSCAPE;
-  var testFormat2 = Orientation.PORTRAIT;
-  var testClassName1 = 'class-1';
-  var testClassName2 = 'class-2';
-  var testCaption1 = 'test captions 1';
-  var testCaption2 = 'test captions 2';
-  var testOnClick = _.noop;
-  var props;
+  const testTripId1 = 'test-tripid-1';
+  const testImageId1 = 'test-imageid-1';
+  const testImageId2 = 'test-imageid-2';
+  const testFormat1 = Orientation.LANDSCAPE;
+  const testFormat2 = Orientation.PORTRAIT;
+  const testClassName1 = 'class-1';
+  const testClassName2 = 'class-2';
+  const testCaption1 = 'test captions 1';
+  const testCaption2 = 'test captions 2';
+  const testOnClick = _.noop;
+  let props;
 
   beforeEach(function() {
     props = {
@@ -34,7 +34,7 @@ describe('components/Image', function() {
   });
 
   describe('#propTypes', function() {
-    var logStub;
+    let logStub;
 
     beforeEach(function() {
       // React will give errors about the proptyps on the error console,
@@ -149,9 +149,9 @@ describe('components/Image', function() {
 
   describe('#render', function() {
     it('image ID ends up as part of the src (1)', function() {
-      var component =
+      const component =
        TestUtils.renderIntoDocument(React.createElement(Image, props));
-      var img = TestUtils.findRenderedDOMComponentWithTag(
+      const img = TestUtils.findRenderedDOMComponentWithTag(
         component,
         'img'
       );
@@ -161,9 +161,9 @@ describe('components/Image', function() {
 
     it('image ID ends up as part of the src (2)', function() {
       props.imageId = testImageId2;
-      var component =
+      const component =
        TestUtils.renderIntoDocument(React.createElement(Image, props));
-      var img = TestUtils.findRenderedDOMComponentWithTag(
+      const img = TestUtils.findRenderedDOMComponentWithTag(
         component,
         'img'
       );
@@ -172,9 +172,9 @@ describe('components/Image', function() {
     });
 
     it('format ends up as part of the className (1)', function() {
-      var component =
+      const component =
        TestUtils.renderIntoDocument(React.createElement(Image, props));
-      var img = TestUtils.findRenderedDOMComponentWithTag(
+      const img = TestUtils.findRenderedDOMComponentWithTag(
         component,
         'img'
       );
@@ -184,9 +184,9 @@ describe('components/Image', function() {
 
     it('format ends up as part of the className (2)', function() {
       props.format = testFormat2;
-      var component =
+      const component =
        TestUtils.renderIntoDocument(React.createElement(Image, props));
-      var img = TestUtils.findRenderedDOMComponentWithTag(
+      const img = TestUtils.findRenderedDOMComponentWithTag(
         component,
         'img'
       );
@@ -195,9 +195,9 @@ describe('components/Image', function() {
     });
 
     it('className ends up as part of the className (1)', function() {
-      var component =
+      const component =
        TestUtils.renderIntoDocument(React.createElement(Image, props));
-      var img = TestUtils.findRenderedDOMComponentWithTag(
+      const img = TestUtils.findRenderedDOMComponentWithTag(
         component,
         'img'
       );
@@ -207,9 +207,9 @@ describe('components/Image', function() {
 
     it('className ends up as part of the className (2)', function() {
       props.className = testClassName2;
-      var component =
+      const component =
        TestUtils.renderIntoDocument(React.createElement(Image, props));
-      var img = TestUtils.findRenderedDOMComponentWithTag(
+      const img = TestUtils.findRenderedDOMComponentWithTag(
         component,
         'img'
       );
@@ -218,9 +218,9 @@ describe('components/Image', function() {
     });
 
     it('caption ends up as part of the title (1)', function() {
-      var component =
+      const component =
        TestUtils.renderIntoDocument(React.createElement(Image, props));
-      var img = TestUtils.findRenderedDOMComponentWithTag(
+      const img = TestUtils.findRenderedDOMComponentWithTag(
         component,
         'img'
       );
@@ -230,9 +230,9 @@ describe('components/Image', function() {
 
     it('caption ends up as part of the title (2)', function() {
       props.caption = testCaption2;
-      var component =
+      const component =
        TestUtils.renderIntoDocument(React.createElement(Image, props));
-      var img = TestUtils.findRenderedDOMComponentWithTag(
+      const img = TestUtils.findRenderedDOMComponentWithTag(
         component,
         'img'
       );
@@ -243,11 +243,11 @@ describe('components/Image', function() {
 
   describe('#onClick', function() {
     it('callback gets called if image is clicked', function() {
-      var callback = sinon.stub();
+      const callback = sinon.stub();
       props.onClick = callback;
-      var component =
+      const component =
         TestUtils.renderIntoDocument(React.createElement(Image, props));
-      var img = TestUtils.findRenderedDOMComponentWithTag(
+      const img = TestUtils.findRenderedDOMComponentWithTag(
         component,
         'img'
       );

@@ -1,24 +1,24 @@
 'use strict';
 
-var expect = require('chai').expect;
-var sinon = require('sinon');
-var React = require('react');
+const expect = require('chai').expect;
+const sinon = require('sinon');
+const React = require('react');
 // var ReactDOM = require('react-dom');
-var ReactDOMServer = require('react-dom/server');
-var TestUtils = require('react-addons-test-utils');
+const ReactDOMServer = require('react-dom/server');
+const TestUtils = require('react-addons-test-utils');
 
-var JournalParagraph = require('../../src/components/JournalParagraph.jsx');
-var MediaStore = require('../../src/stores/MediaStore');
+const JournalParagraph = require('../../src/components/JournalParagraph.jsx');
+const MediaStore = require('../../src/stores/MediaStore');
 
 describe('components/JournalParagraph', function() {
-  var mediaDataStub;
-  var testTripId1 = 'test-trip-1';
+  let mediaDataStub;
+  const testTripId1 = 'test-trip-1';
 
   beforeEach(function() {
     mediaDataStub = sinon.stub(MediaStore, 'getData',
       function(tripId, mediaId) {
-        var height;
-        var width;
+        let height;
+        let width;
         switch (mediaId) {
           case '00000000-000000':
           case '22222222-222222':
@@ -56,10 +56,10 @@ describe('components/JournalParagraph', function() {
   });
 
   describe('plain text paragraph', function() {
-    var testText1 = 'test text 1';
-    var testText2 = 'test with &aacute; a-acute';
-    var element;
-    var props = {
+    const testText1 = 'test text 1';
+    const testText2 = 'test with &aacute; a-acute';
+    let element;
+    const props = {
       tripId: testTripId1,
       text: testText1
     };
@@ -69,33 +69,33 @@ describe('components/JournalParagraph', function() {
     });
 
     it('results in a single paragraph', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(1);
     });
 
     it('paragraph has text class', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(1);
       expect(parList[0].className).to.be.equal('text');
     });
 
     it('results in no images', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
+      const par = TestUtils.renderIntoDocument(element);
+      const imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
       expect(imgList.length).to.be.equal(0);
     });
 
     it('text is rendered', function() {
-      var markup = ReactDOMServer.renderToStaticMarkup(element);
+      const markup = ReactDOMServer.renderToStaticMarkup(element);
       expect(markup).to.contain(testText1);
     });
 
     it('entities are replaced', function() {
       props.text = testText2;
       element = React.createElement(JournalParagraph, props);
-      var markup = ReactDOMServer.renderToStaticMarkup(element);
+      const markup = ReactDOMServer.renderToStaticMarkup(element);
       expect(markup).to.not.contain(testText2);
       expect(markup).to.contain('test with \u00e1 a-acute');
     });
@@ -107,9 +107,9 @@ describe('components/JournalParagraph', function() {
   });
 
   describe('text with image paragraph', function() {
-    var testText1 = 'test text [IMG 00000000-000000] with image';
-    var element;
-    var props = {
+    const testText1 = 'test text [IMG 00000000-000000] with image';
+    let element;
+    const props = {
       tripId: testTripId1,
       text: testText1
     };
@@ -119,26 +119,26 @@ describe('components/JournalParagraph', function() {
     });
 
     it('results in a single paragraph', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(1);
     });
 
     it('paragraph has img-text class', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(1);
       expect(parList[0].className).to.be.equal('img-text');
     });
 
     it('results in one image', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
+      const par = TestUtils.renderIntoDocument(element);
+      const imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
       expect(imgList.length).to.be.equal(1);
     });
 
     it('text is rendered', function() {
-      var markup = ReactDOMServer.renderToStaticMarkup(element);
+      const markup = ReactDOMServer.renderToStaticMarkup(element);
       expect(markup).to.contain('test text with image');
     });
 
@@ -151,10 +151,10 @@ describe('components/JournalParagraph', function() {
   });
 
   describe('text with multiple images paragraph', function() {
-    var testText1 = 'test text [IMG 00000000-000000] ' +
+    const testText1 = 'test text [IMG 00000000-000000] ' +
       'with [IMG 11111111-111111] images';
-    var element;
-    var props = {
+    let element;
+    const props = {
       tripId: testTripId1,
       text: testText1
     };
@@ -164,33 +164,33 @@ describe('components/JournalParagraph', function() {
     });
 
     it('results in a two paragraphs', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(2);
     });
 
     it('first paragraph has text class', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(2);
       expect(parList[0].className).to.be.equal('text');
     });
 
     it('second paragraph has images class', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(2);
       expect(parList[1].className).to.be.equal('images two hv');
     });
 
     it('results in two images', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
+      const par = TestUtils.renderIntoDocument(element);
+      const imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
       expect(imgList.length).to.be.equal(2);
     });
 
     it('text is rendered', function() {
-      var markup = ReactDOMServer.renderToStaticMarkup(element);
+      const markup = ReactDOMServer.renderToStaticMarkup(element);
       expect(markup).to.contain('test text with images');
     });
 
@@ -205,9 +205,9 @@ describe('components/JournalParagraph', function() {
   });
 
   describe('single image paragraph', function() {
-    var testText1 = ' [IMG 00000000-000000] ';
-    var element;
-    var props = {
+    const testText1 = ' [IMG 00000000-000000] ';
+    let element;
+    const props = {
       tripId: testTripId1,
       text: testText1
     };
@@ -217,26 +217,26 @@ describe('components/JournalParagraph', function() {
     });
 
     it('results in a one paragraph', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(1);
     });
 
     it('paragraph has images class', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(1);
       expect(parList[0].className).to.be.equal('images');
     });
 
     it('results in one image', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
+      const par = TestUtils.renderIntoDocument(element);
+      const imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
       expect(imgList.length).to.be.equal(1);
     });
 
     it('no text is rendered', function() {
-      var markup = ReactDOMServer.renderToStaticMarkup(element);
+      const markup = ReactDOMServer.renderToStaticMarkup(element);
       expect(markup).to.not.contain('test text with images');
     });
 
@@ -249,9 +249,9 @@ describe('components/JournalParagraph', function() {
   });
 
   describe('two images mixed paragraph', function() {
-    var testText1 = ' [IMG 00000000-000000]  [IMG 11111111-111111] ';
-    var element;
-    var props = {
+    const testText1 = ' [IMG 00000000-000000]  [IMG 11111111-111111] ';
+    let element;
+    const props = {
       tripId: testTripId1,
       text: testText1
     };
@@ -261,26 +261,26 @@ describe('components/JournalParagraph', function() {
     });
 
     it('results in a one paragraph', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(1);
     });
 
     it('paragraph has images class', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(1);
       expect(parList[0].className).to.be.equal('images two hv');
     });
 
     it('results in two images', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
+      const par = TestUtils.renderIntoDocument(element);
+      const imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
       expect(imgList.length).to.be.equal(2);
     });
 
     it('no text is rendered', function() {
-      var markup = ReactDOMServer.renderToStaticMarkup(element);
+      const markup = ReactDOMServer.renderToStaticMarkup(element);
       expect(markup).to.not.contain('test text with images');
     });
 
@@ -295,9 +295,9 @@ describe('components/JournalParagraph', function() {
   });
 
   describe('two images landscape paragraph', function() {
-    var testText1 = ' [IMG 00000000-000000]  [IMG 22222222-222222] ';
-    var element;
-    var props = {
+    const testText1 = ' [IMG 00000000-000000]  [IMG 22222222-222222] ';
+    let element;
+    const props = {
       tripId: testTripId1,
       text: testText1
     };
@@ -307,26 +307,26 @@ describe('components/JournalParagraph', function() {
     });
 
     it('results in a one paragraph', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(1);
     });
 
     it('paragraph has images class', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(1);
       expect(parList[0].className).to.be.equal('images two hh');
     });
 
     it('results in two images', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
+      const par = TestUtils.renderIntoDocument(element);
+      const imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
       expect(imgList.length).to.be.equal(2);
     });
 
     it('no text is rendered', function() {
-      var markup = ReactDOMServer.renderToStaticMarkup(element);
+      const markup = ReactDOMServer.renderToStaticMarkup(element);
       expect(markup).to.not.contain('test text with images');
     });
 
@@ -341,9 +341,9 @@ describe('components/JournalParagraph', function() {
   });
 
   describe('two images portrait paragraph', function() {
-    var testText1 = ' [IMG 11111111-111111]  [IMG 33333333-333333] ';
-    var element;
-    var props = {
+    const testText1 = ' [IMG 11111111-111111]  [IMG 33333333-333333] ';
+    let element;
+    const props = {
       tripId: testTripId1,
       text: testText1
     };
@@ -353,26 +353,26 @@ describe('components/JournalParagraph', function() {
     });
 
     it('results in a one paragraph', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(1);
     });
 
     it('paragraph has images class', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(1);
       expect(parList[0].className).to.be.equal('images two vv');
     });
 
     it('results in two images', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
+      const par = TestUtils.renderIntoDocument(element);
+      const imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
       expect(imgList.length).to.be.equal(2);
     });
 
     it('no text is rendered', function() {
-      var markup = ReactDOMServer.renderToStaticMarkup(element);
+      const markup = ReactDOMServer.renderToStaticMarkup(element);
       expect(markup).to.not.contain('test text with images');
     });
 
@@ -387,10 +387,10 @@ describe('components/JournalParagraph', function() {
   });
 
   describe('three images mixed paragraph', function() {
-    var testText1 = ' [IMG 00000000-000000]  [IMG 11111111-111111] ' +
+    const testText1 = ' [IMG 00000000-000000]  [IMG 11111111-111111] ' +
       '[IMG 22222222-222222]';
-    var element;
-    var props = {
+    let element;
+    const props = {
       tripId: testTripId1,
       text: testText1
     };
@@ -400,26 +400,26 @@ describe('components/JournalParagraph', function() {
     });
 
     it('results in a one paragraph', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(1);
     });
 
     it('paragraph has images class', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(1);
       expect(parList[0].className).to.be.equal('images three hhv');
     });
 
     it('results in three images', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
+      const par = TestUtils.renderIntoDocument(element);
+      const imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
       expect(imgList.length).to.be.equal(3);
     });
 
     it('no text is rendered', function() {
-      var markup = ReactDOMServer.renderToStaticMarkup(element);
+      const markup = ReactDOMServer.renderToStaticMarkup(element);
       expect(markup).to.not.contain('test text with images');
     });
 
@@ -436,10 +436,10 @@ describe('components/JournalParagraph', function() {
   });
 
   describe('three images portrait paragraph', function() {
-    var testText1 = ' [IMG 11111111-111111]  [IMG 33333333-333333] ' +
+    const testText1 = ' [IMG 11111111-111111]  [IMG 33333333-333333] ' +
       '[IMG 55555555-555555]';
-    var element;
-    var props = {
+    let element;
+    const props = {
       tripId: testTripId1,
       text: testText1
     };
@@ -449,26 +449,26 @@ describe('components/JournalParagraph', function() {
     });
 
     it('results in a one paragraph', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(1);
     });
 
     it('paragraph has images class', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(1);
       expect(parList[0].className).to.be.equal('images three vvv');
     });
 
     it('results in three images', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
+      const par = TestUtils.renderIntoDocument(element);
+      const imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
       expect(imgList.length).to.be.equal(3);
     });
 
     it('no text is rendered', function() {
-      var markup = ReactDOMServer.renderToStaticMarkup(element);
+      const markup = ReactDOMServer.renderToStaticMarkup(element);
       expect(markup).to.not.contain('test text with images');
     });
 
@@ -485,10 +485,10 @@ describe('components/JournalParagraph', function() {
   });
 
   describe('three images landscape paragraph', function() {
-    var testText1 = ' [IMG 00000000-000000]  [IMG 22222222-222222] ' +
+    const testText1 = ' [IMG 00000000-000000]  [IMG 22222222-222222] ' +
       '[IMG 44444444-444444]';
-    var element;
-    var props = {
+    let element;
+    const props = {
       tripId: testTripId1,
       text: testText1
     };
@@ -498,26 +498,26 @@ describe('components/JournalParagraph', function() {
     });
 
     it('results in a one paragraph', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(1);
     });
 
     it('paragraph has images class', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(1);
       expect(parList[0].className).to.be.equal('images three hhh');
     });
 
     it('results in three images', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
+      const par = TestUtils.renderIntoDocument(element);
+      const imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
       expect(imgList.length).to.be.equal(3);
     });
 
     it('no text is rendered', function() {
-      var markup = ReactDOMServer.renderToStaticMarkup(element);
+      const markup = ReactDOMServer.renderToStaticMarkup(element);
       expect(markup).to.not.contain('test text with images');
     });
 
@@ -534,10 +534,10 @@ describe('components/JournalParagraph', function() {
   });
 
   describe('four images paragraph', function() {
-    var testText1 = ' [IMG 00000000-000000]  [IMG 11111111-111111] ' +
+    const testText1 = ' [IMG 00000000-000000]  [IMG 11111111-111111] ' +
       '[IMG 22222222-222222] [IMG 33333333-333333]';
-    var element;
-    var props = {
+    let element;
+    const props = {
       tripId: testTripId1,
       text: testText1
     };
@@ -547,33 +547,33 @@ describe('components/JournalParagraph', function() {
     });
 
     it('results in a two paragraphs', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(2);
     });
 
     it('first paragraph has images class', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(2);
       expect(parList[0].className).to.be.equal('images two hv');
     });
 
     it('second paragraph has images class', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(2);
       expect(parList[1].className).to.be.equal('images two hv');
     });
 
     it('results in four images', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
+      const par = TestUtils.renderIntoDocument(element);
+      const imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
       expect(imgList.length).to.be.equal(4);
     });
 
     it('no text is rendered', function() {
-      var markup = ReactDOMServer.renderToStaticMarkup(element);
+      const markup = ReactDOMServer.renderToStaticMarkup(element);
       expect(markup).to.not.contain('test text with images');
     });
 
@@ -592,10 +592,10 @@ describe('components/JournalParagraph', function() {
   });
 
   describe('five images paragraph', function() {
-    var testText1 = ' [IMG 00000000-000000]  [IMG 11111111-111111] ' +
+    const testText1 = ' [IMG 00000000-000000]  [IMG 11111111-111111] ' +
       '[IMG 22222222-222222] [IMG 33333333-333333] [IMG 44444444-444444]';
-    var element;
-    var props = {
+    let element;
+    const props = {
       tripId: testTripId1,
       text: testText1
     };
@@ -605,33 +605,33 @@ describe('components/JournalParagraph', function() {
     });
 
     it('results in a two paragraphs', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(2);
     });
 
     it('first paragraph has images class', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(2);
       expect(parList[0].className).to.be.equal('images three hhv');
     });
 
     it('second paragraph has images class', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(2);
       expect(parList[1].className).to.be.equal('images two hv');
     });
 
     it('results in five images', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
+      const par = TestUtils.renderIntoDocument(element);
+      const imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
       expect(imgList.length).to.be.equal(5);
     });
 
     it('no text is rendered', function() {
-      var markup = ReactDOMServer.renderToStaticMarkup(element);
+      const markup = ReactDOMServer.renderToStaticMarkup(element);
       expect(markup).to.not.contain('test text with images');
     });
 
@@ -652,11 +652,11 @@ describe('components/JournalParagraph', function() {
   });
 
   describe('six images paragraph', function() {
-    var testText1 = ' [IMG 00000000-000000]  [IMG 11111111-111111] ' +
+    const testText1 = ' [IMG 00000000-000000]  [IMG 11111111-111111] ' +
       '[IMG 22222222-222222] [IMG 33333333-333333] [IMG 44444444-444444]' +
       '[IMG 55555555-555555]';
-    var element;
-    var props = {
+    let element;
+    const props = {
       tripId: testTripId1,
       text: testText1
     };
@@ -666,33 +666,33 @@ describe('components/JournalParagraph', function() {
     });
 
     it('results in a two paragraphs', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(2);
     });
 
     it('first paragraph has images class', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(2);
       expect(parList[0].className).to.be.equal('images three hhv');
     });
 
     it('second paragraph has images class', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(2);
       expect(parList[1].className).to.be.equal('images three hvv');
     });
 
     it('results in six images', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
+      const par = TestUtils.renderIntoDocument(element);
+      const imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
       expect(imgList.length).to.be.equal(6);
     });
 
     it('no text is rendered', function() {
-      var markup = ReactDOMServer.renderToStaticMarkup(element);
+      const markup = ReactDOMServer.renderToStaticMarkup(element);
       expect(markup).to.not.contain('test text with images');
     });
 
@@ -715,11 +715,11 @@ describe('components/JournalParagraph', function() {
   });
 
   describe('seven images paragraph', function() {
-    var testText1 = ' [IMG 00000000-000000]  [IMG 11111111-111111] ' +
+    const testText1 = ' [IMG 00000000-000000]  [IMG 11111111-111111] ' +
       '[IMG 22222222-222222] [IMG 33333333-333333] [IMG 44444444-444444]' +
       '[IMG 55555555-555555][IMG 66666666-666666]';
-    var element;
-    var props = {
+    let element;
+    const props = {
       tripId: testTripId1,
       text: testText1
     };
@@ -729,40 +729,40 @@ describe('components/JournalParagraph', function() {
     });
 
     it('results in a three paragraphs', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(3);
     });
 
     it('first paragraph has images class', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(3);
       expect(parList[0].className).to.be.equal('images three hhv');
     });
 
     it('second paragraph has images class', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(3);
       expect(parList[1].className).to.be.equal('images two hv');
     });
 
     it('third paragraph has images class', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(3);
       expect(parList[2].className).to.be.equal('images two hv');
     });
 
     it('results in six images', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
+      const par = TestUtils.renderIntoDocument(element);
+      const imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
       expect(imgList.length).to.be.equal(7);
     });
 
     it('no text is rendered', function() {
-      var markup = ReactDOMServer.renderToStaticMarkup(element);
+      const markup = ReactDOMServer.renderToStaticMarkup(element);
       expect(markup).to.not.contain('test text with images');
     });
 
@@ -787,11 +787,11 @@ describe('components/JournalParagraph', function() {
   });
 
   describe('seven images with text paragraph', function() {
-    var testText1 = ' [IMG 00000000-000000]  the[IMG 11111111-111111]text ' +
+    const testText1 = ' [IMG 00000000-000000]  the[IMG 11111111-111111]text ' +
       '[IMG 22222222-222222] [IMG 33333333-333333]is [IMG 44444444-444444]' +
       '[IMG 55555555-555555][IMG 66666666-666666]included';
-    var element;
-    var props = {
+    let element;
+    const props = {
       tripId: testTripId1,
       text: testText1
     };
@@ -801,47 +801,47 @@ describe('components/JournalParagraph', function() {
     });
 
     it('results in a four paragraphs', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(4);
     });
 
     it('first paragraph has text class', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(4);
       expect(parList[0].className).to.be.equal('text');
     });
 
     it('second paragraph has images class', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(4);
       expect(parList[1].className).to.be.equal('images three hhv');
     });
 
     it('third paragraph has images class', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(4);
       expect(parList[2].className).to.be.equal('images two hv');
     });
 
     it('fourth paragraph has images class', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
+      const par = TestUtils.renderIntoDocument(element);
+      const parList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'p');
       expect(parList.length).to.be.equal(4);
       expect(parList[3].className).to.be.equal('images two hv');
     });
 
     it('results in six images', function() {
-      var par = TestUtils.renderIntoDocument(element);
-      var imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
+      const par = TestUtils.renderIntoDocument(element);
+      const imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
       expect(imgList.length).to.be.equal(7);
     });
 
     it('text is rendered', function() {
-      var markup = ReactDOMServer.renderToStaticMarkup(element);
+      const markup = ReactDOMServer.renderToStaticMarkup(element);
       expect(markup).to.contain('the text is included');
     });
 
@@ -866,13 +866,13 @@ describe('components/JournalParagraph', function() {
   });
 
   describe('modal window', function() {
-    var testText1 = 'test text [IMG 00000000-000000] with image';
-    var element;
-    var props = {
+    const testText1 = 'test text [IMG 00000000-000000] with image';
+    let element;
+    const props = {
       tripId: testTripId1,
       text: testText1
     };
-    var par;
+    let par;
 
     beforeEach(function() {
       element = React.createElement(JournalParagraph, props);
@@ -881,14 +881,14 @@ describe('components/JournalParagraph', function() {
 
     describe('before modal', function() {
       it('image list', function() {
-        var imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
+        const imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
         expect(imgList.length).to.equal(1);
         expect(imgList[0].className).to.be.equal('landscape');
         expect(imgList[0].src).to.contain('00000000-000000');
       });
 
       it('div list', function() {
-        var divList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'div');
+        const divList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'div');
         expect(divList.length).to.be.equal(1);
         expect(divList[0].className).to.be.equal('');
       });
@@ -896,12 +896,12 @@ describe('components/JournalParagraph', function() {
 
     describe('click brings up modal', function() {
       beforeEach(function() {
-        var imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
+        const imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
         TestUtils.Simulate.click(imgList[0]);
       });
 
       it('image list', function() {
-        var imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
+        const imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
         expect(imgList.length).to.equal(2);
         expect(imgList[0].className).to.be.equal('landscape', 'first image');
         expect(imgList[0].src).to.contain('00000000-000000');
@@ -911,7 +911,7 @@ describe('components/JournalParagraph', function() {
       });
 
       it('div list', function() {
-        var divList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'div');
+        const divList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'div');
         expect(divList.length).to.be.equal(4);
         expect(divList[0].className).to.be.equal('');
         expect(divList[1].className).to.be.equal('modal');
@@ -922,21 +922,21 @@ describe('components/JournalParagraph', function() {
 
     describe('second click removes modal', function() {
       beforeEach(function() {
-        var imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
+        let imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
         TestUtils.Simulate.click(imgList[0]);
         imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
         TestUtils.Simulate.click(imgList[0]);
       });
 
       it('image list', function() {
-        var imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
+        const imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
         expect(imgList.length).to.equal(1);
         expect(imgList[0].className).to.be.equal('landscape');
         expect(imgList[0].src).to.contain('00000000-000000');
       });
 
       it('div list', function() {
-        var divList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'div');
+        const divList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'div');
         expect(divList.length).to.be.equal(1);
         expect(divList[0].className).to.be.equal('');
       });
@@ -944,7 +944,7 @@ describe('components/JournalParagraph', function() {
 
     describe('clicking on modal removes modal', function() {
       beforeEach(function() {
-        var imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
+        let imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
         TestUtils.Simulate.click(imgList[0]);
         imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'div');
         // second div is the modal div
@@ -952,14 +952,14 @@ describe('components/JournalParagraph', function() {
       });
 
       it('image list', function() {
-        var imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
+        const imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
         expect(imgList.length).to.equal(1);
         expect(imgList[0].className).to.be.equal('landscape');
         expect(imgList[0].src).to.contain('00000000-000000');
       });
 
       it('div list', function() {
-        var divList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'div');
+        const divList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'div');
         expect(divList.length).to.be.equal(1);
         expect(divList[0].className).to.be.equal('');
       });
@@ -968,100 +968,100 @@ describe('components/JournalParagraph', function() {
 
   describe('miscellaneous conditions', function() {
     it('failing media info results in landscape', function() {
-      var testText1 = ' [IMG 99999999-999999] ';
-      var props = {
+      const testText1 = ' [IMG 99999999-999999] ';
+      const props = {
         tripId: testTripId1,
         text: testText1
       };
 
-      var element = React.createElement(JournalParagraph, props);
-      var par = TestUtils.renderIntoDocument(element);
-      var imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
+      const element = React.createElement(JournalParagraph, props);
+      const par = TestUtils.renderIntoDocument(element);
+      const imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
       expect(imgList.length).to.be.equal(1);
       expect(imgList[0].className).to.contain('landscape');
     });
 
     it('img tag without start', function() {
-      var testText1 = ' IMG 00000000-000000] ';
-      var props = {
+      const testText1 = ' IMG 00000000-000000] ';
+      const props = {
         tripId: testTripId1,
         text: testText1
       };
 
-      var element = React.createElement(JournalParagraph, props);
-      var par = TestUtils.renderIntoDocument(element);
-      var imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
+      const element = React.createElement(JournalParagraph, props);
+      const par = TestUtils.renderIntoDocument(element);
+      const imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
       expect(imgList.length).to.be.equal(0);
 
-      var markup = ReactDOMServer.renderToStaticMarkup(element);
+      const markup = ReactDOMServer.renderToStaticMarkup(element);
       expect(markup).to.contain(' IMG 00000000-000000]');
     });
 
     it('img tag without end', function() {
-      var testText1 = ' [IMG 00000000-000000 ';
-      var props = {
+      const testText1 = ' [IMG 00000000-000000 ';
+      const props = {
         tripId: testTripId1,
         text: testText1
       };
 
-      var element = React.createElement(JournalParagraph, props);
-      var par = TestUtils.renderIntoDocument(element);
-      var imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
+      const element = React.createElement(JournalParagraph, props);
+      const par = TestUtils.renderIntoDocument(element);
+      const imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
       expect(imgList.length).to.be.equal(0);
 
-      var markup = ReactDOMServer.renderToStaticMarkup(element);
+      const markup = ReactDOMServer.renderToStaticMarkup(element);
       expect(markup).to.contain(' [IMG 00000000-000000 ');
     });
 
     it('invalid img tag', function() {
-      var testText1 = ' [IMG 123+456] ';
-      var props = {
+      const testText1 = ' [IMG 123+456] ';
+      const props = {
         tripId: testTripId1,
         text: testText1
       };
 
-      var element = React.createElement(JournalParagraph, props);
-      var par = TestUtils.renderIntoDocument(element);
-      var imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
+      const element = React.createElement(JournalParagraph, props);
+      const par = TestUtils.renderIntoDocument(element);
+      const imgList = TestUtils.scryRenderedDOMComponentsWithTag(par, 'img');
       expect(imgList.length).to.be.equal(0);
 
-      var markup = ReactDOMServer.renderToStaticMarkup(element);
+      const markup = ReactDOMServer.renderToStaticMarkup(element);
       expect(markup).to.contain(' [IMG 123+456] ');
     });
 
     it('empty text', function() {
-      var testText1 = '';
-      var props = {
+      const testText1 = '';
+      const props = {
         tripId: testTripId1,
         text: testText1
       };
 
-      var element = React.createElement(JournalParagraph, props);
-      var markup = ReactDOMServer.renderToStaticMarkup(element);
+      const element = React.createElement(JournalParagraph, props);
+      const markup = ReactDOMServer.renderToStaticMarkup(element);
       // nothing gets returned
       expect(markup).to.contain('<noscript>');
     });
 
     it('spaces only text', function() {
-      var testText1 = '   ';
-      var props = {
+      const testText1 = '   ';
+      const props = {
         tripId: testTripId1,
         text: testText1
       };
 
-      var element = React.createElement(JournalParagraph, props);
-      var markup = ReactDOMServer.renderToStaticMarkup(element);
+      const element = React.createElement(JournalParagraph, props);
+      const markup = ReactDOMServer.renderToStaticMarkup(element);
       // nothing gets returned
       expect(markup).to.contain('<noscript>');
     });
 
     it('missing text prop', function() {
-      var props = {
+      const props = {
         tripId: testTripId1
       };
 
-      var element = React.createElement(JournalParagraph, props);
-      var markup = ReactDOMServer.renderToStaticMarkup(element);
+      const element = React.createElement(JournalParagraph, props);
+      const markup = ReactDOMServer.renderToStaticMarkup(element);
       // nothing gets returned
       expect(markup).to.contain('<noscript>');
     });

@@ -5,19 +5,19 @@
 // It doesn't really test all that much.
 // -----
 
-var expect = require('chai').expect;
-var sinon = require('sinon');
+const expect = require('chai').expect;
+const sinon = require('sinon');
 
-var storeMixin = require('../../src/components/StoreMixin');
+const storeMixin = require('../../src/components/StoreMixin');
 
 describe('components/StoreMixin', function() {
-  var Mixin;
-  var stub;
+  let Mixin;
+  let stub;
 
   beforeEach(function() {
     Mixin = storeMixin();
     stub = sinon.stub();
-    var stores = [
+    const stores = [
       {
         addChangeListener: stub,
         removeChangeListener: stub

@@ -1,16 +1,16 @@
 'use strict';
 
-var expect = require('chai').expect;
-var sinon = require('sinon');
-var React = require('react');
-var ReactDOM = require('react-dom');
-var TestUtils = require('react-addons-test-utils');
+const expect = require('chai').expect;
+const sinon = require('sinon');
+const React = require('react');
+const ReactDOM = require('react-dom');
+const TestUtils = require('react-addons-test-utils');
 
-var UserStore = require('../../src/stores/UserStore');
-var FeedbackStore = require('../../src/stores/FeedbackStore');
-var FeedbackAction = require('../../src/actions/FeedbackAction');
+const UserStore = require('../../src/stores/UserStore');
+const FeedbackStore = require('../../src/stores/FeedbackStore');
+const FeedbackAction = require('../../src/actions/FeedbackAction');
 
-var Feedback = require('../../src/components/Feedback.jsx');
+const Feedback = require('../../src/components/Feedback.jsx');
 
 /**
  * Get the count value for the Facebook feedback.
@@ -20,7 +20,7 @@ var Feedback = require('../../src/components/Feedback.jsx');
 function getFacebookCount(feedback) {
   expect(feedback.children.length).to.be.equal(4);
   expect(feedback.children[0].textContent).to.exist;
-  var result = /^\uF087\s+(\d+)/.exec(feedback.children[0].textContent);
+  const result = /^\uF087\s+(\d+)/.exec(feedback.children[0].textContent);
   return parseInt(result[1], 10);
 }
 
@@ -32,7 +32,7 @@ function getFacebookCount(feedback) {
 function getGoogleCount(feedback) {
   expect(feedback.children.length).to.be.equal(4);
   expect(feedback.children[2].textContent).to.exist;
-  var result = /^\uF067\s+(\d+)/.exec(feedback.children[2].textContent);
+  const result = /^\uF067\s+(\d+)/.exec(feedback.children[2].textContent);
   return parseInt(result[1], 10);
 }
 
@@ -59,29 +59,29 @@ function getGoogleList(feedback) {
 }
 
 describe('components/Feedback', function() {
-  var getLoggedInUserStub;
-  var loadDataStub;
-  var getLikeCountStub;
-  var getPlusCountStub;
-  var getLikeListStub;
-  var getPlusListStub;
-  var doesUserLikeStub;
-  var doesUserPlusStub;
-  var setLikeStub;
-  var clearLikeStub;
-  var setPlusStub;
-  var clearPlusStub;
+  let getLoggedInUserStub;
+  let loadDataStub;
+  let getLikeCountStub;
+  let getPlusCountStub;
+  let getLikeListStub;
+  let getPlusListStub;
+  let doesUserLikeStub;
+  let doesUserPlusStub;
+  let setLikeStub;
+  let clearLikeStub;
+  let setPlusStub;
+  let clearPlusStub;
 
-  var testLoggedInUser;
-  var testLikeCount;
-  var testPlusCount;
-  var testLikeList;
-  var testPlusList;
-  var testDoesUserLike;
-  var testDoesUserPlus;
+  let testLoggedInUser;
+  let testLikeCount;
+  let testPlusCount;
+  let testLikeList;
+  let testPlusList;
+  let testDoesUserLike;
+  let testDoesUserPlus;
 
-  var testTripId;
-  var testReferenceId;
+  let testTripId;
+  let testReferenceId;
 
   beforeEach(function() {
     testTripId = 'test-trip';
@@ -139,9 +139,9 @@ describe('components/Feedback', function() {
 
   describe('#render', function() {
     describe('without props', function() {
-      var feedback;
+      let feedback;
       beforeEach(function() {
-        var component = TestUtils.renderIntoDocument(
+        const component = TestUtils.renderIntoDocument(
           React.createElement(Feedback, null));
         feedback = ReactDOM.findDOMNode(component);
       });
@@ -167,22 +167,22 @@ describe('components/Feedback', function() {
         expect(feedback.children.length).to.be.equal(4);
         expect(feedback.children[1].textContent)
           .to.be.equal('\u00A0 facebook. \u00A0');
-        var count = getFacebookCount(feedback);
+        const count = getFacebookCount(feedback);
         expect(count).to.be.equal(0);
       });
 
       it('render google count zero', function() {
         expect(feedback.children.length).to.be.equal(4);
         expect(feedback.children[3].textContent).to.be.equal('\u00A0 Google.');
-        var count = getGoogleCount(feedback);
+        const count = getGoogleCount(feedback);
         expect(count).to.be.equal(0);
       });
     });
 
     describe('without just trip ID', function() {
-      var feedback;
+      let feedback;
       beforeEach(function() {
-        var component = TestUtils.renderIntoDocument(
+        const component = TestUtils.renderIntoDocument(
           React.createElement(Feedback, {tripId: testTripId}));
         feedback = ReactDOM.findDOMNode(component);
       });
@@ -208,22 +208,22 @@ describe('components/Feedback', function() {
         expect(feedback.children.length).to.be.equal(4);
         expect(feedback.children[1].textContent)
           .to.be.equal('\u00A0 facebook. \u00A0');
-        var count = getFacebookCount(feedback);
+        const count = getFacebookCount(feedback);
         expect(count).to.be.equal(0);
       });
 
       it('render google count zero', function() {
         expect(feedback.children.length).to.be.equal(4);
         expect(feedback.children[3].textContent).to.be.equal('\u00A0 Google.');
-        var count = getGoogleCount(feedback);
+        const count = getGoogleCount(feedback);
         expect(count).to.be.equal(0);
       });
     });
 
     describe('with just reference ID', function() {
-      var feedback;
+      let feedback;
       beforeEach(function() {
-        var component = TestUtils.renderIntoDocument(
+        const component = TestUtils.renderIntoDocument(
           React.createElement(Feedback, {referenceId: testReferenceId}));
         feedback = ReactDOM.findDOMNode(component);
       });
@@ -249,22 +249,22 @@ describe('components/Feedback', function() {
         expect(feedback.children.length).to.be.equal(4);
         expect(feedback.children[1].textContent)
           .to.be.equal('\u00A0 facebook. \u00A0');
-        var count = getFacebookCount(feedback);
+        const count = getFacebookCount(feedback);
         expect(count).to.be.equal(0);
       });
 
       it('render google count zero', function() {
         expect(feedback.children.length).to.be.equal(4);
         expect(feedback.children[3].textContent).to.be.equal('\u00A0 Google.');
-        var count = getGoogleCount(feedback);
+        const count = getGoogleCount(feedback);
         expect(count).to.be.equal(0);
       });
     });
 
     describe('with tripId and referenceId', function() {
-      var feedback;
+      let feedback;
       beforeEach(function() {
-        var component = TestUtils.renderIntoDocument(
+        const component = TestUtils.renderIntoDocument(
           React.createElement(Feedback, {
             tripId: testTripId,
             referenceId: testReferenceId
@@ -334,7 +334,7 @@ describe('components/Feedback', function() {
         expect(feedback.children.length).to.be.equal(4);
         expect(feedback.children[1].textContent)
           .to.be.equal('\u00A0 facebook. \u00A0');
-        var count = getFacebookCount(feedback);
+        const count = getFacebookCount(feedback);
         expect(count).to.be.equal(3);
       });
 
@@ -342,28 +342,28 @@ describe('components/Feedback', function() {
         // note: 5 is the default return value of the getPlusCount stub
         expect(feedback.children.length).to.be.equal(4);
         expect(feedback.children[3].textContent).to.be.equal('\u00A0 Google.');
-        var count = getGoogleCount(feedback);
+        const count = getGoogleCount(feedback);
         expect(count).to.be.equal(5);
       });
 
       it('renders like list', function() {
-        var list = getFacebookList(feedback);
+        const list = getFacebookList(feedback);
         expect(list).to.contain(testLikeList);
         expect(list).to.not.contain('You');
       });
 
       it('renders plus list', function() {
-        var list = getGoogleList(feedback);
+        const list = getGoogleList(feedback);
         expect(list).to.contain(testPlusList);
         expect(list).to.not.contain('You');
       });
     });
 
     describe('include user in like list', function() {
-      var feedback;
+      let feedback;
       beforeEach(function() {
         testDoesUserLike = true;
-        var component = TestUtils.renderIntoDocument(
+        const component = TestUtils.renderIntoDocument(
           React.createElement(Feedback, {
             tripId: testTripId,
             referenceId: testReferenceId
@@ -372,23 +372,23 @@ describe('components/Feedback', function() {
       });
 
       it('renders like list with user', function() {
-        var list = getFacebookList(feedback);
+        const list = getFacebookList(feedback);
         expect(list).to.contain(testLikeList);
         expect(list).to.contain('You and');
       });
 
       it('renders plus list without user', function() {
-        var list = getGoogleList(feedback);
+        const list = getGoogleList(feedback);
         expect(list).to.contain(testPlusList);
         expect(list).to.not.contain('You');
       });
     });
 
     describe('include user in plus list', function() {
-      var feedback;
+      let feedback;
       beforeEach(function() {
         testDoesUserPlus = true;
-        var component = TestUtils.renderIntoDocument(
+        const component = TestUtils.renderIntoDocument(
           React.createElement(Feedback, {
             tripId: testTripId,
             referenceId: testReferenceId
@@ -397,24 +397,24 @@ describe('components/Feedback', function() {
       });
 
       it('renders like list without user', function() {
-        var list = getFacebookList(feedback);
+        const list = getFacebookList(feedback);
         expect(list).to.contain(testLikeList);
         expect(list).to.not.contain('You');
       });
 
       it('renders plus list with user', function() {
-        var list = getGoogleList(feedback);
+        const list = getGoogleList(feedback);
         expect(list).to.contain(testPlusList);
         expect(list).to.contain('You and');
       });
     });
 
     describe('only user likes - render list', function() {
-      var feedback;
+      let feedback;
       beforeEach(function() {
         testDoesUserLike = true;
         testLikeList = '';
-        var component = TestUtils.renderIntoDocument(
+        const component = TestUtils.renderIntoDocument(
           React.createElement(Feedback, {
             tripId: testTripId,
             referenceId: testReferenceId
@@ -423,18 +423,18 @@ describe('components/Feedback', function() {
       });
 
       it('renders like list with user', function() {
-        var list = getFacebookList(feedback);
+        const list = getFacebookList(feedback);
         expect(list).to.contain('You');
         expect(list).to.not.contain('You and');
       });
     });
 
     describe('only user pluses - render list', function() {
-      var feedback;
+      let feedback;
       beforeEach(function() {
         testDoesUserPlus = true;
         testPlusList = '';
-        var component = TestUtils.renderIntoDocument(
+        const component = TestUtils.renderIntoDocument(
           React.createElement(Feedback, {
             tripId: testTripId,
             referenceId: testReferenceId
@@ -443,7 +443,7 @@ describe('components/Feedback', function() {
       });
 
       it('renders plus list with user', function() {
-        var list = getGoogleList(feedback);
+        const list = getGoogleList(feedback);
         expect(list).to.contain('You');
         expect(list).to.not.contain('You and');
       });
@@ -451,9 +451,9 @@ describe('components/Feedback', function() {
   });
 
   describe('clicking to set like/plus works', function() {
-    var feedback;
+    let feedback;
     beforeEach(function() {
-      var component = TestUtils.renderIntoDocument(
+      const component = TestUtils.renderIntoDocument(
         React.createElement(Feedback, {
           tripId: testTripId,
           referenceId: testReferenceId
@@ -479,11 +479,11 @@ describe('components/Feedback', function() {
   });
 
   describe('clicking to clear like/plus works', function() {
-    var feedback;
+    let feedback;
     beforeEach(function() {
       testDoesUserLike = true;
       testDoesUserPlus = true;
-      var component = TestUtils.renderIntoDocument(
+      const component = TestUtils.renderIntoDocument(
         React.createElement(Feedback, {
           tripId: testTripId,
           referenceId: testReferenceId
@@ -509,10 +509,10 @@ describe('components/Feedback', function() {
   });
 
   describe('no action clicking like/plus without user ID', function() {
-    var feedback;
+    let feedback;
     beforeEach(function() {
       testLoggedInUser = '';
-      var component = TestUtils.renderIntoDocument(
+      const component = TestUtils.renderIntoDocument(
         React.createElement(Feedback, {
           tripId: testTripId,
           referenceId: testReferenceId

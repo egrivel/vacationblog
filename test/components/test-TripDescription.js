@@ -2,16 +2,16 @@
 
 /* global document */
 
-var expect = require('chai').expect;
-var sinon = require('sinon');
-var React = require('react');
-var ReactDOM = require('react-dom');
-var ReactDOMServer = require('react-dom/server');
-var TestUtils = require('react-addons-test-utils');
+const expect = require('chai').expect;
+const sinon = require('sinon');
+const React = require('react');
+const ReactDOM = require('react-dom');
+const ReactDOMServer = require('react-dom/server');
+const TestUtils = require('react-addons-test-utils');
 
-var TripStore = require('../../src/stores/TripStore');
-var TripAction = require('../../src/actions/TripAction');
-var TripDescription = require('../../src/components/TripDescription.jsx');
+const TripStore = require('../../src/stores/TripStore');
+const TripAction = require('../../src/actions/TripAction');
+const TripDescription = require('../../src/components/TripDescription.jsx');
 
 /**
  * Create a trip description element.
@@ -32,7 +32,7 @@ function getTripDescription(tripId) {
  * @return {string} HTML representation of the rendered trip description.
  */
 function getHtmlMarkup(tripId) {
-  var element = getTripDescription(tripId);
+  const element = getTripDescription(tripId);
   return ReactDOMServer.renderToStaticMarkup(element);
 }
 
@@ -42,23 +42,23 @@ function getHtmlMarkup(tripId) {
  * @return {object} DOM node corresponding to the trip description element.
  */
 function getDomElement(tripId) {
-  var element = getTripDescription(tripId);
-  var component = TestUtils.renderIntoDocument(element);
+  const element = getTripDescription(tripId);
+  const component = TestUtils.renderIntoDocument(element);
   return ReactDOM.findDOMNode(component);
 }
 
 describe('components/TripDescription', function() {
   // Dummy trip data used in the tests
-  var tripId = 'trip-1';
-  var tripData;
+  const tripId = 'trip-1';
+  let tripData;
 
   // Stub out all the external functions called
-  var getTripDataStub;
-  var getCurrentTripIdStub;
-  var initialLoadTripStub;
-  var setCurrentTripStub;
-  var addChangeListenerStub;
-  var removeChangeListenerStub;
+  let getTripDataStub;
+  let getCurrentTripIdStub;
+  let initialLoadTripStub;
+  let setCurrentTripStub;
+  let addChangeListenerStub;
+  let removeChangeListenerStub;
 
   beforeEach(function() {
     tripData = {
@@ -91,41 +91,41 @@ describe('components/TripDescription', function() {
 
   describe('#render', function() {
     it('render trip class', function() {
-      var markup = getHtmlMarkup(tripId);
-      var tripDescr = '<div class="trip"><p class="text">' +
+      const markup = getHtmlMarkup(tripId);
+      const tripDescr = '<div class="trip"><p class="text">' +
         tripData.description + '</p><p class="readJournal">';
       expect(markup).to.contain(tripDescr);
     });
     it('render read journal link', function() {
-      var markup = getHtmlMarkup(tripId);
+      const markup = getHtmlMarkup(tripId);
       expect(markup).to.match(/<a.*?>Start reading journal.*?<\/a>/);
     });
 
     it('render description if no trip ID', function() {
-      var markup = getHtmlMarkup(null);
-      var tripDescr = '<div class="trip"><p class="text">' +
+      const markup = getHtmlMarkup(null);
+      const tripDescr = '<div class="trip"><p class="text">' +
         tripData.description + '</p><p class="readJournal">';
       expect(markup).to.contain(tripDescr);
     });
 
     it('does not render description if no description', function() {
       delete tripData.description;
-      var markup = getHtmlMarkup(tripId);
-      var tripDescr = '<div class="trip"><p class="readJournal">';
+      const markup = getHtmlMarkup(tripId);
+      const tripDescr = '<div class="trip"><p class="readJournal">';
       expect(markup).to.contain(tripDescr);
     });
 
     it('render multiple-line description in multiple paragraphs', function() {
       tripData.description = 'paragraph 1&lf;paragraph 2';
-      var markup = getHtmlMarkup(tripId);
-      var tripDescr = '<div class="trip"><p class="text">paragraph 1</p>' +
+      const markup = getHtmlMarkup(tripId);
+      const tripDescr = '<div class="trip"><p class="text">paragraph 1</p>' +
         '<p class="text">paragraph 2</p><p class="readJournal">';
       expect(markup).to.contain(tripDescr);
     });
 
     it('render (no journal entries) if no journal ID', function() {
       delete tripData.firstJournalId;
-      var markup = getHtmlMarkup(tripId);
+      const markup = getHtmlMarkup(tripId);
       expect(markup).to.not.match(/<a.*?>Start reading journal.*?<\/a>/);
       expect(markup).to.contain('(no journal entries)');
     });
@@ -135,7 +135,7 @@ describe('components/TripDescription', function() {
     it('adds change listener', function() {
       expect(addChangeListenerStub.callCount).to.be.equal(0);
 
-      var container = document.createElement('div');
+      const container = document.createElement('div');
       ReactDOM.render(getTripDescription(tripId), container);
 
       expect(addChangeListenerStub.callCount).to.be.equal(1);
@@ -170,7 +170,7 @@ describe('components/TripDescription', function() {
     it('removes change listener', function() {
       expect(removeChangeListenerStub.callCount).to.be.equal(0);
 
-      var container = document.createElement('div');
+      const container = document.createElement('div');
       ReactDOM.render(getTripDescription(tripId), container);
       expect(removeChangeListenerStub.callCount).to.be.equal(0);
 
@@ -180,7 +180,7 @@ describe('components/TripDescription', function() {
   });
 
   describe('mount with different tripId', function() {
-    var otherTripId = 'other-trip-id';
+    const otherTripId = 'other-trip-id';
 
     it('does not call initialLoadTrip', function() {
       expect(initialLoadTripStub.callCount).to.be.equal(0);
@@ -208,7 +208,7 @@ describe('components/TripDescription', function() {
   });
 
   describe('mount without tripId', function() {
-    var otherTripId = null;
+    const otherTripId = null;
 
     it('calls getCurrentTripId', function() {
       expect(getCurrentTripIdStub.callCount).to.be.equal(0);
@@ -266,10 +266,10 @@ describe('components/TripDescription', function() {
   });
 
   describe('update with different trip ID', function() {
-    var otherTripId = 'other-trip-id';
+    const otherTripId = 'other-trip-id';
 
     it('does not call initialLoadTrip', function() {
-      var container = document.createElement('div');
+      const container = document.createElement('div');
       ReactDOM.render(getTripDescription(tripId), container);
       expect(initialLoadTripStub.callCount).to.be.equal(0);
       ReactDOM.render(getTripDescription(otherTripId), container);
@@ -277,7 +277,7 @@ describe('components/TripDescription', function() {
     });
 
     it('calls setCurrentTrip', function() {
-      var container = document.createElement('div');
+      const container = document.createElement('div');
       ReactDOM.render(getTripDescription(tripId), container);
       expect(setCurrentTripStub.callCount).to.be.equal(0);
       ReactDOM.render(getTripDescription(otherTripId), container);
@@ -285,7 +285,7 @@ describe('components/TripDescription', function() {
     });
 
     it('calls getCurrentTripId', function() {
-      var container = document.createElement('div');
+      const container = document.createElement('div');
       ReactDOM.render(getTripDescription(tripId), container);
       expect(getCurrentTripIdStub.callCount).to.be.equal(1);
       ReactDOM.render(getTripDescription(otherTripId), container);
@@ -295,7 +295,7 @@ describe('components/TripDescription', function() {
     it('does not call getTripData', function() {
       // note: getTripData is triggered by the change event that the store
       // will emit as a response to loading data.
-      var container = document.createElement('div');
+      const container = document.createElement('div');
       ReactDOM.render(getTripDescription(tripId), container);
       expect(getTripDataStub.callCount).to.be.equal(1);
       ReactDOM.render(getTripDescription(otherTripId), container);
@@ -307,12 +307,12 @@ describe('components/TripDescription', function() {
     it('retrieves state from stores', function() {
       expect(addChangeListenerStub.callCount).to.be.equal(0);
 
-      var container = document.createElement('div');
+      const container = document.createElement('div');
       ReactDOM.render(getTripDescription(tripId), container);
       expect(addChangeListenerStub.callCount).to.be.equal(1);
 
       // Get the _onChange function
-      var func = addChangeListenerStub.firstCall.args[0];
+      const func = addChangeListenerStub.firstCall.args[0];
 
       expect(getTripDataStub.callCount).to.be.equal(1);
       func();

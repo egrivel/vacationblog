@@ -74,12 +74,12 @@ const Preferences = React.createClass({
       }
     }
     return {
-      userId,
-      name,
-      email,
-      password,
-      password2,
-      notification
+      userId: userId,
+      name: name,
+      email: email,
+      password: password,
+      password2: password2,
+      notification: notification
     };
   },
 

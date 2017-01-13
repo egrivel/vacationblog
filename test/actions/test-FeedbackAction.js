@@ -1,20 +1,20 @@
 'use strict';
 
-var expect = require('chai').expect;
-var sinon = require('sinon');
+const expect = require('chai').expect;
+const sinon = require('sinon');
 
-var utils = require('../../src/actions/utils');
-var AppDispatcher = require('../../src/AppDispatcher');
-var FeedbackAction = require('../../src/actions/FeedbackAction');
+const utils = require('../../src/actions/utils');
+const AppDispatcher = require('../../src/AppDispatcher');
+const FeedbackAction = require('../../src/actions/FeedbackAction');
 
 describe('actions/FeedbackAction', function() {
-  var asyncPostStub;
-  var asyncGetStub;
-  var dispatchStub;
-  var testTripId = 'trip1';
-  var testRefId = 'ref1';
-  var testUserId = 'user1';
-  var testData;
+  let asyncPostStub;
+  let asyncGetStub;
+  let dispatchStub;
+  const testTripId = 'trip1';
+  const testRefId = 'ref1';
+  const testUserId = 'user1';
+  let testData;
 
   beforeEach(function() {
     testData = {
@@ -108,7 +108,7 @@ describe('actions/FeedbackAction', function() {
   });
 
   describe('set/clear functions', function() {
-    var loadDataStub;
+    let loadDataStub;
 
     beforeEach(function() {
       loadDataStub = sinon.stub(FeedbackAction, 'loadData');
@@ -135,7 +135,7 @@ describe('actions/FeedbackAction', function() {
         it('sends type like', function() {
           FeedbackAction.setLike(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
-          var data = asyncPostStub.args[0][1];
+          const data = asyncPostStub.args[0][1];
           expect(data.type).to.exist;
           expect(data.type).to.equal('like');
         });
@@ -143,7 +143,7 @@ describe('actions/FeedbackAction', function() {
         it('sends deleted N', function() {
           FeedbackAction.setLike(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
-          var data = asyncPostStub.args[0][1];
+          const data = asyncPostStub.args[0][1];
           expect(data.deleted).to.exist;
           expect(data.deleted).to.equal('N');
         });
@@ -151,7 +151,7 @@ describe('actions/FeedbackAction', function() {
         it('sends trip ID', function() {
           FeedbackAction.setLike(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
-          var data = asyncPostStub.args[0][1];
+          const data = asyncPostStub.args[0][1];
           expect(data.tripId).to.exist;
           expect(data.tripId).to.equal(testTripId);
         });
@@ -159,7 +159,7 @@ describe('actions/FeedbackAction', function() {
         it('sends reference ID', function() {
           FeedbackAction.setLike(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
-          var data = asyncPostStub.args[0][1];
+          const data = asyncPostStub.args[0][1];
           expect(data.referenceId).to.exist;
           expect(data.referenceId).to.equal(testRefId);
         });
@@ -167,7 +167,7 @@ describe('actions/FeedbackAction', function() {
         it('sends user ID', function() {
           FeedbackAction.setLike(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
-          var data = asyncPostStub.args[0][1];
+          const data = asyncPostStub.args[0][1];
           expect(data.userId).to.exist;
           expect(data.userId).to.equal(testUserId);
         });
@@ -212,7 +212,7 @@ describe('actions/FeedbackAction', function() {
         it('sends type like', function() {
           FeedbackAction.clearLike(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
-          var data = asyncPostStub.args[0][1];
+          const data = asyncPostStub.args[0][1];
           expect(data.type).to.exist;
           expect(data.type).to.equal('like');
         });
@@ -220,7 +220,7 @@ describe('actions/FeedbackAction', function() {
         it('sends deleted N', function() {
           FeedbackAction.clearLike(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
-          var data = asyncPostStub.args[0][1];
+          const data = asyncPostStub.args[0][1];
           expect(data.deleted).to.exist;
           expect(data.deleted).to.equal('Y');
         });
@@ -228,7 +228,7 @@ describe('actions/FeedbackAction', function() {
         it('sends trip ID', function() {
           FeedbackAction.clearLike(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
-          var data = asyncPostStub.args[0][1];
+          const data = asyncPostStub.args[0][1];
           expect(data.tripId).to.exist;
           expect(data.tripId).to.equal(testTripId);
         });
@@ -236,7 +236,7 @@ describe('actions/FeedbackAction', function() {
         it('sends reference ID', function() {
           FeedbackAction.clearLike(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
-          var data = asyncPostStub.args[0][1];
+          const data = asyncPostStub.args[0][1];
           expect(data.referenceId).to.exist;
           expect(data.referenceId).to.equal(testRefId);
         });
@@ -244,7 +244,7 @@ describe('actions/FeedbackAction', function() {
         it('sends user ID', function() {
           FeedbackAction.clearLike(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
-          var data = asyncPostStub.args[0][1];
+          const data = asyncPostStub.args[0][1];
           expect(data.userId).to.exist;
           expect(data.userId).to.equal(testUserId);
         });
@@ -289,7 +289,7 @@ describe('actions/FeedbackAction', function() {
         it('sends type like', function() {
           FeedbackAction.setPlus(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
-          var data = asyncPostStub.args[0][1];
+          const data = asyncPostStub.args[0][1];
           expect(data.type).to.exist;
           expect(data.type).to.equal('plus');
         });
@@ -297,7 +297,7 @@ describe('actions/FeedbackAction', function() {
         it('sends deleted N', function() {
           FeedbackAction.setPlus(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
-          var data = asyncPostStub.args[0][1];
+          const data = asyncPostStub.args[0][1];
           expect(data.deleted).to.exist;
           expect(data.deleted).to.equal('N');
         });
@@ -305,7 +305,7 @@ describe('actions/FeedbackAction', function() {
         it('sends trip ID', function() {
           FeedbackAction.setPlus(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
-          var data = asyncPostStub.args[0][1];
+          const data = asyncPostStub.args[0][1];
           expect(data.tripId).to.exist;
           expect(data.tripId).to.equal(testTripId);
         });
@@ -313,7 +313,7 @@ describe('actions/FeedbackAction', function() {
         it('sends reference ID', function() {
           FeedbackAction.setPlus(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
-          var data = asyncPostStub.args[0][1];
+          const data = asyncPostStub.args[0][1];
           expect(data.referenceId).to.exist;
           expect(data.referenceId).to.equal(testRefId);
         });
@@ -321,7 +321,7 @@ describe('actions/FeedbackAction', function() {
         it('sends user ID', function() {
           FeedbackAction.setPlus(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
-          var data = asyncPostStub.args[0][1];
+          const data = asyncPostStub.args[0][1];
           expect(data.userId).to.exist;
           expect(data.userId).to.equal(testUserId);
         });
@@ -366,7 +366,7 @@ describe('actions/FeedbackAction', function() {
         it('sends type like', function() {
           FeedbackAction.clearPlus(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
-          var data = asyncPostStub.args[0][1];
+          const data = asyncPostStub.args[0][1];
           expect(data.type).to.exist;
           expect(data.type).to.equal('plus');
         });
@@ -374,7 +374,7 @@ describe('actions/FeedbackAction', function() {
         it('sends deleted N', function() {
           FeedbackAction.clearPlus(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
-          var data = asyncPostStub.args[0][1];
+          const data = asyncPostStub.args[0][1];
           expect(data.deleted).to.exist;
           expect(data.deleted).to.equal('Y');
         });
@@ -382,7 +382,7 @@ describe('actions/FeedbackAction', function() {
         it('sends trip ID', function() {
           FeedbackAction.clearPlus(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
-          var data = asyncPostStub.args[0][1];
+          const data = asyncPostStub.args[0][1];
           expect(data.tripId).to.exist;
           expect(data.tripId).to.equal(testTripId);
         });
@@ -390,7 +390,7 @@ describe('actions/FeedbackAction', function() {
         it('sends reference ID', function() {
           FeedbackAction.clearPlus(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
-          var data = asyncPostStub.args[0][1];
+          const data = asyncPostStub.args[0][1];
           expect(data.referenceId).to.exist;
           expect(data.referenceId).to.equal(testRefId);
         });
@@ -398,7 +398,7 @@ describe('actions/FeedbackAction', function() {
         it('sends user ID', function() {
           FeedbackAction.clearPlus(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
-          var data = asyncPostStub.args[0][1];
+          const data = asyncPostStub.args[0][1];
           expect(data.userId).to.exist;
           expect(data.userId).to.equal(testUserId);
         });

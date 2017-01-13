@@ -17,32 +17,32 @@
  *  - deleted (Y/N)
  */
 
-var _ = require('lodash');
-var assign = require('object-assign');
+const _ = require('lodash');
+const assign = require('object-assign');
 
-var AppDispatcher = require('../AppDispatcher');
-var GenericStore = require('./GenericStore');
-var CommentActionTypes = require('../actions/CommentAction').Types;
+const AppDispatcher = require('../AppDispatcher');
+const GenericStore = require('./GenericStore');
+const CommentActionTypes = require('../actions/CommentAction').Types;
 
 // ---
 // Comment structure. The _commentData is indexed by the tripId / referenceId
 // index and contains an array of comment IDs that reference that particular
 // trip ID / reference ID combination.
 // ---
-var _commentData = [];
+let _commentData = [];
 
 // ---
 // Comment details: the specifics for an individual comment. Indexed
 // by comment ID.
 // ---
-var _commentDetails = [];
+let _commentDetails = [];
 
 // ---
 // Keep track of which comments are being edited. This can either be an existing
 // comment (index is specific comment ID) or a new comment (index is the
 // generated index for trip ID and reference ID).
 // ---
-var _isEditing = [];
+let _isEditing = [];
 
 /**
  * Make a unique index string.
@@ -75,7 +75,7 @@ function _setData(listItem) {
     return false;
   }
 
-  var commentId = listItem.commentId;
+  const commentId = listItem.commentId;
   if (_commentDetails[commentId] &&
     _.isEqual(_commentDetails[commentId], listItem)) {
     // details are not changing
@@ -83,7 +83,7 @@ function _setData(listItem) {
   }
   _commentDetails[commentId] = _.cloneDeep(listItem);
 
-  var index = _makeIndex(listItem.tripId, listItem.referenceId);
+  const index = _makeIndex(listItem.tripId, listItem.referenceId);
   if (_commentData[index]) {
     if (_.indexOf(_commentData[index], commentId) >= 0) {
       // entry is already there, but details still changed
@@ -97,7 +97,7 @@ function _setData(listItem) {
   return true;
 }
 
-var CommentStore = assign({}, GenericStore, {
+const CommentStore = assign({}, GenericStore, {
   /**
    * Reset store contents for testing.
    */
@@ -124,12 +124,12 @@ var CommentStore = assign({}, GenericStore, {
    * versions of the actual data.
    */
   getList: function(tripId, referenceId) {
-    var result = [];
+    const result = [];
 
     if (tripId && referenceId) {
-      var index = _makeIndex(tripId, referenceId);
+      const index = _makeIndex(tripId, referenceId);
       if (_commentData[index]) {
-        for (var i = 0; i < _commentData[index].length; i++) {
+        for (let i = 0; i < _commentData[index].length; i++) {
           result.push(_.cloneDeep(_commentDetails[_commentData[index][i]]));
         }
       }
@@ -145,10 +145,10 @@ var CommentStore = assign({}, GenericStore, {
    * comment element has its own 'comments' list. This
    */
   getRecursiveList: function(tripId, referenceId) {
-    var result = this.getList(tripId, referenceId);
+    const result = this.getList(tripId, referenceId);
     if (result) {
-      for (var i = 0; i < result.length; i++) {
-        var list = CommentStore.getRecursiveList(tripId, result[i].commentId);
+      for (let i = 0; i < result.length; i++) {
+        const list = CommentStore.getRecursiveList(tripId, result[i].commentId);
         if (list) {
           result[i].childComments = list;
         }
@@ -170,7 +170,7 @@ var CommentStore = assign({}, GenericStore, {
     if (commentId && _isEditing[commentId]) {
       return true;
     } else if (tripId && referenceId) {
-      var index = _makeIndex(tripId, referenceId);
+      const index = _makeIndex(tripId, referenceId);
       if (_isEditing[index]) {
         return true;
       }
@@ -184,7 +184,7 @@ var CommentStore = assign({}, GenericStore, {
         return _commentDetails[commentId].commentText;
       }
     } else if (tripId && referenceId) {
-      var index = _makeIndex(tripId, referenceId);
+      const index = _makeIndex(tripId, referenceId);
       if (_commentDetails[index]) {
         return _commentDetails[index].commentText;
       }
@@ -193,12 +193,12 @@ var CommentStore = assign({}, GenericStore, {
   },
 
   _storeCallback: function(action) {
-    var index;
+    let index;
     switch (action.type) {
       case CommentActionTypes.COMMENT_DATA:
         var isChanged = false;
         if (action.data && action.data.list) {
-          for (var i = 0; action.data.list[i]; i++) {
+          for (let i = 0; action.data.list[i]; i++) {
             isChanged |= _setData(action.data.list[i]);
           }
         }

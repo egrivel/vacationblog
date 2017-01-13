@@ -1,23 +1,23 @@
 'use strict';
 
-var expect = require('chai').expect;
-var sinon = require('sinon');
-var React = require('react');
-var TestUtils = require('react-addons-test-utils');
+const expect = require('chai').expect;
+const sinon = require('sinon');
+const React = require('react');
+const TestUtils = require('react-addons-test-utils');
 
-var TripStore = require('../../src/stores/TripStore');
-var MenuStore = require('../../src/stores/MenuStore');
-var Header = require('../../src/components/Header.jsx');
+const TripStore = require('../../src/stores/TripStore');
+const MenuStore = require('../../src/stores/MenuStore');
+const Header = require('../../src/components/Header.jsx');
 
 describe('components/Header', function() {
-  var defaultBanner = 'default-banner.png';
+  const defaultBanner = 'default-banner.png';
 
   describe('#render with name and banner', function() {
-    var tripDataStub;
-    var menuDataStub;
-    var testName = 'Test Name';
-    var testBanner = 'test-banner.jpg';
-    var testTripData = {
+    let tripDataStub;
+    let menuDataStub;
+    const testName = 'Test Name';
+    const testBanner = 'test-banner.jpg';
+    const testTripData = {
       name: testName,
       bannerImg: testBanner
     };
@@ -36,33 +36,33 @@ describe('components/Header', function() {
     });
 
     it('includes trip name', function() {
-      var header = TestUtils.renderIntoDocument(
+      const header = TestUtils.renderIntoDocument(
         React.createElement(Header, null));
-      var h1 = TestUtils.findRenderedDOMComponentWithTag(header, 'h1');
+      const h1 = TestUtils.findRenderedDOMComponentWithTag(header, 'h1');
       expect(h1).to.not.be.null;
       expect(h1.textContent).to.contain(testName);
     });
 
     it('includes trip banner', function() {
-      var header = TestUtils.renderIntoDocument(
+      const header = TestUtils.renderIntoDocument(
         React.createElement(Header, null));
 
-      var imgList = TestUtils.scryRenderedDOMComponentsWithTag(header, 'img');
+      const imgList = TestUtils.scryRenderedDOMComponentsWithTag(header, 'img');
       expect(imgList.length).to.be.equal(1);
       expect(imgList[0].src).to.not.be.null;
       expect(imgList[0].src).to.contain(testBanner);
 
-      var divList =
+      const divList =
         TestUtils.scryRenderedDOMComponentsWithClass(header, 'dummy-banner');
       expect(divList.length).to.be.equal(0);
     });
   });
 
   describe('#render with name only', function() {
-    var tripDataStub;
-    var menuDataStub;
-    var testName = 'Test Name';
-    var testTripData = {
+    let tripDataStub;
+    let menuDataStub;
+    const testName = 'Test Name';
+    const testTripData = {
       name: testName
     };
 
@@ -80,21 +80,21 @@ describe('components/Header', function() {
     });
 
     it('includes trip name', function() {
-      var header = TestUtils.renderIntoDocument(
+      const header = TestUtils.renderIntoDocument(
         React.createElement(Header, null));
-      var h1 = TestUtils.findRenderedDOMComponentWithTag(header, 'h1');
+      const h1 = TestUtils.findRenderedDOMComponentWithTag(header, 'h1');
       expect(h1).to.not.be.null;
       expect(h1.textContent).to.contain(testName);
     });
 
     it('does not include trip banner', function() {
-      var header = TestUtils.renderIntoDocument(
+      const header = TestUtils.renderIntoDocument(
         React.createElement(Header, null));
 
-      var imgList = TestUtils.scryRenderedDOMComponentsWithTag(header, 'img');
+      const imgList = TestUtils.scryRenderedDOMComponentsWithTag(header, 'img');
       expect(imgList.length).to.be.equal(0);
 
-      var divList =
+      const divList =
         TestUtils.scryRenderedDOMComponentsWithClass(header, 'dummy-banner');
       expect(divList.length).to.be.equal(1);
       expect(divList[0].textContent).to.contain('trip banner image is missing');
@@ -102,10 +102,10 @@ describe('components/Header', function() {
   });
 
   describe('#render with banner only', function() {
-    var tripDataStub;
-    var menuDataStub;
-    var testBanner = 'test-banner.jpg';
-    var testTripData = {
+    let tripDataStub;
+    let menuDataStub;
+    const testBanner = 'test-banner.jpg';
+    const testTripData = {
       bannerImg: testBanner
     };
 
@@ -123,33 +123,33 @@ describe('components/Header', function() {
     });
 
     it('does not include trip name', function() {
-      var header = TestUtils.renderIntoDocument(
+      const header = TestUtils.renderIntoDocument(
         React.createElement(Header, null));
-      var h1 = TestUtils.findRenderedDOMComponentWithTag(header, 'h1');
+      const h1 = TestUtils.findRenderedDOMComponentWithTag(header, 'h1');
       expect(h1).to.not.be.null;
       expect(h1.textContent).to.contain('Vacation Website');
     });
 
     it('includes default trip banner', function() {
-      var header = TestUtils.renderIntoDocument(
+      const header = TestUtils.renderIntoDocument(
         React.createElement(Header, null));
 
-      var imgList = TestUtils.scryRenderedDOMComponentsWithTag(header, 'img');
+      const imgList = TestUtils.scryRenderedDOMComponentsWithTag(header, 'img');
       expect(imgList.length).to.be.equal(1);
       expect(imgList[0].src).to.not.be.null;
       expect(imgList[0].src).to.not.contain(testBanner);
       expect(imgList[0].src).to.contain(defaultBanner);
 
-      var divList =
+      const divList =
         TestUtils.scryRenderedDOMComponentsWithClass(header, 'dummy-banner');
       expect(divList.length).to.be.equal(0);
     });
   });
 
   describe('#render without name or banner', function() {
-    var tripDataStub;
-    var menuDataStub;
-    var testTripData = {
+    let tripDataStub;
+    let menuDataStub;
+    const testTripData = {
     };
 
     beforeEach(function() {
@@ -166,18 +166,18 @@ describe('components/Header', function() {
     });
 
     it('does not include trip name', function() {
-      var header = TestUtils.renderIntoDocument(
+      const header = TestUtils.renderIntoDocument(
         React.createElement(Header, null));
-      var h1 = TestUtils.findRenderedDOMComponentWithTag(header, 'h1');
+      const h1 = TestUtils.findRenderedDOMComponentWithTag(header, 'h1');
       expect(h1).to.not.be.null;
       expect(h1.textContent).to.contain('Vacation Website');
     });
 
     it('includes default banner', function() {
-      var header = TestUtils.renderIntoDocument(
+      const header = TestUtils.renderIntoDocument(
         React.createElement(Header, null));
 
-      var imgList = TestUtils.scryRenderedDOMComponentsWithTag(header, 'img');
+      const imgList = TestUtils.scryRenderedDOMComponentsWithTag(header, 'img');
       expect(imgList.length).to.be.equal(1);
       expect(imgList[0].src).to.not.be.null;
       expect(imgList[0].src).to.contain(defaultBanner);

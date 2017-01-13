@@ -1,17 +1,17 @@
 'use strict';
 
-var expect = require('chai').expect;
-var sinon = require('sinon');
+const expect = require('chai').expect;
+const sinon = require('sinon');
 
-var utils = require('../../src/actions/utils');
-var AppDispatcher = require('../../src/AppDispatcher');
-var JournalAction = require('../../src/actions/JournalAction');
-var CommentAction = require('../../src/actions/CommentAction');
-var MediaAction = require('../../src/actions/MediaAction');
-var UserAction = require('../../src/actions/UserAction');
+const utils = require('../../src/actions/utils');
+const AppDispatcher = require('../../src/AppDispatcher');
+const JournalAction = require('../../src/actions/JournalAction');
+const CommentAction = require('../../src/actions/CommentAction');
+const MediaAction = require('../../src/actions/MediaAction');
+const UserAction = require('../../src/actions/UserAction');
 
 describe('actions/JournalAction', function() {
-  var loadUserStub;
+  let loadUserStub;
 
   beforeEach(function() {
     loadUserStub = sinon.stub(UserAction, 'loadUser');
@@ -22,9 +22,9 @@ describe('actions/JournalAction', function() {
   });
 
   describe('#loadJournal', function() {
-    var asyncStub;
-    var journalLoadedStub;
-    var testData = {
+    let asyncStub;
+    let journalLoadedStub;
+    const testData = {
       test1: 'data1'
     };
 
@@ -41,8 +41,8 @@ describe('actions/JournalAction', function() {
     });
 
     it('calls API with trip and journal ID', function() {
-      var testTripId = 'trip1';
-      var testJournalId = 'ref1';
+      const testTripId = 'trip1';
+      const testJournalId = 'ref1';
       JournalAction.loadJournal(testTripId, testJournalId);
       // This results in two calls, one to read the trip data, the other
       // to read the journal
@@ -54,7 +54,7 @@ describe('actions/JournalAction', function() {
     });
 
     it('calls API with trip ID and latest when no journal ID', function() {
-      var testTripId = 'trip1';
+      const testTripId = 'trip1';
       JournalAction.loadJournal(testTripId);
       // This results in two calls, one to read the trip data, the other
       // to read the journal
@@ -66,8 +66,8 @@ describe('actions/JournalAction', function() {
     });
 
     it('calls _journalLoaded with right params', function() {
-      var testTripId = 'trip1';
-      var testJournalId = 'journal1';
+      const testTripId = 'trip1';
+      const testJournalId = 'journal1';
       JournalAction.loadJournal(testTripId, testJournalId);
       expect(journalLoadedStub.args[0].length).to.be.equal(1);
       expect(journalLoadedStub.args[0][0]).to.be.eql(testData);
@@ -75,15 +75,15 @@ describe('actions/JournalAction', function() {
   });
 
   describe('#_journalLoaded', function() {
-    var dispatchStub;
-    var commentLoadStub;
-    var getMediaFromTextStub;
-    var mediaLoadStub;
+    let dispatchStub;
+    let commentLoadStub;
+    let getMediaFromTextStub;
+    let mediaLoadStub;
 
-    var testTripId1 = 'test-trip-1';
-    var testJournalId1 = 'test-journal-1';
-    var testJournalText1 = 'test of the journal text';
-    var testMediaList = null;
+    const testTripId1 = 'test-trip-1';
+    const testJournalId1 = 'test-journal-1';
+    const testJournalText1 = 'test of the journal text';
+    let testMediaList = null;
 
     beforeEach(function() {
       dispatchStub = sinon.stub(AppDispatcher, 'dispatch');
@@ -103,21 +103,21 @@ describe('actions/JournalAction', function() {
     });
 
     it('dispatch is called with right info', function() {
-      var data = {
+      const data = {
         tripId: testTripId1,
         journalId: testJournalId1,
         journalText: testJournalText1
       };
       JournalAction._journalLoaded(data);
       expect(dispatchStub.args[0].length).to.be.equal(1);
-      var action = dispatchStub.args[0][0];
+      const action = dispatchStub.args[0][0];
       expect(action.type).to.be.equal(JournalAction.Types.JOURNAL_DATA);
       expect(action.data).to.be.deep.eql(data);
     });
 
     describe('recursivelyLoadComments', function() {
       it('is called with right info', function() {
-        var data = {
+        const data = {
           tripId: testTripId1,
           journalId: testJournalId1,
           journalText: testJournalText1
@@ -130,7 +130,7 @@ describe('actions/JournalAction', function() {
       });
 
       it('is not called without trip ID', function() {
-        var data = {
+        const data = {
           journalId: testJournalId1,
           journalText: testJournalText1
         };
@@ -139,7 +139,7 @@ describe('actions/JournalAction', function() {
       });
 
       it('is not called without journal ID', function() {
-        var data = {
+        const data = {
           tripId: testTripId1,
           journalText: testJournalText1
         };
@@ -150,8 +150,8 @@ describe('actions/JournalAction', function() {
 
     describe('loadUser', function() {
       it('is called with the right info', function() {
-        var testUser1 = 'test-user-1';
-        var data = {
+        const testUser1 = 'test-user-1';
+        const data = {
           userId: testUser1,
           tripId: testTripId1,
           journalId: testJournalId1,
@@ -164,7 +164,7 @@ describe('actions/JournalAction', function() {
       });
 
       it('is not called without user ID', function() {
-        var data = {
+        const data = {
           tripId: testTripId1,
           journalId: testJournalId1,
           journalText: testJournalText1
@@ -176,7 +176,7 @@ describe('actions/JournalAction', function() {
 
     describe('getMediaFromText', function() {
       it('is called with the right parameters', function() {
-        var data = {
+        const data = {
           tripId: testTripId1,
           journalId: testJournalId1,
           journalText: testJournalText1
@@ -188,7 +188,7 @@ describe('actions/JournalAction', function() {
       });
 
       it('is not called without a trip ID', function() {
-        var data = {
+        const data = {
           journalId: testJournalId1,
           journalText: testJournalText1
         };
@@ -197,7 +197,7 @@ describe('actions/JournalAction', function() {
       });
 
       it('is not called without a journal ID', function() {
-        var data = {
+        const data = {
           tripId: testTripId1,
           journalText: testJournalText1
         };
@@ -206,7 +206,7 @@ describe('actions/JournalAction', function() {
       });
 
       it('is not called without a trip text', function() {
-        var data = {
+        const data = {
           tripId: testTripId1,
           journalId: testJournalId1
         };
@@ -221,7 +221,7 @@ describe('actions/JournalAction', function() {
       });
 
       it('is called with right info', function() {
-        var data = {
+        const data = {
           tripId: testTripId1,
           journalId: testJournalId1,
           journalText: testJournalText1
@@ -240,7 +240,7 @@ describe('actions/JournalAction', function() {
       });
 
       it('is not called without a trip ID', function() {
-        var data = {
+        const data = {
           journalId: testJournalId1,
           journalText: testJournalText1
         };
@@ -249,7 +249,7 @@ describe('actions/JournalAction', function() {
       });
 
       it('is not called without a journal ID', function() {
-        var data = {
+        const data = {
           tripId: testTripId1,
           journalText: testJournalText1
         };
@@ -258,7 +258,7 @@ describe('actions/JournalAction', function() {
       });
 
       it('is not called without a trip text', function() {
-        var data = {
+        const data = {
           tripId: testTripId1,
           journalId: testJournalId1
         };
@@ -273,7 +273,7 @@ describe('actions/JournalAction', function() {
       });
 
       it('is called with right info', function() {
-        var data = {
+        const data = {
           tripId: testTripId1,
           journalId: testJournalId1,
           journalText: testJournalText1
@@ -297,86 +297,86 @@ describe('actions/JournalAction', function() {
   });
 
   describe('#getMediaFromText', function() {
-    var testImage1 = '111-222';
-    var testImage2 = '3333-4444';
-    var testText1 = 'This is a text without any images';
-    var testText2 = 'test with [' + testImage1 + '] invalid image';
+    const testImage1 = '111-222';
+    const testImage2 = '3333-4444';
+    const testText1 = 'This is a text without any images';
+    const testText2 = 'test with [' + testImage1 + '] invalid image';
 
     it('returns null without text', function() {
-      var result = JournalAction._getMediaFromText();
+      const result = JournalAction._getMediaFromText();
       expect(result).to.be.null;
     });
 
     it('returns empty array for text without images', function() {
-      var result = JournalAction._getMediaFromText(testText1);
+      const result = JournalAction._getMediaFromText(testText1);
       expect(result).to.deep.eql([]);
     });
 
     it('does not return invalid image', function() {
-      var result = JournalAction._getMediaFromText(testText2);
+      const result = JournalAction._getMediaFromText(testText2);
       expect(result).to.deep.eql([]);
     });
 
     describe('single image', function() {
-      var testText3 = '[IMG ' + testImage1 + '] test with starting image';
-      var testText4 = 'Test with ending image [IMG ' + testImage1 + ']';
-      var testText5 = 'Test with [IMG ' + testImage1 + '] middle image';
-      var testText6 = 'test with [IMG   ' + testImage1 + '  ] extra space';
+      const testText3 = '[IMG ' + testImage1 + '] test with starting image';
+      const testText4 = 'Test with ending image [IMG ' + testImage1 + ']';
+      const testText5 = 'Test with [IMG ' + testImage1 + '] middle image';
+      const testText6 = 'test with [IMG   ' + testImage1 + '  ] extra space';
 
       it('returns single image from text, at start', function() {
-        var result = JournalAction._getMediaFromText(testText3);
+        const result = JournalAction._getMediaFromText(testText3);
         expect(result).to.deep.eql([testImage1]);
       });
 
       it('returns single image from text, at end', function() {
-        var result = JournalAction._getMediaFromText(testText4);
+        const result = JournalAction._getMediaFromText(testText4);
         expect(result).to.deep.eql([testImage1]);
       });
 
       it('returns single image from text, in middle', function() {
-        var result = JournalAction._getMediaFromText(testText5);
+        const result = JournalAction._getMediaFromText(testText5);
         expect(result).to.deep.eql([testImage1]);
       });
 
       it('returns single image with extra space', function() {
-        var result = JournalAction._getMediaFromText(testText6);
+        const result = JournalAction._getMediaFromText(testText6);
         expect(result).to.deep.eql([testImage1]);
       });
     });
 
     describe('returns multiple images from text', function() {
-      var testText7 = '[IMG ' + testImage1 + '][IMG ' + testImage2 + ']';
-      var testText8 = '[IMG ' + testImage1 +
+      const testText7 = '[IMG ' + testImage1 + '][IMG ' + testImage2 + ']';
+      const testText8 = '[IMG ' + testImage1 +
         '] and some text [IMG ' + testImage2 + ']';
-      var testText9 = 'initial text [IMG ' +
+      const testText9 = 'initial text [IMG ' +
         testImage1 + '][IMG ' + testImage2 + ']';
-      var testText10 = '[IMG ' + testImage1 +
+      const testText10 = '[IMG ' + testImage1 +
         '][IMG ' + testImage2 + '] final text';
-      var testText11 = 'this [IMG ' + testImage1 +
+      const testText11 = 'this [IMG ' + testImage1 +
         '] is [IMG ' + testImage2 + '] stuff';
 
       it('only images', function() {
-        var result = JournalAction._getMediaFromText(testText7);
+        const result = JournalAction._getMediaFromText(testText7);
         expect(result).to.deep.eql([testImage1, testImage2]);
       });
 
       it('text in the middle', function() {
-        var result = JournalAction._getMediaFromText(testText8);
+        const result = JournalAction._getMediaFromText(testText8);
         expect(result).to.deep.eql([testImage1, testImage2]);
       });
 
       it('text at the front', function() {
-        var result = JournalAction._getMediaFromText(testText9);
+        const result = JournalAction._getMediaFromText(testText9);
         expect(result).to.deep.eql([testImage1, testImage2]);
       });
 
       it('text at the end', function() {
-        var result = JournalAction._getMediaFromText(testText10);
+        const result = JournalAction._getMediaFromText(testText10);
         expect(result).to.deep.eql([testImage1, testImage2]);
       });
 
       it('text everywhere', function() {
-        var result = JournalAction._getMediaFromText(testText11);
+        const result = JournalAction._getMediaFromText(testText11);
         expect(result).to.deep.eql([testImage1, testImage2]);
       });
     });

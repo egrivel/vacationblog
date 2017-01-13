@@ -1,20 +1,20 @@
 'use strict';
 
-var expect = require('chai').expect;
-var sinon = require('sinon');
-var React = require('react');
-var TestUtils = require('react-addons-test-utils');
+const expect = require('chai').expect;
+const sinon = require('sinon');
+const React = require('react');
+const TestUtils = require('react-addons-test-utils');
 
-var JournalWrapper = require('../../src/components/JournalWrapper.jsx');
-var JournalAction = require('../../src/actions/JournalAction');
-var FeedbackAction = require('../../src/actions/FeedbackAction');
-var JournalStore = require('../../src/stores/JournalStore');
+const JournalWrapper = require('../../src/components/JournalWrapper.jsx');
+const JournalAction = require('../../src/actions/JournalAction');
+const FeedbackAction = require('../../src/actions/FeedbackAction');
+const JournalStore = require('../../src/stores/JournalStore');
 
 describe('components/JournalWrapper', function() {
-  var loadJournalStub;
-  var journalGetDataStub;
-  var loadFeedbackStub;
-  var dummyData;
+  let loadJournalStub;
+  let journalGetDataStub;
+  let loadFeedbackStub;
+  let dummyData;
 
   beforeEach(function() {
     dummyData = {};
@@ -43,8 +43,8 @@ describe('components/JournalWrapper', function() {
   });
 
   describe('render with data, no props', function() {
-    var testTripId = 'test-trip-1';
-    var testJournalId = 'test-journal-id';
+    const testTripId = 'test-trip-1';
+    const testJournalId = 'test-journal-id';
 
     beforeEach(function() {
       dummyData = {
@@ -61,7 +61,7 @@ describe('components/JournalWrapper', function() {
   });
 
   describe('render without data, with incomplete props', function() {
-    var props = {};
+    const props = {};
 
     beforeEach(function() {
       props.params = {};
@@ -75,9 +75,9 @@ describe('components/JournalWrapper', function() {
   });
 
   describe('render without data, with complete props', function() {
-    var testTripId = 'test-trip-1';
-    var testJournalId = 'test-journal-id';
-    var props = {};
+    const testTripId = 'test-trip-1';
+    const testJournalId = 'test-journal-id';
+    const props = {};
 
     beforeEach(function() {
       props.params = {
@@ -101,9 +101,9 @@ describe('components/JournalWrapper', function() {
   });
 
   describe('render with different data, and props', function() {
-    var testTripId = 'test-trip-1';
-    var testJournalId = 'test-journal-id';
-    var props = {};
+    const testTripId = 'test-trip-1';
+    const testJournalId = 'test-journal-id';
+    const props = {};
 
     beforeEach(function() {
       dummyData = {
@@ -124,9 +124,9 @@ describe('components/JournalWrapper', function() {
   });
 
   describe('render with same data, and props', function() {
-    var testTripId = 'test-trip-1';
-    var testJournalId = 'test-journal-id';
-    var props = {};
+    const testTripId = 'test-trip-1';
+    const testJournalId = 'test-journal-id';
+    const props = {};
 
     beforeEach(function() {
       dummyData = {
@@ -147,11 +147,11 @@ describe('components/JournalWrapper', function() {
   });
 
   describe('when props are changed', function() {
-    var testTripId1 = 'test-trip-1';
-    var testJournalId1 = 'test-journal-id-1';
-    var testTripId2 = 'test-trip-2';
-    var testJournalId2 = 'test-journal-id-2';
-    var props = {};
+    const testTripId1 = 'test-trip-1';
+    const testJournalId1 = 'test-journal-id-1';
+    const testTripId2 = 'test-trip-2';
+    const testJournalId2 = 'test-journal-id-2';
+    const props = {};
 
     beforeEach(function() {
       dummyData = {
@@ -165,7 +165,7 @@ describe('components/JournalWrapper', function() {
     });
 
     it('load journal is called twice', function() {
-      var component = TestUtils.renderIntoDocument(
+      const component = TestUtils.renderIntoDocument(
         React.createElement(JournalWrapper, props));
       expect(loadJournalStub.callCount).to.be.equal(1);
       component.setProps(props);

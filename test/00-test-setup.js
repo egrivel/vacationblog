@@ -5,5 +5,5 @@
  * any of the other test files or directories!
  */
 
-var jsdom = require('mocha-jsdom');
+const jsdom = require('mocha-jsdom');
 jsdom();

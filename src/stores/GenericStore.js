@@ -1,11 +1,11 @@
 'use strict';
 
-var EventEmitter = require('events').EventEmitter;
-var assign = require('object-assign');
+const EventEmitter = require('events').EventEmitter;
+const assign = require('object-assign');
 
-var CHANGE_EVENT = 'change';
+const CHANGE_EVENT = 'change';
 
-var GenericStore = assign({}, EventEmitter.prototype, {
+const GenericStore = assign({}, EventEmitter.prototype, {
   emitChange: function() {
     this.emit(CHANGE_EVENT);
   },

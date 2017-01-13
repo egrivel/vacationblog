@@ -1,17 +1,17 @@
 'use strict';
 
-var expect = require('chai').expect;
-var sinon = require('sinon');
+const expect = require('chai').expect;
+const sinon = require('sinon');
 
-var utils = require('../../src/actions/utils');
-var AppDispatcher = require('../../src/AppDispatcher');
-var MediaAction = require('../../src/actions/MediaAction');
+const utils = require('../../src/actions/utils');
+const AppDispatcher = require('../../src/AppDispatcher');
+const MediaAction = require('../../src/actions/MediaAction');
 
 describe('actions/MediaAction', function() {
   describe('#loadMedia', function() {
-    var asyncStub;
-    var mediaLoadedStub;
-    var testData = {
+    let asyncStub;
+    let mediaLoadedStub;
+    const testData = {
       data: 'data'
     };
 
@@ -28,8 +28,8 @@ describe('actions/MediaAction', function() {
     });
 
     it('calls API with trip and media ID', function() {
-      var testTripId = 'trip1';
-      var testMediaId = 'media1';
+      const testTripId = 'trip1';
+      const testMediaId = 'media1';
 
       MediaAction.loadMedia(testTripId, testMediaId);
       expect(asyncStub.args.length).to.be.equal(1);
@@ -40,8 +40,8 @@ describe('actions/MediaAction', function() {
     });
 
     it('calls _mediaLoaded with the right parameters', function() {
-      var testTripId = 'trip1';
-      var testMediaId = 'media1';
+      const testTripId = 'trip1';
+      const testMediaId = 'media1';
 
       MediaAction.loadMedia(testTripId, testMediaId);
       expect(mediaLoadedStub.args[0].length).to.be.equal(1);
@@ -50,9 +50,9 @@ describe('actions/MediaAction', function() {
   });
 
   describe('#bulkLoadMedia', function() {
-    var asyncStub;
-    var bulkMediaLoadedStub;
-    var testData = {
+    let asyncStub;
+    let bulkMediaLoadedStub;
+    const testData = {
       data: 'data'
     };
 
@@ -69,11 +69,11 @@ describe('actions/MediaAction', function() {
     });
 
     it('calls API with trip and list', function() {
-      var testTripId = 'trip1';
-      var testMedia1 = 'media1';
-      var testMedia2 = 'media2';
-      var testMedia3 = 'media3';
-      var testMediaList = [
+      const testTripId = 'trip1';
+      const testMedia1 = 'media1';
+      const testMedia2 = 'media2';
+      const testMedia3 = 'media3';
+      const testMediaList = [
         testMedia1,
         testMedia2,
         testMedia3
@@ -91,11 +91,11 @@ describe('actions/MediaAction', function() {
     });
 
     it('calls _mediaLoaded with the right parameters', function() {
-      var testTripId = 'trip1';
-      var testMedia1 = 'media1';
-      var testMedia2 = 'media2';
-      var testMedia3 = 'media3';
-      var testMediaList = [
+      const testTripId = 'trip1';
+      const testMedia1 = 'media1';
+      const testMedia2 = 'media2';
+      const testMedia3 = 'media3';
+      const testMediaList = [
         testMedia1,
         testMedia2,
         testMedia3
@@ -108,7 +108,7 @@ describe('actions/MediaAction', function() {
   });
 
   describe('#_bulkMediaLoaded', function() {
-    var dispatchStub;
+    let dispatchStub;
     beforeEach(function() {
       dispatchStub = sinon.stub(AppDispatcher, 'dispatch');
     });
@@ -118,21 +118,21 @@ describe('actions/MediaAction', function() {
     });
 
     it('dispatch is called with the right info', function() {
-      var data = {
+      const data = {
         test1: 'data1',
         test2: 'data2'
       };
 
       MediaAction._mediaLoaded(data);
       expect(dispatchStub.args[0].length).to.be.equal(1);
-      var action = dispatchStub.args[0][0];
+      const action = dispatchStub.args[0][0];
       expect(action.type).to.be.equal(MediaAction.Types.MEDIA_DATA);
       expect(action.data).to.be.deep.eql(data);
     });
   });
 
   describe('#_mediaLoaded', function() {
-    var dispatchStub;
+    let dispatchStub;
     beforeEach(function() {
       dispatchStub = sinon.stub(AppDispatcher, 'dispatch');
     });
@@ -142,14 +142,14 @@ describe('actions/MediaAction', function() {
     });
 
     it('dispatch is called with the right info', function() {
-      var data = {
+      const data = {
         test1: 'data1',
         test2: 'data2'
       };
 
       MediaAction._bulkMediaLoaded(data);
       expect(dispatchStub.args[0].length).to.be.equal(1);
-      var action = dispatchStub.args[0][0];
+      const action = dispatchStub.args[0][0];
       expect(action.type).to.be.equal(MediaAction.Types.MEDIA_BULK_DATA);
       expect(action.data).to.be.deep.eql(data);
     });

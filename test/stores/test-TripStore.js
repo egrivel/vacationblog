@@ -1,25 +1,25 @@
 'use strict';
 
-var expect = require('chai').expect;
-var sinon = require('sinon');
+const expect = require('chai').expect;
+const sinon = require('sinon');
 
-var TripStore = require('../../src/stores/TripStore');
-var TripActionTypes = require('../../src/actions/TripAction').Types;
+const TripStore = require('../../src/stores/TripStore');
+const TripActionTypes = require('../../src/actions/TripAction').Types;
 
-var testTripId1 = '-test-trip-1';
-var testTripId2 = '-test-trip-2';
+const testTripId1 = '-test-trip-1';
+const testTripId2 = '-test-trip-2';
 
-var testTripList = [
+const testTripList = [
   testTripId1,
   testTripId2
 ];
 
-var testTripData1 = {
+const testTripData1 = {
   tripId: testTripId1,
   tripText: 'trip text 1'
 };
 
-var testTripData2 = {
+const testTripData2 = {
   tripId: testTripId2,
   tripText: 'trip text 2'
 };
@@ -44,7 +44,7 @@ describe('stores/TripStore', function() {
 
       describe('action: set current trip', function() {
         it('works on uninitialized store', function() {
-          var cb = sinon.spy();
+          const cb = sinon.spy();
           TripStore.addChangeListener(cb);
 
           TripStore._storeCallback({
@@ -69,7 +69,7 @@ describe('stores/TripStore', function() {
       // action should be totally ignored.
       describe('action: load data', function() {
         it('fails on uninitialized store', function() {
-          var cb = sinon.spy();
+          const cb = sinon.spy();
           TripStore.addChangeListener(cb);
 
           TripStore._storeCallback({
@@ -91,7 +91,7 @@ describe('stores/TripStore', function() {
 
       describe('action: load list', function() {
         it('works on uninitialized store', function() {
-          var cb = sinon.spy();
+          const cb = sinon.spy();
           TripStore.addChangeListener(cb);
 
           TripStore._storeCallback({
@@ -132,7 +132,7 @@ describe('stores/TripStore', function() {
 
       describe('action: set current trip', function() {
         it('changing current trip emits change', function() {
-          var cb = sinon.spy();
+          const cb = sinon.spy();
 
           // Start listening to the callback
           TripStore.addChangeListener(cb);
@@ -182,7 +182,7 @@ describe('stores/TripStore', function() {
         expect(TripStore.getTripData()).to.deep.eql(testTripData1);
         expect(TripStore.getTripData()).to.not.deep.eql(testTripData2);
 
-        var testTripData = {
+        const testTripData = {
           tripId: testTripId1,
           tripText: 'trip text 2'
         };
@@ -212,13 +212,13 @@ describe('stores/TripStore', function() {
         });
 
         it('emits change if new data is set', function() {
-          var cb = sinon.spy();
+          const cb = sinon.spy();
 
           // Start listening to the callback
           TripStore.addChangeListener(cb);
 
           // create a different data object to test behavior
-          var testData = {
+          const testData = {
             tripId: testTripId1,
             tripText: 'other test text'
           };
@@ -270,13 +270,13 @@ describe('stores/TripStore', function() {
 
       describe('action: load list', function() {
         it('returns new trip list when updated', function() {
-          var cb = sinon.spy();
+          const cb = sinon.spy();
           TripStore.addChangeListener(cb);
 
           expect(TripStore.getTripList()).to.deep.eql(testTripList);
 
           // create a different list to test behavior
-          var otherList = [
+          const otherList = [
             testTripId2,
             testTripId1
           ];

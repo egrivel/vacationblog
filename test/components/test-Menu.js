@@ -2,23 +2,23 @@
 
 /* global window */
 
-var expect = require('chai').expect;
-var sinon = require('sinon');
-var React = require('react');
-var ReactDOM = require('react-dom');
-var TestUtils = require('react-addons-test-utils');
+const expect = require('chai').expect;
+const sinon = require('sinon');
+const React = require('react');
+const ReactDOM = require('react-dom');
+const TestUtils = require('react-addons-test-utils');
 
-var Menu = require('../../src/components/Menu.jsx');
-var MenuAction = require('../../src/actions/MenuAction');
-var FeedbackAction = require('../../src/actions/FeedbackAction');
+const Menu = require('../../src/components/Menu.jsx');
+const MenuAction = require('../../src/actions/MenuAction');
+const FeedbackAction = require('../../src/actions/FeedbackAction');
 
 describe('components/Menu', function() {
-  var menuData;
-  var divComponent;
+  let menuData;
+  let divComponent;
 
-  var selectItemStub;
-  var visibleItemStub;
-  var loadFeedbackStub;
+  let selectItemStub;
+  let visibleItemStub;
+  let loadFeedbackStub;
 
   beforeEach(function() {
     selectItemStub = sinon.stub(MenuAction, 'selectItem');
@@ -33,12 +33,12 @@ describe('components/Menu', function() {
   });
 
   describe('with simple structure', function() {
-    var testId1 = 'test1';
-    var testLabel1 = 'Test 1';
-    var testTarget1 = '#target-1';
-    var testId2 = 'test2';
-    var testLabel2 = 'Test 2';
-    var testTarget2 = '#target-2';
+    const testId1 = 'test1';
+    const testLabel1 = 'Test 1';
+    const testTarget1 = '#target-1';
+    const testId2 = 'test2';
+    const testLabel2 = 'Test 2';
+    const testTarget2 = '#target-2';
 
     beforeEach(function() {
       // Note: the visible attribute should not have any effect on
@@ -49,7 +49,7 @@ describe('components/Menu', function() {
         {id: testId2, label: testLabel2,
          visible: false, target: testTarget2}
       ];
-      var component = TestUtils.renderIntoDocument(
+      const component = TestUtils.renderIntoDocument(
         React.createElement(Menu, {menuData: menuData}));
       divComponent = ReactDOM.findDOMNode(component);
     });
@@ -57,40 +57,40 @@ describe('components/Menu', function() {
     describe('#render', function() {
       it('render a list', function() {
         expect(divComponent.tagName).to.be.equal('DIV');
-        var childComponent = divComponent.firstChild;
+        const childComponent = divComponent.firstChild;
         expect(childComponent.tagName).to.be.equal('UL');
       });
 
       it('display each of the items in the menu', function() {
-        var listItems = divComponent.querySelectorAll('li');
+        const listItems = divComponent.querySelectorAll('li');
         expect(listItems.length).to.be.equal(2);
         expect(listItems[0].tagName).to.be.equal('LI');
         expect(listItems[1].tagName).to.be.equal('LI');
       });
 
       it('display A elements for menu items', function() {
-        var listItems = divComponent.querySelectorAll('li');
+        const listItems = divComponent.querySelectorAll('li');
         expect(listItems.length).to.be.equal(2);
         expect(listItems[0].firstChild.tagName).to.be.equal('A');
         expect(listItems[1].firstChild.tagName).to.be.equal('A');
       });
 
       it('display labels for menu items', function() {
-        var listItems = divComponent.querySelectorAll('li');
+        const listItems = divComponent.querySelectorAll('li');
         expect(listItems.length).to.be.equal(2);
         expect(listItems[0].firstChild.textContent).to.be.equal(testLabel1);
         expect(listItems[1].firstChild.textContent).to.be.equal(testLabel2);
       });
 
       it('display targets for menu items', function() {
-        var listItems = divComponent.querySelectorAll('li');
+        const listItems = divComponent.querySelectorAll('li');
         expect(listItems.length).to.be.equal(2);
         expect(listItems[0].firstChild.href).to.be.contain(testTarget1);
         expect(listItems[1].firstChild.href).to.be.contain(testTarget2);
       });
 
       it('render selected item with class', function() {
-        var listItems = divComponent.querySelectorAll('li');
+        const listItems = divComponent.querySelectorAll('li');
         expect(listItems.length).to.be.equal(2);
         expect(listItems[0].className).to.contain('selected');
         expect(listItems[1].className).to.not.contain('selected');
@@ -101,7 +101,7 @@ describe('components/Menu', function() {
       // The click has a delayed effect in calling visible action; make
       // sure the delayed effect is handled.
       it('select item action is called', function(done) {
-        var listItems = divComponent.querySelectorAll('li');
+        const listItems = divComponent.querySelectorAll('li');
         expect(listItems.length).to.be.equal(2);
         TestUtils.Simulate.click(listItems[0]);
         setTimeout(function() {
@@ -116,7 +116,7 @@ describe('components/Menu', function() {
       });
 
       it('window location is set', function(done) {
-        var listItems = divComponent.querySelectorAll('li');
+        const listItems = divComponent.querySelectorAll('li');
         expect(listItems.length).to.be.equal(2);
         expect(window.location.href).to.not.contain(testTarget2);
         TestUtils.Simulate.click(listItems[1]);
@@ -132,7 +132,7 @@ describe('components/Menu', function() {
       // asynchronous, and call the done when the test is entirely
       // completed.
       it('visible item action is called', function(done) {
-        var listItems = divComponent.querySelectorAll('li');
+        const listItems = divComponent.querySelectorAll('li');
         expect(listItems.length).to.be.equal(2);
 
         // The mouse over should result in a call to the visible item
@@ -175,7 +175,7 @@ describe('components/Menu', function() {
 
       it('visible item action is not called if leaving hover for short time',
          function(done) {
-           var listItems = divComponent.querySelectorAll('li');
+           const listItems = divComponent.querySelectorAll('li');
            expect(listItems.length).to.be.equal(2);
 
            // The mouse over should result in a call to the visible item
@@ -231,23 +231,23 @@ describe('components/Menu', function() {
 
   /* eslint camelcase: [0] */
   describe('with a nested menu', function() {
-    var testLabel1 = 'Test 1';
-    var testLabel1_1 = 'Test 1.1';
-    var testLabel1_2 = 'Test 1.2';
-    var testLabel1_3 = 'Test 1.3';
-    var testLabel2 = 'Test 2';
-    var testLabel3 = 'Test 3';
-    var testLabel3_1 = 'Test 3.1';
-    var testLabel3_2 = 'Test 3.2';
-    var testLabel3_3 = 'Test 3.3';
+    const testLabel1 = 'Test 1';
+    const testLabel1_1 = 'Test 1.1';
+    const testLabel1_2 = 'Test 1.2';
+    const testLabel1_3 = 'Test 1.3';
+    const testLabel2 = 'Test 2';
+    const testLabel3 = 'Test 3';
+    const testLabel3_1 = 'Test 3.1';
+    const testLabel3_2 = 'Test 3.2';
+    const testLabel3_3 = 'Test 3.3';
 
-    var testTarget1_1 = 'target-1-1';
-    var testTarget1_2 = 'target-1-2';
-    var testTarget1_3 = 'target-1-3';
-    var testTarget2 = 'target-2';
-    var testTarget3_1 = 'target-3-1';
-    var testTarget3_2 = 'target-3-2';
-    var testTarget3_3 = 'target-3-3';
+    const testTarget1_1 = 'target-1-1';
+    const testTarget1_2 = 'target-1-2';
+    const testTarget1_3 = 'target-1-3';
+    const testTarget2 = 'target-2';
+    const testTarget3_1 = 'target-3-1';
+    const testTarget3_2 = 'target-3-2';
+    const testTarget3_3 = 'target-3-3';
 
     beforeEach(function() {
       menuData = [
@@ -263,7 +263,7 @@ describe('components/Menu', function() {
           {id: 'test-3.3', label: testLabel3_3, target: testTarget3_3}
         ]}
       ];
-      var component = TestUtils.renderIntoDocument(
+      const component = TestUtils.renderIntoDocument(
         React.createElement(Menu, {menuData: menuData}));
       divComponent = ReactDOM.findDOMNode(component);
     });
@@ -271,12 +271,12 @@ describe('components/Menu', function() {
     describe('#render', function() {
       it('render a list', function() {
         expect(divComponent.tagName).to.be.equal('DIV');
-        var childComponent = divComponent.firstChild;
+        const childComponent = divComponent.firstChild;
         expect(childComponent.tagName).to.be.equal('UL');
       });
 
       it('displays a visible submenu', function() {
-        var listItems = divComponent.querySelectorAll('li');
+        const listItems = divComponent.querySelectorAll('li');
         expect(listItems.length).to.be.equal(6);
         expect(listItems[2].firstChild, 'menu[2] has a span').to.exist;
         expect(listItems[2].firstChild.tagName,
@@ -292,7 +292,7 @@ describe('components/Menu', function() {
       });
 
       it('does not display an invisible submenu', function() {
-        var listItems = divComponent.querySelectorAll('li');
+        const listItems = divComponent.querySelectorAll('li');
         expect(listItems.length).to.be.equal(6);
         expect(listItems[0].children.length, 'number of children of li')
           .to.be.equal(1);
@@ -301,7 +301,7 @@ describe('components/Menu', function() {
       });
 
       it('display A and SPAN elements for menu items', function() {
-        var listItems = divComponent.querySelectorAll('li');
+        const listItems = divComponent.querySelectorAll('li');
         expect(listItems.length).to.be.equal(6);
         expect(listItems[0].firstChild.tagName).to.be.equal('SPAN');
         expect(listItems[1].firstChild.tagName).to.be.equal('A');
@@ -312,7 +312,7 @@ describe('components/Menu', function() {
       });
 
       it('display labels for menu items', function() {
-        var listItems = divComponent.querySelectorAll('li');
+        const listItems = divComponent.querySelectorAll('li');
         expect(listItems.length).to.be.equal(6);
         expect(listItems[0].firstChild.textContent).to.be.equal(testLabel1);
         expect(listItems[1].firstChild.textContent).to.be.equal(testLabel2);
@@ -323,7 +323,7 @@ describe('components/Menu', function() {
       });
 
       it('display targets for menu items', function() {
-        var listItems = divComponent.querySelectorAll('li');
+        const listItems = divComponent.querySelectorAll('li');
         expect(listItems.length).to.be.equal(6);
         expect(listItems[0].firstChild.href).to.not.exist;
         expect(listItems[1].firstChild.href).to.contain(testTarget2);
@@ -338,7 +338,7 @@ describe('components/Menu', function() {
       // The click has a delayed effect in calling visible action; make
       // sure the delayed effect is handled.
       it('select submenu item not not call selectItem', function(done) {
-        var listItems = divComponent.querySelectorAll('li');
+        const listItems = divComponent.querySelectorAll('li');
         expect(listItems.length).to.be.equal(6);
         TestUtils.Simulate.click(listItems[2]);
         setTimeout(function() {

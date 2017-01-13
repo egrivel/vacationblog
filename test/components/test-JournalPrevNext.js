@@ -1,24 +1,24 @@
 'use strict';
 
-var sinon = require('sinon');
-var expect = require('chai').expect;
-var React = require('react');
+const sinon = require('sinon');
+const expect = require('chai').expect;
+const React = require('react');
 // var ReactDOMServer = require('react-dom/server');
-var TestUtils = require('react-addons-test-utils');
+const TestUtils = require('react-addons-test-utils');
 
-var JournalPrevNext =
+const JournalPrevNext =
   require('../../src/components/JournalPrevNext.jsx');
 
 describe('components/JournalPrevNext', function() {
-  var testTripId1 = 'test-trip-1';
+  const testTripId1 = 'test-trip-1';
   // var testTripId2 = 'test-trip-2';
-  var testPrevId1 = 'test-prev-1';
+  const testPrevId1 = 'test-prev-1';
   // var testPrevId2 = 'test-prev-2';
-  var testNextId1 = 'test-next-1';
+  const testNextId1 = 'test-next-1';
   // var testNextId2 = 'test-next-2';
-  var testNr1 = 1454;
+  const testNr1 = 1454;
   // var testNr2 = 1455;
-  var props;
+  let props;
 
   beforeEach(function() {
     props = {
@@ -30,7 +30,7 @@ describe('components/JournalPrevNext', function() {
   });
 
   describe('#propTypes', function() {
-    var logStub;
+    let logStub;
 
     beforeEach(function() {
       // React will give errors about the proptyps on the error console,
@@ -130,10 +130,10 @@ describe('components/JournalPrevNext', function() {
 
   describe('#render', function() {
     it('renders a prevnext paragraph', function() {
-      var component =
+      const component =
         TestUtils.renderIntoDocument(
           React.createElement(JournalPrevNext, props));
-      var p = TestUtils.findRenderedDOMComponentWithTag(
+      const p = TestUtils.findRenderedDOMComponentWithTag(
         component,
         'p'
       );
