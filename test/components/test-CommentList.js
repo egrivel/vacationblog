@@ -53,21 +53,24 @@ describe('components/CommentList', function() {
     describe('structure', function() {
       it('<h3> elements', function() {
         const comments = TestUtils.renderIntoDocument(element);
-        const h3List = TestUtils.scryRenderedDOMComponentsWithTag(comments, 'h3');
+        const h3List = TestUtils.scryRenderedDOMComponentsWithTag(
+          comments, 'h3');
         expect(h3List.length).to.be.equal(1);
         expect(h3List[0].className).to.be.equal('');
       });
 
       it('<p> elements', function() {
         const comments = TestUtils.renderIntoDocument(element);
-        const parList = TestUtils.scryRenderedDOMComponentsWithTag(comments, 'p');
+        const parList = TestUtils.scryRenderedDOMComponentsWithTag(
+          comments, 'p');
         expect(parList.length).to.be.equal(1);
         expect(parList[0].className).to.be.equal('text');
       });
 
       it('<div> elements', function() {
         const comments = TestUtils.renderIntoDocument(element);
-        const divList = TestUtils.scryRenderedDOMComponentsWithTag(comments,
+        const divList = TestUtils.scryRenderedDOMComponentsWithTag(
+          comments,
           'div');
         expect(divList.length).to.be.equal(3);
         expect(divList[0].className).to.be.equal('comments');
@@ -86,14 +89,16 @@ describe('components/CommentList', function() {
     describe('render content', function() {
       it('render paragraph', function() {
         const comments = TestUtils.renderIntoDocument(element);
-        const parList = TestUtils.scryRenderedDOMComponentsWithTag(comments, 'p');
+        const parList = TestUtils.scryRenderedDOMComponentsWithTag(
+          comments, 'p');
         expect(parList.length).to.be.equal(1);
         expect(parList[0].className).to.be.equal('text');
       });
 
       it('contains comment text', function() {
         const comments = TestUtils.renderIntoDocument(element);
-        const parList = TestUtils.scryRenderedDOMComponentsWithTag(comments, 'p');
+        const parList = TestUtils.scryRenderedDOMComponentsWithTag(
+          comments, 'p');
         expect(parList.length).to.be.equal(1);
         expect(parList[0].innerHTML).to.contain(testText);
       });
@@ -102,7 +107,8 @@ describe('components/CommentList', function() {
     describe('render feedback', function() {
       it('render div', function() {
         const comments = TestUtils.renderIntoDocument(element);
-        const divList = TestUtils.scryRenderedDOMComponentsWithTag(comments,
+        const divList = TestUtils.scryRenderedDOMComponentsWithTag(
+          comments,
           'div');
         expect(divList.length).to.be.equal(3);
         expect(divList[2].className).to.be.equal('feedback');
@@ -139,7 +145,8 @@ describe('components/CommentList', function() {
     describe('structure', function() {
       it('<h3> elements', function() {
         const comments = TestUtils.renderIntoDocument(element);
-        const h3List = TestUtils.scryRenderedDOMComponentsWithTag(comments, 'h3');
+        const h3List = TestUtils.scryRenderedDOMComponentsWithTag(
+          comments, 'h3');
         expect(h3List.length).to.be.equal(2);
         expect(h3List[0].className).to.be.equal('');
         expect(h3List[1].className).to.be.equal('');
@@ -147,7 +154,8 @@ describe('components/CommentList', function() {
 
       it('<p> elements', function() {
         const comments = TestUtils.renderIntoDocument(element);
-        const parList = TestUtils.scryRenderedDOMComponentsWithTag(comments, 'p');
+        const parList = TestUtils.scryRenderedDOMComponentsWithTag(
+          comments, 'p');
         expect(parList.length).to.be.equal(2);
         expect(parList[0].className).to.be.equal('text');
         expect(parList[1].className).to.be.equal('text');
@@ -169,7 +177,8 @@ describe('components/CommentList', function() {
     describe('render content', function() {
       it('render paragraph', function() {
         const comments = TestUtils.renderIntoDocument(element);
-        const parList = TestUtils.scryRenderedDOMComponentsWithTag(comments, 'p');
+        const parList = TestUtils.scryRenderedDOMComponentsWithTag(
+          comments, 'p');
         expect(parList.length).to.be.equal(2);
         expect(parList[0].className).to.be.equal('text');
         expect(parList[1].className).to.be.equal('text');
@@ -177,7 +186,8 @@ describe('components/CommentList', function() {
 
       it('contains comment text', function() {
         const comments = TestUtils.renderIntoDocument(element);
-        const parList = TestUtils.scryRenderedDOMComponentsWithTag(comments, 'p');
+        const parList = TestUtils.scryRenderedDOMComponentsWithTag(
+          comments, 'p');
         expect(parList.length).to.be.equal(2);
         expect(parList[0].innerHTML).to.contain(testText1);
         expect(parList[1].innerHTML).to.contain(testText2);
@@ -234,7 +244,8 @@ describe('components/CommentList', function() {
     describe('structure', function() {
       it('<h3> elements', function() {
         const comments = TestUtils.renderIntoDocument(element);
-        const h3List = TestUtils.scryRenderedDOMComponentsWithTag(comments, 'h3');
+        const h3List = TestUtils.scryRenderedDOMComponentsWithTag(
+          comments, 'h3');
         expect(h3List.length).to.be.equal(3);
         expect(h3List[0].className).to.be.equal('');
         expect(h3List[1].className).to.be.equal('');
@@ -243,7 +254,8 @@ describe('components/CommentList', function() {
 
       it('<p> elements', function() {
         const comments = TestUtils.renderIntoDocument(element);
-        const parList = TestUtils.scryRenderedDOMComponentsWithTag(comments, 'p');
+        const parList = TestUtils.scryRenderedDOMComponentsWithTag(
+          comments, 'p');
         expect(parList.length).to.be.equal(3);
         expect(parList[0].className).to.be.equal('text');
         expect(parList[1].className).to.be.equal('text');
@@ -269,7 +281,8 @@ describe('components/CommentList', function() {
     describe('render content', function() {
       it('render paragraph', function() {
         const comments = TestUtils.renderIntoDocument(element);
-        const parList = TestUtils.scryRenderedDOMComponentsWithTag(comments, 'p');
+        const parList = TestUtils.scryRenderedDOMComponentsWithTag(
+          comments, 'p');
         expect(parList.length).to.be.equal(3);
         expect(parList[0].className).to.be.equal('text');
         expect(parList[1].className).to.be.equal('text');
@@ -278,7 +291,8 @@ describe('components/CommentList', function() {
 
       it('contains comment text', function() {
         const comments = TestUtils.renderIntoDocument(element);
-        const parList = TestUtils.scryRenderedDOMComponentsWithTag(comments, 'p');
+        const parList = TestUtils.scryRenderedDOMComponentsWithTag(
+          comments, 'p');
         expect(parList.length).to.be.equal(3);
         expect(parList[0].innerHTML).to.contain(testText1);
         expect(parList[1].innerHTML).to.contain(testText3);

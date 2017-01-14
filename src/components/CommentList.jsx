@@ -5,20 +5,20 @@
  * call itself recursively to display comments to comments.
  */
 
-var React = require('react');
+const React = require('react');
 
-var UserStore = require('../stores/UserStore');
-var CommentStore = require('../stores/CommentStore');
-var CommentAction = require('../actions/CommentAction');
+const UserStore = require('../stores/UserStore');
+const CommentStore = require('../stores/CommentStore');
+const CommentAction = require('../actions/CommentAction');
 
-var utils = require('./utils');
-var Feedback = require('./Feedback.jsx');
-var CommentEdit = require('./CommentEdit.jsx');
+const utils = require('./utils');
+const Feedback = require('./Feedback.jsx');
+const CommentEdit = require('./CommentEdit.jsx');
 
 // Declare variables that will be used later
-var CommentList;
+let CommentList = null;
 
-var CommentParagraph = React.createClass({
+const CommentParagraph = React.createClass({
   displayName: 'CommentParagraph',
 
   propTypes: {
@@ -27,7 +27,7 @@ var CommentParagraph = React.createClass({
   },
 
   render: function() {
-    var text = utils.replaceEntities(this.props.text);
+    let text = utils.replaceEntities(this.props.text);
 
     text = text.replace(/\s\s+/g, ' ');
 
@@ -40,7 +40,7 @@ var CommentParagraph = React.createClass({
   }
 });
 
-var Comment = React.createClass({
+const Comment = React.createClass({
   displayName: 'Comment',
 
   propTypes: {
@@ -59,25 +59,25 @@ var Comment = React.createClass({
   },
 
   _startEditing: function(event) {
-    var tripId = event.target.getAttribute('data-trip-id');
-    var referenceId = event.target.getAttribute('data-reference-id');
-    var commentId = event.target.getAttribute('data-comment-id');
+    const tripId = event.target.getAttribute('data-trip-id');
+    const referenceId = event.target.getAttribute('data-reference-id');
+    const commentId = event.target.getAttribute('data-comment-id');
     CommentAction.setEditing(tripId, referenceId, commentId, true);
     event.preventDefault();
     event.stopPropagation();
   },
 
   render: function render() {
-    var tripId = this.props.tripId;
-    var tripActive = this.props.tripActive;
-    var referenceId = this.props.referenceId;
-    var commentId = this.props.commentId;
-    var created = this.props.created;
-    var commentText = this.props.commentText;
-    var deleted = this.props.deleted;
-    var userId = this.props.userId;
-    var userName = this.props.userName;
-    var comments = this.props.comments;
+    const tripId = this.props.tripId;
+    const tripActive = this.props.tripActive;
+    const referenceId = this.props.referenceId;
+    const commentId = this.props.commentId;
+    const created = this.props.created;
+    const commentText = this.props.commentText;
+    const deleted = this.props.deleted;
+    const userId = this.props.userId;
+    let userName = this.props.userName;
+    const comments = this.props.comments;
 
     // if this comment was deleted, ignore it
     if (deleted === 'Y') {
@@ -93,7 +93,7 @@ var Comment = React.createClass({
 
     // Note: both the CommentEdit and Feedback elements are controller-views
     // and may result in too many event listners being added.
-    var newComment = null;
+    let newComment = null;
     if (tripId && (tripActive === 'Y') &&
       commentId && this.props.loggedInUserId) {
       if (CommentStore.isEditing(tripId, commentId)) {
@@ -117,14 +117,14 @@ var Comment = React.createClass({
       }
     }
 
-    var feedback = null;
+    let feedback = null;
     feedback = React.createElement(Feedback, {
       tripId: tripId,
       referenceId: commentId,
       key: tripId + ':' + commentId
     });
 
-    var commentEdit = null;
+    let commentEdit = null;
     if ((tripActive === 'Y') &&
       CommentStore.canEditComment(commentId, this.props.loggedInUserId)) {
       if (!CommentStore.isEditing('', '', commentId)) {
@@ -139,7 +139,7 @@ var Comment = React.createClass({
       }
     }
 
-    var header = (
+    const header = (
       <h3>
         <em>by </em>
         <strong>{userName} </strong>
@@ -149,11 +149,11 @@ var Comment = React.createClass({
       </h3>
     );
 
-    var parList = utils.splitText(commentText);
+    const parList = utils.splitText(commentText);
 
-    var parCount = 0;
+    let parCount = 0;
 
-    var list = React.createElement(
+    const list = React.createElement(
       CommentList,
       {
         tripId: tripId,
@@ -163,7 +163,7 @@ var Comment = React.createClass({
         loggedInUserId: this.props.loggedInUserId
       });
 
-    var commentBody = '';
+    let commentBody = '';
     if (CommentStore.isEditing('', '', commentId)) {
       commentBody = (
         <CommentEdit tripId={tripId} commentId={commentId}
@@ -172,7 +172,7 @@ var Comment = React.createClass({
     } else {
       commentBody = parList.map(function(par) {
         parCount++;
-        var parKey = 'p-' + parCount;
+        const parKey = 'p-' + parCount;
         return React.createElement(CommentParagraph, {
           tripId: tripId,
           key: parKey,
@@ -210,16 +210,16 @@ CommentList = React.createClass({
       return null;
     }
 
-    var commentList = [];
-    var count = 0;
-    for (var i = 0; i < this.props.comments.length; i++) {
-      var userId = this.props.comments[i].userId;
-      var userData = UserStore.getData(userId);
-      var userName = '';
+    const commentList = [];
+    let count = 0;
+    for (let i = 0; i < this.props.comments.length; i++) {
+      const userId = this.props.comments[i].userId;
+      const userData = UserStore.getData(userId);
+      let userName = '';
       if (userData) {
         userName = userData.name;
       }
-      var canEdit = (this.props.tripActive === 'Y') &&
+      const canEdit = (this.props.tripActive === 'Y') &&
         (userId === this.props.loggedInUserId);
       commentList[count++] = React.createElement(
         Comment,

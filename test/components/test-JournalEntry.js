@@ -89,7 +89,8 @@ describe('components/JournalEntry', function() {
     describe('structure', function() {
       it('<h3> elements', function() {
         const journal = TestUtils.renderIntoDocument(element);
-        const h3List = TestUtils.scryRenderedDOMComponentsWithTag(journal, 'h3');
+        const h3List = TestUtils.scryRenderedDOMComponentsWithTag(
+          journal, 'h3');
         expect(h3List.length).to.be.equal(2);
         expect(h3List[0].className).to.be.equal('');
         expect(h3List[1].className).to.be.equal('');
@@ -97,7 +98,8 @@ describe('components/JournalEntry', function() {
 
       it('<p> elements', function() {
         const journal = TestUtils.renderIntoDocument(element);
-        const parList = TestUtils.scryRenderedDOMComponentsWithTag(journal, 'p');
+        const parList = TestUtils.scryRenderedDOMComponentsWithTag(
+          journal, 'p');
         expect(parList.length).to.be.equal(4);
         expect(parList[0].className).to.be.equal('prevnext');
         expect(parList[1].className).to.be.equal('text');
@@ -122,7 +124,8 @@ describe('components/JournalEntry', function() {
     describe('render title', function() {
       it('uses <h3>', function() {
         const journal = TestUtils.renderIntoDocument(element);
-        const h3List = TestUtils.scryRenderedDOMComponentsWithTag(journal, 'h3');
+        const h3List = TestUtils.scryRenderedDOMComponentsWithTag(
+          journal, 'h3');
         expect(h3List.length).to.be.equal(2);
       });
 
@@ -158,14 +161,16 @@ describe('components/JournalEntry', function() {
     describe('render prev-next', function() {
       it('render first prevnext', function() {
         const journal = TestUtils.renderIntoDocument(element);
-        const parList = TestUtils.scryRenderedDOMComponentsWithTag(journal, 'p');
+        const parList = TestUtils.scryRenderedDOMComponentsWithTag(
+          journal, 'p');
         expect(parList.length).to.be.equal(4);
         expect(parList[0].className).to.be.equal('prevnext');
       });
 
       it('render second prevnext', function() {
         const journal = TestUtils.renderIntoDocument(element);
-        const parList = TestUtils.scryRenderedDOMComponentsWithTag(journal, 'p');
+        const parList = TestUtils.scryRenderedDOMComponentsWithTag(
+          journal, 'p');
         expect(parList.length).to.be.equal(4);
         expect(parList[3].className).to.be.equal('prevnext');
       });
@@ -174,14 +179,16 @@ describe('components/JournalEntry', function() {
     describe('render content', function() {
       it('render paragraph', function() {
         const journal = TestUtils.renderIntoDocument(element);
-        const parList = TestUtils.scryRenderedDOMComponentsWithTag(journal, 'p');
+        const parList = TestUtils.scryRenderedDOMComponentsWithTag(
+          journal, 'p');
         expect(parList.length).to.be.equal(4);
         expect(parList[1].className).to.be.equal('text');
       });
 
       it('contains journal text', function() {
         const journal = TestUtils.renderIntoDocument(element);
-        const parList = TestUtils.scryRenderedDOMComponentsWithTag(journal, 'p');
+        const parList = TestUtils.scryRenderedDOMComponentsWithTag(
+          journal, 'p');
         expect(parList.length).to.be.equal(4);
         expect(parList[1].innerHTML).to.contain(testText);
       });

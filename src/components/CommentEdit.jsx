@@ -1,12 +1,12 @@
 'use strict';
 
-var React = require('react');
+const React = require('react');
 
-var CommentAction = require('../actions/CommentAction');
-var CommentStore = require('../stores/CommentStore');
-var storeMixin = require('./StoreMixin');
+const CommentAction = require('../actions/CommentAction');
+const CommentStore = require('../stores/CommentStore');
+const storeMixin = require('./StoreMixin');
 
-var CommentEdit = React.createClass({
+const CommentEdit = React.createClass({
   displayName: 'CommentEdit',
 
   mixins: [storeMixin()],
@@ -20,10 +20,10 @@ var CommentEdit = React.createClass({
   },
 
   _getStateFromStores: function() {
-    var value = CommentStore.getCommentText(this.props.tripId,
+    let value = CommentStore.getCommentText(this.props.tripId,
       this.props.referenceId, this.props.commentId);
     if (value) {
-      value = value.replace(/&lf;/g, "\n\n");
+      value = value.replace(/&lf;/g, '\n\n');
     }
     return {
       value: value
@@ -31,7 +31,7 @@ var CommentEdit = React.createClass({
   },
 
   _stopEditing: function(event) {
-    var value = this.state.value;
+    let value = this.state.value;
     value = value.replace(/[\r\n]+/g, '&lf;');
     CommentAction.setEditing(this.props.tripId,
       this.props.referenceId, this.props.commentId,
@@ -53,7 +53,7 @@ var CommentEdit = React.createClass({
   },
 
   _updateValue: function(event) {
-    var value = '';
+    let value = '';
     if (event && event.target) {
       value = event.target.value;
     }
@@ -65,7 +65,7 @@ var CommentEdit = React.createClass({
   },
 
   _doPost: function() {
-    var value = this.state.value;
+    let value = this.state.value;
     value = value.replace(/[\r\n]+/g, '&lf;');
     CommentAction.setEditing(this.props.tripId,
       this.props.referenceId, this.props.commentId,

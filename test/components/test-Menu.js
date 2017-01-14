@@ -51,6 +51,7 @@ describe('components/Menu', function() {
       ];
       const component = TestUtils.renderIntoDocument(
         React.createElement(Menu, {menuData: menuData}));
+      // eslint-disable-next-line react/no-find-dom-node
       divComponent = ReactDOM.findDOMNode(component);
     });
 
@@ -265,6 +266,7 @@ describe('components/Menu', function() {
       ];
       const component = TestUtils.renderIntoDocument(
         React.createElement(Menu, {menuData: menuData}));
+      // eslint-disable-next-line react/no-find-dom-node
       divComponent = ReactDOM.findDOMNode(component);
     });
 

@@ -28,7 +28,7 @@ const MediaStore = assign({}, GenericStore, {
   _storeCallback: function(action) {
     switch (action.type) {
       case MediaActionTypes.MEDIA_DATA:
-        var index = action.data.tripId + '|' + action.data.mediaId;
+        const index = action.data.tripId + '|' + action.data.mediaId;
         if (!_.isEqual(_mediaData[index], action.data)) {
           _mediaData[index] = action.data;
           MediaStore.emitChange();
@@ -36,9 +36,9 @@ const MediaStore = assign({}, GenericStore, {
         break;
 
       case MediaActionTypes.MEDIA_BULK_DATA:
-        var count = action.data.count;
-        var list = action.data.list;
-        var updateCount = 0;
+        const count = action.data.count;
+        const list = action.data.list;
+        let updateCount = 0;
         for (let i = 0; i < count; i++) {
           const id = list[i].tripId + '|' + list[i].mediaId;
           if (!_mediaData[id] || !_.isEqual(_mediaData[id], list[i])) {

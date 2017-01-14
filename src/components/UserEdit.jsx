@@ -74,7 +74,7 @@ const UserEdit = React.createClass({
       }
     }
 
-    this.setState({errorMessage});
+    this.setState({errorMessage: errorMessage});
 
     if (errorMessage === '') {
       UserAction.saveUser(this.props.params.userId, this.state.userData);

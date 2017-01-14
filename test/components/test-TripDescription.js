@@ -44,6 +44,7 @@ function getHtmlMarkup(tripId) {
 function getDomElement(tripId) {
   const element = getTripDescription(tripId);
   const component = TestUtils.renderIntoDocument(element);
+  // eslint-disable-next-line react/no-find-dom-node
   return ReactDOM.findDOMNode(component);
 }
 

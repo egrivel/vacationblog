@@ -196,7 +196,7 @@ const CommentStore = assign({}, GenericStore, {
     let index;
     switch (action.type) {
       case CommentActionTypes.COMMENT_DATA:
-        var isChanged = false;
+        let isChanged = false;
         if (action.data && action.data.list) {
           for (let i = 0; action.data.list[i]; i++) {
             isChanged |= _setData(action.data.list[i]);
@@ -208,7 +208,7 @@ const CommentStore = assign({}, GenericStore, {
         break;
 
       case CommentActionTypes.COMMENT_SET_EDITING:
-        var value = false;
+        let value = false;
         if (action.value) {
           value = true;
         }

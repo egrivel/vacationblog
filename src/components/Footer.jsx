@@ -1,11 +1,11 @@
 'use strict';
 
-var React = require('react');
-var TripStore = require('../stores/TripStore');
+const React = require('react');
+const TripStore = require('../stores/TripStore');
 
-var storeMixin = require('./StoreMixin');
+const storeMixin = require('./StoreMixin');
 
-var Footer = React.createClass({
+const Footer = React.createClass({
   displayName: 'Footer',
 
   stores: [TripStore],
@@ -18,7 +18,7 @@ var Footer = React.createClass({
    * @private
    */
   _getStateFromStores: function _getStateFromStores() {
-    var tripData = TripStore.getTripData();
+    const tripData = TripStore.getTripData();
     return {
       startDate: tripData.startDate,
       endDate: tripData.endDate
@@ -26,12 +26,12 @@ var Footer = React.createClass({
   },
 
   _getFooterText: function _getFooterText() {
-    var startDate = this.state.startDate;
-    var endDate = this.state.endDate;
+    const startDate = this.state.startDate;
+    const endDate = this.state.endDate;
 
-    var copyrightYear = '';
-    var startYear = '';
-    var endYear = '';
+    let copyrightYear = '';
+    let startYear = '';
+    let endYear = '';
 
     if (endDate &&
         endDate.length > 4 &&

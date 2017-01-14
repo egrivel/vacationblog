@@ -143,6 +143,7 @@ describe('components/Feedback', function() {
       beforeEach(function() {
         const component = TestUtils.renderIntoDocument(
           React.createElement(Feedback, null));
+        // eslint-disable-next-line react/no-find-dom-node
         feedback = ReactDOM.findDOMNode(component);
       });
 
@@ -184,6 +185,7 @@ describe('components/Feedback', function() {
       beforeEach(function() {
         const component = TestUtils.renderIntoDocument(
           React.createElement(Feedback, {tripId: testTripId}));
+        // eslint-disable-next-line react/no-find-dom-node
         feedback = ReactDOM.findDOMNode(component);
       });
 
@@ -225,6 +227,7 @@ describe('components/Feedback', function() {
       beforeEach(function() {
         const component = TestUtils.renderIntoDocument(
           React.createElement(Feedback, {referenceId: testReferenceId}));
+        // eslint-disable-next-line react/no-find-dom-node
         feedback = ReactDOM.findDOMNode(component);
       });
 
@@ -269,6 +272,7 @@ describe('components/Feedback', function() {
             tripId: testTripId,
             referenceId: testReferenceId
           }));
+        // eslint-disable-next-line react/no-find-dom-node
         feedback = ReactDOM.findDOMNode(component);
       });
 
@@ -368,6 +372,7 @@ describe('components/Feedback', function() {
             tripId: testTripId,
             referenceId: testReferenceId
           }));
+        // eslint-disable-next-line react/no-find-dom-node
         feedback = ReactDOM.findDOMNode(component);
       });
 
@@ -393,6 +398,7 @@ describe('components/Feedback', function() {
             tripId: testTripId,
             referenceId: testReferenceId
           }));
+        // eslint-disable-next-line react/no-find-dom-node
         feedback = ReactDOM.findDOMNode(component);
       });
 
@@ -419,6 +425,7 @@ describe('components/Feedback', function() {
             tripId: testTripId,
             referenceId: testReferenceId
           }));
+        // eslint-disable-next-line react/no-find-dom-node
         feedback = ReactDOM.findDOMNode(component);
       });
 
@@ -439,6 +446,7 @@ describe('components/Feedback', function() {
             tripId: testTripId,
             referenceId: testReferenceId
           }));
+        // eslint-disable-next-line react/no-find-dom-node
         feedback = ReactDOM.findDOMNode(component);
       });
 
@@ -458,6 +466,7 @@ describe('components/Feedback', function() {
           tripId: testTripId,
           referenceId: testReferenceId
         }));
+      // eslint-disable-next-line react/no-find-dom-node
       feedback = ReactDOM.findDOMNode(component);
     });
 
@@ -488,6 +497,7 @@ describe('components/Feedback', function() {
           tripId: testTripId,
           referenceId: testReferenceId
         }));
+      // eslint-disable-next-line react/no-find-dom-node
       feedback = ReactDOM.findDOMNode(component);
     });
 
@@ -517,6 +527,7 @@ describe('components/Feedback', function() {
           tripId: testTripId,
           referenceId: testReferenceId
         }));
+      // eslint-disable-next-line react/no-find-dom-node
       feedback = ReactDOM.findDOMNode(component);
     });
 

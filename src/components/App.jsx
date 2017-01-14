@@ -1,10 +1,10 @@
 'use strict';
 
-var React = require('react');
+const React = require('react');
 
-var Header = require('./Header.jsx');
-var Welcome = require('./Welcome.jsx');
-var Footer = require('./Footer.jsx');
+const Header = require('./Header.jsx');
+const Welcome = require('./Welcome.jsx');
+const Footer = require('./Footer.jsx');
 
 /**
  * The application object renders the framework of the application, which
@@ -13,7 +13,7 @@ var Footer = require('./Footer.jsx');
  * content, it will default to a trip description page. This is the initial
  * view when someone enters the site.
  */
-var App = React.createClass({
+const App = React.createClass({
   displayName: 'App',
 
   propTypes: {
@@ -21,7 +21,7 @@ var App = React.createClass({
   },
 
   render: function() {
-    var children = this.props.children;
+    let children = this.props.children;
     if (!children || children.length === 0) {
       children = <Welcome/>;
     }

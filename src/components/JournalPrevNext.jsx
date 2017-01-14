@@ -4,8 +4,8 @@
  * The previous / next line in journal entries.
  */
 
-var React = require('react');
-var Link = require('react-router').Link;
+const React = require('react');
+const Link = require('react-router').Link;
 
 /**
  * Build a 'previous' or 'next' link.
@@ -20,8 +20,8 @@ var Link = require('react-router').Link;
  */
 function getPrevNextPart(tripId, targetId, icon, className,
                           label, defaultLabel) {
-  var icon1 = null;
-  var icon2 = null;
+  let icon1 = null;
+  let icon2 = null;
   if (className === 'prevlink') {
     icon1 = React.DOM.i(
       {
@@ -59,7 +59,7 @@ function getPrevNextPart(tripId, targetId, icon, className,
   );
 }
 
-var JournalPrevNext = React.createClass({
+const JournalPrevNext = React.createClass({
   displayName: 'JournalPrevNext',
 
   propTypes: {
@@ -70,13 +70,13 @@ var JournalPrevNext = React.createClass({
   },
 
   render: function() {
-    var prevPart = getPrevNextPart(this.props.tripId, this.props.prevId,
+    const prevPart = getPrevNextPart(this.props.tripId, this.props.prevId,
       'fa-chevron-left', 'prevlink',
       'Previous Post', '(no previous post)');
-    var nextPart = getPrevNextPart(this.props.tripId, this.props.nextId,
+    const nextPart = getPrevNextPart(this.props.tripId, this.props.nextId,
       'fa-chevron-right', 'nextlink',
       'Next Post', '(no next post)');
-    var key = 'prevnext-' + this.props.nr;
+    const key = 'prevnext-' + this.props.nr;
     return (
       <p className="prevnext" key={key}>
         {prevPart}

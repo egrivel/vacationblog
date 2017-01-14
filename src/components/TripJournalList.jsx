@@ -75,9 +75,9 @@ const TripJournalList = React.createClass({
     let journalId = '';
     let journalDate = '';
     let userList = [];
-    let journalList = [];
+    const journalList = [];
 
-    let tripId = this.props.tripId;
+    const tripId = this.props.tripId;
 
     if (this.state.journalList && this.state.journalList.length) {
       for (let i = 0; i < this.state.journalList.length; i++) {

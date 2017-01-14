@@ -1,16 +1,16 @@
 'use strict';
 
-var React = require('react');
-var Menu = require('./Menu.jsx');
-var Login = require('./Login.jsx');
-var TripStore = require('../stores/TripStore');
-var MenuStore = require('../stores/MenuStore');
-var UserStore = require('../stores/UserStore');
-var UserAction = require('../actions/UserAction');
+const React = require('react');
+const Menu = require('./Menu.jsx');
+const Login = require('./Login.jsx');
+const TripStore = require('../stores/TripStore');
+const MenuStore = require('../stores/MenuStore');
+const UserStore = require('../stores/UserStore');
+const UserAction = require('../actions/UserAction');
 
-var storeMixin = require('./StoreMixin');
+const storeMixin = require('./StoreMixin');
 
-var Header = React.createClass({
+const Header = React.createClass({
   displayName: 'Header',
 
   stores: [TripStore, MenuStore, UserStore],
@@ -70,7 +70,7 @@ var Header = React.createClass({
   },
 
   render: function() {
-    var banner;
+    let banner;
     if (this.state.bannerImg) {
       banner = <img src={'media/' + this.state.bannerImg}/>;
     } else {
@@ -81,7 +81,7 @@ var Header = React.createClass({
       );
     }
 
-    var userForm = null;
+    let userForm = null;
     if (this.state.loginState !== UserStore.constants.NONE) {
       userForm = (
         <Login errorMessage={this.state.loginErrorMessage}
@@ -89,7 +89,7 @@ var Header = React.createClass({
       );
     }
 
-    var icon = 'fa-sign-in';
+    let icon = 'fa-sign-in';
     if (this.state.isUserLoggedIn) {
       icon = 'fa-user';
     }

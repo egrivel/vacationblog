@@ -10,7 +10,6 @@ const React = require('react');
 const MediaStore = require('../stores/MediaStore');
 const MediaAction = require('../actions/MediaAction');
 const JournalImage = require('./JournalImage.jsx');
-const Image = require('./Image.jsx');
 
 const utils = require('./utils');
 const Orientation = utils.orientation;
