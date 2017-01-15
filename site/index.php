@@ -132,6 +132,7 @@ function getMediaUrl() {
     <meta name="author" content="Eric Grivel">
     <link rel="shortcut icon" href="./media/favicon.ico">
     <!-- Properties for facebook -->
+    <meta property="fb:admins" content="552452884" />
     <meta property="og:url" content="https://vacationblog-egrivel.rhcloud.com/" />
     <meta property="og:title" content="<?php print getTriptitle(); ?>" />
     <meta property="og:description" content="<?php print getTripDescr(); ?>" />
