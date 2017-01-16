@@ -19,6 +19,7 @@ const Preferences = require('./components/Preferences.jsx');
 const Sync = require('./components/Sync.jsx');
 const Admin = require('./components/Admin.jsx');
 const About = require('./components/About.jsx');
+const LoginWrapper = require('./components/LoginWrapper.jsx');
 
 const TripAction = require('./actions/TripAction');
 const UserAction = require('./actions/UserAction');
@@ -30,6 +31,8 @@ const routes = {
   component: App,
   childRoutes: [
     {path: '/', component: Welcome},
+    {path: '/login', component: LoginWrapper},
+    {path: '/login/:target', component: LoginWrapper},
     {path: '/trip/:tripId', component: TripDescription},
     {path: '/journal/:tripId/:journalId', component: JournalWrapper},
     {path: '/journal/:tripId/:journalId/:map', component: JournalWrapper},
