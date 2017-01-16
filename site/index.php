@@ -57,7 +57,7 @@ function getMediaUrl() {
   global $tripId;
   getTrip();
 
-  $defaultMediaUrl = 'media/vak2017-banner.php';
+  $defaultMediaUrl = 'https://vacationblog-egrivel.rhcloud.com/media/vak2017-fb-banner.png';
   return $defaultMediaUrl;
   if ($tripId === '') {
     // No current trip, return default
