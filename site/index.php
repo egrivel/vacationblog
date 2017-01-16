@@ -23,6 +23,7 @@ function getTrip() {
 }
 
 function getTripTitle() {
+  return "Vacation Website: New Zealand";
   global $tripObj;
   getTrip();
 
@@ -33,6 +34,7 @@ function getTripTitle() {
 }
 
 function getTripDescr() {
+  return "We have long wanted to visit New Zealand, not in the least because Nicoline has family there. So we decided to pull our major 2016 and 2017 September vacations into a single in-between trip: vising New Zealand in March 2017.";
   global $tripObj;
   getTrip();
 
@@ -56,6 +58,7 @@ function getMediaUrl() {
   getTrip();
 
   $defaultMediaUrl = 'media/vak2017-banner.php';
+  return $defaultMediaUrl;
   if ($tripId === '') {
     // No current trip, return default
     return $defaultMediaUrl;
