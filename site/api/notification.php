@@ -21,8 +21,21 @@ if (!$auth->canSendNotification()) {
     $response = errorResponse(RESPONSE_BAD_REQUEST, 'Need subject and text');
   } else {
     if ($resultSet = User::listUsersForNotify()) {
-      send_notification_email('egrivel@gmail.com', $subject, $text);
+      $count = 0;
+      for ($i = 0; isset($resultSet[$i]); $i++) {
+        $email = $resultSet[$i]['email'];
+        $intro = "Hello " . $resultSet[$i]['name'] . ",\n \n";
+        $intro .= "You are receiving this message because you indicated "
+          . "you want to receive updates from our vacation blog website.\n \n";
+        $sign = "\n \n";
+        $sign .= "Thank you,\n";
+        $sign .= SITE_ADMIN_NAME . "\n";
+        $sign .= "Website Administrator\n";
+        send_notification_email($email, $subject, $intro . $text . $sign);
+        $count++;
+      }
       $response = successResponse();
+      $response['count'] = $count;
     } else {
       // @codeCoverageIgnoreStart
       // cannot unit test database errors

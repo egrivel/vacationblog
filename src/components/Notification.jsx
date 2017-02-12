@@ -41,6 +41,7 @@ const Notification = React.createClass({
       this.state.subject,
       this.state.text
     );
+    this.context.router.push('/admin');
   },
 
   _doCancel: function() {
@@ -70,6 +71,9 @@ const Notification = React.createClass({
         {errors}
         <p>Send an email to all the users who have indicated they are
           willing to receive communications.</p>
+        <p>The email will be prefixed by a customized salutation and a
+          signature will be appended, so please enter only the body of the
+          email text.</p>
         <Textbox
           fieldId="subject"
           label="Subject"
