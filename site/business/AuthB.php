@@ -280,5 +280,15 @@ class AuthB {
       }
       return null;
    }
+
+   public function canSendNotification() {
+      $user = $this->getUser();
+      if ($user) {
+         $access = $user->getAccess();
+         // administrators can send notifications
+         return ($access === LEVEL_ADMIN);
+      }
+      return false;
+   }
 }
 ?>

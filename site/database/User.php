@@ -668,6 +668,53 @@ class User {
       return $list;
    }
 
+   static function listUsersForNotify() {
+      $query = ""
+         . "SELECT blogUser.userId, blogUser.name, "
+         .   "blogUser.email, blogUser.notification, "
+         .   "blogUser.updated, blogUser.deleted "
+         .   "FROM blogUser "
+         .   "INNER JOIN ("
+         .     "SELECT "
+         .       "MAX(t1.updated) AS updated, "
+         .       "t1.userId as userId "
+         .     "FROM blogUser "
+         .     "AS t1 "
+         .     "GROUP BY t1.userId"
+         .   ") AS t2 "
+         .   "WHERE blogUser.userId = t2.userId "
+         .     "AND blogUser.updated = t2.updated "
+         .     "AND blogUser.notification = 'Y' "
+         .     "AND blogUser.deleted = 'N' "
+         .   "ORDER BY blogUser.name ";
+
+      $result = mysql_query($query);
+      if (!$result) {
+         // Error executing the query
+         print $query . "<br/>";
+         print " --> error: " . mysql_error() . "<br/>\n";
+         return false;
+      }
+
+      $list = array();
+      if (mysql_num_rows($result) > 0) {
+         $count = 0;
+         while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+            $userId = db_sql_decode($line["userId"]);
+            $name = db_sql_decode($line['name']);
+            $email = db_sql_decode($line['email']);
+            $notification = db_sql_decode($line['notification']);
+            $list[$count++] =
+               array('userId'=>$userId,
+                'name'=>$name,
+                'email'=>$email,
+                'notification'=>$notification);
+         }
+      }
+
+      return $list;
+   }
+
    static function findByEmail($email) {
       if (!isset($email) || ($email === '')) {
          return null;

@@ -20,6 +20,7 @@ const Sync = require('./components/Sync.jsx');
 const Admin = require('./components/Admin.jsx');
 const About = require('./components/About.jsx');
 const LoginWrapper = require('./components/LoginWrapper.jsx');
+const Notification = require('./components/Notification.jsx');
 
 const TripAction = require('./actions/TripAction');
 const UserAction = require('./actions/UserAction');
@@ -46,6 +47,7 @@ const routes = {
     {path: '/admin/user', component: UserAdmin},
     {path: '/admin/user/:userId', component: UserEdit},
     {path: '/admin/sync', component: Sync},
+    {path: '/admin/notification', component: Notification},
     {path: '/about', component: About}
   ]
 };

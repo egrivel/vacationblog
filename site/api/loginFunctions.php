@@ -4,6 +4,10 @@ define('SITE_NAME', "Vacation Blog");
 define('SITE_ROOT', "https://vacationblog-egrivel.rhcloud.com");
 define('SITE_ADMIN_NAME', "Eric Grivel");
 
+function send_notification_email($email, $subject, $text) {
+    send_email($email, SITE_NAME . ": " . $subject, $text);
+}
+
 function send_conf_email($userid, $fullname, $email, $regkey) {
    send_email($email, SITE_NAME . " Website Registration",
     "Dear $fullname,\n"

@@ -35,6 +35,9 @@ const Admin = React.createClass({
             <a href="#/admin/sync">Synchronize with another site</a>
           </li>
           <li>
+            <a href="#/admin/notification">Send note to all users</a>
+          </li>
+          <li>
             Site Administration
           </li>
         </ul>
