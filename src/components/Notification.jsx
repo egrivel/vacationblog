@@ -28,7 +28,9 @@ const Notification = React.createClass({
   },
 
   _doSend: function() {
-    const {subject, text} = this.state;
+    const subject = this.state.subject;
+    const text = this.state.text;
+
     if ((subject === '') || (text === '')) {
       this.setState({
         errorMessage: 'Must enter both a subject and text.'
@@ -49,7 +51,10 @@ const Notification = React.createClass({
   },
 
   render: function() {
-    const {subject, text, errorMessage} = this.state;
+    const subject = this.state.subject;
+    const text = this.state.text;
+    const errorMessage = this.state.errorMessage;
+
     let errors;
 
     if (errorMessage !== '') {
