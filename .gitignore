@@ -4,7 +4,7 @@ coverage
 temp
 dist
 vacationblog.ini
-*.sublime-*
+*.sublime-workspace
 .git
 .cvsignore
 npm-debug.log
