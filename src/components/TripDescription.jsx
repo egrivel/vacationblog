@@ -226,8 +226,8 @@ const TripDescription = React.createClass({
           {this._renderNewPostLink()}
           {this._renderContributors()}
           <h3>Post List</h3>
-          <p>Use the list below to jump to a specific day in the trip and start
-            reading.</p>
+          <p>Use the list below to jump to a specific entry in the trip and
+            start reading.</p>
           <TripJournalList tripId={tripId} />
         </div>
       );

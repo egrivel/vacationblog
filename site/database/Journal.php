@@ -640,7 +640,8 @@ class Journal {
       $tripId = db_sql_encode($tripId);
       $query = ""
          . "SELECT blogJournal.journalId, blogJournal.journalDate, "
-         .   "blogJournal.userId, blogJournal.created, blogJournal.updated "
+         .   "blogJournal.userId, blogJournal.journalTitle, "
+         .   "blogJournal.created, blogJournal.updated "
          .   "FROM blogJournal "
          .   "INNER JOIN ("
          .     "SELECT "
@@ -672,10 +673,12 @@ class Journal {
          while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
             $journalId = db_sql_decode($line["journalId"]);
             $journalDate = db_sql_decode($line['journalDate']);
+            $journalTitle = db_sql_decode($line['journalTitle']);
             $userId = db_sql_decode($line['userId']);
             $list[$count++] =
                array('journalId'=>$journalId,
                   'journalDate'=>$journalDate,
+                  'journalTitle'=>$journalTitle,
                   'userId'=>$userId);
          }
       }
