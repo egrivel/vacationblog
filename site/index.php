@@ -34,7 +34,7 @@ function getTripTitle() {
 }
 
 function getTripDescr() {
-  return "We have long wanted to visit New Zealand, not in the least because Nicoline has family there. So we decided to pull our major 2016 and 2017 September vacations into a single in-between trip: vising New Zealand in March 2017.";
+  return "We have long wanted to visit New Zealand, not in the least because Nicoline has family there. So we decided to combine our major 2016 and 2017 September vacations into a single in-between trip: vising New Zealand in March 2017.";
   global $tripObj;
   getTrip();
 
@@ -55,7 +55,7 @@ function getTripDescr() {
 
 function getMediaUrl() {
   global $tripId;
-  getTrip();
+  // getTrip();
 
   $defaultMediaUrl = 'https://vacationblog-egrivel.rhcloud.com/media/vak2017-fb-banner.png';
   return $defaultMediaUrl;
