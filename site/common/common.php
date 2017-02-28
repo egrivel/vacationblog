@@ -12,6 +12,7 @@ define('CO_SYSTEM_WASHINGTON', "A");
 define('CO_SYSTEM_PUBLIC',     "B");
 define('CO_SYSTEM_JEFFERSON',  "C");
 define('CO_SYSTEM_LINCOLN',    "D");
+define('CO_SYSTEM_TRUMAN',     "E");
 
 function co_get_system() {
    global $gl_co_system;
@@ -25,6 +26,9 @@ function co_get_system() {
       } else if (file_exists("/etc/system/lincoln")) {
          // On the "Lincoln" laptop
          $gl_co_system = CO_SYSTEM_LINCOLN;
+      } else if (file_exists("/etc/system/truman")) {
+         // On the "Truman" laptop
+         $gl_co_system = CO_SYSTEM_TRUMAN;
       } else {
          // Connect to the database on the public system
          $gl_co_system = CO_SYSTEM_PUBLIC;

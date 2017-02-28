@@ -45,6 +45,9 @@ function addMediaIfNotExist($tripId, $mediaId) {
    if (!$object->getCreated()) {
       $setId = substr($mediaId, 0, 8);
       $localFile = "/mnt/lincoln/d1/photos/$setId/large/$mediaId.jpg";
+      if (!file_exists($localFile)) {
+         $localFile = "/mnt/truman/d1/photos/$setId/large/$mediaId.jpg";
+      }
       if (file_exists($localFile)) {
          $object->setLocation('local');
          list($width, $height, $type, $attr) = getimagesize($localFile);
