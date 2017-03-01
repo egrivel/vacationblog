@@ -1209,3 +1209,8 @@ div#the-modal-map {
   font-size: 200%;
   color: #000;
 }
+
+.errors {
+  font-weight: bold;
+  color: #c00;
+}

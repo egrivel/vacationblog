@@ -2,6 +2,7 @@
 
 const _ = require('lodash');
 const React = require('react');
+const moment = require('moment');
 
 const Textbox = require('./standard/Textbox.jsx');
 const Textarea = require('./standard/Textarea.jsx');
@@ -58,6 +59,11 @@ const JournalEdit = React.createClass({
     MenuAction.unselectItem(MenuStore.menuIds.HOME);
   },
 
+  _validDate: function(date) {
+    var m = moment(date, ['YYYY-MM-DD', 'MM/DD/YYYY']);
+    return m.isValid();
+  },
+
   // ---
   // Update functions
   // ---
@@ -88,7 +94,44 @@ const JournalEdit = React.createClass({
     const tripId = this.props.params.tripId;
     const journalId = this.props.params.journalId;
     const journalData = this.state.journalData;
+    let errors = this.state.errors
+    if (!errors) {
+      errors = [];
+    }
+    let hasErrors = false;
 
+    if (!journalData.journalDate || !this._validDate(journalData.journalDate)) {
+      errors.journalDate = "You must enter a valid date";
+      hasErrors = true;
+    } else {
+      if (errors.journalDate) {
+        delete errors.journalDate;
+      }
+
+      const m = moment(journalData.journalDate, ['YYYY-MM-DD', 'MM/DD/YYYY']);
+      const value = m.format('YYYY-MM-DD');
+      if (value !== journalData.journalDate) {
+        journalData.journalDate = value;
+      }
+    }
+
+    if (!journalData.journalTitle) {
+      errors.journalTitle = "You must enter a title";
+      hasErrors = true;
+    } else if (errors.journalTitle) {
+      delete errors.journalTitle;
+    }
+
+    if (!journalData.journalText) {
+      errors.journalText = "You must enter a text";
+      hasErrors = true;
+    } else if (errors.journalText) {
+      delete errors.journalText;
+    }
+    this.setState({journalData: journalData, errors: errors});
+    if (hasErrors) {
+      return;
+    }
     let text = journalData.journalText;
     text = String(text).replace(/\n\n+/g, '&lf;');
     text = text.replace(/\n+/g, ' ');
@@ -195,6 +238,23 @@ const JournalEdit = React.createClass({
     if (journalData && journalData.journalDate) {
       itemDate = journalData.journalDate;
     }
+
+    const errors = this.state.errors;
+    const errorItems = [];
+    if (errors && errors.journalTitle) {
+      errorItems.push(<li key="title">{errors.journalTitle}</li>);
+    }
+    if (errors && errors.journalDate) {
+      errorItems.push(<li key="date">{errors.journalDate}</li>);
+    }
+    if (errors && errors.journalText) {
+      errorItems.push(<li key="text">{errors.journalText}</li>);
+    }
+    let errorList = null;
+    if (errorItems) {
+      errorList = <ul className="errors">{errorItems}</ul>;
+    }
+
     return (
       <div>
         <p>
@@ -206,6 +266,12 @@ const JournalEdit = React.createClass({
           emphasis (italics). Insert a link by using the [LINK (target)]
           label [/LINK] construct.
         </p>
+        <p>
+          All entries are required.
+          Date can be entered in standard format (yyyy-mm-dd) or American
+          format (mm/dd/yyyy).
+        </p>
+        {errorList}
         {this._renderTitle()}
         {this._renderDate()}
         {this._renderText()}
