@@ -1178,6 +1178,8 @@ div.panorama span.imageWrapper {
   box-sizing: border-box;
   position: relative;
   overflow: hidden;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
 }
 
 div.panorama span.imageWrapper img {
