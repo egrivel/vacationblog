@@ -34,6 +34,7 @@ function fillMediaItem($item, $object) {
      $url = "/cgi-bin/photos/phimg?large=$mediaId";
    } else if ($item['location'] === 'grivel') {
       $url = "http://www.grivel.net/blogphotos/$mediaId.jpg";
+      $url = "api/image.php?imageid=$mediaId";
    }
    $item['url'] = $url;
 
