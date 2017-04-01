@@ -340,7 +340,6 @@ div.journalitem .img-text img.landscape {
 
 div.journalitem .text img.portrait,
 div.journalitem .img-text img.portrait {
-  float: right;
   width: 100%;
   padding-right: 1em;
   padding-bottom: 0.5em;
