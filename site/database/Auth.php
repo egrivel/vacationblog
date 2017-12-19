@@ -49,9 +49,9 @@ class Auth {
          . "expiration CHAR(16), "
          . "PRIMARY KEY(authId, updated) "
          . ")";
-      if (!mysql_query($query)) {
+      if (!db_query($query)) {
          print $query . "<br/>";
-         print "Error: " . mysql_error() . "<br/>";
+         print "Error: " . db_error() . "<br/>";
       }
    }
 
@@ -121,7 +121,7 @@ class Auth {
     * Load the object from the result of a MySQL query.
     */
    protected function loadFromResult($result) {
-      $line = mysql_fetch_array($result, MYSQL_ASSOC);
+      $line = db_fetch_array($result, MYSQL_ASSOC);
       $this->authId = db_sql_decode($line['authId']);
       $this->created = db_sql_decode($line["utc_created"]);
       if (!isset($this->created) || ($this->created === "")) {
@@ -167,14 +167,14 @@ class Auth {
          . "WHERE authId=$authIdValue "
          . "ORDER BY updated DESC "
          . "LIMIT 1";
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return false;
       }
-      if (mysql_num_rows($result) <= 0) {
+      if (db_num_rows($result) <= 0) {
          // Auth does not exist
          $this->eraseObject();
          $this->authId = $authId;
@@ -196,9 +196,9 @@ class Auth {
          . ", userId=" . db_sql_encode($this->userId)
          . ", expiration=" . db_sql_encode($this->expiration);
       // print "Saving to database: $query<br/>\n";
-      if (!mysql_query($query)) {
+      if (!db_query($query)) {
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return false;
       }
       // load object to get the new values for created and updated
@@ -258,7 +258,7 @@ class Auth {
         $authIdValue = db_sql_encode($this->authId);
         $query = "DELETE FROM blogAuth "
          . "WHERE authId=$authIdValue";
-         mysql_query($query);
+         db_query($query);
       }
    }
 }

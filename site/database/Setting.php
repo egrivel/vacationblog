@@ -15,9 +15,9 @@ class Setting {
          . "updated TIMESTAMP(6) DEFAULT $updateDefault, "
          . "PRIMARY KEY(name)"
          .")";
-      if (!mysql_query($query)) {
+      if (!db_query($query)) {
          print $query . "<br/>";
-         print "Error: " . mysql_error() . "<br/>";
+         print "Error: " . db_error() . "<br/>";
       }
    }
 
@@ -85,18 +85,18 @@ class Setting {
       $query = "SELECT value FROM blogSetting "
          . "WHERE name=" . db_sql_encode($name);
 
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return '';
       }
 
-      if (mysql_num_rows($result) <= 0) {
+      if (db_num_rows($result) <= 0) {
          return '';
       }
-      $line = mysql_fetch_array($result, MYSQL_ASSOC);
+      $line = db_fetch_array($result, MYSQL_ASSOC);
       return db_sql_decode($line["value"]);
    }
 
@@ -116,10 +116,10 @@ class Setting {
          . "value=" . db_sql_encode($value)
          . db_updated(null);
 
-      if (!mysql_query($query)) {
+      if (!db_query($query)) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return false;
       }
       return true;

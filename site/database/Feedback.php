@@ -59,9 +59,9 @@ class Feedback {
          . "hash CHAR(32), "
          . "PRIMARY KEY(tripId, referenceId, userId, updated) "
          . ")";
-      if (!mysql_query($query)) {
+      if (!db_query($query)) {
          print $query . "<br/>";
-         print "Error: " . mysql_error() . "<br/>";
+         print "Error: " . db_error() . "<br/>";
          return false;
       }
       return true;
@@ -70,9 +70,9 @@ class Feedback {
    private static function addDeletedColumn() {
       $query = "ALTER TABLE blogFeedback "
          . "ADD COLUMN deleted CHAR(1)";
-      if (!mysql_query($query)) {
+      if (!db_query($query)) {
          print $query . "<br/>";
-         print "Error: " . mysql_error() . "<br/>";
+         print "Error: " . db_error() . "<br/>";
          return false;
       }
       return true;
@@ -155,7 +155,7 @@ class Feedback {
     * Load the object from the result of a MySQL query.
     */
    protected function loadFromResult($result) {
-      $line = mysql_fetch_array($result, MYSQL_ASSOC);
+      $line = db_fetch_array($result, MYSQL_ASSOC);
       $this->tripId = db_sql_decode($line["tripId"]);
       $this->referenceId = db_sql_decode($line["referenceId"]);
       $this->userId = db_sql_decode($line["userId"]);
@@ -224,14 +224,14 @@ class Feedback {
          .   "AND userId=$userIdValue "
          . "ORDER BY updated DESC "
          . "LIMIT 1";
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return false;
       }
-      if (mysql_num_rows($result) <= 0) {
+      if (db_num_rows($result) <= 0) {
          // Feedback does not exist
          return false;
       }
@@ -257,7 +257,7 @@ class Feedback {
          . ", deleted=" . db_sql_encode($this->deleted)
          . ", hash=" . db_sql_encode($this->hash);
       // print "Saving to database: $query<br/>\n";
-      if (mysql_query($query)) {
+      if (db_query($query)) {
          $mustUpdateHash = true;
          if ($this->hash !== $this->latestHash) {
             // Hash value was manually set, so don't re-calculate it
@@ -282,11 +282,11 @@ class Feedback {
                   .   " AND updated="
                   . "CONVERT_TZ(" . db_sql_encode($this->latestUpdated)
                   . ",'+00:00','SYSTEM')";
-               if (mysql_query($query)) {
+               if (db_query($query)) {
                   return true;
                } else {
                   print $query . "<br/>";
-                  print " --> error: " . mysql_error() . "<br/>\n";
+                  print " --> error: " . db_error() . "<br/>\n";
                   return false;
                }
             }
@@ -296,7 +296,7 @@ class Feedback {
          }
       } else {
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return false;
       }
       return false;
@@ -376,14 +376,14 @@ class Feedback {
          . "WHERE hash=$hashValue "
          . "ORDER BY updated DESC "
          . "LIMIT 1";
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return null;
       }
-      if (mysql_num_rows($result) <= 0) {
+      if (db_num_rows($result) <= 0) {
          // Object does not exist
          return null;
       }
@@ -431,18 +431,18 @@ class Feedback {
          .     "AND blogFeedback.deleted != 'Y' "
          .   "ORDER BY blogFeedback.userId";
 
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return false;
       }
 
       $list = array();
-      if (mysql_num_rows($result) > 0) {
+      if (db_num_rows($result) > 0) {
          $count = 0;
-         while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+         while ($line = db_fetch_array($result, MYSQL_ASSOC)) {
             $tripId = db_sql_decode($line["tripId"]);
             $referenceId = db_sql_decode($line['referenceId']);
             $userId = db_sql_decode($line['userId']);
@@ -484,18 +484,18 @@ class Feedback {
          .     "AND blogFeedback.userId = t2.userId "
          .     "AND blogFeedback.updated = t2.updated ";
 
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return false;
       }
 
       $list = array();
-      if (mysql_num_rows($result) > 0) {
+      if (db_num_rows($result) > 0) {
          $count = 0;
-         while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+         while ($line = db_fetch_array($result, MYSQL_ASSOC)) {
             $hash = db_sql_decode($line["hash"]);
             $list[$count++] = $hash;
          }

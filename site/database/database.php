@@ -35,10 +35,10 @@ function db_init() {
       }
       // echo "Connect to $hostname as $username with password $password<br/>\n";
       // echo "dbname = '$dbname'<br/>\n";
-      if (!mysql_connect($hostname, $username, $password)) {
-        echo "Could not connect: " .mysql_error() . '<br/>\n';
+      if (!db_connect($hostname, $username, $password, $dbname)) {
+        echo "Could not connect: " . db_error() . '<br/>\n';
       }
-      mysql_selectdb($dbname);
+      // mysql_selectdb($dbname);
 
       $gl_db_init = true;
    }
@@ -152,6 +152,45 @@ function db_updated($value) {
   } else {
     return ', updated=null';
   }
+}
+
+function db_connect($hostname, $username, $password, $dbname) {
+   if (phpversion() < "7.0.0") {
+      my $result;
+      if (result = mysql_connect($hostname, $username, $password)) {
+         mysql_selectdb($dbname);
+      }
+      return $result;
+   }
+   return mysqli_connect($hostname, $username, $password, $dbname);
+}
+
+function db_query($query) {
+   if (phpversion() < "7.0.0") {
+      return mysql_query($query);
+   }
+   return mysqli_query($query);
+}
+
+function db_error() {
+   if (phpversion() < "7.0.0") {
+      return mysql_error();
+   }
+   return mysqli_error();
+}
+
+function db_fetch_array($result) {
+   if (phpversion() < "7.0.0") {
+      return mysql_fetch_array($result, MYSQL_ASSOC);
+   }
+   return mysqli_fetch_array($result, MYSQL_ASSOC);
+}
+
+function db_num_rows($result) {
+   if (phpversion() < "7.0.0") {
+      return mysql_num_rows($result);
+   }
+   return mysqli_num_rows($result);
 }
 
 /* Always init database when this module is loaded */

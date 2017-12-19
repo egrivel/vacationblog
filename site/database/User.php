@@ -95,9 +95,9 @@ class User {
          . "PRIMARY KEY(userId, updated), "
          . "KEY(email)"
          . ")";
-      if (!mysql_query($query)) {
+      if (!db_query($query)) {
          print $query . "<br/>";
-         print "Error: " . mysql_error() . "<br/>";
+         print "Error: " . db_error() . "<br/>";
          return false;
       }
       return true;
@@ -106,9 +106,9 @@ class User {
    private static function addDeletedColumn() {
       $query = "ALTER TABLE blogUser "
          . "ADD COLUMN deleted CHAR(1)";
-      if (!mysql_query($query)) {
+      if (!db_query($query)) {
          print $query . "<br/>";
-         print "Error: " . mysql_error() . "<br/>";
+         print "Error: " . db_error() . "<br/>";
          return false;
       }
       return true;
@@ -117,9 +117,9 @@ class User {
    private static function addNotificationColumn() {
       $query = "ALTER TABLE blogUser "
          . "ADD COLUMN notification CHAR(1)";
-      if (!mysql_query($query)) {
+      if (!db_query($query)) {
          print $query . "<br/>";
-         print "Error: " . mysql_error() . "<br/>";
+         print "Error: " . db_error() . "<br/>";
          return false;
       }
       return true;
@@ -129,9 +129,9 @@ class User {
       $query = "ALTER TABLE blogUser "
          . "ADD COLUMN tempEmail CHAR(64), "
          . "ADD COLUMN tempEmailCode CHAR(32)";
-      if (!mysql_query($query)) {
+      if (!db_query($query)) {
          print $query . "<br/>";
-         print "Error: " . mysql_error() . "<br/>";
+         print "Error: " . db_error() . "<br/>";
          return false;
       }
       return true;
@@ -213,7 +213,7 @@ class User {
     * Load the object from the result of a MySQL query.
     */
    protected function loadFromResult($result) {
-      $line = mysql_fetch_array($result, MYSQL_ASSOC);
+      $line = db_fetch_array($result, MYSQL_ASSOC);
       $this->userId = db_sql_decode($line['userId']);
       $this->password = db_sql_decode($line['password']);
       $this->created = db_sql_decode($line['utc_created']);
@@ -269,14 +269,14 @@ class User {
          . "WHERE BINARY userId=$userIdValue "
          . "ORDER BY updated DESC "
          . "LIMIT 1";
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return false;
       }
-      if (mysql_num_rows($result) <= 0) {
+      if (db_num_rows($result) <= 0) {
          // User does not exist
          return false;
       }
@@ -317,19 +317,19 @@ class User {
          .   "ORDER BY blogUser.updated DESC "
          .   "LIMIT 1";
       // print "\n$query\n";
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return false;
       }
-      if (mysql_num_rows($result) <= 0) {
+      if (db_num_rows($result) <= 0) {
          // User does not exist
          return false;
       }
 
-      $line = mysql_fetch_array($result, MYSQL_ASSOC);
+      $line = db_fetch_array($result, MYSQL_ASSOC);
       $userId = db_sql_decode($line["userId"]);
       return $this->load($userId);
    }
@@ -357,7 +357,7 @@ class User {
          . ", deleted=" . db_sql_encode($this->deleted)
          . ", hash=" . db_sql_encode($this->hash);
       // print "Saving to database: $query<br/>\n";
-      if (mysql_query($query)) {
+      if (db_query($query)) {
          // Saved successfully, now load fresh, including created and
          // updated values, and update the hash value
          $mustUpdateHash = true;
@@ -390,11 +390,11 @@ class User {
                   .   " AND updated="
                   . "CONVERT_TZ(" . db_sql_encode($this->latestUpdated)
                   . ",'+00:00','SYSTEM')";
-               if (mysql_query($query)) {
+               if (db_query($query)) {
                   return true;
                } else {
                   print $query . "<br/>";
-                  print " --> error: " . mysql_error() . "<br/>\n";
+                  print " --> error: " . db_error() . "<br/>\n";
                   return false;
                }
             }
@@ -404,7 +404,7 @@ class User {
          }
       } else {
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return false;
       }
    }
@@ -607,14 +607,14 @@ class User {
          . "WHERE hash=$hashValue "
          . "ORDER BY updated DESC "
          . "LIMIT 1";
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return null;
       }
-      if (mysql_num_rows($result) <= 0) {
+      if (db_num_rows($result) <= 0) {
          // Object does not exist
          return null;
       }
@@ -646,18 +646,18 @@ class User {
          .     "AND blogUser.updated = t2.updated "
          .   "ORDER BY blogUser.name ";
 
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return false;
       }
 
       $list = array();
-      if (mysql_num_rows($result) > 0) {
+      if (db_num_rows($result) > 0) {
          $count = 0;
-         while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+         while ($line = db_fetch_array($result, MYSQL_ASSOC)) {
             $userId = db_sql_decode($line["userId"]);
             $name = db_sql_decode($line['name']);
             $list[$count++] =
@@ -688,18 +688,18 @@ class User {
          .     "AND blogUser.deleted = 'N' "
          .   "ORDER BY blogUser.name ";
 
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return false;
       }
 
       $list = array();
-      if (mysql_num_rows($result) > 0) {
+      if (db_num_rows($result) > 0) {
          $count = 0;
-         while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+         while ($line = db_fetch_array($result, MYSQL_ASSOC)) {
             $userId = db_sql_decode($line["userId"]);
             $name = db_sql_decode($line['name']);
             $email = db_sql_decode($line['email']);
@@ -742,14 +742,14 @@ class User {
          .     "AND blogUser.deleted != 'Y' "
          .     "AND blogUser.email = $emailValue "
          .   "LIMIT 1 ";
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return null;
       }
-      if (mysql_num_rows($result) <= 0) {
+      if (db_num_rows($result) <= 0) {
          // Object does not exist
          return null;
       }
@@ -779,18 +779,18 @@ class User {
          .   "WHERE blogUser.userId = t2.userId "
          .     "AND blogUser.updated = t2.updated ";
 
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return false;
       }
 
       $list = array();
-      if (mysql_num_rows($result) > 0) {
+      if (db_num_rows($result) > 0) {
          $count = 0;
-         while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+         while ($line = db_fetch_array($result, MYSQL_ASSOC)) {
             $hash = db_sql_decode($line["hash"]);
             $list[$count++] = $hash;
          }

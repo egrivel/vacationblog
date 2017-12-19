@@ -65,9 +65,9 @@ class Journal {
          . "hash CHAR(32), "
          . "PRIMARY KEY(journalId, updated) "
          . ")";
-      if (!mysql_query($query)) {
+      if (!db_query($query)) {
          print $query . "<br/>";
-         print "Error: " . mysql_error() . "<br/>";
+         print "Error: " . db_error() . "<br/>";
          return false;
       }
       return true;
@@ -76,9 +76,9 @@ class Journal {
    private static function addDeletedColumn() {
       $query = "ALTER TABLE blogJournal "
          . "ADD COLUMN deleted CHAR(1)";
-      if (!mysql_query($query)) {
+      if (!db_query($query)) {
          print $query . "<br/>";
-         print "Error: " . mysql_error() . "<br/>";
+         print "Error: " . db_error() . "<br/>";
          return false;
       }
       return true;
@@ -87,9 +87,9 @@ class Journal {
    private static function addTitleColumn() {
       $query = "ALTER TABLE blogJournal "
          . "ADD COLUMN journalTitle VARCHAR(128)";
-      if (!mysql_query($query)) {
+      if (!db_query($query)) {
          print $query . "<br/>";
-         print "Error: " . mysql_error() . "<br/>";
+         print "Error: " . db_error() . "<br/>";
          return false;
       }
       return true;
@@ -175,7 +175,7 @@ class Journal {
     * Load the object from the result of a MySQL query.
     */
    protected function loadFromResult($result) {
-      $line = mysql_fetch_array($result, MYSQL_ASSOC);
+      $line = db_fetch_array($result, MYSQL_ASSOC);
       $this->tripId = db_sql_decode($line["tripId"]);
       $this->journalId = db_sql_decode($line["journalId"]);
       $this->created = db_sql_decode($line["utc_created"]);
@@ -235,16 +235,16 @@ class Journal {
          .   "AND journalId=$journalIdValue "
          . "ORDER BY updated DESC "
          . "LIMIT 1";
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          $this->eraseObject();
          $this->tripId = $trip->getTripId();
          return false;
       }
-      if (mysql_num_rows($result) <= 0) {
+      if (db_num_rows($result) <= 0) {
          // Journal does not exist
          return false;
       }
@@ -274,7 +274,7 @@ class Journal {
          . ", deleted=" . db_sql_encode($this->deleted)
          . ", hash=" . db_sql_encode($this->hash);
       // print "Saving to database: $query<br/>\n";
-      if (mysql_query($query)) {
+      if (db_query($query)) {
          // Saved successfully, now load fresh, including created and
          // updated values, and update the hash value
          $mustUpdateHash = true;
@@ -301,11 +301,11 @@ class Journal {
                   .   " AND updated="
                   . "CONVERT_TZ(" . db_sql_encode($this->latestUpdated)
                   . ",'+00:00','SYSTEM')";
-               if (mysql_query($query)) {
+               if (db_query($query)) {
                   return true;
                } else {
                   print $query . "<br/>";
-                  print " --> error: " . mysql_error() . "<br/>\n";
+                  print " --> error: " . db_error() . "<br/>\n";
                   return false;
                }
             }
@@ -315,7 +315,7 @@ class Journal {
          }
       } else {
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return false;
       }
    }
@@ -414,14 +414,14 @@ class Journal {
          . "WHERE hash=$hashValue "
          . "ORDER BY updated DESC "
          . "LIMIT 1";
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return null;
       }
-      if (mysql_num_rows($result) <= 0) {
+      if (db_num_rows($result) <= 0) {
          // Object does not exist
          return null;
       }
@@ -458,19 +458,19 @@ class Journal {
          .     "blogJournal.created ASC "
          .   "LIMIT 1";
       // print $query . "\n";
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return null;
       }
-      if (mysql_num_rows($result) <= 0) {
+      if (db_num_rows($result) <= 0) {
          // Object does not exist
          return null;
       }
 
-      $line = mysql_fetch_array($result, MYSQL_ASSOC);
+      $line = db_fetch_array($result, MYSQL_ASSOC);
       return db_sql_decode($line["journalId"]);
    }
 
@@ -496,19 +496,19 @@ class Journal {
          .     "blogJournal.created DESC "
          .   "LIMIT 1";
       // print $query . "\n";
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return null;
       }
-      if (mysql_num_rows($result) <= 0) {
+      if (db_num_rows($result) <= 0) {
          // Object does not exist
          return null;
       }
 
-      $line = mysql_fetch_array($result, MYSQL_ASSOC);
+      $line = db_fetch_array($result, MYSQL_ASSOC);
       return db_sql_decode($line["journalId"]);
    }
 
@@ -554,19 +554,19 @@ class Journal {
          .     "blogJournal.created DESC "
          .   "LIMIT 1";
       // print $query . "\n";
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return null;
       }
-      if (mysql_num_rows($result) <= 0) {
+      if (db_num_rows($result) <= 0) {
          // Object does not exist
          return null;
       }
 
-      $line = mysql_fetch_array($result, MYSQL_ASSOC);
+      $line = db_fetch_array($result, MYSQL_ASSOC);
       return db_sql_decode($line["journalId"]);
    }
 
@@ -620,19 +620,19 @@ class Journal {
          .     "blogJournal.created ASC "
          .   "LIMIT 1";
       // print $query . "\n";
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return null;
       }
-      if (mysql_num_rows($result) <= 0) {
+      if (db_num_rows($result) <= 0) {
          // Object does not exist
          return null;
       }
 
-      $line = mysql_fetch_array($result, MYSQL_ASSOC);
+      $line = db_fetch_array($result, MYSQL_ASSOC);
       return db_sql_decode($line["journalId"]);
    }
 
@@ -659,18 +659,18 @@ class Journal {
          .     "AND blogJournal.deleted != 'Y' "
          .   "ORDER BY blogJournal.journalDate DESC, blogJournal.created DESC";
 
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return false;
       }
 
       $list = array();
-      if (mysql_num_rows($result) > 0) {
+      if (db_num_rows($result) > 0) {
          $count = 0;
-         while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+         while ($line = db_fetch_array($result, MYSQL_ASSOC)) {
             $journalId = db_sql_decode($line["journalId"]);
             $journalDate = db_sql_decode($line['journalDate']);
             $journalTitle = db_sql_decode($line['journalTitle']);
@@ -714,18 +714,18 @@ class Journal {
          .   "WHERE blogJournal.journalId = t2.journalId "
          .     "AND blogJournal.updated = t2.updated ";
 
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return false;
       }
 
       $list = array();
-      if (mysql_num_rows($result) > 0) {
+      if (db_num_rows($result) > 0) {
          $count = 0;
-         while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+         while ($line = db_fetch_array($result, MYSQL_ASSOC)) {
             $hash = db_sql_decode($line["hash"]);
             $list[$count++] = $hash;
          }

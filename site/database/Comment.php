@@ -63,9 +63,9 @@ class Comment {
          . "PRIMARY KEY(tripId, commentId, updated), "
          . "KEY(tripId, referenceId, updated) "
          . ")";
-      if (!mysql_query($query)) {
+      if (!db_query($query)) {
          print $query . "<br/>";
-         print "Error: " . mysql_error() . "<br/>";
+         print "Error: " . db_error() . "<br/>";
          return false;
       }
       return true;
@@ -74,9 +74,9 @@ class Comment {
    private static function addDeletedColumn() {
       $query = "ALTER TABLE blogComment "
          . "ADD COLUMN deleted CHAR(1)";
-      if (!mysql_query($query)) {
+      if (!db_query($query)) {
          print $query . "<br/>";
-         print "Error: " . mysql_error() . "<br/>";
+         print "Error: " . db_error() . "<br/>";
          return false;
       }
       return true;
@@ -85,16 +85,16 @@ class Comment {
    private static function addTripCommentKey() {
       $query = "ALTER TABLE blogComment "
          . "DROP PRIMARY KEY";
-      if (!mysql_query($query)) {
+      if (!db_query($query)) {
          print $query . "<br/>";
-         print "Error: " . mysql_error() . "<br/>";
+         print "Error: " . db_error() . "<br/>";
          return false;
       }
       $query = "ALTER TABLE blogComment "
          . "ADD PRIMARY KEY(tripId, commentId, updated)";
-      if (!mysql_query($query)) {
+      if (!db_query($query)) {
          print $query . "<br/>";
-         print "Error: " . mysql_error() . "<br/>";
+         print "Error: " . db_error() . "<br/>";
          return false;
       }
       return true;
@@ -103,9 +103,9 @@ class Comment {
    private static function addTripReferenceKey() {
       $query = "ALTER TABLE blogComment "
          . "ADD KEY(tripId, referenceId, updated)";
-      if (!mysql_query($query)) {
+      if (!db_query($query)) {
          print $query . "<br/>";
-         print "Error: " . mysql_error() . "<br/>";
+         print "Error: " . db_error() . "<br/>";
          return false;
       }
       return true;
@@ -190,7 +190,7 @@ class Comment {
     * Load the object from the result of a MySQL query.
     */
    protected function loadFromResult($result) {
-      $line = mysql_fetch_array($result, MYSQL_ASSOC);
+      $line = db_fetch_array($result, MYSQL_ASSOC);
       $this->tripId = db_sql_decode($line['tripId']);
       $this->commentId = db_sql_decode($line['commentId']);
       $this->created = db_sql_decode($line["utc_created"]);
@@ -249,14 +249,14 @@ class Comment {
          .   "AND commentId=$commentIdValue "
          . "ORDER BY updated DESC "
          . "LIMIT 1";
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return false;
       }
-      if (mysql_num_rows($result) <= 0) {
+      if (db_num_rows($result) <= 0) {
          // Comment does not exist
          return false;
       }
@@ -285,7 +285,7 @@ class Comment {
          . ", deleted=" . db_sql_encode($this->deleted)
          . ", hash=" . db_sql_encode($this->hash);
       // print "Saving to database: $query<br/>\n";
-      if (mysql_query($query)) {
+      if (db_query($query)) {
          // Saved successfully, now load fresh, including created and
          // updated values, and update the hash value
          $mustUpdateHash = true;
@@ -311,11 +311,11 @@ class Comment {
                   .   " AND updated="
                   . "CONVERT_TZ(" . db_sql_encode($this->latestUpdated)
                   . ",'+00:00','SYSTEM')";
-               if (mysql_query($query)) {
+               if (db_query($query)) {
                   return true;
                } else {
                   print $query . "<br/>";
-                  print " --> error: " . mysql_error() . "<br/>\n";
+                  print " --> error: " . db_error() . "<br/>\n";
                   return false;
                }
             }
@@ -325,7 +325,7 @@ class Comment {
          }
       } else {
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return false;
       }
    }
@@ -427,14 +427,14 @@ class Comment {
          . "WHERE hash=$hashValue "
          . "ORDER BY updated DESC "
          . "LIMIT 1";
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return null;
       }
-      if (mysql_num_rows($result) <= 0) {
+      if (db_num_rows($result) <= 0) {
          // Object does not exist
          return null;
       }
@@ -475,21 +475,21 @@ class Comment {
          .     "AND blogComment.referenceId = $referenceIdValue "
          .   "ORDER BY blogComment.created ASC ";
       // print $query . "\n";
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return null;
       }
-      if (mysql_num_rows($result) <= 0) {
+      if (db_num_rows($result) <= 0) {
          // Comment does not exist
          return null;
       }
 
       $list = Array();
       $count = 0;
-      while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+      while ($line = db_fetch_array($result, MYSQL_ASSOC)) {
          $list[$count++] = db_sql_decode($line['commentId']);
       }
       return $list;
@@ -510,18 +510,18 @@ class Comment {
          .   "WHERE blogComment.commentId = t2.commentId "
          .     "AND blogComment.updated = t2.updated ";
 
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return false;
       }
 
       $list = array();
-      if (mysql_num_rows($result) > 0) {
+      if (db_num_rows($result) > 0) {
          $count = 0;
-         while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+         while ($line = db_fetch_array($result, MYSQL_ASSOC)) {
             $hash = db_sql_decode($line["hash"]);
             $list[$count++] = $hash;
          }

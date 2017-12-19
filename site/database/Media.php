@@ -71,9 +71,9 @@ class Media {
          . "hash CHAR(32), "
          . "PRIMARY KEY(mediaId, updated) "
          . ")";
-      if (!mysql_query($query)) {
+      if (!db_query($query)) {
          print $query . "<br/>";
-         print "Error: " . mysql_error() . "<br/>";
+         print "Error: " . db_error() . "<br/>";
          return false;
       }
       return true;
@@ -82,16 +82,16 @@ class Media {
    private static function updateMediaTableChangeTypeCaption() {
       $query = "ALTER TABLE blogMedia MODIFY "
          . "type CHAR(16)";
-      if (!mysql_query($query)) {
+      if (!db_query($query)) {
          print $query . "<br/>";
-         print "Error: " . mysql_error() . "<br/>";
+         print "Error: " . db_error() . "<br/>";
          return false;
       }
       $query = "ALTER TABLE blogMedia MODIFY "
          . "caption TEXT";
-      if (!mysql_query($query)) {
+      if (!db_query($query)) {
          print $query . "<br/>";
-         print "Error: " . mysql_error() . "<br/>";
+         print "Error: " . db_error() . "<br/>";
          return false;
       }
       return true;
@@ -100,9 +100,9 @@ class Media {
    private static function addWidthColumn() {
       $query = "ALTER TABLE blogMedia "
          . "ADD COLUMN width CHAR(8)";
-      if (!mysql_query($query)) {
+      if (!db_query($query)) {
          print $query . "<br/>";
-         print "Error: " . mysql_error() . "<br/>";
+         print "Error: " . db_error() . "<br/>";
          return false;
       }
       return true;
@@ -111,9 +111,9 @@ class Media {
    private static function addHeightColumn() {
       $query = "ALTER TABLE blogMedia "
          . "ADD COLUMN height CHAR(8)";
-      if (!mysql_query($query)) {
+      if (!db_query($query)) {
          print $query . "<br/>";
-         print "Error: " . mysql_error() . "<br/>";
+         print "Error: " . db_error() . "<br/>";
          return false;
       }
       return true;
@@ -122,9 +122,9 @@ class Media {
    private static function addDeletedColumn() {
       $query = "ALTER TABLE blogMedia "
          . "ADD COLUMN deleted CHAR(1)";
-      if (!mysql_query($query)) {
+      if (!db_query($query)) {
          print $query . "<br/>";
-         print "Error: " . mysql_error() . "<br/>";
+         print "Error: " . db_error() . "<br/>";
          return false;
       }
       return true;
@@ -216,7 +216,7 @@ class Media {
     * Load the object from the result of a MySQL query.
     */
    protected function loadFromResult($result) {
-      $line = mysql_fetch_array($result, MYSQL_ASSOC);
+      $line = db_fetch_array($result, MYSQL_ASSOC);
       $this->tripId = db_sql_decode($line["tripId"]);
       $this->mediaId = db_sql_decode($line["mediaId"]);
       $this->created = db_sql_decode($line["utc_created"]);
@@ -279,16 +279,16 @@ class Media {
          .   "AND mediaId=$mediaIdValue "
          . "ORDER BY updated DESC "
          . "LIMIT 1";
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          $this->eraseObject();
          $this->tripId = $trip->getTripId();
          return false;
       }
-      if (mysql_num_rows($result) <= 0) {
+      if (db_num_rows($result) <= 0) {
          // Media does not exist
          return false;
       }
@@ -320,7 +320,7 @@ class Media {
          . ", deleted=" . db_sql_encode($this->deleted)
          . ", hash=" . db_sql_encode($this->hash);
       // print "Saving to database: $query<br/>\n";
-      if (mysql_query($query)) {
+      if (db_query($query)) {
          // Saved successfully, now load fresh, including created and
          // updated values, and update the hash value
          $mustUpdateHash = true;
@@ -349,11 +349,11 @@ class Media {
                   .   " AND updated="
                   . "CONVERT_TZ(" . db_sql_encode($this->latestUpdated)
                   . ",'+00:00','SYSTEM')";
-               if (mysql_query($query)) {
+               if (db_query($query)) {
                   return true;
                } else {
                   print $query . "<br/>";
-                  print " --> error: " . mysql_error() . "<br/>\n";
+                  print " --> error: " . db_error() . "<br/>\n";
                   return false;
                }
             }
@@ -363,7 +363,7 @@ class Media {
          }
       } else {
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return false;
       }
    }
@@ -478,14 +478,14 @@ class Media {
          . "WHERE hash=$hashValue "
          . "ORDER BY updated DESC "
          . "LIMIT 1";
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return null;
       }
-      if (mysql_num_rows($result) <= 0) {
+      if (db_num_rows($result) <= 0) {
          // Object does not exist
          return null;
       }
@@ -515,18 +515,18 @@ class Media {
          .   "WHERE blogMedia.mediaId = t2.mediaId "
          .     "AND blogMedia.updated = t2.updated ";
 
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return false;
       }
 
       $list = array();
-      if (mysql_num_rows($result) > 0) {
+      if (db_num_rows($result) > 0) {
          $count = 0;
-         while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+         while ($line = db_fetch_array($result, MYSQL_ASSOC)) {
             $hash = db_sql_decode($line["hash"]);
             $list[$count++] = $hash;
          }
@@ -552,18 +552,18 @@ class Media {
          .     "AND blogMedia.updated = t2.updated "
          .     "AND blogMedia.location = 'local'";
 
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return false;
       }
 
       $list = array();
-      if (mysql_num_rows($result) > 0) {
+      if (db_num_rows($result) > 0) {
          $count = 0;
-         while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+         while ($line = db_fetch_array($result, MYSQL_ASSOC)) {
             $tripId = db_sql_decode($line["tripId"]);
             $mediaId = db_sql_decode($line["mediaId"]);
             $obj = array();

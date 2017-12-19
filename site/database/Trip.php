@@ -68,9 +68,9 @@ class Trip {
          . "hash CHAR(32), "
          . "PRIMARY KEY(tripId, updated) "
          . ")";
-      if (!mysql_query($query)) {
+      if (!db_query($query)) {
          print $query . "<br/>";
-         print "Error: " . mysql_error() . "<br/>";
+         print "Error: " . db_error() . "<br/>";
          return false;
       }
       return true;
@@ -101,9 +101,9 @@ class Trip {
          . "hash CHAR(32), "
          . "PRIMARY KEY(tripId, name, updated) "
          . ")";
-      if (!mysql_query($query)) {
+      if (!db_query($query)) {
          print $query . "<br/>";
-         print "Error: " . mysql_error() . "<br/>";
+         print "Error: " . db_error() . "<br/>";
          return false;
       }
       return true;
@@ -112,16 +112,16 @@ class Trip {
    private static function addDeletedColumn() {
       $query = "ALTER TABLE blogTrip "
          . "ADD COLUMN deleted CHAR(1)";
-      if (!mysql_query($query)) {
+      if (!db_query($query)) {
          print $query . "<br/>";
-         print "Error: " . mysql_error() . "<br/>";
+         print "Error: " . db_error() . "<br/>";
          return false;
       }
       $query = "ALTER TABLE blogTripAttribute "
          . "ADD COLUMN deleted CHAR(1)";
-      if (!mysql_query($query)) {
+      if (!db_query($query)) {
          print $query . "<br/>";
-         print "Error: " . mysql_error() . "<br/>";
+         print "Error: " . db_error() . "<br/>";
          return false;
       }
       return true;
@@ -130,9 +130,9 @@ class Trip {
    private static function addDescriptionColumn() {
       $query = "ALTER TABLE blogTrip "
          . "ADD COLUMN description TEXT";
-      if (!mysql_query($query)) {
+      if (!db_query($query)) {
          print $query . "<br/>";
-         print "Error: " . mysql_error() . "<br/>";
+         print "Error: " . db_error() . "<br/>";
          return false;
       }
       return true;
@@ -141,9 +141,9 @@ class Trip {
    private static function addBannerImgColumn() {
       $query = "ALTER TABLE blogTrip "
          . "ADD COLUMN bannerImg CHAR(64)";
-      if (!mysql_query($query)) {
+      if (!db_query($query)) {
          print $query . "<br/>";
-         print "Error: " . mysql_error() . "<br/>";
+         print "Error: " . db_error() . "<br/>";
          return false;
       }
       return true;
@@ -230,7 +230,7 @@ class Trip {
     * Load the object from the result of a MySQL query.
     */
    protected function loadFromResult($result) {
-      $line = mysql_fetch_array($result, MYSQL_ASSOC);
+      $line = db_fetch_array($result, MYSQL_ASSOC);
       $this->tripId = db_sql_decode($line['tripId']);
       $this->created = db_sql_decode($line["utc_created"]);
       if (!isset($this->created) || ($this->created === "")) {
@@ -281,14 +281,14 @@ class Trip {
          . "WHERE tripId=$tripIdValue "
          . "ORDER BY updated DESC "
          . "LIMIT 1";
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return false;
       }
-      if (mysql_num_rows($result) <= 0) {
+      if (db_num_rows($result) <= 0) {
          // Trip does not exist
          return false;
       }
@@ -313,7 +313,7 @@ class Trip {
          . ", active=" . db_sql_encode($this->active)
          . ", deleted=" . db_sql_encode($this->deleted)
          . ", hash=" . db_sql_encode($this->hash);
-      if (mysql_query($query)) {
+      if (db_query($query)) {
          // Saved successfully, now load fresh, including created and
          // updated values, and update the hash value
          $mustUpdateHash = true;
@@ -342,11 +342,11 @@ class Trip {
                   .   " AND updated="
                   . "CONVERT_TZ(" . db_sql_encode($this->latestUpdated)
                   . ",'+00:00','SYSTEM')";
-               if (mysql_query($query)) {
+               if (db_query($query)) {
                   return true;
                } else {
                   print $query . "<br/>";
-                  print " --> error: " . mysql_error() . "<br/>\n";
+                  print " --> error: " . db_error() . "<br/>\n";
                   return false;
                }
             }
@@ -356,7 +356,7 @@ class Trip {
          }
       } else {
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return false;
       }
    }
@@ -467,14 +467,14 @@ class Trip {
          . "WHERE hash=$hashValue "
          . "ORDER BY updated DESC "
          . "LIMIT 1";
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return null;
       }
-      if (mysql_num_rows($result) <= 0) {
+      if (db_num_rows($result) <= 0) {
          // Object does not exist
          return null;
       }
@@ -498,19 +498,19 @@ class Trip {
          .   "AND name=" . db_sql_encode($name)
          . "ORDER BY updated DESC "
          . "LIMIT 1";
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return "";
       }
-      if (mysql_num_rows($result) <= 0) {
+      if (db_num_rows($result) <= 0) {
          // attribute does not exist
          return "";
       }
 
-      $line = mysql_fetch_array($result, MYSQL_ASSOC);
+      $line = db_fetch_array($result, MYSQL_ASSOC);
       return db_sql_decode($line["value"]);
    }
 
@@ -530,15 +530,15 @@ class Trip {
          .   "AND name=" . db_sql_encode($name)
          . "ORDER BY updated DESC "
          . "LIMIT 1";
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return;
       }
-      if (mysql_num_rows($result) > 0) {
-         $line = mysql_fetch_array($result, MYSQL_ASSOC);
+      if (db_num_rows($result) > 0) {
+         $line = db_fetch_array($result, MYSQL_ASSOC);
          $created = db_sql_decode($line["created"]);
          if ($created === "") {
             $created = null;
@@ -551,7 +551,7 @@ class Trip {
          . ", created=" . db_sql_encode($created)
          . ", updated=null"
          . ", value=" . db_sql_encode($value);
-      if (mysql_query($query)) {
+      if (db_query($query)) {
          // Saved successfully, now load fresh, including updated values,
          // and update the hash value
          $query = "SELECT * FROM blogTripAttribute "
@@ -560,9 +560,9 @@ class Trip {
             . "ORDER BY updated DESC "
             . "LIMIT 1";
 
-         $result = mysql_query($query);
-         if ($result && (mysql_num_rows($result) > 0)) {
-            $line = mysql_fetch_array($result, MYSQL_ASSOC);
+         $result = db_query($query);
+         if ($result && (db_num_rows($result) > 0)) {
+            $line = db_fetch_array($result, MYSQL_ASSOC);
             $created = db_sql_decode($line["created"]);
             $updated = db_sql_decode($line["updated"]);
 
@@ -578,10 +578,10 @@ class Trip {
                . " WHERE tripId=" . db_sql_encode($this->tripId)
                .   " AND name=" . db_sql_encode($name)
                .   " AND updated=" . db_sql_encode($updated);
-            mysql_query($query);
+            db_query($query);
          } else {
             print $query . "<br/>";
-            print " --> error: " . mysql_error() . "<br/>\n";
+            print " --> error: " . db_error() . "<br/>\n";
          }
       }
       return;
@@ -608,18 +608,18 @@ class Trip {
          .     "AND blogTrip.deleted != 'Y' "
          .   "ORDER BY blogTrip.startDate DESC ";
 
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return false;
       }
 
       $list = array();
-      if (mysql_num_rows($result) > 0) {
+      if (db_num_rows($result) > 0) {
          $count = 0;
-         while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+         while ($line = db_fetch_array($result, MYSQL_ASSOC)) {
             $tripId = db_sql_decode($line["tripId"]);
             $name = db_sql_decode($line['name']);
             $list[$count++] =
@@ -649,19 +649,19 @@ class Trip {
          .   "ORDER BY blogTrip.startDate DESC "
          .   "LIMIT 1";
 
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return false;
       }
-      if (mysql_num_rows($result) <= 0) {
+      if (db_num_rows($result) <= 0) {
          // Trip does not exist
          return false;
       }
 
-      $line = mysql_fetch_array($result, MYSQL_ASSOC);
+      $line = db_fetch_array($result, MYSQL_ASSOC);
       $tripId = db_sql_decode($line["tripId"]);
       return $tripId;
    }
@@ -681,18 +681,18 @@ class Trip {
          .   "WHERE blogTrip.tripId = t2.tripId "
          .     "AND blogTrip.updated = t2.updated ";
 
-      $result = mysql_query($query);
+      $result = db_query($query);
       if (!$result) {
          // Error executing the query
          print $query . "<br/>";
-         print " --> error: " . mysql_error() . "<br/>\n";
+         print " --> error: " . db_error() . "<br/>\n";
          return false;
       }
 
       $list = array();
-      if (mysql_num_rows($result) > 0) {
+      if (db_num_rows($result) > 0) {
          $count = 0;
-         while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+         while ($line = db_fetch_array($result, MYSQL_ASSOC)) {
             $hash = db_sql_decode($line["hash"]);
             $list[$count++] = $hash;
          }
