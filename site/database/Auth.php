@@ -121,7 +121,7 @@ class Auth {
     * Load the object from the result of a MySQL query.
     */
    protected function loadFromResult($result) {
-      $line = db_fetch_array($result, MYSQL_ASSOC);
+      $line = db_fetch_array($result);
       $this->authId = db_sql_decode($line['authId']);
       $this->created = db_sql_decode($line["utc_created"]);
       if (!isset($this->created) || ($this->created === "")) {

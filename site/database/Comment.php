@@ -190,7 +190,7 @@ class Comment {
     * Load the object from the result of a MySQL query.
     */
    protected function loadFromResult($result) {
-      $line = db_fetch_array($result, MYSQL_ASSOC);
+      $line = db_fetch_array($result);
       $this->tripId = db_sql_decode($line['tripId']);
       $this->commentId = db_sql_decode($line['commentId']);
       $this->created = db_sql_decode($line["utc_created"]);
@@ -489,7 +489,7 @@ class Comment {
 
       $list = Array();
       $count = 0;
-      while ($line = db_fetch_array($result, MYSQL_ASSOC)) {
+      while ($line = db_fetch_array($result)) {
          $list[$count++] = db_sql_decode($line['commentId']);
       }
       return $list;
@@ -521,7 +521,7 @@ class Comment {
       $list = array();
       if (db_num_rows($result) > 0) {
          $count = 0;
-         while ($line = db_fetch_array($result, MYSQL_ASSOC)) {
+         while ($line = db_fetch_array($result)) {
             $hash = db_sql_decode($line["hash"]);
             $list[$count++] = $hash;
          }

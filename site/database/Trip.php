@@ -230,7 +230,7 @@ class Trip {
     * Load the object from the result of a MySQL query.
     */
    protected function loadFromResult($result) {
-      $line = db_fetch_array($result, MYSQL_ASSOC);
+      $line = db_fetch_array($result);
       $this->tripId = db_sql_decode($line['tripId']);
       $this->created = db_sql_decode($line["utc_created"]);
       if (!isset($this->created) || ($this->created === "")) {
@@ -510,7 +510,7 @@ class Trip {
          return "";
       }
 
-      $line = db_fetch_array($result, MYSQL_ASSOC);
+      $line = db_fetch_array($result);
       return db_sql_decode($line["value"]);
    }
 
@@ -538,7 +538,7 @@ class Trip {
          return;
       }
       if (db_num_rows($result) > 0) {
-         $line = db_fetch_array($result, MYSQL_ASSOC);
+         $line = db_fetch_array($result);
          $created = db_sql_decode($line["created"]);
          if ($created === "") {
             $created = null;
@@ -562,7 +562,7 @@ class Trip {
 
          $result = db_query($query);
          if ($result && (db_num_rows($result) > 0)) {
-            $line = db_fetch_array($result, MYSQL_ASSOC);
+            $line = db_fetch_array($result);
             $created = db_sql_decode($line["created"]);
             $updated = db_sql_decode($line["updated"]);
 
@@ -619,7 +619,7 @@ class Trip {
       $list = array();
       if (db_num_rows($result) > 0) {
          $count = 0;
-         while ($line = db_fetch_array($result, MYSQL_ASSOC)) {
+         while ($line = db_fetch_array($result)) {
             $tripId = db_sql_decode($line["tripId"]);
             $name = db_sql_decode($line['name']);
             $list[$count++] =
@@ -661,7 +661,7 @@ class Trip {
          return false;
       }
 
-      $line = db_fetch_array($result, MYSQL_ASSOC);
+      $line = db_fetch_array($result);
       $tripId = db_sql_decode($line["tripId"]);
       return $tripId;
    }
@@ -692,7 +692,7 @@ class Trip {
       $list = array();
       if (db_num_rows($result) > 0) {
          $count = 0;
-         while ($line = db_fetch_array($result, MYSQL_ASSOC)) {
+         while ($line = db_fetch_array($result)) {
             $hash = db_sql_decode($line["hash"]);
             $list[$count++] = $hash;
          }

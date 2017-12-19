@@ -213,7 +213,7 @@ class User {
     * Load the object from the result of a MySQL query.
     */
    protected function loadFromResult($result) {
-      $line = db_fetch_array($result, MYSQL_ASSOC);
+      $line = db_fetch_array($result);
       $this->userId = db_sql_decode($line['userId']);
       $this->password = db_sql_decode($line['password']);
       $this->created = db_sql_decode($line['utc_created']);
@@ -329,7 +329,7 @@ class User {
          return false;
       }
 
-      $line = db_fetch_array($result, MYSQL_ASSOC);
+      $line = db_fetch_array($result);
       $userId = db_sql_decode($line["userId"]);
       return $this->load($userId);
    }
@@ -657,7 +657,7 @@ class User {
       $list = array();
       if (db_num_rows($result) > 0) {
          $count = 0;
-         while ($line = db_fetch_array($result, MYSQL_ASSOC)) {
+         while ($line = db_fetch_array($result)) {
             $userId = db_sql_decode($line["userId"]);
             $name = db_sql_decode($line['name']);
             $list[$count++] =
@@ -699,7 +699,7 @@ class User {
       $list = array();
       if (db_num_rows($result) > 0) {
          $count = 0;
-         while ($line = db_fetch_array($result, MYSQL_ASSOC)) {
+         while ($line = db_fetch_array($result)) {
             $userId = db_sql_decode($line["userId"]);
             $name = db_sql_decode($line['name']);
             $email = db_sql_decode($line['email']);
@@ -790,7 +790,7 @@ class User {
       $list = array();
       if (db_num_rows($result) > 0) {
          $count = 0;
-         while ($line = db_fetch_array($result, MYSQL_ASSOC)) {
+         while ($line = db_fetch_array($result)) {
             $hash = db_sql_decode($line["hash"]);
             $list[$count++] = $hash;
          }

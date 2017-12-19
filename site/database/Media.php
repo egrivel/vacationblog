@@ -216,7 +216,7 @@ class Media {
     * Load the object from the result of a MySQL query.
     */
    protected function loadFromResult($result) {
-      $line = db_fetch_array($result, MYSQL_ASSOC);
+      $line = db_fetch_array($result);
       $this->tripId = db_sql_decode($line["tripId"]);
       $this->mediaId = db_sql_decode($line["mediaId"]);
       $this->created = db_sql_decode($line["utc_created"]);
@@ -526,7 +526,7 @@ class Media {
       $list = array();
       if (db_num_rows($result) > 0) {
          $count = 0;
-         while ($line = db_fetch_array($result, MYSQL_ASSOC)) {
+         while ($line = db_fetch_array($result)) {
             $hash = db_sql_decode($line["hash"]);
             $list[$count++] = $hash;
          }
@@ -563,7 +563,7 @@ class Media {
       $list = array();
       if (db_num_rows($result) > 0) {
          $count = 0;
-         while ($line = db_fetch_array($result, MYSQL_ASSOC)) {
+         while ($line = db_fetch_array($result)) {
             $tripId = db_sql_decode($line["tripId"]);
             $mediaId = db_sql_decode($line["mediaId"]);
             $obj = array();

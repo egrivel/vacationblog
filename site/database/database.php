@@ -154,35 +154,43 @@ function db_updated($value) {
   }
 }
 
+global $db_link;
+
 function db_connect($hostname, $username, $password, $dbname) {
+   global $db_link;
+   
    if (phpversion() < "7.0.0") {
       if ($result = mysql_connect($hostname, $username, $password)) {
          mysql_selectdb($dbname);
       }
       return $result;
    }
-   return mysqli_connect($hostname, $username, $password, $dbname);
+   
+   $db_link = mysqli_connect($hostname, $username, $password, $dbname);
+   return $db_link;
 }
 
 function db_query($query) {
+   global $db_link;
    if (phpversion() < "7.0.0") {
       return mysql_query($query);
    }
-   return mysqli_query($query);
+   return mysqli_query($db_link, $query);
 }
 
 function db_error() {
+   global $db_link;
    if (phpversion() < "7.0.0") {
       return mysql_error();
    }
-   return mysqli_error();
+   return mysqli_error($db_link);
 }
 
 function db_fetch_array($result) {
    if (phpversion() < "7.0.0") {
       return mysql_fetch_array($result, MYSQL_ASSOC);
    }
-   return mysqli_fetch_array($result, MYSQL_ASSOC);
+   return mysqli_fetch_array($result, MYSQLI_ASSOC);
 }
 
 function db_num_rows($result) {

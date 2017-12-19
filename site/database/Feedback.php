@@ -155,7 +155,7 @@ class Feedback {
     * Load the object from the result of a MySQL query.
     */
    protected function loadFromResult($result) {
-      $line = db_fetch_array($result, MYSQL_ASSOC);
+      $line = db_fetch_array($result);
       $this->tripId = db_sql_decode($line["tripId"]);
       $this->referenceId = db_sql_decode($line["referenceId"]);
       $this->userId = db_sql_decode($line["userId"]);
@@ -442,7 +442,7 @@ class Feedback {
       $list = array();
       if (db_num_rows($result) > 0) {
          $count = 0;
-         while ($line = db_fetch_array($result, MYSQL_ASSOC)) {
+         while ($line = db_fetch_array($result)) {
             $tripId = db_sql_decode($line["tripId"]);
             $referenceId = db_sql_decode($line['referenceId']);
             $userId = db_sql_decode($line['userId']);
@@ -495,7 +495,7 @@ class Feedback {
       $list = array();
       if (db_num_rows($result) > 0) {
          $count = 0;
-         while ($line = db_fetch_array($result, MYSQL_ASSOC)) {
+         while ($line = db_fetch_array($result)) {
             $hash = db_sql_decode($line["hash"]);
             $list[$count++] = $hash;
          }

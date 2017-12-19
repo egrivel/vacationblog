@@ -96,7 +96,7 @@ class Setting {
       if (db_num_rows($result) <= 0) {
          return '';
       }
-      $line = db_fetch_array($result, MYSQL_ASSOC);
+      $line = db_fetch_array($result);
       return db_sql_decode($line["value"]);
    }
 

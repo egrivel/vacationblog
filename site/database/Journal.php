@@ -175,7 +175,7 @@ class Journal {
     * Load the object from the result of a MySQL query.
     */
    protected function loadFromResult($result) {
-      $line = db_fetch_array($result, MYSQL_ASSOC);
+      $line = db_fetch_array($result);
       $this->tripId = db_sql_decode($line["tripId"]);
       $this->journalId = db_sql_decode($line["journalId"]);
       $this->created = db_sql_decode($line["utc_created"]);
@@ -470,7 +470,7 @@ class Journal {
          return null;
       }
 
-      $line = db_fetch_array($result, MYSQL_ASSOC);
+      $line = db_fetch_array($result);
       return db_sql_decode($line["journalId"]);
    }
 
@@ -508,7 +508,7 @@ class Journal {
          return null;
       }
 
-      $line = db_fetch_array($result, MYSQL_ASSOC);
+      $line = db_fetch_array($result);
       return db_sql_decode($line["journalId"]);
    }
 
@@ -566,7 +566,7 @@ class Journal {
          return null;
       }
 
-      $line = db_fetch_array($result, MYSQL_ASSOC);
+      $line = db_fetch_array($result);
       return db_sql_decode($line["journalId"]);
    }
 
@@ -632,7 +632,7 @@ class Journal {
          return null;
       }
 
-      $line = db_fetch_array($result, MYSQL_ASSOC);
+      $line = db_fetch_array($result);
       return db_sql_decode($line["journalId"]);
    }
 
@@ -670,7 +670,7 @@ class Journal {
       $list = array();
       if (db_num_rows($result) > 0) {
          $count = 0;
-         while ($line = db_fetch_array($result, MYSQL_ASSOC)) {
+         while ($line = db_fetch_array($result)) {
             $journalId = db_sql_decode($line["journalId"]);
             $journalDate = db_sql_decode($line['journalDate']);
             $journalTitle = db_sql_decode($line['journalTitle']);
@@ -725,7 +725,7 @@ class Journal {
       $list = array();
       if (db_num_rows($result) > 0) {
          $count = 0;
-         while ($line = db_fetch_array($result, MYSQL_ASSOC)) {
+         while ($line = db_fetch_array($result)) {
             $hash = db_sql_decode($line["hash"]);
             $list[$count++] = $hash;
          }
