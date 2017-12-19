@@ -40,13 +40,16 @@ if (!$auth->canGetComment()) {
       $resultArrayCount = 0;
 
       $response = successResponse();
+      // Note: returns null if there are no comments
       $array = Comment::findByReferenceId($tripId, $referenceId);
-      for ($i = 0; $i < count($array); $i++) {
-         $object = new Comment($tripId, $array[$i]);
-         if ($object->getCreated() !== null) {
-            $item = Array();
-            $item = fillCommentItem($item, $object);
-            $resultArray[$resultArrayCount++] = $item;
+      if ($array) {
+         for ($i = 0; $i < count($array); $i++) {
+            $object = new Comment($tripId, $array[$i]);
+            if ($object->getCreated() !== null) {
+               $item = Array();
+               $item = fillCommentItem($item, $object);
+               $resultArray[$resultArrayCount++] = $item;
+            }
          }
       }
 

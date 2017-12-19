@@ -30,6 +30,7 @@ function fillMediaItem($item, $object) {
    $mediaId = $item['mediaId'];
 
    $url = "http://photos-egrivel.rhcloud.com/phimg?large=$mediaId";
+   $url = "http://173.64.127.170:31415/cgi-bin/photos/phimg?large=$mediaId";
    if ($item['location'] === 'local') {
      $url = "/cgi-bin/photos/phimg?large=$mediaId";
    } else if ($item['location'] === 'grivel') {
