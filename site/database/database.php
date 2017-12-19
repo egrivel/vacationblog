@@ -156,7 +156,7 @@ function db_updated($value) {
 
 function db_connect($hostname, $username, $password, $dbname) {
    if (phpversion() < "7.0.0") {
-      if (result = mysql_connect($hostname, $username, $password)) {
+      if ($result = mysql_connect($hostname, $username, $password)) {
          mysql_selectdb($dbname);
       }
       return $result;
