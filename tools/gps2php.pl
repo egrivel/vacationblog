@@ -1,1 +1,1 @@
-/home/eric/tools/gps2php.pl
+/mnt/data/tools/gps2php.pl

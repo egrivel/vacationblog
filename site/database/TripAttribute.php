@@ -49,8 +49,8 @@ class TripAttribute {
          // microsecond-precision for the timestamp. This will allow the
          // distinction of multiple inserts within the same second (unlikely,
          // but can happen, especially in testing).
-         . "created TIMESTAMP(6) DEFAULT $createDefault, "
-         . "updated TIMESTAMP(6) DEFAULT $updateDefault, "
+         . db_get_created_sql()
+         . db_get_updated_sql()
          . "value TEXT, "
          . "deleted CHAR(1), "
          . "hash CHAR(32), "

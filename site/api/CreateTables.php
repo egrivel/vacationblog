@@ -1,5 +1,5 @@
 <?php
-include_once("../database//database.php");
+include_once("../database/database.php");
 include_once("../database/Auth.php");
 include_once("../database/Comment.php");
 include_once("../database/Feedback.php");
@@ -15,6 +15,7 @@ $setting = new Setting();
 $version = $setting->getDataVersion();
 
 function updateTables($version) {
+  print "database version: " . db_get_installed_version() . "<br/>\n";
    Auth::updateTables($version);
    Comment::updateTables($version);
    Feedback::updateTables($version);

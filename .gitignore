@@ -5,6 +5,7 @@ temp
 dist
 vacationblog.ini
 *.sublime-workspace
+*~
 .git
 .cvsignore
 npm-debug.log

@@ -1,1 +1,1 @@
-/home/eric/tools/gps.pm
+/mnt/data/tools/gps.pm

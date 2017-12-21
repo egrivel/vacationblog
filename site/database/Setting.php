@@ -12,7 +12,7 @@ class Setting {
       $query = "CREATE TABLE IF NOT EXISTS blogSetting("
          . "name CHAR(32) NOT NULL, "
          . "value TEXT, "
-         . "updated TIMESTAMP(6) DEFAULT $updateDefault, "
+         . db_get_updated_sql()
          . "PRIMARY KEY(name)"
          .")";
       if (!db_query($query)) {

@@ -1,5 +1,6 @@
 <?php
 include_once(dirname(__FILE__) . '/../database/Media.php');
+include_once(dirname(__FILE__) . '/../../../home/ip.php');
 
 function fillCommentItem($item, $object) {
    $item['tripId'] = $object->getTripId();
@@ -15,6 +16,7 @@ function fillCommentItem($item, $object) {
 }
 
 function fillMediaItem($item, $object) {
+   global $adams_ip;
    $item['tripId'] = $object->getTripId();
    $item['mediaId'] = $object->getMediaId();
    $item['created'] = $object->getCreated();
@@ -30,7 +32,7 @@ function fillMediaItem($item, $object) {
    $mediaId = $item['mediaId'];
 
    $url = "http://photos-egrivel.rhcloud.com/phimg?large=$mediaId";
-   $url = "http://173.64.127.170:31415/cgi-bin/photos/phimg?large=$mediaId";
+   $url = "http://$adams_ip:31415/cgi-bin/photos/phimg?large=$mediaId";
    if ($item['location'] === 'local') {
      $url = "/cgi-bin/photos/phimg?large=$mediaId";
    } else if ($item['location'] === 'grivel') {

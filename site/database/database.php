@@ -35,6 +35,7 @@ function db_init() {
       }
       // echo "Connect to $hostname as $username with password $password<br/>\n";
       // echo "dbname = '$dbname'<br/>\n";
+
       if (!db_connect($hostname, $username, $password, $dbname)) {
         echo "Could not connect: " . db_error() . '<br/>\n';
       }
@@ -109,12 +110,30 @@ function db_get_create_default() {
   }
 }
 
+function db_get_created_sql() {
+  $version = db_get_installed_version();
+  if ($version === 'mysql-5.7') {
+    return 'created TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6), ';
+  } else {
+    return 'created TIMESTAMP DEFAULT \'0000-00-00 00:00:00\', ';
+  }
+}
+
 function db_get_update_default() {
   $version = db_get_installed_version();
   if ($version === 'mysql-5.7') {
     return 'CURRENT_TIMESTAMP(6)';
   } else {
     return 'CURRENT_TIMESTAMP';
+  }
+}
+
+function db_get_updated_sql() {
+  $version = db_get_installed_version();
+  if ($version === 'mysql-5.7') {
+    return 'updated TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6), ';
+  } else {
+    return 'updated TIMESTAMP DEFAULT \'0000-00-00 00:00:00\', ';
   }
 }
 
