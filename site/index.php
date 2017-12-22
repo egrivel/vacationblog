@@ -23,7 +23,7 @@ function getTrip() {
 }
 
 function getTripTitle() {
-  return "Vacation Website: New Zealand";
+  return "Vacation Website: Curacao";
   global $tripObj;
   getTrip();
 
@@ -34,7 +34,7 @@ function getTripTitle() {
 }
 
 function getTripDescr() {
-  return "We have long wanted to visit New Zealand, not in the least because Nicoline has family there. So we decided to combine our major 2016 and 2017 September vacations into a single in-between trip: vising New Zealand in March 2017.";
+  return "Taking a short vacation to Curacao.";
   global $tripObj;
   getTrip();
 
@@ -57,71 +57,8 @@ function getMediaUrl() {
   global $tripId;
   // getTrip();
 
-  $defaultMediaUrl = 'https://vacationblog-egrivel.rhcloud.com/media/vak2017-fb-banner.png';
+  $defaultMediaUrl = 'http://www.grivel.net/vacationblog/site/media/vak2017-2-fb-banner.png';
   return $defaultMediaUrl;
-  if ($tripId === '') {
-    // No current trip, return default
-    return $defaultMediaUrl;
-  }
-
-  $lastJournalId = Journal::getLastJournalId($tripId);
-  if (!$lastJournalId) {
-    // last journal not found, return default
-    return $defaultMediaUrl;
-  }
-
-  $journal = new Journal($tripId, $lastJournalId);
-  if ($journal->getCreated() === null) {
-    // Cannot get last journal
-    return $defaultMediaUrl;
-  }
-
-  $mediaId = '';
-  while(true) {
-    $journalText = $journal->getJournalText();
-    if ($journalText) {
-      $list = explode('[IMG ', $journalText);
-      for ($i = 0; isset($list[$i]); $i++) {
-        if (preg_match('/^\s*(\d\d\d\d\d\d\d\d-\d\d\d\d\d\d\w?)/',
-            $list[$i], $matches)) {
-          $mediaId = $matches[0];
-          break;
-        }
-      }
-      if ($mediaId !== '') {
-        break;
-      }
-    }
-    $prevJournalId = $journal->getPreviousJournalId();
-    if (!$prevJournalId) {
-      // No previous journal, so stop searching
-      break;
-    }
-    $journal = new Journal($tripId, $prevJournalId);
-    if ($journal->getCreated() === null) {
-      // previous journal not found, so stop searching
-      break;
-    }
-    // continue to previous journal to find an image
-  }
-
-  if ($mediaId === '') {
-    // No media found
-    return $defaultMediaUrl;
-  }
-
-  $media = new Media($tripId, $mediaId);
-  if ($media->getCreated() === null) {
-    // media not found
-    return $defaultMediaUrl;
-  }
-
-  $location = $media->getLocation();
-  if ($location === 'grivel') {
-    return "http://www.grivel.net/blogphotos/$mediaId.jpg";
-  } else {
-    return "http://photos-egrivel.rhcloud.com/phimg?large=$mediaId";
-  }
 }
 
 ?><!DOCTYPE html>
@@ -136,7 +73,7 @@ function getMediaUrl() {
     <link rel="shortcut icon" href="./media/favicon.ico">
     <!-- Properties for facebook -->
     <meta property="fb:admins" content="552452884" />
-    <meta property="og:url" content="https://vacationblog-egrivel.rhcloud.com/" />
+    <meta property="og:url" content="http://www.grivel.net/vacationblog/site/" />
     <meta property="og:title" content="<?php print getTriptitle(); ?>" />
     <meta property="og:description" content="<?php print getTripDescr(); ?>" />
     <meta property="og:image" content="<?php print getMediaUrl(); ?>" />

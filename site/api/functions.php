@@ -31,7 +31,7 @@ function fillMediaItem($item, $object) {
 
    $mediaId = $item['mediaId'];
 
-   $url = "http://photos-egrivel.rhcloud.com/phimg?large=$mediaId";
+   // $url = "http://photos-egrivel.rhcloud.com/phimg?large=$mediaId";
    $url = "http://$adams_ip:31415/cgi-bin/photos/phimg?large=$mediaId";
    if ($item['location'] === 'local') {
      $url = "/cgi-bin/photos/phimg?large=$mediaId";
