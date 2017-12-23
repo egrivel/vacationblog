@@ -94,7 +94,7 @@ const Sync = React.createClass({
     return (
       <div>
         <p>This function is to synchronize with an external system.</p>
-        <p>Standard: http://vacationblog-egrivel.rhcloud.com/</p>
+        <p>Standard: http://www.grivel.net/vacationblog/site/</p>
         {this._renderSiteInput()}
         {this._renderPasswordInput()}
         <ButtonBar
