@@ -99,7 +99,7 @@ const TripDescription = React.createClass({
       TripAction.setCurrentTrip(null);
     }
     this.getDataIfNeeded(this.props);
-    MenuAction.selectItem(MenuStore.menuIds.HOME);
+    MenuAction.selectItem(MenuStore.menuIds.TRIP);
 
     let cookieValue = '';
     if (this.props.params.tripId) {
@@ -111,7 +111,7 @@ const TripDescription = React.createClass({
   componentWillUnmount: function() {
     TripStore.removeChangeListener(this._onChange);
     UserStore.removeChangeListener(this._onChange);
-    MenuAction.unselectItem(MenuStore.menuIds.HOME);
+    MenuAction.unselectItem(MenuStore.menuIds.TRIP);
   },
 
   componentWillReceiveProps: function(nextProps) {

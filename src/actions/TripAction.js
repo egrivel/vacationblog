@@ -59,12 +59,14 @@ const TripAction = {
    * @param {string} id - ID of the trip to set.
    */
   setCurrentTrip: function(id) {
-    AppDispatcher.dispatch({
-      type: this.Types.TRIP_SET_CURRENT,
-      data: id
-    });
     if (id) {
+      AppDispatcher.dispatch({
+        type: this.Types.TRIP_SET_CURRENT,
+        data: id
+      });
       TripAction.loadTrip(id);
+    } else {
+      TripAction.initialLoadTrip()
     }
   },
 

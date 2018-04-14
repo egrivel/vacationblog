@@ -9,10 +9,11 @@ const UserStore = require('./UserStore');
 
 const menuIds = {
   HOME: 'm1',
-  SEARCH: 'm2',
-  PREFERENCES: 'm3',
-  ADMIN: 'm4',
-  ABOUT: 'm5'
+  TRIP: 'm2',
+  SEARCH: 'm3',
+  PREFERENCES: 'm4',
+  ADMIN: 'm5',
+  ABOUT: 'm6'
 };
 
 // The menu structure. It uses the following attributes:
@@ -26,6 +27,8 @@ const menuIds = {
 const _menuData = [
   {id: menuIds.HOME, label: 'Home', selected: false,
     visible: true, target: '#/'},
+  {id: menuIds.TRIP, label: 'Trip', selected: false,
+    visible: true, target: '#/trip'},
   {id: menuIds.SEARCH, label: 'Search', selected: false,
     visible: false, target: '#/search'},
   {id: menuIds.PREFERENCES, label: 'Preferences', selected: false,
@@ -60,14 +63,14 @@ function _updateMenu(access) {
   let item;
   let visible;
 
-  item = _findMenu('m3');
+  item = _findMenu(menuIds.PREFERENCES);
   visible = ((access === 'visitor') || (access === 'admin'));
   if (item && item.visible !== visible) {
     item.visible = visible;
     result = true;
   }
 
-  item = _findMenu('m4');
+  item = _findMenu(menuIds.ADMIN);
   visible = (access === 'admin');
   if (item && item.visible !== visible) {
     item.visible = visible;

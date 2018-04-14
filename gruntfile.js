@@ -150,6 +150,16 @@ var setupDeploy = function(grunt) {
   grunt.registerTask('deploy', ['browserify:development', 'exec:deploy']);
 };
 
+var setupLocalPublish = function(grunt) {
+  grunt.loadNpmTasks('grunt-exec');
+  grunt.config('exec', {
+    localPublish: {
+      command: 'scripts/local-publish.sh'
+    }
+  });
+  grunt.registerTask('localPublish', ['browserify:development', 'exec:localPublish']);
+};
+
 module.exports = function(grunt) {
   grunt.loadTasks('scripts/tasks');
 
@@ -162,4 +172,5 @@ module.exports = function(grunt) {
   setupCheckFiles(grunt);
   setupAll(grunt);
   setupDeploy(grunt);
+  setupLocalPublish(grunt);
 };

@@ -29,6 +29,10 @@ const Footer = React.createClass({
     const startDate = this.state.startDate;
     const endDate = this.state.endDate;
 
+    if (!startDate && !endDate) {
+      return '';
+    }
+
     let copyrightYear = '';
     let startYear = '';
     let endYear = '';
@@ -69,7 +73,7 @@ const Footer = React.createClass({
           className: 'footer'
         },
         React.DOM.p(null, footerText +
-                    ' Website design \u00A92015-17 by Eric Grivel.' +
+                    ' Website design \u00A92015-18 by Eric Grivel.' +
                     ' All rights reserved.')
       )
     );

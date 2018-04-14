@@ -34,6 +34,7 @@ const routes = {
     {path: '/', component: Welcome},
     {path: '/login', component: LoginWrapper},
     {path: '/login/:target', component: LoginWrapper},
+    {path: '/trip', component: TripDescription},
     {path: '/trip/:tripId', component: TripDescription},
     {path: '/journal/:tripId/:journalId', component: JournalWrapper},
     {path: '/journal/:tripId/:journalId/:map', component: JournalWrapper},

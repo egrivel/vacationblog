@@ -76,11 +76,11 @@ const JournalEntry = React.createClass({
   /* eslint-enable no-unused-vars */
 
   componentDidMount: function() {
-    MenuAction.selectItem(MenuStore.menuIds.HOME);
+    MenuAction.selectItem(MenuStore.menuIds.TRIP);
   },
 
   componentWillUnmount: function() {
-    MenuAction.unselectItem(MenuStore.menuIds.HOME);
+    MenuAction.unselectItem(MenuStore.menuIds.TRIP);
   },
 
   /**

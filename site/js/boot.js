@@ -49250,12 +49250,14 @@ const TripAction = {
    * @param {string} id - ID of the trip to set.
    */
   setCurrentTrip: function(id) {
-    AppDispatcher.dispatch({
-      type: this.Types.TRIP_SET_CURRENT,
-      data: id
-    });
     if (id) {
+      AppDispatcher.dispatch({
+        type: this.Types.TRIP_SET_CURRENT,
+        data: id
+      });
       TripAction.loadTrip(id);
+    } else {
+      TripAction.initialLoadTrip()
     }
   },
 
@@ -49640,6 +49642,7 @@ const routes = {
     {path: '/', component: Welcome},
     {path: '/login', component: LoginWrapper},
     {path: '/login/:target', component: LoginWrapper},
+    {path: '/trip', component: TripDescription},
     {path: '/trip/:tripId', component: TripDescription},
     {path: '/journal/:tripId/:journalId', component: JournalWrapper},
     {path: '/journal/:tripId/:journalId/:map', component: JournalWrapper},
@@ -50446,6 +50449,10 @@ const Footer = React.createClass({
     const startDate = this.state.startDate;
     const endDate = this.state.endDate;
 
+    if (!startDate && !endDate) {
+      return '';
+    }
+
     let copyrightYear = '';
     let startYear = '';
     let endYear = '';
@@ -50486,7 +50493,7 @@ const Footer = React.createClass({
           className: 'footer'
         },
         React.DOM.p(null, footerText +
-                    ' Website design \u00A92015-17 by Eric Grivel.' +
+                    ' Website design \u00A92015-18 by Eric Grivel.' +
                     ' All rights reserved.')
       )
     );
@@ -50756,11 +50763,11 @@ const JournalEdit = React.createClass({
     } else {
       JournalAction.loadJournal(tripId, journalId);
     }
-    MenuAction.selectItem(MenuStore.menuIds.HOME);
+    MenuAction.selectItem(MenuStore.menuIds.TRIP);
   },
 
   componentWillUnmount: function() {
-    MenuAction.unselectItem(MenuStore.menuIds.HOME);
+    MenuAction.unselectItem(MenuStore.menuIds.TRIP);
   },
 
   _validDate: function(date) {
@@ -51074,11 +51081,11 @@ const JournalEntry = React.createClass({
   /* eslint-enable no-unused-vars */
 
   componentDidMount: function() {
-    MenuAction.selectItem(MenuStore.menuIds.HOME);
+    MenuAction.selectItem(MenuStore.menuIds.TRIP);
   },
 
   componentWillUnmount: function() {
-    MenuAction.unselectItem(MenuStore.menuIds.HOME);
+    MenuAction.unselectItem(MenuStore.menuIds.TRIP);
   },
 
   /**
@@ -54193,7 +54200,7 @@ const TripDescription = React.createClass({
       TripAction.setCurrentTrip(null);
     }
     this.getDataIfNeeded(this.props);
-    MenuAction.selectItem(MenuStore.menuIds.HOME);
+    MenuAction.selectItem(MenuStore.menuIds.TRIP);
 
     let cookieValue = '';
     if (this.props.params.tripId) {
@@ -54205,7 +54212,7 @@ const TripDescription = React.createClass({
   componentWillUnmount: function() {
     TripStore.removeChangeListener(this._onChange);
     UserStore.removeChangeListener(this._onChange);
-    MenuAction.unselectItem(MenuStore.menuIds.HOME);
+    MenuAction.unselectItem(MenuStore.menuIds.TRIP);
   },
 
   componentWillReceiveProps: function(nextProps) {
@@ -56906,10 +56913,11 @@ const UserStore = require('./UserStore');
 
 const menuIds = {
   HOME: 'm1',
-  SEARCH: 'm2',
-  PREFERENCES: 'm3',
-  ADMIN: 'm4',
-  ABOUT: 'm5'
+  TRIP: 'm2',
+  SEARCH: 'm3',
+  PREFERENCES: 'm4',
+  ADMIN: 'm5',
+  ABOUT: 'm6'
 };
 
 // The menu structure. It uses the following attributes:
@@ -56923,6 +56931,8 @@ const menuIds = {
 const _menuData = [
   {id: menuIds.HOME, label: 'Home', selected: false,
     visible: true, target: '#/'},
+  {id: menuIds.TRIP, label: 'Trip', selected: false,
+    visible: true, target: '#/trip'},
   {id: menuIds.SEARCH, label: 'Search', selected: false,
     visible: false, target: '#/search'},
   {id: menuIds.PREFERENCES, label: 'Preferences', selected: false,
@@ -56957,14 +56967,14 @@ function _updateMenu(access) {
   let item;
   let visible;
 
-  item = _findMenu('m3');
+  item = _findMenu(menuIds.PREFERENCES);
   visible = ((access === 'visitor') || (access === 'admin'));
   if (item && item.visible !== visible) {
     item.visible = visible;
     result = true;
   }
 
-  item = _findMenu('m4');
+  item = _findMenu(menuIds.ADMIN);
   visible = (access === 'admin');
   if (item && item.visible !== visible) {
     item.visible = visible;
