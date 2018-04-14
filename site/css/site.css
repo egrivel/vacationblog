@@ -1216,6 +1216,6 @@ div#the-modal-map {
   color: #c00;
 }
 
-.signature {
+div.content p.signature {
   text-align: right;
 }
