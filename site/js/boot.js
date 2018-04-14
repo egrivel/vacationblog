@@ -49756,7 +49756,7 @@ const About = React.createClass({
           "vacation memories, and we hope our friends and family enjoy" + ' ' +
           "reading about our exploits as well."), 
 
-        React.createElement("p", {style: "text-align: right"}, 
+        React.createElement("p", {className: "signature"}, 
           React.createElement("em", null, "Eric Grivel"), React.createElement("br", null), 
           React.createElement("em", null, "Nicoline Smits"))
       )

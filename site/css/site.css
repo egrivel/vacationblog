@@ -1215,3 +1215,7 @@ div#the-modal-map {
   font-weight: bold;
   color: #c00;
 }
+
+.signature {
+  text-align: right;
+}

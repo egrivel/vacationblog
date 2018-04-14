@@ -50,7 +50,7 @@ const About = React.createClass({
           vacation memories, and we hope our friends and family enjoy
           reading about our exploits as well.</p>
 
-        <p style="text-align: right">
+        <p className="signature">
           <em>Eric Grivel</em><br />
           <em>Nicoline Smits</em></p>
       </div>
