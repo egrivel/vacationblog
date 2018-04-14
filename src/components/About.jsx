@@ -26,11 +26,11 @@ const About = React.createClass({
 
         <p>We started a Vacation Blog with out 2007 family
           roadtrip <em>Around the U.S. in Eight Weeks</em>. For that trip we
-          had rented a minivan and criss-crossed the lower 48 states for Eight
+          had rented a minivan and criss-crossed the lower 48 states for eight
           weeks. While on the road we regularly wrote about our
           “adventures” on a website we created for this purpose.</p>
 
-        <p>When Eric and Nicoline started planning their <em>I-70</em> trip
+        <p>When we started planning our <em>I-70</em> trip
           in 2012, we found that we were discovering a lot of interesting
           information about America, the National Road, and the roads
           westward, so we wanted a place to record and share all of that
@@ -43,6 +43,16 @@ const About = React.createClass({
           then started to become tedious. So after the
           2015 <em>Oklahoma</em> trip, we decided to re-do the whole thing into
           a modernized, integrated vacation blog.</p>
+
+        <p>The result is what you are looking at now. Whenever we embark
+          on a major vaction (short trips don’t count), we will start a
+          new trip to blog about on this site. It will become part of our
+          vacation memories, and we hope our friends and family enjoy
+          reading about our exploits as well.</p>
+
+        <p style="text-align: right">
+          <em>Eric Grivel</em><br />
+          <em>Nicoline Smits</em></p>
       </div>
     );
   }
