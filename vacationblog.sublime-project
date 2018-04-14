@@ -13,6 +13,7 @@
         ".sonar"
       ],
       "file_exclude_patterns": [
+        "site/js/boot.js",
         "vacationblog.sublime-workspace",
         "*.tar*"
       ]
