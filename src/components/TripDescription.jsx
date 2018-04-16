@@ -9,6 +9,7 @@ const UserStore = require('../stores/UserStore');
 const MenuAction = require('../actions/MenuAction');
 const MenuStore = require('../stores/MenuStore');
 
+const FacebookStatus = require('./FacebookStatus.jsx');
 const TripJournalList = require('./TripJournalList.jsx');
 const utils = require('./utils');
 const cookieUtils = require('../utils');
@@ -219,8 +220,10 @@ const TripDescription = React.createClass({
         parCount++;
         return utils.buildTextNode('p', 'text', 'p-' + parCount, par);
       });
+
       return (
         <div className="trip">
+          <FacebookStatus />
           {paragraphs}
           {_startReadingLink(tripId, this.state.firstJournalId)}
           {this._renderNewPostLink()}

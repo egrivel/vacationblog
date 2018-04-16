@@ -48517,7 +48517,71 @@ const CommentAction = {
 
 module.exports = CommentAction;
 
-},{"../AppDispatcher":241,"../stores/UserStore":306,"./UserAction":251,"./utils":252}],243:[function(require,module,exports){
+},{"../AppDispatcher":241,"../stores/UserStore":309,"./UserAction":252,"./utils":253}],243:[function(require,module,exports){
+'use strict';
+
+/**
+ * Trip Actions. This is a set of actions regarding trips, including the list
+ * of contributors to a trip ("trip users").
+ */
+
+const AppDispatcher = require('../AppDispatcher');
+const utils = require('./utils');
+
+let _isLoadingStatus = false;
+let _isLoadingName = false;
+
+const FacebookAction = {
+  Types: {
+    FB_EMAIL: 'FB_EMAIL',
+    FB_NAME: 'FB_NAME',
+    FB_STATUS: 'FB_STATUS'
+  },
+
+  getStatus: function() {
+    if (typeof FB !== 'undefined' && !_isLoadingStatus) {
+      setTimeout(function() {
+        AppDispatcher.dispatch({
+          type: FacebookAction.Types.FB_STATUS,
+          data: 'loading'
+        });
+      }, 0);
+      _isLoadingStatus = true;
+
+      FB.getLoginStatus(function(response) {
+        _isLoadingStatus = false;
+        if (response && response.status) {
+          AppDispatcher.dispatch({
+            type: FacebookAction.Types.FB_STATUS,
+            data: response.status
+          });
+        }
+      });
+    }
+  },
+
+  loadEmail: function() {},
+
+  loadName: function() {
+    if (!_isLoadingName) {
+      _isLoadingName = true;
+      FB.api('/me', function(response) {
+        _isLoadingName = false;
+        console.log('Got response: ' + JSON.stringify(response));
+        if (response && response.name) {
+          AppDispatcher.dispatch({
+            type: FacebookAction.Types.FB_NAME,
+            data: response.name
+          });
+        }
+      });
+    }
+  }
+};
+
+module.exports = FacebookAction;
+
+},{"../AppDispatcher":241,"./utils":253}],244:[function(require,module,exports){
 'use strict';
 
 const AppDispatcher = require('../AppDispatcher');
@@ -48630,7 +48694,7 @@ const FeedbackAction = {
 
 module.exports = FeedbackAction;
 
-},{"../AppDispatcher":241,"./utils":252}],244:[function(require,module,exports){
+},{"../AppDispatcher":241,"./utils":253}],245:[function(require,module,exports){
 'use strict';
 
 const AppDispatcher = require('../AppDispatcher');
@@ -48776,7 +48840,7 @@ const JournalAction = {
 
 module.exports = JournalAction;
 
-},{"../AppDispatcher":241,"./CommentAction":242,"./MediaAction":246,"./TripAction":250,"./UserAction":251,"./utils":252}],245:[function(require,module,exports){
+},{"../AppDispatcher":241,"./CommentAction":242,"./MediaAction":247,"./TripAction":251,"./UserAction":252,"./utils":253}],246:[function(require,module,exports){
 'use strict';
 
 const UserAction = require('./UserAction');
@@ -49010,7 +49074,7 @@ const LoginAction = {
 
 module.exports = LoginAction;
 
-},{"../stores/UserStore":306,"../utils":307,"./UserAction":251,"./utils":252}],246:[function(require,module,exports){
+},{"../stores/UserStore":309,"../utils":310,"./UserAction":252,"./utils":253}],247:[function(require,module,exports){
 'use strict';
 
 const AppDispatcher = require('../AppDispatcher');
@@ -49085,7 +49149,7 @@ const MediaAction = {
 
 module.exports = MediaAction;
 
-},{"../AppDispatcher":241,"./utils":252}],247:[function(require,module,exports){
+},{"../AppDispatcher":241,"./utils":253}],248:[function(require,module,exports){
 'use strict';
 
 const AppDispatcher = require('../AppDispatcher');
@@ -49125,7 +49189,7 @@ const MenuAction = {
 
 module.exports = MenuAction;
 
-},{"../AppDispatcher":241}],248:[function(require,module,exports){
+},{"../AppDispatcher":241}],249:[function(require,module,exports){
 'use strict';
 
 const utils = require('./utils');
@@ -49148,7 +49212,7 @@ const NotificationAction = {
 
 module.exports = NotificationAction;
 
-},{"./utils":252}],249:[function(require,module,exports){
+},{"./utils":253}],250:[function(require,module,exports){
 'use strict';
 
 const AppDispatcher = require('../AppDispatcher');
@@ -49188,7 +49252,7 @@ const SyncAction = {
 
 module.exports = SyncAction;
 
-},{"../AppDispatcher":241,"./utils":252}],250:[function(require,module,exports){
+},{"../AppDispatcher":241,"./utils":253}],251:[function(require,module,exports){
 'use strict';
 
 /**
@@ -49402,7 +49466,7 @@ const TripAction = {
 
 module.exports = TripAction;
 
-},{"../AppDispatcher":241,"./utils":252}],251:[function(require,module,exports){
+},{"../AppDispatcher":241,"./utils":253}],252:[function(require,module,exports){
 'use strict';
 
 const AppDispatcher = require('../AppDispatcher');
@@ -49573,7 +49637,7 @@ const UserAction = {
 
 module.exports = UserAction;
 
-},{"../AppDispatcher":241,"./utils":252}],252:[function(require,module,exports){
+},{"../AppDispatcher":241,"./utils":253}],253:[function(require,module,exports){
 'use strict';
 
 /* global XMLHttpRequest */
@@ -49605,7 +49669,7 @@ const utils = {
 
 module.exports = utils;
 
-},{}],253:[function(require,module,exports){
+},{}],254:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -49706,7 +49770,7 @@ if (lastEntryCookie) {
   }
 }
 
-},{"./actions/TripAction":250,"./actions/UserAction":251,"./components/About.jsx":254,"./components/Admin.jsx":255,"./components/App.jsx":256,"./components/JournalEdit.jsx":263,"./components/JournalWrapper.jsx":269,"./components/LoginWrapper.jsx":271,"./components/Notification.jsx":274,"./components/Preferences.jsx":275,"./components/Search.jsx":276,"./components/Sync.jsx":278,"./components/TripAdmin.jsx":279,"./components/TripDescription.jsx":280,"./components/TripEdit.jsx":281,"./components/UserAdmin.jsx":285,"./components/UserEdit.jsx":286,"./components/Welcome.jsx":287,"./utils":307,"react":238,"react-dom":54,"react-router":207}],254:[function(require,module,exports){
+},{"./actions/TripAction":251,"./actions/UserAction":252,"./components/About.jsx":255,"./components/Admin.jsx":256,"./components/App.jsx":257,"./components/JournalEdit.jsx":265,"./components/JournalWrapper.jsx":271,"./components/LoginWrapper.jsx":273,"./components/Notification.jsx":276,"./components/Preferences.jsx":277,"./components/Search.jsx":278,"./components/Sync.jsx":280,"./components/TripAdmin.jsx":281,"./components/TripDescription.jsx":282,"./components/TripEdit.jsx":283,"./components/UserAdmin.jsx":287,"./components/UserEdit.jsx":288,"./components/Welcome.jsx":289,"./utils":310,"react":238,"react-dom":54,"react-router":207}],255:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -49769,7 +49833,7 @@ const About = React.createClass({
 
 module.exports = About;
 
-},{"../actions/MenuAction":247,"../stores/MenuStore":303,"react":238}],255:[function(require,module,exports){
+},{"../actions/MenuAction":248,"../stores/MenuStore":306,"react":238}],256:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -49820,7 +49884,7 @@ const Admin = React.createClass({
 
 module.exports = Admin;
 
-},{"../actions/MenuAction":247,"../stores/MenuStore":303,"../stores/UserStore":306,"react":238}],256:[function(require,module,exports){
+},{"../actions/MenuAction":248,"../stores/MenuStore":306,"../stores/UserStore":309,"react":238}],257:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -49862,7 +49926,7 @@ const App = React.createClass({
 
 module.exports = App;
 
-},{"./Footer.jsx":260,"./Header.jsx":261,"./Welcome.jsx":287,"react":238}],257:[function(require,module,exports){
+},{"./Footer.jsx":262,"./Header.jsx":263,"./Welcome.jsx":289,"react":238}],258:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -49964,7 +50028,7 @@ const CommentEdit = React.createClass({
 
 module.exports = CommentEdit;
 
-},{"../actions/CommentAction":242,"../stores/CommentStore":298,"./StoreMixin":277,"react":238}],258:[function(require,module,exports){
+},{"../actions/CommentAction":242,"../stores/CommentStore":300,"./StoreMixin":279,"react":238}],259:[function(require,module,exports){
 'use strict';
 
 /**
@@ -50219,7 +50283,75 @@ CommentList = React.createClass({
 
 module.exports = CommentList;
 
-},{"../actions/CommentAction":242,"../stores/CommentStore":298,"../stores/UserStore":306,"./CommentEdit.jsx":257,"./Feedback.jsx":259,"./utils":297,"react":238}],259:[function(require,module,exports){
+},{"../actions/CommentAction":242,"../stores/CommentStore":300,"../stores/UserStore":309,"./CommentEdit.jsx":258,"./Feedback.jsx":261,"./utils":299,"react":238}],260:[function(require,module,exports){
+'use strict';
+
+const React = require('react');
+const Link = require('react-router').Link;
+
+const FacebookAction = require('../actions/FacebookAction');
+const FacebookStore = require('../stores/FacebookStore');
+
+const FacebookStatus = React.createClass({displayName: "FacebookStatus",
+  _getStateFromStores: function() {
+    const status = FacebookStore.getStatus();
+    const name = FacebookStore.getName();
+
+    return {
+      name: name,
+      status: status
+    };
+  },
+
+  _onChange: function() {
+    this.setState(this._getStateFromStores());
+  },
+
+  getInitialState: function() {
+    return this._getStateFromStores();
+  },
+
+  componentDidMount: function() {
+    FacebookStore.addChangeListener(this._onChange);
+    const status = FacebookStore.getStatus();
+    const name = FacebookStore.getName();
+
+    if (!status) {
+      FacebookAction.getStatus();
+    } else if (status === 'connected' && !name) {
+      FacebookAction.loadName();
+    }
+  },
+
+  componentWillUnmount: function() {
+    FacebookStore.removeChangeListener(this._onChange);
+  },
+
+  componentDidUpdate: function() {
+    const status = FacebookStore.getStatus();
+    const name = FacebookStore.getName();
+
+    if (!status) {
+      FacebookAction.getStatus();
+    } else if (status === 'connected' && !name) {
+      FacebookAction.loadName();
+    }
+  },
+
+  render: function() {
+    if (this.state.name) {
+      return (React.createElement("div", null, "Logged in as ", this.state.name, "."));
+    } else if (this.state.status) {
+      return (React.createElement("div", null, "Facebook status: ", this.state.status, "."));
+    } else {
+      return (React.createElement("div", null, "No facebook status yet."));
+    }
+  }
+});
+
+module.exports = FacebookStatus;
+
+},{"../actions/FacebookAction":243,"../stores/FacebookStore":301,"react":238,"react-router":207}],261:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -50417,7 +50549,7 @@ const Feedback = React.createClass({
 
 module.exports = Feedback;
 
-},{"../actions/FeedbackAction":243,"../stores/FeedbackStore":299,"../stores/UserStore":306,"./StoreMixin":277,"react":238}],260:[function(require,module,exports){
+},{"../actions/FeedbackAction":244,"../stores/FeedbackStore":302,"../stores/UserStore":309,"./StoreMixin":279,"react":238}],262:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -50502,7 +50634,7 @@ const Footer = React.createClass({
 
 module.exports = Footer;
 
-},{"../stores/TripStore":305,"./StoreMixin":277,"react":238}],261:[function(require,module,exports){
+},{"../stores/TripStore":308,"./StoreMixin":279,"react":238}],263:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -50619,7 +50751,7 @@ const Header = React.createClass({
 
 module.exports = Header;
 
-},{"../actions/UserAction":251,"../stores/MenuStore":303,"../stores/TripStore":305,"../stores/UserStore":306,"./Login.jsx":270,"./Menu.jsx":272,"./StoreMixin":277,"react":238}],262:[function(require,module,exports){
+},{"../actions/UserAction":252,"../stores/MenuStore":306,"../stores/TripStore":308,"../stores/UserStore":309,"./Login.jsx":272,"./Menu.jsx":274,"./StoreMixin":279,"react":238}],264:[function(require,module,exports){
 'use strict';
 
 /**
@@ -50708,7 +50840,7 @@ const Image = React.createClass({
 
 module.exports = Image;
 
-},{"./utils":297,"lodash":46,"react":238}],263:[function(require,module,exports){
+},{"./utils":299,"lodash":46,"react":238}],265:[function(require,module,exports){
 'use strict';
 
 const _ = require('lodash');
@@ -51002,7 +51134,7 @@ const JournalEdit = React.createClass({
 
 module.exports = JournalEdit;
 
-},{"../actions/JournalAction":244,"../actions/MenuAction":247,"../stores/JournalStore":301,"../stores/MenuStore":303,"../stores/TripStore":305,"./StoreMixin":277,"./standard/ButtonBar.jsx":288,"./standard/Textarea.jsx":295,"./standard/Textbox.jsx":296,"lodash":46,"moment":50,"react":238}],264:[function(require,module,exports){
+},{"../actions/JournalAction":245,"../actions/MenuAction":248,"../stores/JournalStore":304,"../stores/MenuStore":306,"../stores/TripStore":308,"./StoreMixin":279,"./standard/ButtonBar.jsx":290,"./standard/Textarea.jsx":297,"./standard/Textbox.jsx":298,"lodash":46,"moment":50,"react":238}],266:[function(require,module,exports){
 'use strict';
 
 /**
@@ -51327,7 +51459,7 @@ const JournalEntry = React.createClass({
 
 module.exports = JournalEntry;
 
-},{"../actions/CommentAction":242,"../actions/MenuAction":247,"../stores/CommentStore":298,"../stores/JournalStore":301,"../stores/MediaStore":302,"../stores/MenuStore":303,"../stores/TripStore":305,"../stores/UserStore":306,"./CommentEdit.jsx":257,"./CommentList.jsx":258,"./Feedback.jsx":259,"./JournalHeader.jsx":265,"./JournalParagraph.jsx":267,"./JournalPrevNext.jsx":268,"./StoreMixin":277,"./utils":297,"react":238,"react-router":207}],265:[function(require,module,exports){
+},{"../actions/CommentAction":242,"../actions/MenuAction":248,"../stores/CommentStore":300,"../stores/JournalStore":304,"../stores/MediaStore":305,"../stores/MenuStore":306,"../stores/TripStore":308,"../stores/UserStore":309,"./CommentEdit.jsx":258,"./CommentList.jsx":259,"./Feedback.jsx":261,"./JournalHeader.jsx":267,"./JournalParagraph.jsx":269,"./JournalPrevNext.jsx":270,"./StoreMixin":279,"./utils":299,"react":238,"react-router":207}],267:[function(require,module,exports){
 'use strict';
 
 /**
@@ -51567,7 +51699,7 @@ const JournalHeader = React.createClass({
 
 module.exports = JournalHeader;
 
-},{"./utils":297,"react":238,"react-router":207}],266:[function(require,module,exports){
+},{"./utils":299,"react":238,"react-router":207}],268:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -51875,7 +52007,7 @@ const JournalImage = React.createClass({
 
 module.exports = JournalImage;
 
-},{"../actions/MediaAction":246,"../stores/MediaStore":302,"../stores/UserStore":306,"./Image.jsx":262,"./standard/ButtonBar.jsx":288,"./standard/Display.jsx":290,"./standard/Textbox.jsx":296,"./utils":297,"react":238}],267:[function(require,module,exports){
+},{"../actions/MediaAction":247,"../stores/MediaStore":305,"../stores/UserStore":309,"./Image.jsx":264,"./standard/ButtonBar.jsx":290,"./standard/Display.jsx":292,"./standard/Textbox.jsx":298,"./utils":299,"react":238}],269:[function(require,module,exports){
 'use strict';
 
 /**
@@ -52443,7 +52575,7 @@ const JournalParagraph = React.createClass({
 
 module.exports = JournalParagraph;
 
-},{"../actions/MediaAction":246,"../stores/MediaStore":302,"./JournalImage.jsx":266,"./utils":297,"react":238}],268:[function(require,module,exports){
+},{"../actions/MediaAction":247,"../stores/MediaStore":305,"./JournalImage.jsx":268,"./utils":299,"react":238}],270:[function(require,module,exports){
 'use strict';
 
 /**
@@ -52535,7 +52667,7 @@ const JournalPrevNext = React.createClass({
 
 module.exports = JournalPrevNext;
 
-},{"react":238,"react-router":207}],269:[function(require,module,exports){
+},{"react":238,"react-router":207}],271:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -52663,7 +52795,7 @@ const JournalWrapper = React.createClass({
 
 module.exports = JournalWrapper;
 
-},{"../actions/JournalAction":244,"../actions/TripAction":250,"../stores/JournalStore":301,"../stores/TripStore":305,"../utils":307,"./JournalEntry.jsx":264,"react":238}],270:[function(require,module,exports){
+},{"../actions/JournalAction":245,"../actions/TripAction":251,"../stores/JournalStore":304,"../stores/TripStore":308,"../utils":310,"./JournalEntry.jsx":266,"react":238}],272:[function(require,module,exports){
 'use strict';
 
 /**
@@ -53374,7 +53506,7 @@ const Login = React.createClass({
 
 module.exports = Login;
 
-},{"../actions/LoginAction":245,"../actions/UserAction":251,"../stores/UserStore":306,"./StoreMixin":277,"./standard/ButtonBar.jsx":288,"./standard/Checkbox.jsx":289,"./standard/Password.jsx":293,"./standard/Textbox.jsx":296,"react":238}],271:[function(require,module,exports){
+},{"../actions/LoginAction":246,"../actions/UserAction":252,"../stores/UserStore":309,"./StoreMixin":279,"./standard/ButtonBar.jsx":290,"./standard/Checkbox.jsx":291,"./standard/Password.jsx":295,"./standard/Textbox.jsx":298,"react":238}],273:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -53418,7 +53550,7 @@ const LoginWrapper = React.createClass({
 
 module.exports = LoginWrapper;
 
-},{"../actions/UserAction":251,"../stores/UserStore":306,"./Welcome.jsx":287,"react":238}],272:[function(require,module,exports){
+},{"../actions/UserAction":252,"../stores/UserStore":309,"./Welcome.jsx":289,"react":238}],274:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -53443,7 +53575,7 @@ const Menu = React.createClass({
 
 module.exports = Menu;
 
-},{"./MenuList.jsx":273,"react":238}],273:[function(require,module,exports){
+},{"./MenuList.jsx":275,"react":238}],275:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -53513,7 +53645,7 @@ const MenuList = React.createClass({
 
 module.exports = MenuList;
 
-},{"react":238}],274:[function(require,module,exports){
+},{"react":238}],276:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -53615,7 +53747,7 @@ const Notification = React.createClass({displayName: "Notification",
 
 module.exports = Notification;
 
-},{"../actions/NotificationAction":248,"./standard/ButtonBar.jsx":288,"./standard/Textarea.jsx":295,"./standard/Textbox.jsx":296,"react":238}],275:[function(require,module,exports){
+},{"../actions/NotificationAction":249,"./standard/ButtonBar.jsx":290,"./standard/Textarea.jsx":297,"./standard/Textbox.jsx":298,"react":238}],277:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -53830,7 +53962,7 @@ const Preferences = React.createClass({
 
 module.exports = Preferences;
 
-},{"../actions/MenuAction":247,"../actions/UserAction":251,"../stores/MenuStore":303,"../stores/UserStore":306,"./StoreMixin":277,"./standard/ButtonBar.jsx":288,"./standard/Display.jsx":290,"./standard/Password.jsx":293,"./standard/Radiolist.jsx":294,"./standard/Textbox.jsx":296,"react":238}],276:[function(require,module,exports){
+},{"../actions/MenuAction":248,"../actions/UserAction":252,"../stores/MenuStore":306,"../stores/UserStore":309,"./StoreMixin":279,"./standard/ButtonBar.jsx":290,"./standard/Display.jsx":292,"./standard/Password.jsx":295,"./standard/Radiolist.jsx":296,"./standard/Textbox.jsx":298,"react":238}],278:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -53848,7 +53980,7 @@ const Search = React.createClass({
 
 module.exports = Search;
 
-},{"react":238}],277:[function(require,module,exports){
+},{"react":238}],279:[function(require,module,exports){
 'use strict';
 
 /**
@@ -53925,7 +54057,7 @@ function StoreMixin() {
 
 module.exports = StoreMixin;
 
-},{}],278:[function(require,module,exports){
+},{}],280:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -54036,7 +54168,7 @@ const Sync = React.createClass({
 
 module.exports = Sync;
 
-},{"../actions/MenuAction":247,"../actions/SyncAction":249,"../stores/MenuStore":303,"../stores/SyncStore":304,"../stores/UserStore":306,"./StoreMixin":277,"./standard/ButtonBar.jsx":288,"./standard/Password.jsx":293,"./standard/Textbox.jsx":296,"react":238}],279:[function(require,module,exports){
+},{"../actions/MenuAction":248,"../actions/SyncAction":250,"../stores/MenuStore":306,"../stores/SyncStore":307,"../stores/UserStore":309,"./StoreMixin":279,"./standard/ButtonBar.jsx":290,"./standard/Password.jsx":295,"./standard/Textbox.jsx":298,"react":238}],281:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -54098,7 +54230,7 @@ const TripAdmin = React.createClass({
 
 module.exports = TripAdmin;
 
-},{"../actions/MenuAction":247,"../stores/MenuStore":303,"../stores/TripStore":305,"../stores/UserStore":306,"./StoreMixin":277,"react":238}],280:[function(require,module,exports){
+},{"../actions/MenuAction":248,"../stores/MenuStore":306,"../stores/TripStore":308,"../stores/UserStore":309,"./StoreMixin":279,"react":238}],282:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -54110,6 +54242,7 @@ const UserStore = require('../stores/UserStore');
 const MenuAction = require('../actions/MenuAction');
 const MenuStore = require('../stores/MenuStore');
 
+const FacebookStatus = require('./FacebookStatus.jsx');
 const TripJournalList = require('./TripJournalList.jsx');
 const utils = require('./utils');
 const cookieUtils = require('../utils');
@@ -54320,8 +54453,10 @@ const TripDescription = React.createClass({
         parCount++;
         return utils.buildTextNode('p', 'text', 'p-' + parCount, par);
       });
+
       return (
         React.createElement("div", {className: "trip"}, 
+          React.createElement(FacebookStatus, null), 
           paragraphs, 
           _startReadingLink(tripId, this.state.firstJournalId), 
           this._renderNewPostLink(), 
@@ -54339,7 +54474,7 @@ const TripDescription = React.createClass({
 
 module.exports = TripDescription;
 
-},{"../actions/MenuAction":247,"../actions/TripAction":250,"../stores/MenuStore":303,"../stores/TripStore":305,"../stores/UserStore":306,"../utils":307,"./TripJournalList.jsx":283,"./utils":297,"react":238,"react-router":207}],281:[function(require,module,exports){
+},{"../actions/MenuAction":248,"../actions/TripAction":251,"../stores/MenuStore":306,"../stores/TripStore":308,"../stores/UserStore":309,"../utils":310,"./FacebookStatus.jsx":260,"./TripJournalList.jsx":285,"./utils":299,"react":238,"react-router":207}],283:[function(require,module,exports){
 'use strict';
 
 const _ = require('lodash');
@@ -54892,7 +55027,7 @@ const TripEdit = React.createClass({
 
 module.exports = TripEdit;
 
-},{"../actions/TripAction":250,"../actions/UserAction":251,"../stores/TripStore":305,"../stores/UserStore":306,"./StoreMixin":277,"./TripEditContrib.jsx":282,"./TripSelectContrib.jsx":284,"./standard/ButtonBar.jsx":288,"./standard/Display.jsx":290,"lodash":46,"react":238}],282:[function(require,module,exports){
+},{"../actions/TripAction":251,"../actions/UserAction":252,"../stores/TripStore":308,"../stores/UserStore":309,"./StoreMixin":279,"./TripEditContrib.jsx":284,"./TripSelectContrib.jsx":286,"./standard/ButtonBar.jsx":290,"./standard/Display.jsx":292,"lodash":46,"react":238}],284:[function(require,module,exports){
 'use strict';
 
 const _ = require('lodash');
@@ -54980,7 +55115,7 @@ const TripEditContrib = React.createClass({
 
 module.exports = TripEditContrib;
 
-},{"lodash":46,"react":238}],283:[function(require,module,exports){
+},{"lodash":46,"react":238}],285:[function(require,module,exports){
 'use strict';
 
 const _ = require('lodash');
@@ -55126,7 +55261,7 @@ const TripJournalList = React.createClass({
 
 module.exports = TripJournalList;
 
-},{"../actions/TripAction":250,"../stores/TripStore":305,"./StoreMixin":277,"./utils":297,"lodash":46,"moment-timezone":48,"react":238}],284:[function(require,module,exports){
+},{"../actions/TripAction":251,"../stores/TripStore":308,"./StoreMixin":279,"./utils":299,"lodash":46,"moment-timezone":48,"react":238}],286:[function(require,module,exports){
 'use strict';
 
 const _ = require('lodash');
@@ -55224,7 +55359,7 @@ const TripSelectContrib = React.createClass({
 
 module.exports = TripSelectContrib;
 
-},{"lodash":46,"react":238}],285:[function(require,module,exports){
+},{"lodash":46,"react":238}],287:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -55288,7 +55423,7 @@ const UserAdmin = React.createClass({
 
 module.exports = UserAdmin;
 
-},{"../actions/MenuAction":247,"../actions/UserAction":251,"../stores/MenuStore":303,"../stores/UserStore":306,"./StoreMixin":277,"react":238}],286:[function(require,module,exports){
+},{"../actions/MenuAction":248,"../actions/UserAction":252,"../stores/MenuStore":306,"../stores/UserStore":309,"./StoreMixin":279,"react":238}],288:[function(require,module,exports){
 'use strict';
 
 const _ = require('lodash');
@@ -55483,7 +55618,7 @@ const UserEdit = React.createClass({
 
 module.exports = UserEdit;
 
-},{"../actions/UserAction":251,"../stores/UserStore":306,"./StoreMixin":277,"./standard/ButtonBar.jsx":288,"./standard/Display.jsx":290,"./standard/Droplist.jsx":291,"./standard/Password.jsx":293,"./standard/Radiolist.jsx":294,"./standard/Textbox.jsx":296,"lodash":46,"react":238}],287:[function(require,module,exports){
+},{"../actions/UserAction":252,"../stores/UserStore":309,"./StoreMixin":279,"./standard/ButtonBar.jsx":290,"./standard/Display.jsx":292,"./standard/Droplist.jsx":293,"./standard/Password.jsx":295,"./standard/Radiolist.jsx":296,"./standard/Textbox.jsx":298,"lodash":46,"react":238}],289:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -55555,7 +55690,7 @@ const Welcome = React.createClass({
 
 module.exports = Welcome;
 
-},{"../actions/MenuAction":247,"../actions/TripAction":250,"../stores/MenuStore":303,"../stores/TripStore":305,"./StoreMixin":277,"react":238}],288:[function(require,module,exports){
+},{"../actions/MenuAction":248,"../actions/TripAction":251,"../stores/MenuStore":306,"../stores/TripStore":308,"./StoreMixin":279,"react":238}],290:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -55599,7 +55734,7 @@ const ButtonBar = React.createClass({
 
 module.exports = ButtonBar;
 
-},{"./Formrow.jsx":292,"react":238}],289:[function(require,module,exports){
+},{"./Formrow.jsx":294,"react":238}],291:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -55651,7 +55786,7 @@ const Checkbox = React.createClass({
 
 module.exports = Checkbox;
 
-},{"./Formrow.jsx":292,"react":238}],290:[function(require,module,exports){
+},{"./Formrow.jsx":294,"react":238}],292:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -55687,7 +55822,7 @@ const Display = React.createClass({
 
 module.exports = Display;
 
-},{"./Formrow.jsx":292,"react":238}],291:[function(require,module,exports){
+},{"./Formrow.jsx":294,"react":238}],293:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -55749,7 +55884,7 @@ const Droplist = React.createClass({
 
 module.exports = Droplist;
 
-},{"./Formrow.jsx":292,"react":238}],292:[function(require,module,exports){
+},{"./Formrow.jsx":294,"react":238}],294:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -55779,7 +55914,7 @@ const Formrow = React.createClass({
 
 module.exports = Formrow;
 
-},{"react":238}],293:[function(require,module,exports){
+},{"react":238}],295:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -55827,7 +55962,7 @@ const Password = React.createClass({
 
 module.exports = Password;
 
-},{"./Formrow.jsx":292,"react":238}],294:[function(require,module,exports){
+},{"./Formrow.jsx":294,"react":238}],296:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -55906,7 +56041,7 @@ const Radiolist = React.createClass({
 
 module.exports = Radiolist;
 
-},{"./Formrow.jsx":292,"react":238}],295:[function(require,module,exports){
+},{"./Formrow.jsx":294,"react":238}],297:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -55951,7 +56086,7 @@ const Textarea = React.createClass({
 
 module.exports = Textarea;
 
-},{"./Formrow.jsx":292,"react":238}],296:[function(require,module,exports){
+},{"./Formrow.jsx":294,"react":238}],298:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -55997,7 +56132,7 @@ const Textbox = React.createClass({
 
 module.exports = Textbox;
 
-},{"./Formrow.jsx":292,"react":238}],297:[function(require,module,exports){
+},{"./Formrow.jsx":294,"react":238}],299:[function(require,module,exports){
 'use strict';
 
 /**
@@ -56275,7 +56410,7 @@ const utils = {
 
 module.exports = utils;
 
-},{"moment-timezone":48,"react":238}],298:[function(require,module,exports){
+},{"moment-timezone":48,"react":238}],300:[function(require,module,exports){
 'use strict';
 
 /**
@@ -56527,7 +56662,59 @@ CommentStore.dispatchToken =
 
 module.exports = CommentStore;
 
-},{"../AppDispatcher":241,"../actions/CommentAction":242,"./GenericStore":300,"lodash":46,"object-assign":51}],299:[function(require,module,exports){
+},{"../AppDispatcher":241,"../actions/CommentAction":242,"./GenericStore":303,"lodash":46,"object-assign":51}],301:[function(require,module,exports){
+'use strict';
+
+/**
+ * Trip Store
+ *
+ * Provides trip information. This includes:
+ *  - List of all the trips in the system.
+ *  - ID of the current trip.
+ *  - All the attributes of the current trip.
+ */
+const _ = require('lodash');
+const assign = require('object-assign');
+
+const AppDispatcher = require('../AppDispatcher');
+const GenericStore = require('./GenericStore');
+const FacebookActionTypes = require('../actions/FacebookAction').Types;
+
+let _facebookName;
+let _facebookStatus;
+
+const FacebookStore = assign({}, GenericStore, {
+  getName: function() {
+    return _facebookName;
+  },
+
+  getStatus: function() {
+    return _facebookStatus;
+  },
+
+  _storeCallback: function(action) {
+    switch (action.type) {
+      case FacebookActionTypes.FB_NAME:
+        _facebookName = action.data;
+        FacebookStore.emitChange();
+        break;
+
+      case FacebookActionTypes.FB_STATUS:
+        _facebookStatus = action.data;
+        FacebookStore.emitChange();
+        break;
+
+      default:
+        // do nothing
+    }
+  }
+});
+
+FacebookStore.dispatchToken = AppDispatcher.register(FacebookStore._storeCallback);
+
+module.exports = FacebookStore;
+
+},{"../AppDispatcher":241,"../actions/FacebookAction":243,"./GenericStore":303,"lodash":46,"object-assign":51}],302:[function(require,module,exports){
 'use strict';
 
 const _ = require('lodash');
@@ -56747,7 +56934,7 @@ FeedbackStore.setMaxListeners(100);
 
 module.exports = FeedbackStore;
 
-},{"../AppDispatcher":241,"../actions/FeedbackAction":243,"./GenericStore":300,"lodash":46,"object-assign":51}],300:[function(require,module,exports){
+},{"../AppDispatcher":241,"../actions/FeedbackAction":244,"./GenericStore":303,"lodash":46,"object-assign":51}],303:[function(require,module,exports){
 'use strict';
 
 const EventEmitter = require('events').EventEmitter;
@@ -56779,7 +56966,7 @@ const GenericStore = assign({}, EventEmitter.prototype, {
 
 module.exports = GenericStore;
 
-},{"events":1,"object-assign":51}],301:[function(require,module,exports){
+},{"events":1,"object-assign":51}],304:[function(require,module,exports){
 'use strict';
 
 /**
@@ -56836,7 +57023,7 @@ JournalStore.dispatchToken =
 
 module.exports = JournalStore;
 
-},{"../AppDispatcher":241,"../actions/JournalAction":244,"./GenericStore":300,"lodash":46,"object-assign":51}],302:[function(require,module,exports){
+},{"../AppDispatcher":241,"../actions/JournalAction":245,"./GenericStore":303,"lodash":46,"object-assign":51}],305:[function(require,module,exports){
 'use strict';
 
 const _ = require('lodash');
@@ -56901,7 +57088,7 @@ MediaStore.dispatchToken = AppDispatcher.register(MediaStore._storeCallback);
 
 module.exports = MediaStore;
 
-},{"../AppDispatcher":241,"../actions/MediaAction":246,"./GenericStore":300,"lodash":46,"object-assign":51}],303:[function(require,module,exports){
+},{"../AppDispatcher":241,"../actions/MediaAction":247,"./GenericStore":303,"lodash":46,"object-assign":51}],306:[function(require,module,exports){
 'use strict';
 
 const assign = require('object-assign');
@@ -57061,7 +57248,7 @@ MenuStore.dispatchToken = AppDispatcher.register(MenuStore._storeCallback);
 
 module.exports = MenuStore;
 
-},{"../AppDispatcher":241,"../actions/MenuAction":247,"../actions/UserAction":251,"./GenericStore":300,"./UserStore":306,"object-assign":51}],304:[function(require,module,exports){
+},{"../AppDispatcher":241,"../actions/MenuAction":248,"../actions/UserAction":252,"./GenericStore":303,"./UserStore":309,"object-assign":51}],307:[function(require,module,exports){
 'use strict';
 
 const assign = require('object-assign');
@@ -57108,7 +57295,7 @@ SyncStore.dispatchToken = AppDispatcher.register(SyncStore._storeCallback);
 
 module.exports = SyncStore;
 
-},{"../AppDispatcher":241,"../actions/SyncAction":249,"./GenericStore":300,"object-assign":51}],305:[function(require,module,exports){
+},{"../AppDispatcher":241,"../actions/SyncAction":250,"./GenericStore":303,"object-assign":51}],308:[function(require,module,exports){
 'use strict';
 
 /**
@@ -57327,7 +57514,7 @@ TripStore.dispatchToken = AppDispatcher.register(TripStore._storeCallback);
 
 module.exports = TripStore;
 
-},{"../AppDispatcher":241,"../actions/TripAction":250,"./GenericStore":300,"lodash":46,"object-assign":51}],306:[function(require,module,exports){
+},{"../AppDispatcher":241,"../actions/TripAction":251,"./GenericStore":303,"lodash":46,"object-assign":51}],309:[function(require,module,exports){
 'use strict';
 
 const _ = require('lodash');
@@ -57511,7 +57698,7 @@ UserStore.setMaxListeners(100);
 
 module.exports = UserStore;
 
-},{"../AppDispatcher":241,"../actions/UserAction":251,"./GenericStore":300,"lodash":46,"object-assign":51}],307:[function(require,module,exports){
+},{"../AppDispatcher":241,"../actions/UserAction":252,"./GenericStore":303,"lodash":46,"object-assign":51}],310:[function(require,module,exports){
 'use strict';
 
 const utils = {
@@ -57558,4 +57745,4 @@ const utils = {
 
 module.exports = utils;
 
-},{}]},{},[253]);
+},{}]},{},[254]);
