@@ -15,7 +15,6 @@ $setting = new Setting();
 $version = $setting->getDataVersion();
 
 function updateTables($version) {
-  print "database version: " . db_get_installed_version() . "<br/>\n";
    Auth::updateTables($version);
    Comment::updateTables($version);
    Feedback::updateTables($version);
