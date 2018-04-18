@@ -6,9 +6,12 @@
   // Prerequisites
 $gl_db_init = false;
 
+$gl_db_version = '';
+
 function db_init() {
    global $gl_db_init;
-   global $gl_db_system;
+   global $gl_db_version;
+   
    if (!$gl_db_init) {
       $config = parse_ini_file(dirname(__FILE__) . '/../../vacationblog.ini');
       if (isset($_ENV['DB_NAME'])) {
@@ -36,6 +39,9 @@ function db_init() {
       // echo "Connect to $hostname as $username with password $password<br/>\n";
       // echo "dbname = '$dbname'<br/>\n";
 
+      if ($dbname === 'egrivel_blog') {
+         $gl_db_version = 'mysql-5.7';
+      }
       if (!db_connect($hostname, $username, $password, $dbname)) {
         echo "Could not connect: " . db_error() . '<br/>\n';
       }
@@ -96,10 +102,11 @@ function db_sql_recode($value) {
  * syntax depending on the version.
  */
 function db_get_installed_version() {
+   global $gl_db_version;
   if (isset($_ENV['DB_VERSION'])) {
     return $_ENV['DB_VERSION'];
   }
-  return '';
+  return $gl_db_version;
 }
 function db_get_create_default() {
   $version = db_get_installed_version();
