@@ -52,11 +52,11 @@ const JournalEdit = React.createClass({
     } else {
       JournalAction.loadJournal(tripId, journalId);
     }
-    MenuAction.selectItem(MenuStore.menuIds.HOME);
+    MenuAction.selectItem(MenuStore.menuIds.TRIP);
   },
 
   componentWillUnmount: function() {
-    MenuAction.unselectItem(MenuStore.menuIds.HOME);
+    MenuAction.unselectItem(MenuStore.menuIds.TRIP);
   },
 
   _validDate: function(date) {

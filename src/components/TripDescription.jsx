@@ -9,6 +9,7 @@ const UserStore = require('../stores/UserStore');
 const MenuAction = require('../actions/MenuAction');
 const MenuStore = require('../stores/MenuStore');
 
+const FacebookStatus = require('./FacebookStatus.jsx');
 const TripJournalList = require('./TripJournalList.jsx');
 const utils = require('./utils');
 const cookieUtils = require('../utils');
@@ -99,7 +100,7 @@ const TripDescription = React.createClass({
       TripAction.setCurrentTrip(null);
     }
     this.getDataIfNeeded(this.props);
-    MenuAction.selectItem(MenuStore.menuIds.HOME);
+    MenuAction.selectItem(MenuStore.menuIds.TRIP);
 
     let cookieValue = '';
     if (this.props.params.tripId) {
@@ -111,7 +112,7 @@ const TripDescription = React.createClass({
   componentWillUnmount: function() {
     TripStore.removeChangeListener(this._onChange);
     UserStore.removeChangeListener(this._onChange);
-    MenuAction.unselectItem(MenuStore.menuIds.HOME);
+    MenuAction.unselectItem(MenuStore.menuIds.TRIP);
   },
 
   componentWillReceiveProps: function(nextProps) {
@@ -219,8 +220,10 @@ const TripDescription = React.createClass({
         parCount++;
         return utils.buildTextNode('p', 'text', 'p-' + parCount, par);
       });
+
       return (
         <div className="trip">
+          <FacebookStatus />
           {paragraphs}
           {_startReadingLink(tripId, this.state.firstJournalId)}
           {this._renderNewPostLink()}

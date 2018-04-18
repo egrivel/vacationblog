@@ -140,14 +140,18 @@ var setupAll = function(grunt) {
     ['coverage', 'eslint', 'check-files']);
 };
 
-var setupDeploy = function(grunt) {
+var setupExec = function(grunt) {
   grunt.loadNpmTasks('grunt-exec');
   grunt.config('exec', {
     deploy: {
       command: 'scripts/deploy.sh'
+    },
+    localPublish: {
+      command: 'scripts/local-publish.sh'
     }
   });
   grunt.registerTask('deploy', ['browserify:development', 'exec:deploy']);
+  grunt.registerTask('localPublish', ['browserify:development', 'exec:localPublish']);
 };
 
 module.exports = function(grunt) {
@@ -161,5 +165,5 @@ module.exports = function(grunt) {
   setupEslint(grunt);
   setupCheckFiles(grunt);
   setupAll(grunt);
-  setupDeploy(grunt);
+  setupExec(grunt);
 };

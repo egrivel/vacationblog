@@ -81,6 +81,7 @@ function getMediaUrl() {
     <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700,700italic|Merriweather+Sans|Lato:700|Roboto:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
 
     <script src="https://use.fontawesome.com/75a2a1cfb9.js"></script>
+
     <!--
       <link href='css/font-awesome.css' rel='stylesheet' type='text/css'>
     -->
@@ -91,6 +92,26 @@ function getMediaUrl() {
     </style>
   </head>
   <body>
+    <!-- facebook SDK -->
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId            : '1155448634594863',
+          autoLogAppEvents : true,
+          xfbml            : true,
+          version          : 'v2.12'
+        });
+      };
+
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "https://connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+    </script>
+    <div id="fb-root"></div>
     <div id='react-root'>
       <script src='js/boot.js'></script>
     </div>
