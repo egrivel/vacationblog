@@ -48863,19 +48863,19 @@ const LoginAction = {
         cookieUtils.eraseCookie(cookieUtils.cookies.AUTH);
       }
 
-      if (this.userId) {
-        if (this.userId === 'j.tong') {
+      if (data.userId) {
+        if (data.userId === 'j.tong') {
           UserAction.setLoginState(UserStore.constants.LOGIN_SUCCESS);
-          UserAction.setLoggedInUser(this.userId);
-          UserAction.loadUser(this.userId);
+          UserAction.setLoggedInUser(data.userId);
+          UserAction.loadUser(data.userId);
           // Login is success, but remove the message after a few seconds
           setTimeout(function() {
             UserAction.setLoginState(UserStore.constants.NONE);
           }, 4000);
         } else {
           UserAction.setLoginState(UserStore.constants.NONE);
-          UserAction.setLoggedInUser(this.userId);
-          UserAction.loadUser(this.userId);
+          UserAction.setLoggedInUser(data.userId);
+          UserAction.loadUser(data.userId);
         }
       } else {
         UserAction.setLoggedInUser('');
@@ -48927,8 +48927,7 @@ const LoginAction = {
     let errorMessage = 'Something went wrong...';
     if (data && data.status) {
       if ((data.status === 'MISSING_DATA') ||
-        (data.status === 'USERID_NOT_FOUND') ||
-        (data.status === 'EMAIL_NOT_FOUND')) {
+        (data.status === 'USERID_NOT_FOUND')) {
         errorMessage = 'Please check the information you entered.';
       } else if (data.status === 'OK') {
         errorMessage = '';
@@ -48937,15 +48936,10 @@ const LoginAction = {
 
     if (errorMessage) {
       UserAction.setLoginFormError(errorMessage);
-    } else if (this.userId) {
-      // user submitted a user ID, so they're asking for the password reset
+    } else {
+      // user is asking for the password reset
       // function. Bring them to the password reset confirmation page
       UserAction.setLoginState(UserStore.constants.CONFIRM_PWD);
-    } else {
-      // User didn't submit a user ID so they must be asking for an email
-      // with their user ID. Bring them to the login page, since once they
-      // have their user ID they should supposedly be able to login.
-      UserAction.setLoginState(UserStore.constants.LOGIN);
     }
   },
 
@@ -53018,14 +53012,11 @@ const Login = React.createClass({
 
   _onRetrieve: function(event) {
     const userId = this.state.userId;
-    const email = this.state.email;
-    if (!userId && !email) {
-      UserAction.setLoginFormError('Enter either a user ID or an email');
-    } else if (userId && email) {
-      UserAction.setLoginFormError('Enter either a user ID or an email');
+    if (!userId) {
+      UserAction.setLoginFormError('Enter either a user name or an email');
     } else {
       UserAction.setLoginFormError('');
-      LoginAction.doRetrieve(userId, email);
+      LoginAction.doRetrieve(userId);
     }
     this._noProp(event);
   },
@@ -53036,7 +53027,7 @@ const Login = React.createClass({
     const password = this.state.password;
     if (!userId || !confCode) {
       UserAction.setLoginFormError(
-        'Please enter User ID and Confirmation Code');
+        'Please enter user name and Confirmation Code');
     } else {
       UserAction.setLoginFormError('');
       LoginAction.doConfirmReg(userId, confCode, password);
@@ -53088,7 +53079,8 @@ const Login = React.createClass({
   _renderOtherThings: function(status) {
     const list = [];
     if (status !== UserStore.constants.LOGIN) {
-      list.push(React.createElement("li", {key: "login"}, "If you already have a user ID and password," + ' ' +
+      list.push(React.createElement("li", {key: "login"}, "If you already registered and know your" + ' ' +
+        "login information," + ' ' +
         "you can ", React.createElement("a", {href: "#/login", onClick: this._goLogin}, "login"), "."));
     }
     if (status !== UserStore.constants.REGISTER) {
@@ -53096,17 +53088,17 @@ const Login = React.createClass({
         "you can ", React.createElement("a", {href: "#/register", onClick: this._goRegister}, "register" + ' ' +
         "now.")));
     }
+    if (status !== UserStore.constants.RETRIEVE) {
+      list.push(React.createElement("li", {key: "retrieve"}, "If you do not remember your login" + ' ' +
+        "information, you" + ' ' +
+        "can ", React.createElement("a", {href: "#/retrieve", onClick: this._goRetrieve}, "retrieve your" + ' ' +
+        "login information.")));
+    }
     if (status !== UserStore.constants.CONFIRM_REG) {
       list.push(React.createElement("li", {key: "confirm-reg"}, "If you received an email with a" + ' ' +
         "registration confirmation code, you" + ' ' +
         "can ", React.createElement("a", {href: "#/confirm", onClick: this._goConfirmReg}, "enter that" + ' ' +
         "registration confirmation code"), " and complete registration."));
-    }
-    if (status !== UserStore.constants.RETRIEVE) {
-      list.push(React.createElement("li", {key: "retrieve"}, "If you do not remember your user ID or" + ' ' +
-        "password, you" + ' ' +
-        "can ", React.createElement("a", {href: "#/retrieve", onClick: this._goRetrieve}, "retrieve your" + ' ' +
-        "login information.")));
     }
     if (status !== UserStore.constants.CONFIRM_PWD) {
       list.push(React.createElement("li", {key: "confirm-pwd"}, "If you received an email with a" + ' ' +
@@ -53149,11 +53141,11 @@ const Login = React.createClass({
         React.createElement("h3", null, "Login"), 
         errors, 
         React.createElement("p", null, 
-          "Please enter your user ID and password to log into the site."
+          "Please enter your information to log into the site."
         ), 
         React.createElement(Textbox, {
           fieldId: "userId", 
-          label: "User ID", 
+          label: "User name / email", 
           value: this.state.userId, 
           onChange: this._setValue}
         ), 
@@ -53232,7 +53224,7 @@ const Login = React.createClass({
           "website."), 
         React.createElement(Textbox, {
           fieldId: "userId", 
-          label: "User ID", 
+          label: "User name", 
           value: userId, 
           onChange: this._setValue}
         ), 
@@ -53285,7 +53277,6 @@ const Login = React.createClass({
     }
 
     const userId = this.state.userId;
-    const email = this.state.email;
 
     const buttonList = [];
     buttonList.push({
@@ -53305,42 +53296,17 @@ const Login = React.createClass({
         React.createElement("p", null, "If you have registered before but do not remember your login" + ' ' +
           "information, you can use this function to retrieve that" + ' ' +
           "information."), 
-        React.createElement("ul", null, 
-          React.createElement("li", null, "If you do not know your user ID, please enter the email address" + ' ' +
-            "you used to register with this site. An email will be sent to that" + ' ' +
-            "address reminding you of your user ID.", 
-            React.createElement(Textbox, {
-              fieldId: "email", 
-              label: "Email Address", 
-              value: email, 
-              onChange: this._setValue}
-            ), 
-        React.createElement(ButtonBar, {
-          buttons: buttonList}
-        )
+
+        React.createElement("div", null, 
+          React.createElement(Textbox, {
+            fieldId: "userId", 
+            label: "User name or email", 
+            value: userId, 
+            onChange: this._setValue}
+          ), 
+          React.createElement(ButtonBar, {
+            buttons: buttonList}
           )
-        ), 
-        React.createElement("ul", null, 
-          React.createElement("li", null, "If you know your user ID but do not know your password, please" + ' ' +
-            "enter the user ID that you registered with on this site. An email" + ' ' +
-            "will be sent to the associated email address with a confirmation" + ' ' +
-            "code, which you can use to reset your password.", 
-            React.createElement(Textbox, {
-              fieldId: "userId", 
-              label: "User ID", 
-              value: userId, 
-              onChange: this._setValue}
-            ), 
-        React.createElement(ButtonBar, {
-          buttons: buttonList}
-        )
-          )
-        ), 
-        React.createElement("ul", null, 
-          React.createElement("li", null, "If you remember neither your user ID nor your password, please" + ' ' +
-            "follow the first step above to retrieve your user ID and then, with" + ' ' +
-            "that user ID, follow the second step above to reset your" + ' ' +
-            "password.")
         ), 
         this._renderOtherThings(UserStore.constants.RETRIEVE)
       )
@@ -53414,13 +53380,14 @@ const Login = React.createClass({
         React.createElement("h3", null, "Password Reset"), 
         errors, 
         React.createElement("p", null, "An email has been sent to you with a confirmation code. Please enter" + ' ' +
-          "your user ID and confirmation code you received below, and enter your" + ' ' +
-          "desired password. ", React.createElement("em", null, "User ID and confirmation code are case" + ' ' +
+          "your user name or email and the confirmation code you received below," + ' ' +
+          "and enter your" + ' ' +
+          "desired password. ", React.createElement("em", null, "User name, email and confirmation code are case" + ' ' +
           "sensitive!")
         ), 
         React.createElement(Textbox, {
           fieldId: "userId", 
-          label: "User ID", 
+          label: "User Name / Email", 
           value: this.state.userId, 
           onChange: this._setValue}
         ), 

@@ -220,14 +220,11 @@ const Login = React.createClass({
 
   _onRetrieve: function(event) {
     const userId = this.state.userId;
-    const email = this.state.email;
-    if (!userId && !email) {
-      UserAction.setLoginFormError('Enter either a user ID or an email');
-    } else if (userId && email) {
-      UserAction.setLoginFormError('Enter either a user ID or an email');
+    if (!userId) {
+      UserAction.setLoginFormError('Enter either a user name or an email');
     } else {
       UserAction.setLoginFormError('');
-      LoginAction.doRetrieve(userId, email);
+      LoginAction.doRetrieve(userId);
     }
     this._noProp(event);
   },
@@ -238,7 +235,7 @@ const Login = React.createClass({
     const password = this.state.password;
     if (!userId || !confCode) {
       UserAction.setLoginFormError(
-        'Please enter User ID and Confirmation Code');
+        'Please enter user name and Confirmation Code');
     } else {
       UserAction.setLoginFormError('');
       LoginAction.doConfirmReg(userId, confCode, password);
@@ -290,7 +287,8 @@ const Login = React.createClass({
   _renderOtherThings: function(status) {
     const list = [];
     if (status !== UserStore.constants.LOGIN) {
-      list.push(<li key="login">If you already have a user ID and password,
+      list.push(<li key="login">If you already registered and know your
+        login information,
         you can <a href="#/login" onClick={this._goLogin}>login</a>.</li>);
     }
     if (status !== UserStore.constants.REGISTER) {
@@ -298,17 +296,17 @@ const Login = React.createClass({
         you can <a href="#/register" onClick={this._goRegister}>register
         now.</a></li>);
     }
+    if (status !== UserStore.constants.RETRIEVE) {
+      list.push(<li key="retrieve">If you do not remember your login
+        information, you
+        can <a href="#/retrieve" onClick={this._goRetrieve}>retrieve your
+        login information.</a></li>);
+    }
     if (status !== UserStore.constants.CONFIRM_REG) {
       list.push(<li key="confirm-reg">If you received an email with a
         registration confirmation code, you
         can <a href="#/confirm" onClick={this._goConfirmReg}>enter that
         registration confirmation code</a> and complete registration.</li>);
-    }
-    if (status !== UserStore.constants.RETRIEVE) {
-      list.push(<li key="retrieve">If you do not remember your user ID or
-        password, you
-        can <a href="#/retrieve" onClick={this._goRetrieve}>retrieve your
-        login information.</a></li>);
     }
     if (status !== UserStore.constants.CONFIRM_PWD) {
       list.push(<li key="confirm-pwd">If you received an email with a
@@ -351,11 +349,11 @@ const Login = React.createClass({
         <h3>Login</h3>
         {errors}
         <p>
-          Please enter your user ID and password to log into the site.
+          Please enter your information to log into the site.
         </p>
         <Textbox
           fieldId="userId"
-          label="User ID"
+          label="User name / email"
           value={this.state.userId}
           onChange={this._setValue}
         />
@@ -434,7 +432,7 @@ const Login = React.createClass({
           website.</p>
         <Textbox
           fieldId="userId"
-          label="User ID"
+          label="User name"
           value={userId}
           onChange={this._setValue}
         />
@@ -487,7 +485,6 @@ const Login = React.createClass({
     }
 
     const userId = this.state.userId;
-    const email = this.state.email;
 
     const buttonList = [];
     buttonList.push({
@@ -507,43 +504,18 @@ const Login = React.createClass({
         <p>If you have registered before but do not remember your login
           information, you can use this function to retrieve that
           information.</p>
-        <ul>
-          <li>If you do not know your user ID, please enter the email address
-            you used to register with this site. An email will be sent to that
-            address reminding you of your user ID.
-            <Textbox
-              fieldId="email"
-              label="Email Address"
-              value={email}
-              onChange={this._setValue}
-            />
-        <ButtonBar
-          buttons={buttonList}
-        />
-          </li>
-        </ul>
-        <ul>
-          <li>If you know your user ID but do not know your password, please
-            enter the user ID that you registered with on this site. An email
-            will be sent to the associated email address with a confirmation
-            code, which you can use to reset your password.
-            <Textbox
-              fieldId="userId"
-              label="User ID"
-              value={userId}
-              onChange={this._setValue}
-            />
-        <ButtonBar
-          buttons={buttonList}
-        />
-          </li>
-        </ul>
-        <ul>
-          <li>If you remember neither your user ID nor your password, please
-            follow the first step above to retrieve your user ID and then, with
-            that user ID, follow the second step above to reset your
-            password.</li>
-        </ul>
+
+        <div>
+          <Textbox
+            fieldId="userId"
+            label="User name or email"
+            value={userId}
+            onChange={this._setValue}
+          />
+          <ButtonBar
+            buttons={buttonList}
+          />
+        </div>
         {this._renderOtherThings(UserStore.constants.RETRIEVE)}
       </form>
     );
@@ -616,13 +588,14 @@ const Login = React.createClass({
         <h3>Password Reset</h3>
         {errors}
         <p>An email has been sent to you with a confirmation code. Please enter
-          your user ID and confirmation code you received below, and enter your
-          desired password. <em>User ID and confirmation code are case
+          your user name or email and the confirmation code you received below,
+          and enter your
+          desired password. <em>User name, email and confirmation code are case
           sensitive!</em>
         </p>
         <Textbox
           fieldId="userId"
-          label="User ID"
+          label="User Name / Email"
           value={this.state.userId}
           onChange={this._setValue}
         />

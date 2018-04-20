@@ -29,6 +29,9 @@ if (isPutMethod()) {
       $response['status'] = 'MISSING_DATA';
     } else {
       $user = new User($userId);
+      if ($user->getCreated() === null) {
+        $user->loadByEmail($userId);
+      }
       if (($user->getCreated() === null)
         || ($user->getDeleted() === 'Y')) {
         $response = errorResponse(RESPONSE_NOT_FOUND);
@@ -40,6 +43,7 @@ if (isPutMethod()) {
           // database when we have the actual password, and only at login
           // time do we have the actual password)
           $user->updatePasswordHash($password);
+          $userId = $user->getUserId();
           if ($user->getAccess() === 'temp') {
             // User logged in but only has temp access. Don't generate an
             // authentication token.
@@ -58,6 +62,7 @@ if (isPutMethod()) {
             $response = successResponse();
             $response['authId'] = $authId;
             $response['status'] = 'OK';
+            $response['userId'] = $userId;
           }
         } else {
           $response = errorResponse(RESPONSE_UNAUTHORIZED);
@@ -129,21 +134,23 @@ if (isPutMethod()) {
     if (isset($data['userId'])) {
       $userId = $data['userId'];
     }
-    $email = '';
-    if (isset($data['email'])) {
-      $email = $data['email'];
-    }
-    if (($userId === '') && ($email === '')) {
+    if ($userId === '') {
       // need either user ID or email
       $response = errorResponse(RESPONSE_BAD_REQUEST);
       $response['status'] = 'MISSING_DATA';
-    } else if ($userId !== '') {
-      $user = new User($userId);
+    } else {
+      if (strpos($userId, '@') === false) {
+        // must be a user ID
+        $user = new User($userId);
+      } else {
+        $user = User::findByEmail($userId);
+      }
       if (($user->getCreated() === null)
         || ($user->getDeleted() === 'Y')) {
         $response = errorResponse(RESPONSE_NOT_FOUND);
         $response['status'] = 'USERID_NOT_FOUND';
       } else {
+        $userId = $user->getUserId();
         $email = $user->getEmail();
         $name = $user->getName();
         $tempCode = random_string();
@@ -153,24 +160,6 @@ if (isPutMethod()) {
         $response = successResponse();
         $response['status'] = 'OK';
       }
-    } else if ($email !== '') {
-      $user = User::findByEmail($email);
-      if (!$user
-        || ($user->getCreated() === null)
-        || ($user->getDeleted() === 'Y')) {
-        $response = errorResponse(RESPONSE_NOT_FOUND);
-        $response['status'] = 'EMAIL_NOT_FOUND';
-      } else {
-        $name = $user->getName();
-        $userId = $user->getUserId();
-        send_user_id_email($userId, $name, $email);
-        $response = successResponse();
-        $response['status'] = 'OK';
-      }
-    } else {
-      // should not be possible
-      $response = errorResponse(RESPONSE_BAD_REQUEST);
-      $response['status'] = 'MISSING_DATA';
     }
   } else if ($action === 'confirm') {
     $userId = '';
@@ -227,6 +216,9 @@ if (isPutMethod()) {
       $response['status'] = 'MISSING_DATA';
     } else {
       $user = new User($userId);
+      if ($user->getCreated() === null) {
+        $user->loadByEmail($userId);
+      }
       if (($user->getCreated() === null)
         || ($user->getDeleted() === 'Y')) {
         $response = errorResponse(RESPONSE_NOT_FOUND);

@@ -20,19 +20,19 @@ const LoginAction = {
         cookieUtils.eraseCookie(cookieUtils.cookies.AUTH);
       }
 
-      if (this.userId) {
-        if (this.userId === 'j.tong') {
+      if (data.userId) {
+        if (data.userId === 'j.tong') {
           UserAction.setLoginState(UserStore.constants.LOGIN_SUCCESS);
-          UserAction.setLoggedInUser(this.userId);
-          UserAction.loadUser(this.userId);
+          UserAction.setLoggedInUser(data.userId);
+          UserAction.loadUser(data.userId);
           // Login is success, but remove the message after a few seconds
           setTimeout(function() {
             UserAction.setLoginState(UserStore.constants.NONE);
           }, 4000);
         } else {
           UserAction.setLoginState(UserStore.constants.NONE);
-          UserAction.setLoggedInUser(this.userId);
-          UserAction.loadUser(this.userId);
+          UserAction.setLoggedInUser(data.userId);
+          UserAction.loadUser(data.userId);
         }
       } else {
         UserAction.setLoggedInUser('');
@@ -84,8 +84,7 @@ const LoginAction = {
     let errorMessage = 'Something went wrong...';
     if (data && data.status) {
       if ((data.status === 'MISSING_DATA') ||
-        (data.status === 'USERID_NOT_FOUND') ||
-        (data.status === 'EMAIL_NOT_FOUND')) {
+        (data.status === 'USERID_NOT_FOUND')) {
         errorMessage = 'Please check the information you entered.';
       } else if (data.status === 'OK') {
         errorMessage = '';
@@ -94,15 +93,10 @@ const LoginAction = {
 
     if (errorMessage) {
       UserAction.setLoginFormError(errorMessage);
-    } else if (this.userId) {
-      // user submitted a user ID, so they're asking for the password reset
+    } else {
+      // user is asking for the password reset
       // function. Bring them to the password reset confirmation page
       UserAction.setLoginState(UserStore.constants.CONFIRM_PWD);
-    } else {
-      // User didn't submit a user ID so they must be asking for an email
-      // with their user ID. Bring them to the login page, since once they
-      // have their user ID they should supposedly be able to login.
-      UserAction.setLoginState(UserStore.constants.LOGIN);
     }
   },
 
