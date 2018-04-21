@@ -2,6 +2,7 @@
 
 const React = require('react');
 
+const FacebookWrapper = require('./FacebookWrapper.jsx');
 const Header = require('./Header.jsx');
 const Welcome = require('./Welcome.jsx');
 const Footer = require('./Footer.jsx');
@@ -27,6 +28,7 @@ const App = React.createClass({
     }
     return (
       <div className="body">
+        <FacebookWrapper/>
         <Header/>
         <div className="content">
           {children}

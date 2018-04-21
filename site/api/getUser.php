@@ -28,11 +28,11 @@ if (!isset($userId) || ($userId === '')) {
          $response = successResponse();
          $response['userId'] = $object->getUserId();
          $response['name'] = $object->getName();
+         $response['externalType'] = $object->getExternalType();
          $response['deleted'] = $object->getDeleted();
          if ($auth->canGetUserDetails($userId)) {
             $response['created'] = $object->getCreated();
             $response['updated'] = $object->getUpdated();
-            $response['externalType'] = $object->getExternalType();
             $response['externalId'] = $object->getExternalId();
             $response['access'] = $object->getAccess();
             $response['email'] = $object->getEmail();

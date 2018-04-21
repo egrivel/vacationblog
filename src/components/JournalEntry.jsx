@@ -281,7 +281,10 @@ const JournalEntry = React.createClass({
         }
       } else if (!this.state.isLoggedIn) {
         newComment = (
-          <div className="commentAdd">Please login to comment.</div>
+          <div className="commentAdd">
+            Please login to comment. You can now also login using
+            your facebook account.
+          </div>
         );
       }
     }

@@ -70,6 +70,64 @@ if (isPutMethod()) {
         }
       }
     }
+  } else if ($action === 'fb-login') {
+    $userId = '';
+    if (isset($data['userId'])) {
+      $userId = $data['userId'];
+    }
+    if ($userId === '') {
+      $response = errorResponse(RESPONSE_BAD_REQUEST);
+      $response['status'] = 'MISSING_DATA';
+    } else {
+      $user = new User($userId);
+      // Facebook users are special. They are logged in automatically
+      $needSave = false;
+      if ($user->getCreated() === null) {
+        // Need to auto-register user
+        $needSave = true;
+      }
+      if (isset($data['name'])) {
+        if ($user->getName() !== $data['name']) {
+          // must update name
+          $user->setName($data['name']);
+          $needSave = true;
+        }
+      }
+      if (isset($data['email'])) {
+        if ($user->getEmail() !== $data['email']) {
+          // must update name
+          $user->setEmail($data['email']);
+          $needSave = true;
+        }
+      }
+      if ($user->getAccess() !== 'visitor') {
+        // facebook users are automatically of the visitor level
+        $user->setAccess('visitor');
+        $needSave = true;
+      }
+      if ($user->getExternalType !== 'facebook') {
+        // set the external type to indicate a facebook user
+        $user->setExternalType('facebook');
+        $needSave = true;
+      }
+      if ($needSave) {
+        $user->save();
+      }
+      $response = successResponse();
+      $response['status'] = 'OK';
+
+      if (!isset($_COOKIE['blogAuthId'])) {
+        // New login, so generate the auth ID
+        $auth = new AuthB();
+        $authId = Auth::generateAuthId();
+        $auth = new Auth($authId);
+        $auth->setUserId($userId);
+        $auth->save();
+        $response['authId'] = $authId;
+      }
+
+      $response['userId'] = $userId;
+    }
   } else if ($action === 'register') {
     $userId = '';
     if (isset($data['userId'])) {

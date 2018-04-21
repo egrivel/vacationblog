@@ -15,10 +15,20 @@ const AppDispatcher = require('../AppDispatcher');
 const GenericStore = require('./GenericStore');
 const FacebookActionTypes = require('../actions/FacebookAction').Types;
 
+let _facebookEmail;
+let _facebookId;
 let _facebookName;
 let _facebookStatus;
 
 const FacebookStore = assign({}, GenericStore, {
+  getEmail: function() {
+    return _facebookEmail;
+  },
+
+  getId: function() {
+    return _facebookId;
+  },
+
   getName: function() {
     return _facebookName;
   },
@@ -29,13 +39,22 @@ const FacebookStore = assign({}, GenericStore, {
 
   _storeCallback: function(action) {
     switch (action.type) {
-      case FacebookActionTypes.FB_NAME:
-        _facebookName = action.data;
+      case FacebookActionTypes.FB_DATA:
+        _facebookEmail = action.email;
+        _facebookId = action.id;
+        _facebookName = action.name;
         FacebookStore.emitChange();
         break;
 
       case FacebookActionTypes.FB_STATUS:
         _facebookStatus = action.data;
+        FacebookStore.emitChange();
+        break;
+
+      case FacebookActionTypes.FB_CLEAR:
+        _facebookEmail = undefined;
+        _facebookId = undefined;
+        _facebookName = undefined;
         FacebookStore.emitChange();
         break;
 

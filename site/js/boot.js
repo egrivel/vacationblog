@@ -48533,8 +48533,9 @@ let _isLoadingName = false;
 
 const FacebookAction = {
   Types: {
+    FB_CLEAR: 'FB_CLEAR',
+    FB_DATA: 'FB_DATA',
     FB_EMAIL: 'FB_EMAIL',
-    FB_NAME: 'FB_NAME',
     FB_STATUS: 'FB_STATUS'
   },
 
@@ -48560,22 +48561,33 @@ const FacebookAction = {
     }
   },
 
-  loadEmail: function() {},
-
-  loadName: function() {
+  loadDetails: function() {
     if (!_isLoadingName) {
       _isLoadingName = true;
       FB.api('/me', function(response) {
         _isLoadingName = false;
-        console.log('Got response: ' + JSON.stringify(response));
         if (response && response.name) {
           AppDispatcher.dispatch({
-            type: FacebookAction.Types.FB_NAME,
-            data: response.name
+            type: FacebookAction.Types.FB_DATA,
+            email: response.email,
+            id: response.id,
+            name: response.name
           });
         }
-      });
+      }, {fields: 'name,email'});
     }
+  },
+
+  unloadDetails: function() {
+    AppDispatcher.dispatch({
+      type: FacebookAction.Types.FB_CLEAR
+    });
+  },
+
+  logout: function() {
+    FB.logout(function(response) {
+      // Nothing to do
+    });
   }
 };
 
@@ -49005,6 +49017,24 @@ const LoginAction = {
     };
     this.userId = userId;
     this.stayLoggedIn = stayLoggedIn;
+    utils.postAsync(url, data, this._doLoginCallback.bind(this));
+  },
+
+  doFacebookLogin: function(fbUserId, fbName, fbEmail) {
+    // Internal user ID has 'fb ' prepended to the facebook ID, which
+    // is not an ID that anyone can enter
+    const userId = 'fb ' + fbUserId;
+    const url = 'api/login.php';
+    const data = {
+      action: 'fb-login',
+      userId: userId,
+      name: fbName,
+      email: fbEmail
+    };
+    this.userId = userId;
+    // facebook users never stay logged in; when they come back, they
+    // are auto-logged-in if they're still logged into facebook.
+    this.stayLoggedIn = false;
     utils.postAsync(url, data, this._doLoginCallback.bind(this));
   },
 
@@ -49883,6 +49913,7 @@ module.exports = Admin;
 
 const React = require('react');
 
+const FacebookWrapper = require('./FacebookWrapper.jsx');
 const Header = require('./Header.jsx');
 const Welcome = require('./Welcome.jsx');
 const Footer = require('./Footer.jsx');
@@ -49908,6 +49939,7 @@ const App = React.createClass({
     }
     return (
       React.createElement("div", {className: "body"}, 
+        React.createElement(FacebookWrapper, null), 
         React.createElement(Header, null), 
         React.createElement("div", {className: "content"}, 
           children
@@ -49920,7 +49952,7 @@ const App = React.createClass({
 
 module.exports = App;
 
-},{"./Footer.jsx":262,"./Header.jsx":263,"./Welcome.jsx":289,"react":238}],258:[function(require,module,exports){
+},{"./FacebookWrapper.jsx":260,"./Footer.jsx":262,"./Header.jsx":263,"./Welcome.jsx":289,"react":238}],258:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -50283,69 +50315,95 @@ module.exports = CommentList;
 const React = require('react');
 const Link = require('react-router').Link;
 
-const FacebookAction = require('../actions/FacebookAction');
-const FacebookStore = require('../stores/FacebookStore');
+const storeMixin = require('./StoreMixin');
 
-const FacebookStatus = React.createClass({displayName: "FacebookStatus",
+const FacebookAction = require('../actions/FacebookAction');
+const LoginAction = require('../actions/LoginAction');
+const FacebookStore = require('../stores/FacebookStore');
+const UserStore = require('../stores/UserStore');
+
+// The FacebookWrapper component handles the facebook interactions...
+const FacebookWrapper = React.createClass({displayName: "FacebookWrapper",
+  mixins: [storeMixin()],
+
+  stores: [UserStore, FacebookStore],
+
   _getStateFromStores: function() {
     const status = FacebookStore.getStatus();
     const name = FacebookStore.getName();
+    const email = FacebookStore.getEmail();;
+    const loginErrorMessage = UserStore.getFormErrorMessage();
 
     return {
+      email: email,
+      loginErrorMessage: loginErrorMessage,
       name: name,
       status: status
     };
   },
 
-  _onChange: function() {
-    this.setState(this._getStateFromStores());
-  },
-
-  getInitialState: function() {
-    return this._getStateFromStores();
-  },
-
-  componentDidMount: function() {
-    FacebookStore.addChangeListener(this._onChange);
-    const status = FacebookStore.getStatus();
-    const name = FacebookStore.getName();
-
-    if (!status) {
-      FacebookAction.getStatus();
-    } else if (status === 'connected' && !name) {
-      FacebookAction.loadName();
+  _statusChange: function(statusResponse) {
+    if (statusResponse.status === 'connected') {
+      FacebookAction.loadDetails();
+    } else {
+      FacebookAction.unloadDetails();
+      const userId = UserStore.getLoggedInUser();
+      const userData = UserStore.getData(userId);
+      if (userData && userData.externalType === 'facebook') {
+        // user is logged in as a facebook user, but facebook is no longer
+        // connected. Log the user out from our system.
+        LoginAction.doLogout();
+      }
     }
   },
 
-  componentWillUnmount: function() {
-    FacebookStore.removeChangeListener(this._onChange);
-  },
+  componentDidMount: function() {
+    if (window.FB) {
+      window.FB.Event.subscribe('auth.statusChange', this._statusChange);
+    } else {
+      console.log('Cannot subscribe to facebook events.');
+    }
 
-  componentDidUpdate: function() {
     const status = FacebookStore.getStatus();
-    const name = FacebookStore.getName();
 
     if (!status) {
       FacebookAction.getStatus();
-    } else if (status === 'connected' && !name) {
-      FacebookAction.loadName();
+    }
+  },
+
+  componentDidUpdate: function() {
+    const fbEmail = FacebookStore.getEmail();
+    const fbId = FacebookStore.getId();
+    const fbName = FacebookStore.getName();
+    const fbStatus = FacebookStore.getStatus();
+    const isUserLoggedIn = UserStore.isUserLoggedIn();
+    const userId = UserStore.getLoggedInUser();
+    const userData = UserStore.getData(userId);
+
+    if (!fbStatus) {
+      FacebookAction.getStatus();
+    } else if (fbStatus === 'connected' && !fbName) {
+      FacebookAction.loadDetails();
+    } else if (fbStatus === 'connected' && !userData) {
+      // We have a facebook user who is logged in, make them login to
+      // the app...
+      LoginAction.doFacebookLogin(fbId, fbName, fbEmail);
+    } else if (fbStatus !== 'connected' && userData && userData.externalType === 'facebook') {
+      // user is logged in as a facebook user, but facebook is no longer
+      // connected. Log the user out from our system.
+      LoginAction.doLogout();
     }
   },
 
   render: function() {
-    if (this.state.name) {
-      return (React.createElement("div", null, "Logged in as ", this.state.name, "."));
-    } else if (this.state.status) {
-      return (React.createElement("div", null, "Facebook status: ", this.state.status, "."));
-    } else {
-      return (React.createElement("div", null, "No facebook status yet."));
-    }
+    // The component doesn't actually display anything
+    return null;
   }
 });
 
-module.exports = FacebookStatus;
+module.exports = FacebookWrapper;
 
-},{"../actions/FacebookAction":243,"../stores/FacebookStore":301,"react":238,"react-router":207}],261:[function(require,module,exports){
+},{"../actions/FacebookAction":243,"../actions/LoginAction":246,"../stores/FacebookStore":301,"../stores/UserStore":309,"./StoreMixin":279,"react":238,"react-router":207}],261:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -51412,7 +51470,10 @@ const JournalEntry = React.createClass({
         }
       } else if (!this.state.isLoggedIn) {
         newComment = (
-          React.createElement("div", {className: "commentAdd"}, "Please login to comment.")
+          React.createElement("div", {className: "commentAdd"}, 
+            "Please login to comment. You can now also login using" + ' ' +
+            "your facebook account."
+          )
         );
       }
     }
@@ -52868,13 +52929,15 @@ const Checkbox = require('./standard/Checkbox.jsx');
 const ButtonBar = require('./standard/ButtonBar.jsx');
 
 const LoginAction = require('../actions/LoginAction');
+const FacebookAction = require('../actions/FacebookAction');
 const UserAction = require('../actions/UserAction');
 const UserStore = require('../stores/UserStore');
+const FacebookStore = require('../stores/FacebookStore');
 
 const Login = React.createClass({
   displayName: 'Login',
 
-  stores: [UserStore],
+  stores: [UserStore, FacebookStore],
 
   mixins: [storeMixin()],
 
@@ -52887,6 +52950,7 @@ const Login = React.createClass({
   },
 
   _getStateFromStores: function() {
+    const facebookStatus = FacebookStore.getStatus();
     const errorMessage = UserStore.getFormErrorMessage();
     const loginState = UserStore.getLoginState();
     const userId = UserStore.getLoggedInUser();
@@ -52899,6 +52963,7 @@ const Login = React.createClass({
     }
     return {
       errorMessage: errorMessage,
+      facebookStatus: facebookStatus,
       loginState: loginState,
       name: name
     };
@@ -52997,6 +53062,9 @@ const Login = React.createClass({
     if (!userId || !name || !email || !password || !password2) {
       UserAction.setLoginFormError(
         'You need to enter all the information on this screen.');
+    } else if (preg_match('/[^A-Za-z0-9.\\-]/', $userId)) {
+      UserAction.setLoginForError(
+        'User name can only have letters, digits, periods and dashes.');
     } else if (password.length < 6) {
       UserAction.setLoginFormError(
         'Please enter a password of at least 6 characters.');
@@ -53058,7 +53126,14 @@ const Login = React.createClass({
   },
 
   _onLogout: function() {
-    LoginAction.doLogout();
+    const userId = UserStore.getLoggedInUser();
+    if (userId && userId.startsWith('fb ')) {
+      // Logging out from facebook automatically logs the user out from
+      // our system
+      FacebookAction.logout();
+    } else {
+      LoginAction.doLogout();
+    }
     this.props.onClose();
   },
 
@@ -53075,6 +53150,16 @@ const Login = React.createClass({
   // ========================================================================
   // Render screens
   // ========================================================================
+
+  _renderClose: function() {
+    return (
+      React.createElement("div", {className: "modal-close"}, 
+        React.createElement("a", {href: "", onClick: this.props.onClose}, 
+          React.createElement("i", {className: "fa fa-close"})
+        )
+      )
+    );
+  },
 
   _renderOtherThings: function(status) {
     const list = [];
@@ -53119,6 +53204,46 @@ const Login = React.createClass({
     );
   },
 
+  _fbLogin(event) {
+    FB.login((response) => {
+      if (response.status === 'connected') {
+        LoginAction.doFacebookLogin(response.authResponse.userID)
+      }
+    }, {scope: 'public_profile,email'});
+  },
+
+  _renderFacebookButton: function() {
+    if (this.state.errorMessage) {
+      // If there are errors, we're already trying regular login, so
+      // don't display the facebook button?
+      return null;
+    }
+
+    let facebookLabel = 'Login with Facebook';
+    if (this.state.facebookStatus === 'not_authorized') {
+      facebookLabel = 'Continue with Facebook';
+    }
+
+    return (
+      React.createElement("div", {className: "center"}, 
+        React.createElement("span", {
+          className: "facebook-login", 
+          onClick: this._fbLogin
+        }, 
+          React.createElement("span", {className: "facebook-icon"}, 
+            React.createElement("i", {className: "fa fa-facebook"})
+          ), 
+          React.createElement("span", {className: "facebook-message"}, 
+            facebookLabel
+          )
+        ), 
+        React.createElement("br", null), 
+        React.createElement("br", null), 
+        "OR"
+      )
+    );
+  },
+
   _renderLogin: function() {
     let errors = null;
     if (this.state.errorMessage) {
@@ -53136,10 +53261,12 @@ const Login = React.createClass({
     });
 
     return (
-      React.createElement("form", {className: "form login", onClick: this._noProp
-         }, 
+      React.createElement("form", {className: "form login", onClick: this._noProp}, 
+        this._renderClose(), 
         React.createElement("h3", null, "Login"), 
         errors, 
+        this._renderFacebookButton(), 
+
         React.createElement("p", null, 
           "Please enter your information to log into the site."
         ), 
@@ -53178,8 +53305,8 @@ const Login = React.createClass({
     });
 
     return (
-      React.createElement("form", {className: "form login", onClick: this._noProp
-         }, 
+      React.createElement("form", {className: "form login", onClick: this._noProp}, 
+        this._renderClose(), 
         React.createElement("h3", null, "Login"), 
         React.createElement("p", null, "Close enough..."), 
         React.createElement("p", null, 
@@ -53218,6 +53345,7 @@ const Login = React.createClass({
     return (
       React.createElement("form", {className: "form login", onClick: this._noProp, 
           onSubmit: this._onRegister}, 
+        this._renderClose(), 
         React.createElement("h3", null, "Register for this website"), 
         errors, 
         React.createElement("p", null, "Please fill out the information below to register for this" + ' ' +
@@ -53291,6 +53419,7 @@ const Login = React.createClass({
     return (
       React.createElement("form", {className: "form login", onClick: this._noProp, 
           onSubmit: this._onRetrieve}, 
+        this._renderClose(), 
         React.createElement("h3", null, "Retrieve"), 
         errors, 
         React.createElement("p", null, "If you have registered before but do not remember your login" + ' ' +
@@ -53332,6 +53461,7 @@ const Login = React.createClass({
     return (
       React.createElement("form", {className: "form login", onClick: this._noProp, 
           onSubmit: this._onConfirmReg}, 
+        this._renderClose(), 
         React.createElement("h3", null, "Confirmation Code"), 
         errors, 
         React.createElement("p", null, "An email has been sent to you with a confirmation code. Please enter" + ' ' +
@@ -53377,6 +53507,7 @@ const Login = React.createClass({
     return (
       React.createElement("form", {className: "form login", onClick: this._noProp, 
           onSubmit: this._onConfirmPwd}, 
+        this._renderClose(), 
         React.createElement("h3", null, "Password Reset"), 
         errors, 
         React.createElement("p", null, "An email has been sent to you with a confirmation code. Please enter" + ' ' +
@@ -53431,6 +53562,7 @@ const Login = React.createClass({
     return (
       React.createElement("form", {className: "form login", onClick: this._noProp, 
           onSubmit: this._onLogout}, 
+        this._renderClose(), 
         React.createElement("h3", null, "Logout"), 
         React.createElement("p", null, "Are you sure you want to log out?"), 
         React.createElement(ButtonBar, {
@@ -53473,7 +53605,7 @@ const Login = React.createClass({
 
 module.exports = Login;
 
-},{"../actions/LoginAction":246,"../actions/UserAction":252,"../stores/UserStore":309,"./StoreMixin":279,"./standard/ButtonBar.jsx":290,"./standard/Checkbox.jsx":291,"./standard/Password.jsx":295,"./standard/Textbox.jsx":298,"react":238}],273:[function(require,module,exports){
+},{"../actions/FacebookAction":243,"../actions/LoginAction":246,"../actions/UserAction":252,"../stores/FacebookStore":301,"../stores/UserStore":309,"./StoreMixin":279,"./standard/ButtonBar.jsx":290,"./standard/Checkbox.jsx":291,"./standard/Password.jsx":295,"./standard/Textbox.jsx":298,"react":238}],273:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -54209,7 +54341,6 @@ const UserStore = require('../stores/UserStore');
 const MenuAction = require('../actions/MenuAction');
 const MenuStore = require('../stores/MenuStore');
 
-const FacebookStatus = require('./FacebookStatus.jsx');
 const TripJournalList = require('./TripJournalList.jsx');
 const utils = require('./utils');
 const cookieUtils = require('../utils');
@@ -54423,7 +54554,6 @@ const TripDescription = React.createClass({
 
       return (
         React.createElement("div", {className: "trip"}, 
-          React.createElement(FacebookStatus, null), 
           paragraphs, 
           _startReadingLink(tripId, this.state.firstJournalId), 
           this._renderNewPostLink(), 
@@ -54441,7 +54571,7 @@ const TripDescription = React.createClass({
 
 module.exports = TripDescription;
 
-},{"../actions/MenuAction":248,"../actions/TripAction":251,"../stores/MenuStore":306,"../stores/TripStore":308,"../stores/UserStore":309,"../utils":310,"./FacebookStatus.jsx":260,"./TripJournalList.jsx":285,"./utils":299,"react":238,"react-router":207}],283:[function(require,module,exports){
+},{"../actions/MenuAction":248,"../actions/TripAction":251,"../stores/MenuStore":306,"../stores/TripStore":308,"../stores/UserStore":309,"../utils":310,"./TripJournalList.jsx":285,"./utils":299,"react":238,"react-router":207}],283:[function(require,module,exports){
 'use strict';
 
 const _ = require('lodash');
@@ -56647,10 +56777,20 @@ const AppDispatcher = require('../AppDispatcher');
 const GenericStore = require('./GenericStore');
 const FacebookActionTypes = require('../actions/FacebookAction').Types;
 
+let _facebookEmail;
+let _facebookId;
 let _facebookName;
 let _facebookStatus;
 
 const FacebookStore = assign({}, GenericStore, {
+  getEmail: function() {
+    return _facebookEmail;
+  },
+
+  getId: function() {
+    return _facebookId;
+  },
+
   getName: function() {
     return _facebookName;
   },
@@ -56661,13 +56801,22 @@ const FacebookStore = assign({}, GenericStore, {
 
   _storeCallback: function(action) {
     switch (action.type) {
-      case FacebookActionTypes.FB_NAME:
-        _facebookName = action.data;
+      case FacebookActionTypes.FB_DATA:
+        _facebookEmail = action.email;
+        _facebookId = action.id;
+        _facebookName = action.name;
         FacebookStore.emitChange();
         break;
 
       case FacebookActionTypes.FB_STATUS:
         _facebookStatus = action.data;
+        FacebookStore.emitChange();
+        break;
+
+      case FacebookActionTypes.FB_CLEAR:
+        _facebookEmail = undefined;
+        _facebookId = undefined;
+        _facebookName = undefined;
         FacebookStore.emitChange();
         break;
 

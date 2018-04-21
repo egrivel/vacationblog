@@ -76,13 +76,15 @@ const Checkbox = require('./standard/Checkbox.jsx');
 const ButtonBar = require('./standard/ButtonBar.jsx');
 
 const LoginAction = require('../actions/LoginAction');
+const FacebookAction = require('../actions/FacebookAction');
 const UserAction = require('../actions/UserAction');
 const UserStore = require('../stores/UserStore');
+const FacebookStore = require('../stores/FacebookStore');
 
 const Login = React.createClass({
   displayName: 'Login',
 
-  stores: [UserStore],
+  stores: [UserStore, FacebookStore],
 
   mixins: [storeMixin()],
 
@@ -95,6 +97,7 @@ const Login = React.createClass({
   },
 
   _getStateFromStores: function() {
+    const facebookStatus = FacebookStore.getStatus();
     const errorMessage = UserStore.getFormErrorMessage();
     const loginState = UserStore.getLoginState();
     const userId = UserStore.getLoggedInUser();
@@ -107,6 +110,7 @@ const Login = React.createClass({
     }
     return {
       errorMessage: errorMessage,
+      facebookStatus: facebookStatus,
       loginState: loginState,
       name: name
     };
@@ -205,6 +209,9 @@ const Login = React.createClass({
     if (!userId || !name || !email || !password || !password2) {
       UserAction.setLoginFormError(
         'You need to enter all the information on this screen.');
+    } else if (preg_match('/[^A-Za-z0-9.\\-]/', $userId)) {
+      UserAction.setLoginForError(
+        'User name can only have letters, digits, periods and dashes.');
     } else if (password.length < 6) {
       UserAction.setLoginFormError(
         'Please enter a password of at least 6 characters.');
@@ -266,7 +273,14 @@ const Login = React.createClass({
   },
 
   _onLogout: function() {
-    LoginAction.doLogout();
+    const userId = UserStore.getLoggedInUser();
+    if (userId && userId.startsWith('fb ')) {
+      // Logging out from facebook automatically logs the user out from
+      // our system
+      FacebookAction.logout();
+    } else {
+      LoginAction.doLogout();
+    }
     this.props.onClose();
   },
 
@@ -283,6 +297,16 @@ const Login = React.createClass({
   // ========================================================================
   // Render screens
   // ========================================================================
+
+  _renderClose: function() {
+    return (
+      <div className="modal-close">
+        <a href="" onClick={this.props.onClose}>
+          <i className="fa fa-close"></i>
+        </a>
+      </div>
+    );
+  },
 
   _renderOtherThings: function(status) {
     const list = [];
@@ -327,6 +351,46 @@ const Login = React.createClass({
     );
   },
 
+  _fbLogin(event) {
+    FB.login((response) => {
+      if (response.status === 'connected') {
+        LoginAction.doFacebookLogin(response.authResponse.userID)
+      }
+    }, {scope: 'public_profile,email'});
+  },
+
+  _renderFacebookButton: function() {
+    if (this.state.errorMessage) {
+      // If there are errors, we're already trying regular login, so
+      // don't display the facebook button?
+      return null;
+    }
+
+    let facebookLabel = 'Login with Facebook';
+    if (this.state.facebookStatus === 'not_authorized') {
+      facebookLabel = 'Continue with Facebook';
+    }
+
+    return (
+      <div className="center">
+        <span
+          className="facebook-login"
+          onClick={this._fbLogin}
+        >
+          <span className="facebook-icon">
+            <i className="fa fa-facebook"></i>
+          </span>
+          <span className="facebook-message">
+            {facebookLabel}
+          </span>
+        </span>
+        <br/>
+        <br/>
+        OR
+      </div>
+    );
+  },
+
   _renderLogin: function() {
     let errors = null;
     if (this.state.errorMessage) {
@@ -344,10 +408,12 @@ const Login = React.createClass({
     });
 
     return (
-      <form className="form login" onClick={this._noProp}
-         >
+      <form className="form login" onClick={this._noProp}>
+        {this._renderClose()}
         <h3>Login</h3>
         {errors}
+        {this._renderFacebookButton()}
+
         <p>
           Please enter your information to log into the site.
         </p>
@@ -386,8 +452,8 @@ const Login = React.createClass({
     });
 
     return (
-      <form className="form login" onClick={this._noProp}
-         >
+      <form className="form login" onClick={this._noProp}>
+        {this._renderClose()}
         <h3>Login</h3>
         <p>Close enough...</p>
         <p>
@@ -426,6 +492,7 @@ const Login = React.createClass({
     return (
       <form className="form login" onClick={this._noProp}
           onSubmit={this._onRegister}>
+        {this._renderClose()}
         <h3>Register for this website</h3>
         {errors}
         <p>Please fill out the information below to register for this
@@ -499,6 +566,7 @@ const Login = React.createClass({
     return (
       <form className="form login" onClick={this._noProp}
           onSubmit={this._onRetrieve}>
+        {this._renderClose()}
         <h3>Retrieve</h3>
         {errors}
         <p>If you have registered before but do not remember your login
@@ -540,6 +608,7 @@ const Login = React.createClass({
     return (
       <form className="form login" onClick={this._noProp}
           onSubmit={this._onConfirmReg}>
+        {this._renderClose()}
         <h3>Confirmation Code</h3>
         {errors}
         <p>An email has been sent to you with a confirmation code. Please enter
@@ -585,6 +654,7 @@ const Login = React.createClass({
     return (
       <form className="form login" onClick={this._noProp}
           onSubmit={this._onConfirmPwd}>
+        {this._renderClose()}
         <h3>Password Reset</h3>
         {errors}
         <p>An email has been sent to you with a confirmation code. Please enter
@@ -639,6 +709,7 @@ const Login = React.createClass({
     return (
       <form className="form login" onClick={this._noProp}
           onSubmit={this._onLogout}>
+        {this._renderClose()}
         <h3>Logout</h3>
         <p>Are you sure you want to log out?</p>
         <ButtonBar

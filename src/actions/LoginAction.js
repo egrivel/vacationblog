@@ -165,6 +165,24 @@ const LoginAction = {
     utils.postAsync(url, data, this._doLoginCallback.bind(this));
   },
 
+  doFacebookLogin: function(fbUserId, fbName, fbEmail) {
+    // Internal user ID has 'fb ' prepended to the facebook ID, which
+    // is not an ID that anyone can enter
+    const userId = 'fb ' + fbUserId;
+    const url = 'api/login.php';
+    const data = {
+      action: 'fb-login',
+      userId: userId,
+      name: fbName,
+      email: fbEmail
+    };
+    this.userId = userId;
+    // facebook users never stay logged in; when they come back, they
+    // are auto-logged-in if they're still logged into facebook.
+    this.stayLoggedIn = false;
+    utils.postAsync(url, data, this._doLoginCallback.bind(this));
+  },
+
   doLogout: function() {
     const url = 'api/logout.php';
     this.userId = '';

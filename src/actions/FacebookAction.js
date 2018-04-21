@@ -13,8 +13,9 @@ let _isLoadingName = false;
 
 const FacebookAction = {
   Types: {
+    FB_CLEAR: 'FB_CLEAR',
+    FB_DATA: 'FB_DATA',
     FB_EMAIL: 'FB_EMAIL',
-    FB_NAME: 'FB_NAME',
     FB_STATUS: 'FB_STATUS'
   },
 
@@ -40,22 +41,33 @@ const FacebookAction = {
     }
   },
 
-  loadEmail: function() {},
-
-  loadName: function() {
+  loadDetails: function() {
     if (!_isLoadingName) {
       _isLoadingName = true;
       FB.api('/me', function(response) {
         _isLoadingName = false;
-        console.log('Got response: ' + JSON.stringify(response));
         if (response && response.name) {
           AppDispatcher.dispatch({
-            type: FacebookAction.Types.FB_NAME,
-            data: response.name
+            type: FacebookAction.Types.FB_DATA,
+            email: response.email,
+            id: response.id,
+            name: response.name
           });
         }
-      });
+      }, {fields: 'name,email'});
     }
+  },
+
+  unloadDetails: function() {
+    AppDispatcher.dispatch({
+      type: FacebookAction.Types.FB_CLEAR
+    });
+  },
+
+  logout: function() {
+    FB.logout(function(response) {
+      // Nothing to do
+    });
   }
 };
 
