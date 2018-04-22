@@ -7,6 +7,19 @@ include_once(dirname(__FILE__) . '/database/Media.php');
 $tripId = '';
 $tripObj = null;
 
+// First, check if we are using an unsecure connection to egrivel and upgrade
+// it to a secure one if needed
+$uri = $_SERVER['SCRIPT_URI'];
+if (preg_match('/^(https?):\/\/((www\.)?egrivel\.net)\/(.*)$/', $uri, $matches)) {
+  $protocol = strtolower($matches[1]);
+  $web = strtolower($matches[2]);
+  $path = $matches[4];
+  if ($protocol === 'http') {
+    header("Location: https://$web/$path");
+    exit(0);
+  }
+}
+
 function getTrip() {
   global $tripId, $tripObj;
 
@@ -60,6 +73,7 @@ function getMediaUrl() {
   $defaultMediaUrl = 'http://www.grivel.net/vacationblog/site/media/vak2017-2-fb-banner.png';
   return $defaultMediaUrl;
 }
+
 
 ?><!DOCTYPE html>
 <html lang="en">
