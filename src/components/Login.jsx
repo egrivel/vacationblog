@@ -351,8 +351,8 @@ const Login = React.createClass({
     );
   },
 
-  _fbLogin(event) {
-    FB.login((response) => {
+  _fbLogin: function(event) {
+    FB.login(function(response) {
       if (response.status === 'connected') {
         LoginAction.doFacebookLogin(response.authResponse.userID)
       }
