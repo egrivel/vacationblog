@@ -40,7 +40,8 @@
     Although we take reasonable precautions with regard to securing
     your data, we cannot absolutely guarantee the safety of the
     information. If this concerns you, please do not create an account
-    on this site.</p>
+    on this site. You can always see all content with providing any
+    personal information.</p>
 
   <p>Please contact <em>vacationblog@grivel.net</em> with any questions
     or concerns you may have.</p>
