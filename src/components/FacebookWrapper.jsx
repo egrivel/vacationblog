@@ -31,17 +31,8 @@ const FacebookWrapper = React.createClass({
   },
 
   _statusChange: function(statusResponse) {
-    if (statusResponse.status === 'connected') {
-      FacebookAction.loadDetails();
-    } else {
-      FacebookAction.unloadDetails();
-      const userId = UserStore.getLoggedInUser();
-      const userData = UserStore.getData(userId);
-      if (userData && userData.externalType === 'facebook') {
-        // user is logged in as a facebook user, but facebook is no longer
-        // connected. Log the user out from our system.
-        LoginAction.doLogout();
-      }
+    if (statusResponse && statusResponse.status) {
+      FacebookAction.setStatus(statusResponse.status);
     }
   },
 
@@ -63,13 +54,15 @@ const FacebookWrapper = React.createClass({
   },
 
   componentDidUpdate: function() {
-    const fbEmail = FacebookStore.getEmail();
+    const fbEmail = FacebookStore.getEmail() || '';
     const fbId = FacebookStore.getId();
-    const fbName = FacebookStore.getName();
+    const fbName = FacebookStore.getName() || '';
     const fbStatus = FacebookStore.getStatus();
     const isUserLoggedIn = UserStore.isUserLoggedIn();
     const userId = UserStore.getLoggedInUser();
     const userData = UserStore.getData(userId);
+    const userName = userData ? userData.name : '';
+    const userEmail = userData ? userData.email : '';
 
     if (FacebookStore.isAvailable()) {
       if (!fbStatus) {
@@ -80,11 +73,18 @@ const FacebookWrapper = React.createClass({
         // We have a facebook user who is logged in, make them login to
         // the app...
         LoginAction.doFacebookLogin(fbId, fbName, fbEmail);
+      } else if (fbStatus === 'connected' &&
+          (userName !== fbName || userEmail !== fbEmail)) {
+        // Facebook user is logged in, but some of the fb info changed, so
+        // re-do the loggin
+        LoginAction.doFacebookLogin(fbId, fbName, fbEmail);
       } else if (fbStatus !== 'connected' && userData && userData.externalType === 'facebook') {
         // user is logged in as a facebook user, but facebook is no longer
         // connected. Log the user out from our system.
         LoginAction.doLogout();
       }
+    } else {
+      console.log('FB wrapper: unavailable');
     }
   },
 

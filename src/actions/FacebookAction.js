@@ -9,7 +9,7 @@ const AppDispatcher = require('../AppDispatcher');
 const utils = require('./utils');
 
 let _isLoadingStatus = false;
-let _isLoadingName = false;
+let _isLoadingDetails = false;
 
 const FacebookAction = {
   Types: {
@@ -42,11 +42,18 @@ const FacebookAction = {
     }
   },
 
+  setStatus: function(status) {
+    AppDispatcher.dispatch({
+      type: FacebookAction.Types.FB_STATUS,
+      data: status
+    });
+  },
+
   loadDetails: function() {
-    if (!_isLoadingName) {
-      _isLoadingName = true;
+    if (!_isLoadingDetails) {
+      _isLoadingDetails = true;
       FB.api('/me', function(response) {
-        _isLoadingName = false;
+        _isLoadingDetails = false;
         if (response && response.name) {
           AppDispatcher.dispatch({
             type: FacebookAction.Types.FB_DATA,

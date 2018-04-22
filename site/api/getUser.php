@@ -28,9 +28,9 @@ if (!isset($userId) || ($userId === '')) {
          $response = successResponse();
          $response['userId'] = $object->getUserId();
          $response['name'] = $object->getName();
-         $response['externalType'] = $object->getExternalType();
          $response['deleted'] = $object->getDeleted();
          if ($auth->canGetUserDetails($userId)) {
+            $response['externalType'] = $object->getExternalType();
             $response['created'] = $object->getCreated();
             $response['updated'] = $object->getUpdated();
             $response['externalId'] = $object->getExternalId();
@@ -38,6 +38,9 @@ if (!isset($userId) || ($userId === '')) {
             $response['email'] = $object->getEmail();
             $response['notification'] = $object->getNotification();
             $response['tempCode'] = $object->getTempCode();
+         } else {
+            $response['info'] = 'User requested ' . $userId
+               . ', logged-in user ' . $auth->getUserId();
          }
       }
    }

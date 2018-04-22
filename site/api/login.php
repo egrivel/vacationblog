@@ -105,9 +105,14 @@ if (isPutMethod()) {
         $user->setAccess('visitor');
         $needSave = true;
       }
-      if ($user->getExternalType !== 'facebook') {
+      if ($user->getExternalType() !== 'facebook') {
         // set the external type to indicate a facebook user
         $user->setExternalType('facebook');
+        $needSave = true;
+      }
+      if ($user->getNotification() === '') {
+        // default notification for facebook users to 'N'
+        $user->setNotification('N');
         $needSave = true;
       }
       if ($needSave) {
@@ -116,15 +121,17 @@ if (isPutMethod()) {
       $response = successResponse();
       $response['status'] = 'OK';
 
-      if (!isset($_COOKIE['blogAuthId'])) {
+      $authId = $_COOKIE['blogAuthId'];
+      if (!isset($authId)) {
         // New login, so generate the auth ID
         $auth = new AuthB();
         $authId = Auth::generateAuthId();
         $auth = new Auth($authId);
         $auth->setUserId($userId);
         $auth->save();
-        $response['authId'] = $authId;
       }
+      // make sure the login returns the current auth ID
+      $response['authId'] = $authId;
 
       $response['userId'] = $userId;
     }

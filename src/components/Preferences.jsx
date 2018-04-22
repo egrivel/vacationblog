@@ -47,6 +47,7 @@ const Preferences = React.createClass({
     const userId = UserStore.getLoggedInUser();
     let name = '';
     let email = '';
+    let externalType = '';
     let password = '';
     let password2 = '';
     let notification = '';
@@ -54,13 +55,14 @@ const Preferences = React.createClass({
     if (userId) {
       const userData = UserStore.getEditData(userId);
       if (userData) {
-        // console.log('Data for user ' + userId + ' is: ' +
-        //     JSON.stringify(userData));
         if (userData.name) {
           name = userData.name;
         }
         if (userData.email) {
           email = userData.email;
+        }
+        if (userData.externalType) {
+          externalType = userData.externalType;
         }
         if (userData.notification) {
           notification = userData.notification;
@@ -77,6 +79,7 @@ const Preferences = React.createClass({
       userId: userId,
       name: name,
       email: email,
+      externalType: externalType,
       password: password,
       password2: password2,
       notification: notification
@@ -123,6 +126,9 @@ const Preferences = React.createClass({
       UserAction.setEdit(userId, 'password', '');
       UserAction.setEdit(userId, 'password2', '');
     }
+
+    // route back to the Home tab
+    this.context.router.push('/');
   },
 
   _onCancel: function() {
@@ -138,60 +144,116 @@ const Preferences = React.createClass({
     const userId = this.state.userId;
     const name = this.state.name;
     const email = this.state.email;
+    const externalType = this.state.externalType;
     const password = this.state.password;
     const password2 = this.state.password2;
     const notification = this.state.notification;
-
-    const buttonList = [];
-    buttonList.push({
-      label: 'Change',
-      onClick: this._onChangeValues
-    });
-    buttonList.push({
-      label: 'Cancel',
-      onClick: this._onCancel
-    });
 
     const access = UserStore.getAccess();
     if ((access !== 'admin') && (access !== 'visitor')) {
       return <div>No access</div>;
     }
-    return (
-      <div>
-        {errors}
-        <p>Change your preferences. If you change your email, you will have
-          to verify the new email address.</p>
-        <p>For security reasons, it is not currently possible to change the
-          previously selected email address. If you do need to change your
-          email address, please contact the website administrator.</p>
+
+    let description;
+    if (externalType === 'facebook') {
+      if (email) {
+        description = (
+          <p>Change your preferences. It looks like you have logged in
+            using facebook, so the only preference you can change is
+            whether or not to receive notification about
+            the <em>vacationblog</em> website by email.</p>
+        );
+      } else {
+        description = (
+          <div>
+            <p>It looks like you have logged in using facebook but not
+              allowed this site to know your email. There are no preferences
+              that you can change here.</p>
+            <p>The only way to change this is to go to the <a
+              href="https://www.facebook.com/settings?tab=applications">
+              facebook app settings</a>, remove the <em>Vacation Blog</em> app,
+              and re-login using facebook.</p>
+            <p>Please contact <em>vacationblog@grivel.net</em> if you have
+              any questions.</p>
+          </div>
+        );
+      }
+    } else {
+      description = (
+        <p>Change your preferences. For security reasons, it is not currently
+          possible to change the previously selected email address. If you do
+          need to change your email address, please contact the website
+          administrator at <em>vacationblog@grivel.net</em>.</p>
+      );
+    }
+
+    let idInput;
+    if (externalType !== 'facebook') {
+      idInput = (
         <Display
           fieldId="id"
           label="User ID"
           value={userId}
         />
+       );
+    }
+
+    let nameInput;
+    if (externalType === 'facebook') {
+      nameInput = (
+        <Display
+          fieldId="name"
+          label="Name"
+          value={name}
+        />
+      );
+    } else {
+      nameInput = (
         <Textbox
           fieldId="name"
           label="Name"
           value={name}
           onChange={this._setValue}
         />
+      );
+    }
+
+    let emailInput;
+    if (externalType !== 'facebook' || email) {
+      emailInput = (
         <Display
           fieldId="email"
           label="Email"
           value={email}
         />
+      );
+    }
+
+    let passwordInput;
+    let password2Input;
+    if (externalType !== 'facebook') {
+      passwordInput = (
         <Password
           fieldId="password"
           label="Password"
           value={password}
           onChange={this._setValue}
         />
+      );
+      password2Input = (
         <Password
           fieldId="password2"
           label="Repeat Password"
           value={password2}
           onChange={this._setValue}
         />
+      );
+    }
+
+    let notificationInput;
+    if (email) {
+      // No notifications if there is no email
+      notificationInput = (
         <Radiolist
           fieldId="notification"
           label="Notification"
@@ -202,6 +264,31 @@ const Preferences = React.createClass({
           ]}
           onChange={this._setValue}
         />
+      );
+    }
+
+    const buttonList = [];
+    if (externalType !== 'facebook' || email) {
+      buttonList.push({
+        label: 'Change',
+        onClick: this._onChangeValues
+      });
+    }
+    buttonList.push({
+      label: 'Cancel',
+      onClick: this._onCancel
+    });
+
+    return (
+      <div>
+        {errors}
+        {description}
+        {idInput}
+        {nameInput}
+        {emailInput}
+        {passwordInput}
+        {password2Input}
+        {notificationInput}
         <ButtonBar
           buttons={buttonList}
         />

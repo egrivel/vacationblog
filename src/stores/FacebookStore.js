@@ -65,7 +65,6 @@ const FacebookStore = assign({}, GenericStore, {
 
       case FacebookActionTypes.FB_AVAILABLE:
         _facebookAvailable = action.available;
-        console.log('setting available to ' + _facebookAvailable);
         FacebookStore.emitChange();
         break;
 

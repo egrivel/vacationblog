@@ -48529,7 +48529,7 @@ const AppDispatcher = require('../AppDispatcher');
 const utils = require('./utils');
 
 let _isLoadingStatus = false;
-let _isLoadingName = false;
+let _isLoadingDetails = false;
 
 const FacebookAction = {
   Types: {
@@ -48562,11 +48562,18 @@ const FacebookAction = {
     }
   },
 
+  setStatus: function(status) {
+    AppDispatcher.dispatch({
+      type: FacebookAction.Types.FB_STATUS,
+      data: status
+    });
+  },
+
   loadDetails: function() {
-    if (!_isLoadingName) {
-      _isLoadingName = true;
+    if (!_isLoadingDetails) {
+      _isLoadingDetails = true;
       FB.api('/me', function(response) {
-        _isLoadingName = false;
+        _isLoadingDetails = false;
         if (response && response.name) {
           AppDispatcher.dispatch({
             type: FacebookAction.Types.FB_DATA,
@@ -50351,17 +50358,8 @@ const FacebookWrapper = React.createClass({displayName: "FacebookWrapper",
   },
 
   _statusChange: function(statusResponse) {
-    if (statusResponse.status === 'connected') {
-      FacebookAction.loadDetails();
-    } else {
-      FacebookAction.unloadDetails();
-      const userId = UserStore.getLoggedInUser();
-      const userData = UserStore.getData(userId);
-      if (userData && userData.externalType === 'facebook') {
-        // user is logged in as a facebook user, but facebook is no longer
-        // connected. Log the user out from our system.
-        LoginAction.doLogout();
-      }
+    if (statusResponse && statusResponse.status) {
+      FacebookAction.setStatus(statusResponse.status);
     }
   },
 
@@ -50383,13 +50381,15 @@ const FacebookWrapper = React.createClass({displayName: "FacebookWrapper",
   },
 
   componentDidUpdate: function() {
-    const fbEmail = FacebookStore.getEmail();
+    const fbEmail = FacebookStore.getEmail() || '';
     const fbId = FacebookStore.getId();
-    const fbName = FacebookStore.getName();
+    const fbName = FacebookStore.getName() || '';
     const fbStatus = FacebookStore.getStatus();
     const isUserLoggedIn = UserStore.isUserLoggedIn();
     const userId = UserStore.getLoggedInUser();
     const userData = UserStore.getData(userId);
+    const userName = userData ? userData.name : '';
+    const userEmail = userData ? userData.email : '';
 
     if (FacebookStore.isAvailable()) {
       if (!fbStatus) {
@@ -50400,11 +50400,18 @@ const FacebookWrapper = React.createClass({displayName: "FacebookWrapper",
         // We have a facebook user who is logged in, make them login to
         // the app...
         LoginAction.doFacebookLogin(fbId, fbName, fbEmail);
+      } else if (fbStatus === 'connected' &&
+          (userName !== fbName || userEmail !== fbEmail)) {
+        // Facebook user is logged in, but some of the fb info changed, so
+        // re-do the loggin
+        LoginAction.doFacebookLogin(fbId, fbName, fbEmail);
       } else if (fbStatus !== 'connected' && userData && userData.externalType === 'facebook') {
         // user is logged in as a facebook user, but facebook is no longer
         // connected. Log the user out from our system.
         LoginAction.doLogout();
       }
+    } else {
+      console.log('FB wrapper: unavailable');
     }
   },
 
@@ -53926,6 +53933,7 @@ const Preferences = React.createClass({
     const userId = UserStore.getLoggedInUser();
     let name = '';
     let email = '';
+    let externalType = '';
     let password = '';
     let password2 = '';
     let notification = '';
@@ -53933,13 +53941,14 @@ const Preferences = React.createClass({
     if (userId) {
       const userData = UserStore.getEditData(userId);
       if (userData) {
-        // console.log('Data for user ' + userId + ' is: ' +
-        //     JSON.stringify(userData));
         if (userData.name) {
           name = userData.name;
         }
         if (userData.email) {
           email = userData.email;
+        }
+        if (userData.externalType) {
+          externalType = userData.externalType;
         }
         if (userData.notification) {
           notification = userData.notification;
@@ -53956,6 +53965,7 @@ const Preferences = React.createClass({
       userId: userId,
       name: name,
       email: email,
+      externalType: externalType,
       password: password,
       password2: password2,
       notification: notification
@@ -54002,6 +54012,9 @@ const Preferences = React.createClass({
       UserAction.setEdit(userId, 'password', '');
       UserAction.setEdit(userId, 'password2', '');
     }
+
+    // route back to the Home tab
+    this.context.router.push('/');
   },
 
   _onCancel: function() {
@@ -54017,60 +54030,116 @@ const Preferences = React.createClass({
     const userId = this.state.userId;
     const name = this.state.name;
     const email = this.state.email;
+    const externalType = this.state.externalType;
     const password = this.state.password;
     const password2 = this.state.password2;
     const notification = this.state.notification;
-
-    const buttonList = [];
-    buttonList.push({
-      label: 'Change',
-      onClick: this._onChangeValues
-    });
-    buttonList.push({
-      label: 'Cancel',
-      onClick: this._onCancel
-    });
 
     const access = UserStore.getAccess();
     if ((access !== 'admin') && (access !== 'visitor')) {
       return React.createElement("div", null, "No access");
     }
-    return (
-      React.createElement("div", null, 
-        errors, 
-        React.createElement("p", null, "Change your preferences. If you change your email, you will have" + ' ' +
-          "to verify the new email address."), 
-        React.createElement("p", null, "For security reasons, it is not currently possible to change the" + ' ' +
-          "previously selected email address. If you do need to change your" + ' ' +
-          "email address, please contact the website administrator."), 
+
+    let description;
+    if (externalType === 'facebook') {
+      if (email) {
+        description = (
+          React.createElement("p", null, "Change your preferences. It looks like you have logged in" + ' ' +
+            "using facebook, so the only preference you can change is" + ' ' +
+            "whether or not to receive notification about" + ' ' +
+            "the ", React.createElement("em", null, "vacationblog"), " website by email.")
+        );
+      } else {
+        description = (
+          React.createElement("div", null, 
+            React.createElement("p", null, "It looks like you have logged in using facebook but not" + ' ' +
+              "allowed this site to know your email. There are no preferences" + ' ' +
+              "that you can change here."), 
+            React.createElement("p", null, "The only way to change this is to go to the ", React.createElement("a", {
+              href: "https://www.facebook.com/settings?tab=applications"}, 
+              "facebook app settings"), ", remove the ", React.createElement("em", null, "Vacation Blog"), " app," + ' ' +
+              "and re-login using facebook."), 
+            React.createElement("p", null, "Please contact ", React.createElement("em", null, "vacationblog@grivel.net"), " if you have" + ' ' +
+              "any questions.")
+          )
+        );
+      }
+    } else {
+      description = (
+        React.createElement("p", null, "Change your preferences. For security reasons, it is not currently" + ' ' +
+          "possible to change the previously selected email address. If you do" + ' ' +
+          "need to change your email address, please contact the website" + ' ' +
+          "administrator at ", React.createElement("em", null, "vacationblog@grivel.net"), ".")
+      );
+    }
+
+    let idInput;
+    if (externalType !== 'facebook') {
+      idInput = (
         React.createElement(Display, {
           fieldId: "id", 
           label: "User ID", 
           value: userId}
-        ), 
+        )
+       );
+    }
+
+    let nameInput;
+    if (externalType === 'facebook') {
+      nameInput = (
+        React.createElement(Display, {
+          fieldId: "name", 
+          label: "Name", 
+          value: name}
+        )
+      );
+    } else {
+      nameInput = (
         React.createElement(Textbox, {
           fieldId: "name", 
           label: "Name", 
           value: name, 
           onChange: this._setValue}
-        ), 
+        )
+      );
+    }
+
+    let emailInput;
+    if (externalType !== 'facebook' || email) {
+      emailInput = (
         React.createElement(Display, {
           fieldId: "email", 
           label: "Email", 
           value: email}
-        ), 
+        )
+      );
+    }
+
+    let passwordInput;
+    let password2Input;
+    if (externalType !== 'facebook') {
+      passwordInput = (
         React.createElement(Password, {
           fieldId: "password", 
           label: "Password", 
           value: password, 
           onChange: this._setValue}
-        ), 
+        )
+      );
+      password2Input = (
         React.createElement(Password, {
           fieldId: "password2", 
           label: "Repeat Password", 
           value: password2, 
           onChange: this._setValue}
-        ), 
+        )
+      );
+    }
+
+    let notificationInput;
+    if (email) {
+      // No notifications if there is no email
+      notificationInput = (
         React.createElement(Radiolist, {
           fieldId: "notification", 
           label: "Notification", 
@@ -54080,7 +54149,32 @@ const Preferences = React.createClass({
             {label: 'No', value: 'N'}
           ], 
           onChange: this._setValue}
-        ), 
+        )
+      );
+    }
+
+    const buttonList = [];
+    if (externalType !== 'facebook' || email) {
+      buttonList.push({
+        label: 'Change',
+        onClick: this._onChangeValues
+      });
+    }
+    buttonList.push({
+      label: 'Cancel',
+      onClick: this._onCancel
+    });
+
+    return (
+      React.createElement("div", null, 
+        errors, 
+        description, 
+        idInput, 
+        nameInput, 
+        emailInput, 
+        passwordInput, 
+        password2Input, 
+        notificationInput, 
         React.createElement(ButtonBar, {
           buttons: buttonList}
         )
@@ -56857,7 +56951,6 @@ const FacebookStore = assign({}, GenericStore, {
 
       case FacebookActionTypes.FB_AVAILABLE:
         _facebookAvailable = action.available;
-        console.log('setting available to ' + _facebookAvailable);
         FacebookStore.emitChange();
         break;
 
