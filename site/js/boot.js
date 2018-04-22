@@ -48533,6 +48533,7 @@ let _isLoadingName = false;
 
 const FacebookAction = {
   Types: {
+    FB_AVAILABLE: 'FB_AVAILABLE',
     FB_CLEAR: 'FB_CLEAR',
     FB_DATA: 'FB_DATA',
     FB_EMAIL: 'FB_EMAIL',
@@ -48587,6 +48588,13 @@ const FacebookAction = {
   logout: function() {
     FB.logout(function(response) {
       // Nothing to do
+    });
+  },
+
+  setAvailable: function(isAvailable) {
+    AppDispatcher.dispatch({
+      type: FacebookAction.Types.FB_AVAILABLE,
+      available: isAvailable
     });
   }
 };
@@ -50360,14 +50368,17 @@ const FacebookWrapper = React.createClass({displayName: "FacebookWrapper",
   componentDidMount: function() {
     if (window.FB) {
       window.FB.Event.subscribe('auth.statusChange', this._statusChange);
+      FacebookAction.setAvailable(true);
     } else {
-      console.log('Cannot subscribe to facebook events.');
+      FacebookAction.setAvailable(false);
     }
 
-    const status = FacebookStore.getStatus();
+    if (FacebookStore.isAvailable()) {
+      const status = FacebookStore.getStatus();
 
-    if (!status) {
-      FacebookAction.getStatus();
+      if (!status) {
+        FacebookAction.getStatus();
+      }
     }
   },
 
@@ -50380,18 +50391,20 @@ const FacebookWrapper = React.createClass({displayName: "FacebookWrapper",
     const userId = UserStore.getLoggedInUser();
     const userData = UserStore.getData(userId);
 
-    if (!fbStatus) {
-      FacebookAction.getStatus();
-    } else if (fbStatus === 'connected' && !fbName) {
-      FacebookAction.loadDetails();
-    } else if (fbStatus === 'connected' && !userData) {
-      // We have a facebook user who is logged in, make them login to
-      // the app...
-      LoginAction.doFacebookLogin(fbId, fbName, fbEmail);
-    } else if (fbStatus !== 'connected' && userData && userData.externalType === 'facebook') {
-      // user is logged in as a facebook user, but facebook is no longer
-      // connected. Log the user out from our system.
-      LoginAction.doLogout();
+    if (FacebookStore.isAvailable()) {
+      if (!fbStatus) {
+        FacebookAction.getStatus();
+      } else if (fbStatus === 'connected' && !fbName) {
+        FacebookAction.loadDetails();
+      } else if (fbStatus === 'connected' && !userData) {
+        // We have a facebook user who is logged in, make them login to
+        // the app...
+        LoginAction.doFacebookLogin(fbId, fbName, fbEmail);
+      } else if (fbStatus !== 'connected' && userData && userData.externalType === 'facebook') {
+        // user is logged in as a facebook user, but facebook is no longer
+        // connected. Log the user out from our system.
+        LoginAction.doLogout();
+      }
     }
   },
 
@@ -50736,10 +50749,14 @@ const Header = React.createClass({
     const userId = UserStore.getLoggedInUser();
     const isUserLoggedIn = (userId !== '');
     let loginDisplay = 'Login or Register';
+    let isFacebookUser = false;
     if (userId) {
       const data = UserStore.getData(userId);
       if (data && data.name) {
         loginDisplay = data.name;
+        if (data.externalType === 'facebook') {
+          isFacebookUser = true;
+        }
       }
     }
     const loginState = UserStore.getLoginState();
@@ -50751,6 +50768,7 @@ const Header = React.createClass({
       name: name,
       bannerImg: img,
       loginDisplay: loginDisplay,
+      isFacebookUser: isFacebookUser,
       isUserLoggedIn: isUserLoggedIn,
       loginState: loginState,
       loginErrorMessage: loginErrorMessage,
@@ -50781,6 +50799,9 @@ const Header = React.createClass({
     let icon = 'fa-sign-in';
     if (this.state.isUserLoggedIn) {
       icon = 'fa-user';
+      if (this.state.isFacebookUser) {
+        icon = 'fa-facebook-square';
+      }
     }
 
     return (
@@ -53219,6 +53240,15 @@ const Login = React.createClass({
       return null;
     }
 
+    if (!FacebookStore.isAvailable()) {
+      return (
+        React.createElement("div", null, 
+          "Facebook login is not available. Please" + ' ' +
+          "contact ", React.createElement("em", null, "vacationblog@grivel.net"), " for details."
+        )
+      );
+    }
+
     let facebookLabel = 'Login with Facebook';
     if (this.state.facebookStatus === 'not_authorized') {
       facebookLabel = 'Continue with Facebook';
@@ -53231,7 +53261,7 @@ const Login = React.createClass({
           onClick: this._fbLogin
         }, 
           React.createElement("span", {className: "facebook-icon"}, 
-            React.createElement("i", {className: "fa fa-facebook"})
+            React.createElement("i", {className: "fa fa-facebook-square"})
           ), 
           React.createElement("span", {className: "facebook-message"}, 
             facebookLabel
@@ -56777,6 +56807,7 @@ const AppDispatcher = require('../AppDispatcher');
 const GenericStore = require('./GenericStore');
 const FacebookActionTypes = require('../actions/FacebookAction').Types;
 
+let _facebookAvailable = false;
 let _facebookEmail;
 let _facebookId;
 let _facebookName;
@@ -56799,6 +56830,10 @@ const FacebookStore = assign({}, GenericStore, {
     return _facebookStatus;
   },
 
+  isAvailable: function() {
+    return _facebookAvailable;
+  },
+
   _storeCallback: function(action) {
     switch (action.type) {
       case FacebookActionTypes.FB_DATA:
@@ -56817,6 +56852,12 @@ const FacebookStore = assign({}, GenericStore, {
         _facebookEmail = undefined;
         _facebookId = undefined;
         _facebookName = undefined;
+        FacebookStore.emitChange();
+        break;
+
+      case FacebookActionTypes.FB_AVAILABLE:
+        _facebookAvailable = action.available;
+        console.log('setting available to ' + _facebookAvailable);
         FacebookStore.emitChange();
         break;
 

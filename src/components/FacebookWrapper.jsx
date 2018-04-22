@@ -48,14 +48,17 @@ const FacebookWrapper = React.createClass({
   componentDidMount: function() {
     if (window.FB) {
       window.FB.Event.subscribe('auth.statusChange', this._statusChange);
+      FacebookAction.setAvailable(true);
     } else {
-      console.log('Cannot subscribe to facebook events.');
+      FacebookAction.setAvailable(false);
     }
 
-    const status = FacebookStore.getStatus();
+    if (FacebookStore.isAvailable()) {
+      const status = FacebookStore.getStatus();
 
-    if (!status) {
-      FacebookAction.getStatus();
+      if (!status) {
+        FacebookAction.getStatus();
+      }
     }
   },
 
@@ -68,18 +71,20 @@ const FacebookWrapper = React.createClass({
     const userId = UserStore.getLoggedInUser();
     const userData = UserStore.getData(userId);
 
-    if (!fbStatus) {
-      FacebookAction.getStatus();
-    } else if (fbStatus === 'connected' && !fbName) {
-      FacebookAction.loadDetails();
-    } else if (fbStatus === 'connected' && !userData) {
-      // We have a facebook user who is logged in, make them login to
-      // the app...
-      LoginAction.doFacebookLogin(fbId, fbName, fbEmail);
-    } else if (fbStatus !== 'connected' && userData && userData.externalType === 'facebook') {
-      // user is logged in as a facebook user, but facebook is no longer
-      // connected. Log the user out from our system.
-      LoginAction.doLogout();
+    if (FacebookStore.isAvailable()) {
+      if (!fbStatus) {
+        FacebookAction.getStatus();
+      } else if (fbStatus === 'connected' && !fbName) {
+        FacebookAction.loadDetails();
+      } else if (fbStatus === 'connected' && !userData) {
+        // We have a facebook user who is logged in, make them login to
+        // the app...
+        LoginAction.doFacebookLogin(fbId, fbName, fbEmail);
+      } else if (fbStatus !== 'connected' && userData && userData.externalType === 'facebook') {
+        // user is logged in as a facebook user, but facebook is no longer
+        // connected. Log the user out from our system.
+        LoginAction.doLogout();
+      }
     }
   },
 

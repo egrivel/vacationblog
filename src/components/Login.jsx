@@ -366,6 +366,15 @@ const Login = React.createClass({
       return null;
     }
 
+    if (!FacebookStore.isAvailable()) {
+      return (
+        <div>
+          Facebook login is not available. Please
+          contact <em>vacationblog@grivel.net</em> for details.
+        </div>
+      );
+    }
+
     let facebookLabel = 'Login with Facebook';
     if (this.state.facebookStatus === 'not_authorized') {
       facebookLabel = 'Continue with Facebook';
@@ -378,7 +387,7 @@ const Login = React.createClass({
           onClick={this._fbLogin}
         >
           <span className="facebook-icon">
-            <i className="fa fa-facebook"></i>
+            <i className="fa fa-facebook-square"></i>
           </span>
           <span className="facebook-message">
             {facebookLabel}

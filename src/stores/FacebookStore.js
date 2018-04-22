@@ -15,6 +15,7 @@ const AppDispatcher = require('../AppDispatcher');
 const GenericStore = require('./GenericStore');
 const FacebookActionTypes = require('../actions/FacebookAction').Types;
 
+let _facebookAvailable = false;
 let _facebookEmail;
 let _facebookId;
 let _facebookName;
@@ -37,6 +38,10 @@ const FacebookStore = assign({}, GenericStore, {
     return _facebookStatus;
   },
 
+  isAvailable: function() {
+    return _facebookAvailable;
+  },
+
   _storeCallback: function(action) {
     switch (action.type) {
       case FacebookActionTypes.FB_DATA:
@@ -55,6 +60,12 @@ const FacebookStore = assign({}, GenericStore, {
         _facebookEmail = undefined;
         _facebookId = undefined;
         _facebookName = undefined;
+        FacebookStore.emitChange();
+        break;
+
+      case FacebookActionTypes.FB_AVAILABLE:
+        _facebookAvailable = action.available;
+        console.log('setting available to ' + _facebookAvailable);
         FacebookStore.emitChange();
         break;
 

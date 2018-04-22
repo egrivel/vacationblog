@@ -13,6 +13,7 @@ let _isLoadingName = false;
 
 const FacebookAction = {
   Types: {
+    FB_AVAILABLE: 'FB_AVAILABLE',
     FB_CLEAR: 'FB_CLEAR',
     FB_DATA: 'FB_DATA',
     FB_EMAIL: 'FB_EMAIL',
@@ -67,6 +68,13 @@ const FacebookAction = {
   logout: function() {
     FB.logout(function(response) {
       // Nothing to do
+    });
+  },
+
+  setAvailable: function(isAvailable) {
+    AppDispatcher.dispatch({
+      type: FacebookAction.Types.FB_AVAILABLE,
+      available: isAvailable
     });
   }
 };

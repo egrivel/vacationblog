@@ -47,10 +47,14 @@ const Header = React.createClass({
     const userId = UserStore.getLoggedInUser();
     const isUserLoggedIn = (userId !== '');
     let loginDisplay = 'Login or Register';
+    let isFacebookUser = false;
     if (userId) {
       const data = UserStore.getData(userId);
       if (data && data.name) {
         loginDisplay = data.name;
+        if (data.externalType === 'facebook') {
+          isFacebookUser = true;
+        }
       }
     }
     const loginState = UserStore.getLoginState();
@@ -62,6 +66,7 @@ const Header = React.createClass({
       name: name,
       bannerImg: img,
       loginDisplay: loginDisplay,
+      isFacebookUser: isFacebookUser,
       isUserLoggedIn: isUserLoggedIn,
       loginState: loginState,
       loginErrorMessage: loginErrorMessage,
@@ -92,6 +97,9 @@ const Header = React.createClass({
     let icon = 'fa-sign-in';
     if (this.state.isUserLoggedIn) {
       icon = 'fa-user';
+      if (this.state.isFacebookUser) {
+        icon = 'fa-facebook-square';
+      }
     }
 
     return (
