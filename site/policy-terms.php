@@ -1,11 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Vacation Blog Privacy Policy and Terms of Service</title>
-</head>
+<?php
+include("common.php");
 
-<body>
-  <h1>Vacation Blog Privacy Policy and Terms of Service</h1>
+print pageStart("Vacation Blog Privacy Policy and Terms of Service");
+?>
+
+  <h3>Vacation Blog Privacy Policy and Terms of Service</h3>
 
   <p>The vacation blog is the mechanism through which Eric Grivel
   and Nicoline Smits share their vacation experiences.</p>
@@ -46,5 +45,4 @@
   <p>Please contact <em>vacationblog@grivel.net</em> with any questions
     or concerns you may have.</p>
 
-</body>
-</html>
+<?php print pageEnd(); ?>
