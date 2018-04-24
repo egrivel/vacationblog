@@ -50686,19 +50686,39 @@ const Footer = React.createClass({
     }
 
     return 'Content copyright \u00A9' + copyrightYear +
-      ' by the respective authors.';
+      ' by the respective authors. ';
   },
 
   render: function() {
     const footerText = this._getFooterText();
     return (
-      React.DOM.div(
-        {
-          className: 'footer'
-        },
-        React.DOM.p(null, footerText +
-                    ' Website design \u00A92015-18 by Eric Grivel.' +
-                    ' All rights reserved.')
+      React.createElement("div", {className: "footer"}, 
+        React.createElement("p", null, 
+          footerText, 
+          "Website design ©2015-18 by Eric Grivel." + ' ' +
+          "All rights reserved.", 
+          React.createElement("br", null), 
+          React.createElement("a", {
+            href: "feature-requests.php", 
+            target: "_blank"
+          }, 
+            "Ideas and suggestions ", React.createElement("i", {className: "fa fa-external-link"})
+          ), 
+          ' \u2022 ', 
+          React.createElement("a", {
+            href: "policy-terms.php", 
+            target: "_blank"
+          }, 
+            "Privacy Policy ", React.createElement("i", {className: "fa fa-external-link"})
+          ), 
+          ' \u2022 ', 
+          React.createElement("a", {
+            href: "policy-terms.php", 
+            target: "_blank"
+          }, 
+            "Terms of Service ", React.createElement("i", {className: "fa fa-external-link"})
+          )
+        )
       )
     );
   }
@@ -54377,7 +54397,7 @@ const Sync = React.createClass({
     return (
       React.createElement("div", null, 
         React.createElement("p", null, "This function is to synchronize with an external system."), 
-        React.createElement("p", null, "Standard: http://www.grivel.net/vacationblog/site/"), 
+        React.createElement("p", null, "Standard: http://egrivel.net/vacationblog/site/"), 
         this._renderSiteInput(), 
         this._renderPasswordInput(), 
         React.createElement(ButtonBar, {

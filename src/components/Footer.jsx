@@ -62,20 +62,40 @@ const Footer = React.createClass({
     }
 
     return 'Content copyright \u00A9' + copyrightYear +
-      ' by the respective authors.';
+      ' by the respective authors. ';
   },
 
   render: function() {
     const footerText = this._getFooterText();
     return (
-      React.DOM.div(
-        {
-          className: 'footer'
-        },
-        React.DOM.p(null, footerText +
-                    ' Website design \u00A92015-18 by Eric Grivel.' +
-                    ' All rights reserved.')
-      )
+      <div className='footer'>
+        <p>
+          {footerText}
+          Website design &copy;2015-18 by Eric Grivel.
+          All rights reserved.
+          <br/>
+          <a
+            href="feature-requests.php"
+            target="_blank"
+          >
+            Ideas and suggestions <i className="fa fa-external-link"></i>
+          </a>
+          {' \u2022 '}
+          <a
+            href="policy-terms.php"
+            target="_blank"
+          >
+            Privacy Policy <i className="fa fa-external-link"></i>
+          </a>
+          {' \u2022 '}
+          <a
+            href="policy-terms.php"
+            target="_blank"
+          >
+            Terms of Service <i className="fa fa-external-link"></i>
+          </a>
+        </p>
+      </div>
     );
   }
 });

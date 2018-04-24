@@ -84,6 +84,10 @@ div.footer {
   text-align: center;
 }
 
+div.footer a {
+  color: #fff;
+}
+
 div.header h1 {
   font-size: 150%;
   padding-top: 0.2em;

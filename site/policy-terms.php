@@ -4,7 +4,7 @@ include("common.php");
 print pageStart("Vacation Blog Privacy Policy and Terms of Service");
 ?>
 
-  <h3>Vacation Blog Privacy Policy and Terms of Service</h3>
+  <h3>Privacy Policy and Terms of Service</h3>
 
   <p>The vacation blog is the mechanism through which Eric Grivel
   and Nicoline Smits share their vacation experiences.</p>
