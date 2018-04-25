@@ -943,8 +943,11 @@ function uploadLocalMedia() {
     if (!file_exists($localFile)) {
        $localFile = "/mnt/truman/d1/photos/$setId/large/$mediaId.jpg";
     }
+    if (!file_exists($localFile)) {
+       $localFile = "/mnt/jefferson/d1/photos/$setId/large/$mediaId.jpg";
+    }
     if (file_exists($localFile)) {
-      $cmd = "curl -i -X POST -F submit=1 -F fileToUpload=@$localFile http://www.grivel.net/blogphotos/sync-up-files.php";
+      $cmd = "curl -i -X POST -F submit=1 -F fileToUpload=@$localFile http://egrivel.net/blogphotos/sync-up-files.php";
       exec($cmd);
       $item = new Media($tripId, $mediaId);
       $item->setLocation('grivel');

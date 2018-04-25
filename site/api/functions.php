@@ -32,11 +32,11 @@ function fillMediaItem($item, $object) {
    $mediaId = $item['mediaId'];
 
    // $url = "http://photos-egrivel.rhcloud.com/phimg?large=$mediaId";
-   $url = "http://$adams_ip:31415/cgi-bin/photos/phimg?large=$mediaId";
+   $url = "https://egrivel.net/proxy/phimg.php?large=$mediaId";
    if ($item['location'] === 'local') {
      $url = "/cgi-bin/photos/phimg?large=$mediaId";
    } else if ($item['location'] === 'grivel') {
-      $url = "http://www.grivel.net/blogphotos/$mediaId.jpg";
+      $url = "https://egrivel.net/blogphotos/$mediaId.jpg";
       $url = "api/image.php?imageid=$mediaId";
    }
    $item['url'] = $url;
@@ -51,6 +51,9 @@ function addMediaIfNotExist($tripId, $mediaId) {
       $localFile = "/mnt/lincoln/d1/photos/$setId/large/$mediaId.jpg";
       if (!file_exists($localFile)) {
          $localFile = "/mnt/truman/d1/photos/$setId/large/$mediaId.jpg";
+      }
+      if (!file_exists($localFile)) {
+         $localFile = "/mnt/jefferson/d1/photos/$setId/large/$mediaId.jpg";
       }
       if (file_exists($localFile)) {
          $object->setLocation('local');

@@ -50,7 +50,7 @@ const Image = React.createClass({
       _.trim(this.props.format + ' ' + this.props.className);
     let url = this.props.url;
     if (!url) {
-      const baseUrl = 'http://photos-egrivel.rhcloud.com/phimg?large=';
+      const baseUrl = 'https://egrivel.net/proxy/phimg.php?large=';
       url = baseUrl + this.props.imageId;
     }
     let editButton = null;

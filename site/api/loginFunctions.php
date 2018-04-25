@@ -1,7 +1,7 @@
 <?php
 
 define('SITE_NAME', "Vacation Blog");
-define('SITE_ROOT', "http://www.egrivel.net/vacationblog/site/");
+define('SITE_ROOT', "https://egrivel.net/vacationblog/site/");
 define('SITE_ADMIN_NAME', "Eric Grivel");
 
 function send_notification_email($email, $subject, $text) {
