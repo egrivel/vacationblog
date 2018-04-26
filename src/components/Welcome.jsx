@@ -39,14 +39,16 @@ const Welcome = React.createClass({
     if (list && list.length) {
       let count = 0;
       const listItems = list.map(function(item) {
-        count++;
-        return (
-          <li key={count}>
-            <a href={'#/trip/' + item.tripId}>
-              {item.name}
-            </a>
-          </li>
-        );
+        if (item.deleted != 'Y') {
+          count++;
+          return (
+            <li key={count}>
+              <a href={'#/trip/' + item.tripId}>
+                {item.name}
+              </a>
+            </li>
+          );
+        }
       });
       return <ul>{listItems}</ul>;
     }

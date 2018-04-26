@@ -593,7 +593,8 @@ class Trip {
    static function listTrips() {
       $query = ""
          . "SELECT blogTrip.tripId, blogTrip.name, "
-         .   "blogTrip.updated, blogTrip.startDate "
+         .   "blogTrip.updated, blogTrip.startDate, "
+         .   "blogTrip.deleted "
          .   "FROM blogTrip "
          .   "INNER JOIN ("
          .     "SELECT "
@@ -605,7 +606,6 @@ class Trip {
          .   ") AS t2 "
          .   "WHERE blogTrip.tripId = t2.tripId "
          .     "AND blogTrip.updated = t2.updated "
-         .     "AND blogTrip.deleted != 'Y' "
          .   "ORDER BY blogTrip.startDate DESC ";
 
       $result = db_query($query);
@@ -622,8 +622,9 @@ class Trip {
          while ($line = db_fetch_array($result)) {
             $tripId = db_sql_decode($line["tripId"]);
             $name = db_sql_decode($line['name']);
+            $deleted = db_sql_decode($line['deleted']);
             $list[$count++] =
-               array('tripId'=>$tripId, 'name'=>$name);
+               array('tripId'=>$tripId, 'name'=>$name, 'deleted'=>$deleted);
          }
       }
 

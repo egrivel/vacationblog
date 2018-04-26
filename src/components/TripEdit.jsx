@@ -94,6 +94,18 @@ const TripEdit = React.createClass({
     TripAction.updateEditTrip(tripData);
   },
 
+  _updateDeleted: function(event) {
+    const tripData = _.clone(this.state.tripData);
+
+    if (event.target.checked) {
+      tripData.deleted = 'Y';
+    } else {
+      tripData.deleted = 'N';
+    }
+
+    TripAction.updateEditTrip(tripData);
+  },
+
   // When losing focus, linefeeds are to be converted
   _saveDescription: function(event) {
     const tripData = _.clone(this.state.tripData);
@@ -406,6 +418,40 @@ const TripEdit = React.createClass({
     return result;
   },
 
+  _renderDeleted: function() {
+    let checked = false;
+    if (this.state.tripData.deleted === 'Y') {
+      checked = true;
+    }
+    const result = [];
+    result.push(
+      <div
+        key="deleted-label"
+        className="formLabel"
+      ></div>
+    );
+    result.push(
+      <div
+        key="deleted-value"
+        className="formValue"
+      >
+        <input
+          type="checkbox"
+          id="deleted-input"
+          value="Y"
+          onChange={this._updateDeleted}
+          checked={checked}
+        />
+        <label className="checkbox" htmlFor="deleted-input">
+          {' '}
+          Deleted
+        </label>
+      </div>
+    );
+
+    return result;
+  },
+
   _renderContributorList: function() {
     const contributorList = [];
     if (this.state.tripUsers) {
@@ -515,6 +561,7 @@ const TripEdit = React.createClass({
           {this._renderStartDate()}
           {this._renderEndDate()}
           {this._renderActive()}
+          {this._renderDeleted()}
           {this._renderContributorList()}
           <ButtonBar buttons={buttonList}/>
           <TripEditContrib

@@ -54812,6 +54812,18 @@ const TripEdit = React.createClass({
     TripAction.updateEditTrip(tripData);
   },
 
+  _updateDeleted: function(event) {
+    const tripData = _.clone(this.state.tripData);
+
+    if (event.target.checked) {
+      tripData.deleted = 'Y';
+    } else {
+      tripData.deleted = 'N';
+    }
+
+    TripAction.updateEditTrip(tripData);
+  },
+
   // When losing focus, linefeeds are to be converted
   _saveDescription: function(event) {
     const tripData = _.clone(this.state.tripData);
@@ -55124,6 +55136,40 @@ const TripEdit = React.createClass({
     return result;
   },
 
+  _renderDeleted: function() {
+    let checked = false;
+    if (this.state.tripData.deleted === 'Y') {
+      checked = true;
+    }
+    const result = [];
+    result.push(
+      React.createElement("div", {
+        key: "deleted-label", 
+        className: "formLabel"
+      })
+    );
+    result.push(
+      React.createElement("div", {
+        key: "deleted-value", 
+        className: "formValue"
+      }, 
+        React.createElement("input", {
+          type: "checkbox", 
+          id: "deleted-input", 
+          value: "Y", 
+          onChange: this._updateDeleted, 
+          checked: checked}
+        ), 
+        React.createElement("label", {className: "checkbox", htmlFor: "deleted-input"}, 
+          ' ', 
+          "Deleted"
+        )
+      )
+    );
+
+    return result;
+  },
+
   _renderContributorList: function() {
     const contributorList = [];
     if (this.state.tripUsers) {
@@ -55233,6 +55279,7 @@ const TripEdit = React.createClass({
           this._renderStartDate(), 
           this._renderEndDate(), 
           this._renderActive(), 
+          this._renderDeleted(), 
           this._renderContributorList(), 
           React.createElement(ButtonBar, {buttons: buttonList}), 
           React.createElement(TripEditContrib, {
@@ -55901,14 +55948,16 @@ const Welcome = React.createClass({
     if (list && list.length) {
       let count = 0;
       const listItems = list.map(function(item) {
-        count++;
-        return (
-          React.createElement("li", {key: count}, 
-            React.createElement("a", {href: '#/trip/' + item.tripId}, 
-              item.name
+        if (item.deleted != 'Y') {
+          count++;
+          return (
+            React.createElement("li", {key: count}, 
+              React.createElement("a", {href: '#/trip/' + item.tripId}, 
+                item.name
+              )
             )
-          )
-        );
+          );
+        }
       });
       return React.createElement("ul", null, listItems);
     }
