@@ -36,7 +36,6 @@ function getTrip() {
 }
 
 function getTripTitle() {
-  return "Vacation Website: Curacao";
   global $tripObj;
   getTrip();
 
@@ -47,7 +46,6 @@ function getTripTitle() {
 }
 
 function getTripDescr() {
-  return "Taking a short vacation to Curacao.";
   global $tripObj;
   getTrip();
 
