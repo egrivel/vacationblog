@@ -7,11 +7,16 @@ print pageStart("Vacation Blog Privacy Policy and Terms of Service");
   <h3>Privacy Policy and Terms of Service</h3>
 
   <p>The vacation blog is the mechanism through which Eric Grivel
-  and Nicoline Smits share their vacation experiences.</p>
+    and Nicoline Smits share their vacation experiences.</p>
 
   <p>The vacation blog can be browsed by anyone without providing
     any personal information, although your IP address may get logged
     when you browse this site.</p>
+
+  <p>This site does <em>not</em> use cookies to track visitors. It
+    will use a cookie with non-personal-identifiable-information if you
+    log in. If you log in through facebook, facebook will probably use
+    one or more cookies as well.</p>
 
   <p>If you choose to login to the vacation blog, you will be asked
     to provide your name and email address. Your name will be displayed
@@ -26,7 +31,7 @@ print pageStart("Vacation Blog Privacy Policy and Terms of Service");
     section of the site.</p>
 
   <p>All the comments you post on the site will be publicly visible
-  to all users, whether they are logged in or not.</p>
+    to all users, whether they are logged in or not.</p>
 
   <p>You can choose to end your account by removing the
     <em>Vacation Blog</em> app from facebook, or contacting
@@ -39,7 +44,7 @@ print pageStart("Vacation Blog Privacy Policy and Terms of Service");
     Although we take reasonable precautions with regard to securing
     your data, we cannot absolutely guarantee the safety of the
     information. If this concerns you, please do not create an account
-    on this site. You can always see all content with providing any
+    on this site. You can always see all content without providing any
     personal information.</p>
 
   <p>Please contact <em>vacationblog@grivel.net</em> with any questions
