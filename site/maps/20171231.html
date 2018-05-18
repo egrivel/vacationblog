@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCg4SViY6iqpbFKF1IMhjW-2NtAQ0LkAE4' type='text/javascript'></script>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+  }
+</style>
+</head>
+<body>
+<div class='map-disp'>
+<div id='map-canvas'></div>
+<script type='text/javascript'>
+function initialize() {
+var canvas = document.getElementById('map-canvas');
+if (canvas) {
+  var windowHeight = window.innerHeight;
+  var windowWidth = window.innerWidth;
+  canvas.style.width = String(windowWidth) + 'px';
+  canvas.style.height = String(windowHeight) + 'px';
+}
+var mapOptions = {
+  zoom: 15,
+  center: new google.maps.LatLng(12.30234,-69.11884),
+  mapTypeId: google.maps.MapTypeId.ROADMAP
+};
+var map2 = new google.maps.Map(canvas, mapOptions);
+var routeCoordinates = [
+new google.maps.LatLng(12.30241,-69.1188),
+new google.maps.LatLng(12.30235,-69.11889),
+new google.maps.LatLng(12.30228,-69.11889),
+new google.maps.LatLng(12.30231,-69.11888),
+new google.maps.LatLng(12.30232,-69.11887),
+new google.maps.LatLng(12.30229,-69.11887),
+new google.maps.LatLng(12.30228,-69.11887),
+];
+var route = new google.maps.Polyline({
+   path: routeCoordinates,
+   geodesic: true,
+   strokeColor: '#3333ff',
+   strokeOpacity: 1.0,
+   strokeWeight: 2
+});
+route.setMap(map2);
+}
+initialize();
+</script>
+</div>
+</body>
+</html>
