@@ -8,6 +8,7 @@ const AppDispatcher = require('../AppDispatcher');
 const MediaActionTypes = require('../actions/MediaAction').Types;
 
 let _mediaData = {};
+let _mediaStatus = {};
 
 const MediaStore = assign({}, GenericStore, {
   _reset: function() {
@@ -25,9 +26,22 @@ const MediaStore = assign({}, GenericStore, {
     return data;
   },
 
+  getStatus: function getStatus(mediaId) {
+    return _mediaStatus[mediaId];
+  },
+
+  setLoading: function setLoading(mediaId) {
+    _mediaStatus[mediaId] = 'loading';
+  },
+
   _storeCallback: function(action) {
     switch (action.type) {
+      case MediaActionTypes.MEDIA_LOADING:
+        _mediaStatus[action.data.mediaId] = 'loading';
+        break;
+
       case MediaActionTypes.MEDIA_DATA:
+        _mediaStatus[action.data.mediaId] = 'loaded';
         const index = action.data.tripId + '|' + action.data.mediaId;
         if (!_.isEqual(_mediaData[index], action.data)) {
           _mediaData[index] = action.data;

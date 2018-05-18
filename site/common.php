@@ -9,7 +9,7 @@ function pageStart($title = "Vacation Blog") {
   $out .= "<!DOCTYPE html lang='en'>\n";
   $out .= "<html>\n";
   $out .= "<head>\n";
-  $out .= "<title>Vacation Blog Privacy Policy and Terms of Service</title>\n";
+  $out .= "<title>Vacation Blog</title>\n";
   $out .= "<meta http-equiv='X-UA-Compatible' content='IE=edge'>\n";
   $out .= "<meta charset='utf-8'>\n";
   $out .= "<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>\n";

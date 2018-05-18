@@ -36,7 +36,8 @@ function _getMediaInfo(tripId, mediaId) {
     if (mediaInfo.height > mediaInfo.width) {
       result.orientation = Orientation.PORTRAIT;
     }
-  } else {
+  } else if (!MediaStore.getStatus(mediaId)) {
+    MediaStore.setLoading(mediaId);
     MediaAction.loadMedia(tripId, mediaId);
   }
 

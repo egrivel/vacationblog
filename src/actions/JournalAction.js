@@ -7,6 +7,7 @@ const TripAction = require('./TripAction');
 const CommentAction = require('./CommentAction');
 const MediaAction = require('./MediaAction');
 const UserAction = require('./UserAction');
+const MediaStore = require('../stores/MediaStore');
 
 const JournalAction = {
   Types: {
@@ -73,8 +74,11 @@ const JournalAction = {
       if (mediaList && mediaList.length) {
         let i;
         for (i = 0; i < mediaList.length; i++) {
-          MediaAction.loadMedia(tripId, mediaList[i]);
-          CommentAction.recursivelyLoadComments(tripId, mediaList[i]);
+          if (!MediaStore.getStatus(mediaList[i])) {
+            MediaStore.setLoading(mediaList[i]);
+            MediaAction.loadMedia(tripId, mediaList[i]);
+          }
+          // CommentAction.recursivelyLoadComments(tripId, mediaList[i]);
         }
       }
     }

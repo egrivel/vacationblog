@@ -6,10 +6,17 @@ const utils = require('./utils');
 const MediaAction = {
   Types: {
     MEDIA_DATA: 'MEDIA_DATA',
-    MEDIA_BULK_DATA: 'MEDIA_BULK_DATA'
+    MEDIA_BULK_DATA: 'MEDIA_BULK_DATA',
+    MEDIA_LOADING: 'MEDIA_LOADING'
   },
 
   loadMedia: function(tripId, mediaId) {
+    setTimeout(function() {AppDispatcher.dispatch({
+      type: MediaAction.Types.MEDIA_LOADING,
+      data: {
+        mediaId: mediaId
+      }
+    })}, 0);
     const url = 'api/getMedia.php?tripId=' + tripId + '&mediaId=' + mediaId;
     utils.getAsync(url, function(response) {
       const data = JSON.parse(response);

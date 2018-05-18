@@ -50,8 +50,9 @@ const Image = React.createClass({
       _.trim(this.props.format + ' ' + this.props.className);
     let url = this.props.url;
     if (!url) {
-      const baseUrl = 'https://egrivel.net/proxy/phimg.php?large=';
-      url = baseUrl + this.props.imageId;
+//      const baseUrl = 'https://egrivel.net/proxy/phimg.php?large=';
+      const baseUrl = 'https://egrivel.net/blogphotos/';
+      url = baseUrl + this.props.imageId + '.jpg';
     }
     let editButton = null;
     if (this.props.onEdit) {

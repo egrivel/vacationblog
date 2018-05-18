@@ -48731,6 +48731,7 @@ const TripAction = require('./TripAction');
 const CommentAction = require('./CommentAction');
 const MediaAction = require('./MediaAction');
 const UserAction = require('./UserAction');
+const MediaStore = require('../stores/MediaStore');
 
 const JournalAction = {
   Types: {
@@ -48797,8 +48798,11 @@ const JournalAction = {
       if (mediaList && mediaList.length) {
         let i;
         for (i = 0; i < mediaList.length; i++) {
-          MediaAction.loadMedia(tripId, mediaList[i]);
-          CommentAction.recursivelyLoadComments(tripId, mediaList[i]);
+          if (!MediaStore.getStatus(mediaList[i])) {
+            MediaStore.setLoading(mediaList[i]);
+            MediaAction.loadMedia(tripId, mediaList[i]);
+          }
+          // CommentAction.recursivelyLoadComments(tripId, mediaList[i]);
         }
       }
     }
@@ -48867,7 +48871,7 @@ const JournalAction = {
 
 module.exports = JournalAction;
 
-},{"../AppDispatcher":241,"./CommentAction":242,"./MediaAction":247,"./TripAction":251,"./UserAction":252,"./utils":253}],246:[function(require,module,exports){
+},{"../AppDispatcher":241,"../stores/MediaStore":305,"./CommentAction":242,"./MediaAction":247,"./TripAction":251,"./UserAction":252,"./utils":253}],246:[function(require,module,exports){
 'use strict';
 
 const UserAction = require('./UserAction');
@@ -49122,10 +49126,17 @@ const utils = require('./utils');
 const MediaAction = {
   Types: {
     MEDIA_DATA: 'MEDIA_DATA',
-    MEDIA_BULK_DATA: 'MEDIA_BULK_DATA'
+    MEDIA_BULK_DATA: 'MEDIA_BULK_DATA',
+    MEDIA_LOADING: 'MEDIA_LOADING'
   },
 
   loadMedia: function(tripId, mediaId) {
+    setTimeout(function() {AppDispatcher.dispatch({
+      type: MediaAction.Types.MEDIA_LOADING,
+      data: {
+        mediaId: mediaId
+      }
+    })}, 0);
     const url = 'api/getMedia.php?tripId=' + tripId + '&mediaId=' + mediaId;
     utils.getAsync(url, function(response) {
       const data = JSON.parse(response);
@@ -50904,8 +50915,9 @@ const Image = React.createClass({
       _.trim(this.props.format + ' ' + this.props.className);
     let url = this.props.url;
     if (!url) {
-      const baseUrl = 'https://egrivel.net/proxy/phimg.php?large=';
-      url = baseUrl + this.props.imageId;
+//      const baseUrl = 'https://egrivel.net/proxy/phimg.php?large=';
+      const baseUrl = 'https://egrivel.net/blogphotos/';
+      url = baseUrl + this.props.imageId + '.jpg';
     }
     let editButton = null;
     if (this.props.onEdit) {
@@ -51837,7 +51849,8 @@ function _getMediaInfo(tripId, mediaId) {
     if (mediaInfo.height > mediaInfo.width) {
       result.orientation = Orientation.PORTRAIT;
     }
-  } else {
+  } else if (!MediaStore.getStatus(mediaId)) {
+    MediaStore.setLoading(mediaId);
     MediaAction.loadMedia(tripId, mediaId);
   }
 
@@ -52149,7 +52162,8 @@ function _getMediaInfo(tripId, mediaId) {
     if (mediaInfo.height > mediaInfo.width) {
       result.orientation = Orientation.PORTRAIT;
     }
-  } else {
+  } else if (!MediaStore.getStatus(mediaId)) {
+    MediaStore.setLoading(mediaId);
     MediaAction.loadMedia(tripId, mediaId);
   }
 
@@ -57353,6 +57367,7 @@ const AppDispatcher = require('../AppDispatcher');
 const MediaActionTypes = require('../actions/MediaAction').Types;
 
 let _mediaData = {};
+let _mediaStatus = {};
 
 const MediaStore = assign({}, GenericStore, {
   _reset: function() {
@@ -57370,9 +57385,22 @@ const MediaStore = assign({}, GenericStore, {
     return data;
   },
 
+  getStatus: function getStatus(mediaId) {
+    return _mediaStatus[mediaId];
+  },
+
+  setLoading: function setLoading(mediaId) {
+    _mediaStatus[mediaId] = 'loading';
+  },
+
   _storeCallback: function(action) {
     switch (action.type) {
+      case MediaActionTypes.MEDIA_LOADING:
+        _mediaStatus[action.data.mediaId] = 'loading';
+        break;
+
       case MediaActionTypes.MEDIA_DATA:
+        _mediaStatus[action.data.mediaId] = 'loaded';
         const index = action.data.tripId + '|' + action.data.mediaId;
         if (!_.isEqual(_mediaData[index], action.data)) {
           _mediaData[index] = action.data;
