@@ -56,7 +56,7 @@ function _getMediaInfo(tripId, mediaId) {
  * @return {object} React element for the standard paragraph.
  * @private
  */
-function _standardParagraph(parent, tripId, text, mediaId) {
+function _standardParagraph(parent, tripId, text, mediaId, canEdit) {
   const mediaInfo = _getMediaInfo(tripId, mediaId);
   // standard text paragraph with a single image
   let orientation = Orientation.LANDSCAPE;
@@ -69,6 +69,7 @@ function _standardParagraph(parent, tripId, text, mediaId) {
         tripId={tripId}
         mediaId={mediaId}
         className=""
+        canEdit={canEdit}
       />
     </span>
   );
@@ -105,7 +106,7 @@ function _standardParagraph(parent, tripId, text, mediaId) {
  * @return {object} React element for the line with three images
  * @private
  */
-function _lineThreeImages(parent, tripId, images, mediaInfo, start) {
+function _lineThreeImages(parent, tripId, images, mediaInfo, start, key, canEdit) {
   const img1 = images[start];
   const img2 = images[start + 1];
   const img3 = images[start + 2];
@@ -176,18 +177,21 @@ function _lineThreeImages(parent, tripId, images, mediaInfo, start) {
         tripId={tripId}
         mediaId={img1}
         className="img3"
+        canEdit={canEdit}
       />
       {' '}
       <JournalImage
         tripId={tripId}
         mediaId={img2}
         className="img3"
+        canEdit={canEdit}
       />
       {' '}
       <JournalImage
         tripId={tripId}
         mediaId={img3}
         className="img3"
+        canEdit={canEdit}
       />
       <span className="clear"></span>
     </div>
@@ -206,7 +210,7 @@ function _lineThreeImages(parent, tripId, images, mediaInfo, start) {
  * @return {object} React element for the line with three images
  * @private
  */
-function _lineTwoImages(parent, tripId, images, mediaInfo, start) {
+function _lineTwoImages(parent, tripId, images, mediaInfo, start, key, canEdit) {
   const img1 = images[start];
   const img2 = images[start + 1];
 
@@ -262,12 +266,14 @@ function _lineTwoImages(parent, tripId, images, mediaInfo, start) {
         tripId={tripId}
         mediaId={img1}
         className="img2"
+        canEdit={canEdit}
       />
       {' '}
       <JournalImage
         tripId={tripId}
         mediaId={img2}
         className="img2"
+        canEdit={canEdit}
       />
       <span className="clear"></span>
     </div>
@@ -298,7 +304,7 @@ function _paragraphTextOnly(parent, text) {
  * @return {object} React element for the line with three images
  * @private
  */
-function _paragraphMultipleImages(parent, tripId, text, images) {
+function _paragraphMultipleImages(parent, tripId, text, images, canEdit) {
   const result = [];
   let resultCount = 0;
 
@@ -325,29 +331,34 @@ function _paragraphMultipleImages(parent, tripId, text, images) {
   let currentImg = 0;
   while ((images.length - currentImg) >= 5) {
     result[resultCount] = _lineThreeImages(parent, tripId, images, mediaInfo,
-                                           currentImg, 'line-' + resultCount);
+                                           currentImg, 'line-' + resultCount,
+                                           canEdit);
     resultCount++;
     currentImg += 3;
   }
 
   if ((images.length - currentImg) === 2) {
     result[resultCount] = _lineTwoImages(parent, tripId, images, mediaInfo,
-                                         currentImg, 'line-' + resultCount);
+                                         currentImg, 'line-' + resultCount,
+                                         canEdit);
     resultCount++;
     currentImg += 2;
   } else if ((images.length - currentImg) === 3) {
     result[resultCount] = _lineThreeImages(parent, tripId, images, mediaInfo,
-                                           currentImg, 'line-' + resultCount);
+                                           currentImg, 'line-' + resultCount,
+                                           canEdit);
     resultCount++;
     currentImg += 3;
   } else {
     // (images.length - currentImg) must be 4
     result[resultCount] = _lineTwoImages(parent, tripId, images, mediaInfo,
-                                         currentImg, 'line-' + resultCount);
+                                         currentImg, 'line-' + resultCount,
+                                         canEdit);
     resultCount++;
     currentImg += 2;
     result[resultCount] = _lineTwoImages(parent, tripId, images, mediaInfo,
-                                         currentImg, 'line-' + resultCount);
+                                         currentImg, 'line-' + resultCount,
+                                         canEdit);
     resultCount++;
     currentImg += 2;
   }
@@ -372,7 +383,7 @@ function _paragraphMultipleImages(parent, tripId, text, images) {
  * @return {object} React element for the line with three images
  * @private
  */
-function _paragraphSingleImage(parent, tripId, mediaId) {
+function _paragraphSingleImage(parent, tripId, mediaId, canEdit) {
   return (
     <div>
       <div className="images">
@@ -380,6 +391,7 @@ function _paragraphSingleImage(parent, tripId, mediaId) {
           tripId={tripId}
           mediaId={mediaId}
           className="img1"
+          canEdit={canEdit}
         />
         <span className="clear"></span>
       </div>
@@ -394,6 +406,8 @@ const JournalParagraph = React.createClass({
     // need trip ID to get media info
     tripId: React.PropTypes.string.isRequired,
     tripActive: React.PropTypes.string.isRequired,
+    // canEdit to know whether to allow editing on media
+    canEdit: React.PropTypes.bool,
     text: React.PropTypes.string.isRequired
   },
 
@@ -480,7 +494,7 @@ const JournalParagraph = React.createClass({
    * renders the image bottom-aligned, +50 renders it top-aligned.
    * @return {object} React rendered component.
    */
-  _renderPanorama: function(tripId, imageId, offset) {
+  _renderPanorama: function(tripId, imageId, offset, canEdit) {
     // make sure offset is in range -50 to +50 and default 0
     if (offset) {
       if (offset < -50) {
@@ -501,6 +515,7 @@ const JournalParagraph = React.createClass({
           elementId={imageId}
           format="pano"
           offset={parseInt(offset)}
+          canEdit={canEdit}
         />
       </div>
     );
@@ -519,7 +534,7 @@ const JournalParagraph = React.createClass({
 
     const pano = text.match(/^\s*\[PANO ([\d\-abc]+)(\s+[+\-]\d+)?\]\s*$/);
     if (pano) {
-      return this._renderPanorama(tripId, pano[1], pano[2]);
+      return this._renderPanorama(tripId, pano[1], pano[2], this.props.canEdit);
     }
 
     text = text.replace('[IMGS]', '');
@@ -549,14 +564,14 @@ const JournalParagraph = React.createClass({
     }
 
     if ((images.length === 1) && text) {
-      return _standardParagraph(this, tripId, text, images[0]);
+      return _standardParagraph(this, tripId, text, images[0], this.props.canEdit);
     } else if (images.length > 1) {
       return _paragraphMultipleImages(this, tripId, text,
-                                     images);
+                                     images, this.props.canEdit);
     } else if (text) {
       return _paragraphTextOnly(this, text);
     } else if (images.length === 1) {
-      return _paragraphSingleImage(this, tripId, images[0]);
+      return _paragraphSingleImage(this, tripId, images[0], this.props.canEdit);
     }
 
     // default if nothing applies

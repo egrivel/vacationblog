@@ -196,6 +196,14 @@ const JournalEntry = React.createClass({
     const journalId = this.state.journalId;
     const loggedInUserId = this.state.loggedInUserId;
 
+    let canEdit = false;
+    if (this.state.tripActive &&
+      (this.state.tripActive === 'Y') &&
+      (loggedInUserId === this.state.journalUserId)) {
+      canEdit = true;
+    }
+    // console.log('set canEdit to ' + canEdit + ' with type ' + typeof(canEdit));
+
     const parList = utils.splitText(this.state.journalText);
     let paragraphs = null;
     if (tripId && journalId) {
@@ -208,6 +216,7 @@ const JournalEntry = React.createClass({
           <JournalParagraph
             tripId={tripId}
             tripActive={this.state.tripActive}
+            canEdit={canEdit}
             key={key}
             text={par}
           />
@@ -215,12 +224,7 @@ const JournalEntry = React.createClass({
       }
     }
 
-    let editCallback = null;
-    if (this.state.tripActive &&
-      (this.state.tripActive === 'Y') &&
-      (loggedInUserId === this.state.journalUserId)) {
-      editCallback = this._editCallback;
-    }
+    const editCallback = canEdit ? this._editCallback : null;
 
     let comments = null;
     if (tripId && journalId) {

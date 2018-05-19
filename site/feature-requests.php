@@ -22,6 +22,12 @@ print pageStart("Vacation Blog Feature Requests");
   <li>Warn on duplicate photos on blog post entry (Nicoline).</li>
   <li>Ability to add photos to a blog post through point-and-click
     (Nicoline).</li>
+  <li>Ability to delete media items that are not used in any post.</li>
+  <li>Ability to post video.</li>
+  <li>Ability to edit media items not associated with a post.</li>
+  <li>Ability for all contributors to edit media items.</li>
+  <li>Ability to clean up the database by removing old versions of
+    records.</li>
 </ul>
 
 <?php print pageEnd(); ?>

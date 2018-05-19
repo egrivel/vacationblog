@@ -1103,6 +1103,7 @@ div.formValue img.preview {
   display: block;
   font-family: 'Merriweather Sans', sans-serif;
   font-size: 20px;
+  font-weight: normal;
   background-color: #333;
   color: #fff;
   padding: 10px;
@@ -1110,6 +1111,7 @@ div.formValue img.preview {
   margin-right: auto;
   max-width: 760px;
   letter-spacing: 0.5px;
+  line-height: 125%;
 }
 
 @media screen and (max-width: 480px) {

@@ -48,7 +48,8 @@ const JournalImage = React.createClass({
     mediaId: React.PropTypes.string,
     className: React.PropTypes.string,
     offset: React.PropTypes.number,
-    format: React.PropTypes.string
+    format: React.PropTypes.string,
+    canEdit: React.PropTypes.bool
   },
 
   getInitialState: function() {
@@ -273,7 +274,7 @@ const JournalImage = React.createClass({
     }
 
     let onEdit = null;
-    if (UserStore.canEditMedia()) {
+    if (UserStore.canEditMedia() || this.props.canEdit) {
       onEdit = this._onEdit;
     }
 
