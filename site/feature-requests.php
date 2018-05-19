@@ -25,9 +25,15 @@ print pageStart("Vacation Blog Feature Requests");
   <li>Ability to delete media items that are not used in any post.</li>
   <li>Ability to post video.</li>
   <li>Ability to edit media items not associated with a post.</li>
-  <li>Ability for all contributors to edit media items.</li>
   <li>Ability to clean up the database by removing old versions of
     records.</li>
+</ul>
+
+<h3>Implemented suggestions</h3>
+
+<ul>
+  <li>Ability for all contributors to edit their own media items.
+    Implemented 2018-05-19.</li>
 </ul>
 
 <?php print pageEnd(); ?>
