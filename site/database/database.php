@@ -8,12 +8,57 @@ $gl_db_init = false;
 
 $gl_db_version = '';
 
+function db_get_ini_file($root) {
+   if (file_exists("$root/../../../private/vacationblog.ini")) {
+      // First handle the situation that the vacationblog is in a
+      // sub-subdirectory, so have to move three levels up from the
+      // vacationblog root to find the "private" area.
+      return "$root/../../../private/vacationblog.ini";
+   }
+   if (file_exists("$root/../../../vacationblog.ini")) {
+      // If there is no "private" area, then at least store it outside
+      // of the web server contents
+      return "$root/../../../vacationblog.ini";
+   }
+   
+   if (file_exists("$root/../../private/vacationblog.ini")) {
+      // Then handle the situation that the vacationblog is in a
+      // subdirectory, so have to move two levels up from the vacationblog
+      // root to find the "private" area.
+      return "$root/../../private/vacationblog.ini";
+   }
+   if (file_exists("$root/../../vacationblog.ini")) {
+      // If there is no "private" area, then at least store it outside
+      // of the web server contents
+      return "$root/../../vacationblog.ini";
+   }
+   
+   if (file_exists("$root/../private/vacationblog.ini")) {
+      // Now handle the situation where the vacationblog is in the root
+      // of the web server.
+      return "$root/../private/vacationblog.ini";
+   }
+   if (file_exists("$root/../vacationblog.ini")) {
+      // If there is no "private" area, then at least store it outside
+      // of the web server contents
+      return "$root/../vacationblog.ini";
+   }
+   
+   // If all else fails, store it in the web server content root
+   // (but make sure it's protected with a .htaccess file)
+   return "$root/vacationblog.ini";
+}
+
 function db_init() {
    global $gl_db_init;
    global $gl_db_version;
    
    if (!$gl_db_init) {
-      $config = parse_ini_file(dirname(__FILE__) . '/../../vacationblog.ini');
+      // root directory of the vacationblog system (may not be the root of
+      // the whole web server)
+      $root = dirname(__FILE__) . '/../..';
+      $config_fname = db_get_ini_file($root);
+      $config = parse_ini_file($config_fname);
       if (isset($_ENV['DB_NAME'])) {
         $dbname = $_ENV['DB_NAME'];
       } else {
@@ -43,7 +88,7 @@ function db_init() {
          $gl_db_version = 'mysql-5.7';
       }
       if (!db_connect($hostname, $username, $password, $dbname)) {
-        echo "Could not connect: " . db_error() . '<br/>\n';
+        echo "Could not connect: '" . db_error() . "'<br/>\n";
       }
       // mysql_selectdb($dbname);
 
