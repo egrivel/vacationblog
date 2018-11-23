@@ -6,7 +6,7 @@
 
 print "post-update.pl started\n";
 
-chdir("/mnt/d1/httpd/html/projects/vacationblog");
+chdir("/mnt/data/httpd/html/projects/vacationblog");
 # Get the updates from git
 system("GIT_DIR=.git; git pull");
 $do_rebuild = 0;
