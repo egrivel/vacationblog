@@ -68,7 +68,7 @@ function getMediaUrl() {
   global $tripId;
   // getTrip();
 
-  $defaultMediaUrl = 'https://egrivel.net/vacationblog/site/media/vak2018-fb-banner.png';
+  $defaultMediaUrl = 'https://vacationblog.grivel.net/media/vak2018-fb-banner.png';
   return $defaultMediaUrl;
 }
 
@@ -85,7 +85,7 @@ function getMediaUrl() {
     <link rel="shortcut icon" href="./media/favicon.ico">
     <!-- Properties for facebook -->
     <meta property="fb:admins" content="552452884" />
-    <meta property="og:url" content="https://egrivel.net/vacationblog/site/" />
+    <meta property="og:url" content="https://vacationblog.grivel.net/" />
     <meta property="og:title" content="<?php print getTriptitle(); ?>" />
     <meta property="og:description" content="<?php print getTripDescr(); ?>" />
     <meta property="og:image" content="<?php print getMediaUrl(); ?>" />
