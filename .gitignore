@@ -4,6 +4,8 @@ coverage
 temp
 dist
 vacationblog.ini
+package-lock.json
+js/boot.js
 *.sublime-workspace
 *~
 .git
