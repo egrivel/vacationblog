@@ -54,9 +54,9 @@ function db_init() {
    global $gl_db_version;
    
    if (!$gl_db_init) {
-      // root directory of the vacationblog system (may not be the root of
+      // root directory of the vacationblog site (may not be the root of
       // the whole web server)
-      $root = dirname(__FILE__) . '/../..';
+      $root = dirname(__FILE__) . '/..';
       $config_fname = db_get_ini_file($root);
       $config = parse_ini_file($config_fname);
       if (isset($_ENV['DB_NAME'])) {
