@@ -2,6 +2,9 @@
 
 const _ = require('lodash');
 const React = require('react');
+const createClass = require('create-react-class');
+const PropTypes = require('prop-types');
+
 const moment = require('moment');
 
 const Textbox = require('./standard/Textbox.jsx');
@@ -15,7 +18,7 @@ const MenuAction = require('../actions/MenuAction');
 const MenuStore = require('../stores/MenuStore');
 const JournalAction = require('../actions/JournalAction');
 
-const JournalEdit = React.createClass({
+const JournalEdit = createClass({
   displayName: 'Journal Edit',
 
   mixins: [storeMixin()],
@@ -23,17 +26,17 @@ const JournalEdit = React.createClass({
   stores: [TripStore, JournalStore],
 
   propTypes: {
-    params: React.PropTypes.shape({
-      tripId: React.PropTypes.string.isRequired,
-      journalId: React.PropTypes.string.isRequired
+    params: PropTypes.shape({
+      tripId: PropTypes.string.isRequired,
+      journalId: PropTypes.string.isRequired
     }),
-    history: React.PropTypes.shape({
-      push: React.PropTypes.func.isRequired
+    history: PropTypes.shape({
+      push: PropTypes.func.isRequired
     })
   },
 
   contextTypes: {
-    router: React.PropTypes.object.isRequired
+    router: PropTypes.object.isRequired
   },
 
   _getStateFromStores: function() {

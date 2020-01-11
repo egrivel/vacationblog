@@ -1,6 +1,8 @@
 'use strict';
 
 const React = require('react');
+const createClass = require('create-react-class');
+const PropTypes = require('prop-types');
 
 const ButtonBar = require('./standard/ButtonBar.jsx');
 const Textbox = require('./standard/Textbox.jsx');
@@ -8,9 +10,9 @@ const Textarea = require('./standard/Textarea.jsx');
 
 const NotificationAction = require('../actions/NotificationAction');
 
-const Notification = React.createClass({
+const Notification = createClass({
   contextTypes: {
-    router: React.PropTypes.object.isRequired
+    router: PropTypes.object.isRequired
   },
 
   getInitialState: function() {

@@ -2,6 +2,8 @@
 
 const _ = require('lodash');
 const React = require('react');
+const createClass = require('create-react-class');
+const PropTypes = require('prop-types');
 const moment = require('moment-timezone');
 
 const storeMixin = require('./StoreMixin');
@@ -9,7 +11,7 @@ const TripAction = require('../actions/TripAction');
 const TripStore = require('../stores/TripStore');
 const utils = require('./utils');
 
-const TripJournalList = React.createClass({
+const TripJournalList = createClass({
   displayName: 'Trip Journal List',
 
   mixins: [storeMixin()],
@@ -17,7 +19,7 @@ const TripJournalList = React.createClass({
   stores: [TripStore],
 
   propTypes: {
-    tripId: React.PropTypes.string.isRequired
+    tripId: PropTypes.string.isRequired
   },
 
   _getStateFromStores: function() {

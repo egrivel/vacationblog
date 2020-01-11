@@ -1,6 +1,8 @@
 'use strict';
 
 const React = require('react');
+const createClass = require('create-react-class');
+const PropTypes = require('prop-types');
 const Link = require('react-router').Link;
 
 const TripAction = require('../actions/TripAction');
@@ -48,35 +50,48 @@ function _getStateFromStores() {
 function _startReadingLink(tripId, journalId) {
   let journalPart = '(no journal entries)';
   if (journalId) {
-    journalPart = React.DOM.span(
-      {
-        className: 'readJournalLink'
-      },
-      'Scroll down to see a list of days where we have posts below or ',
-      React.createElement(
-        Link,
-        {
-          to: '/journal/' + tripId + '/' + journalId
-        },
-        'start reading at the beginning ',
-        React.DOM.i({className: 'fa fa-chevron-right'}),
-        React.DOM.i({className: 'fa fa-chevron-right'})
-      )
+    journalPart = (
+      <span className="readJournalLink">
+        Scroll down to see a list of days where we have posts below or
+        {' '}
+        <Link to={'/journal/' + tripId + '/' + journalId}>
+          start reading from the beginning
+          {' '}
+          <i className="fa fa-chevron-right" />
+          <i className="fa fa-chevron-right" />
+        </Link>
+      </span>
     );
+    // journalPart = React.DOM.span(
+    //   {
+    //     className: 'readJournalLink'
+    //   },
+    //   'Scroll down to see a list of days where we have posts below or ',
+    //   React.createElement(
+    //     Link,
+    //     {
+    //       to: '/journal/' + tripId + '/' + journalId
+    //     },
+    //     'start reading at the beginning ',
+    //     React.DOM.i({className: 'fa fa-chevron-right'}),
+    //     React.DOM.i({className: 'fa fa-chevron-right'})
+    //   )
+    // );
   }
 
-  return React.DOM.p(
-    {className: 'readJournal'},
-    journalPart
-  );
+  return <p className="readJournal">{journalPart}</p>;
+  // return React.DOM.p(
+  //   {className: 'readJournal'},
+  //   journalPart
+  // );
 }
 
-const TripDescription = React.createClass({
+const TripDescription = createClass({
   displayName: 'TripDescription',
 
   propTypes: {
-    params: React.PropTypes.shape({
-      tripId: React.PropTypes.string
+    params: PropTypes.shape({
+      tripId: PropTypes.string
     })
   },
 

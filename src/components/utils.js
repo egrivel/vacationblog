@@ -91,41 +91,71 @@ function _recursivelyGetNodes(text, count) {
   if (text.substring(0, 4).toUpperCase() === '[EM]') {
     end = text.toUpperCase().indexOf('[/EM]');
     if (end > 0) {
-      nodes.push(React.DOM.em({key: count},
-                              _recursivelyGetNodes(text.substring(4, end),
-                                                 count + 1)));
+      nodes.push(
+        <em key={count}>
+          {_recursivelyGetNodes(text.substring(4, end), count + 1)}
+        </em>
+      );
+      // nodes.push(React.DOM.em({key: count},
+      //                         _recursivelyGetNodes(text.substring(4, end),
+      //                                            count + 1)));
       nodes.push(_recursivelyGetNodes(text.substring(end + 5),
                                     count + 1));
     } else {
-      nodes.push(React.DOM.em({key: count},
-                              _recursivelyGetNodes(text.substring(4),
-                                                 count + 1)));
+      nodes.push(
+        <em key={count}>
+          {_recursivelyGetNodes(text.substring(4), count + 1)}
+        </em>
+      );
+      // nodes.push(React.DOM.em({key: count},
+      //                         _recursivelyGetNodes(text.substring(4),
+      //                                            count + 1)));
     }
   } else if (text.substring(0, 3) === '[B]') {
     end = text.indexOf('[/B]');
     if (end > 0) {
-      nodes.push(React.DOM.strong({key: count},
-                                  _recursivelyGetNodes(text.substring(3, end),
-                                                      count + 1)));
+      nodes.push(
+        <strong key={count}>
+          {_recursivelyGetNodes(text.substring(3, end), count + 1)}
+        </strong>
+      );
+      // nodes.push(React.DOM.strong({key: count},
+      //                             _recursivelyGetNodes(text.substring(3, end),
+      //                                                 count + 1)));
       nodes.push(_recursivelyGetNodes(text.substring(end + 4),
                                     count + 1));
     } else {
-      nodes.push(React.DOM.strong({key: count},
-                                  _recursivelyGetNodes(text.substring(3),
-                                                       count + 1)));
+      nodes.push(
+        <strong key={count}>
+          {_recursivelyGetNodes(text.substring(3), count + 1)}
+        </strong>
+      );
+      // nodes.push(React.DOM.strong({key: count},
+      //                             _recursivelyGetNodes(text.substring(3),
+      //                                                  count + 1)));
     }
   } else if (text.substring(0, 3) === '[U]') {
     end = text.indexOf('[/U]');
     if (end > 0) {
-      nodes.push(React.DOM.u({key: count},
-                             _recursivelyGetNodes(text.substring(3, end),
-                                                  count + 1)));
+      nodes.push(
+        <u key={count}>
+          {_recursivelyGetNodes(text.substring(3, end), count + 1)}
+        </u>
+      );
+      // nodes.push(React.DOM.u({key: count},
+      //                        _recursivelyGetNodes(text.substring(3, end),
+      //                                             count + 1)));
       nodes.push(_recursivelyGetNodes(text.substring(end + 4),
                                     count + 1));
     } else {
-      nodes.push(React.DOM.u({key: count},
-                             _recursivelyGetNodes(text.substring(3),
-                                                  count + 1)));
+      nodes.push(
+        <u key={count}>
+          {_recursivelyGetNodes(text.substring(3), count + 1)}
+        </u>
+      );
+      // nodes.push(React.DOM.u({key: count},
+      //                        _recursivelyGetNodes(text.substring(3),
+      //                                             count + 1)));
     }
   } else if (text.substring(0, 6).toUpperCase() === '[LINK ') {
     const endOpen = text.indexOf(']');
@@ -142,14 +172,24 @@ function _recursivelyGetNodes(text, count) {
       const href = open;
       end = text.toUpperCase().indexOf('[/LINK]');
       if (end > 0) {
-        nodes.push(React.DOM.a({href: href, target: '_blank', key: count},
-                               _recursivelyGetNodes(text.substring(0, end),
-                                                  count + 1)));
+        nodes.push(
+          <a href={href} target="_blank" key={count}>
+            {_recursivelyGetNodes(text.substring(0, end), count + 1)}
+          </a>
+        );
+        // nodes.push(React.DOM.a({href: href, target: '_blank', key: count},
+        //                        _recursivelyGetNodes(text.substring(0, end),
+        //                                           count + 1)));
         nodes.push(_recursivelyGetNodes(text.substring(end + 7),
                                        count + 1));
       } else {
-        nodes.push(React.DOM.a({href: href, target: '_blank', key: count},
-          _recursivelyGetNodes(text, count + 1)));
+        nodes.push(
+          <a href={href} target="_blank" key={count}>
+            {_recursivelyGetNodes(text, count + 1)}
+          </a>
+        );
+        // nodes.push(React.DOM.a({href: href, target: '_blank', key: count},
+        //   _recursivelyGetNodes(text, count + 1)));
       }
     } else {
       nodes.push(_recursivelyGetNodes(text, count + 1));
@@ -167,9 +207,12 @@ function _recursivelyGetNodes(text, count) {
     }
     if (open) {
       const src = open.trim();
-      nodes.push(React.DOM.img(
-        {src: 'media/' + src, key: count}
-      ));
+      nodes.push(
+        <img src={'media/' + src} keys={count} />
+      );
+      // nodes.push(React.DOM.img(
+      //   {src: 'media/' + src, key: count}
+      // ));
     }
   } else {
     nodes.push(text);
@@ -194,21 +237,27 @@ const utils = {
       className = null;
     }
     if (type === 'p') {
-      return React.DOM.p(
-        {
-          className: className,
-          key: key
-        },
-        nodes
+      return (
+        <p className={className} key={key}>{nodes}</p>
       );
+      // return React.DOM.p(
+      //   {
+      //     className: className,
+      //     key: key
+      //   },
+      //   nodes
+      // );
     } else if (type === 'span') {
-      return React.DOM.span(
-        {
-          className: className,
-          key: key
-        },
-        nodes
+      return (
+        <span className={className} key={key}>{nodes}</span>
       );
+      // return React.DOM.span(
+      //   {
+      //     className: className,
+      //     key: key
+      //   },
+      //   nodes
+      // );
     }
   },
 

@@ -1,6 +1,7 @@
 'use strict';
 
 const React = require('react');
+const createClass = require('create-react-class');
 
 const storeMixin = require('./StoreMixin');
 const UserStore = require('../stores/UserStore');
@@ -8,7 +9,7 @@ const UserAction = require('../actions/UserAction');
 const MenuAction = require('../actions/MenuAction');
 const MenuStore = require('../stores/MenuStore');
 
-const UserAdmin = React.createClass({
+const UserAdmin = createClass({
   displayName: 'User Admin',
 
   mixins: [storeMixin()],

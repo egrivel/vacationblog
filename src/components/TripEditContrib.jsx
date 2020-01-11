@@ -2,21 +2,23 @@
 
 const _ = require('lodash');
 const React = require('react');
+const createClass = require('create-react-class');
+const PropTypes = require('prop-types');
 
-const TripEditContrib = React.createClass({
+const TripEditContrib = createClass({
   displayName: 'Trip Edit Contrib',
 
   propTypes: {
-    show: React.PropTypes.bool.isRequired,
-    data: React.PropTypes.shape({
-      contribId: React.PropTypes.string,
-      name: React.PropTypes.string,
-      profileImg: React.PropTypes.string,
-      message: React.PropTypes.string
+    show: PropTypes.bool.isRequired,
+    data: PropTypes.shape({
+      contribId: PropTypes.string,
+      name: PropTypes.string,
+      profileImg: PropTypes.string,
+      message: PropTypes.string
     }),
-    onChange: React.PropTypes.func,
-    onClose: React.PropTypes.func,
-    onSave: React.PropTypes.func
+    onChange: PropTypes.func,
+    onClose: PropTypes.func,
+    onSave: PropTypes.func
   },
 
   _updateMessage: function(event) {

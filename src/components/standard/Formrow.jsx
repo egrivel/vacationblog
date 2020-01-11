@@ -1,14 +1,16 @@
 'use strict';
 
 const React = require('react');
+const createClass = require('create-react-class');
+const PropTypes = require('prop-types');
 
-const Formrow = React.createClass({
+const Formrow = createClass({
   displayName: 'Form row',
 
   propTypes: {
-    label: React.PropTypes.string,
-    labelFor: React.PropTypes.string,
-    children: React.PropTypes.object
+    label: PropTypes.string,
+    labelFor: PropTypes.string,
+    children: PropTypes.object
   },
 
   render: function() {

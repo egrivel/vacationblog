@@ -1,6 +1,8 @@
 'use strict';
 
 const React = require('react');
+const createClass = require('create-react-class');
+
 const Menu = require('./Menu.jsx');
 const Login = require('./Login.jsx');
 const TripStore = require('../stores/TripStore');
@@ -10,7 +12,7 @@ const UserAction = require('../actions/UserAction');
 
 const storeMixin = require('./StoreMixin');
 
-const Header = React.createClass({
+const Header = createClass({
   displayName: 'Header',
 
   stores: [TripStore, MenuStore, UserStore],

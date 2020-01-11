@@ -2,16 +2,18 @@
 
 const _ = require('lodash');
 const React = require('react');
+const createClass = require('create-react-class');
+const PropTypes = require('prop-types');
 
-const TripSelectContrib = React.createClass({
+const TripSelectContrib = createClass({
   displayName: 'Trip Select Contrib',
 
   propTypes: {
-    show: React.PropTypes.bool.isRequired,
-    userList: React.PropTypes.array,
-    existingUserList: React.PropTypes.array,
-    onClose: React.PropTypes.func,
-    onSave: React.PropTypes.func
+    show: PropTypes.bool.isRequired,
+    userList: PropTypes.array,
+    existingUserList: PropTypes.array,
+    onClose: PropTypes.func,
+    onSave: PropTypes.func
   },
 
   getInitialState: function() {

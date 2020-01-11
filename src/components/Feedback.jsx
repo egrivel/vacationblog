@@ -1,13 +1,15 @@
 'use strict';
 
 const React = require('react');
+const createClass = require('create-react-class');
+const PropTypes = require('prop-types');
 
 const UserStore = require('../stores/UserStore');
 const FeedbackStore = require('../stores/FeedbackStore');
 const FeedbackAction = require('../actions/FeedbackAction');
 const storeMixin = require('./StoreMixin');
 
-const Feedback = React.createClass({
+const Feedback = createClass({
   displayName: 'Feedback',
 
   stores: [FeedbackStore, UserStore],
@@ -15,8 +17,8 @@ const Feedback = React.createClass({
   mixins: [storeMixin()],
 
   propTypes: {
-    tripId: React.PropTypes.string,
-    referenceId: React.PropTypes.string
+    tripId: PropTypes.string,
+    referenceId: PropTypes.string
   },
 
   componentWillMount: function() {

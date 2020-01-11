@@ -1,17 +1,19 @@
 'use strict';
 
 const React = require('react');
+const createClass = require('create-react-class');
+const PropTypes = require('prop-types');
 
 const Formrow = require('./Formrow.jsx');
 
-const Password = React.createClass({
+const Password = createClass({
   displayName: 'Password',
 
   propTypes: {
-    fieldId: React.PropTypes.string.isRequired,
-    label: React.PropTypes.string.isRequired,
-    value: React.PropTypes.string,
-    onChange: React.PropTypes.func.isRequired
+    fieldId: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+    value: PropTypes.string,
+    onChange: PropTypes.func.isRequired
   },
 
   _onChange: function(event) {

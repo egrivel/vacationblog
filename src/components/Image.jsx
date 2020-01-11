@@ -7,34 +7,36 @@
 
 const _ = require('lodash');
 const React = require('react');
+const createClass = require('create-react-class');
+const PropTypes = require('prop-types');
 
 const utils = require('./utils');
 const Orientation = utils.orientation;
 
-const Image = React.createClass({
+const Image = createClass({
   displayName: 'Image',
 
   propTypes: {
     // Unique image ID
-    imageId: React.PropTypes.string.isRequired,
+    imageId: PropTypes.string.isRequired,
     // optional element ID
-    elementId: React.PropTypes.string,
+    elementId: PropTypes.string,
     // Image format: either 'portrait' or 'landscape'
-    format: React.PropTypes.oneOf([
+    format: PropTypes.oneOf([
       Orientation.PORTRAIT,
       Orientation.LANDSCAPE,
       Orientation.PANO
     ]).isRequired,
     // CSS class name
-    className: React.PropTypes.string,
+    className: PropTypes.string,
     // Style (used for panorama)
-    offset: React.PropTypes.number,
+    offset: PropTypes.number,
     // Caption, if available
-    caption: React.PropTypes.string,
+    caption: PropTypes.string,
     // Callback when clicked on the image
-    onClick: React.PropTypes.func,
-    onEdit: React.PropTypes.func,
-    url: React.PropTypes.string
+    onClick: PropTypes.func,
+    onEdit: PropTypes.func,
+    url: PropTypes.string
   },
 
   getDefaultProps: function() {

@@ -1,6 +1,8 @@
 'use strict';
 
 const React = require('react');
+const createClass = require('create-react-class');
+const PropTypes = require('prop-types');
 
 const JournalStore = require('../stores/JournalStore');
 const TripStore = require('../stores/TripStore');
@@ -19,13 +21,13 @@ const utils = require('../utils');
  * to display.
  */
 
-const JournalWrapper = React.createClass({
+const JournalWrapper = createClass({
   displayName: 'JournalWrapper',
 
   propTypes: {
-    params: React.PropTypes.object,
-    history: React.PropTypes.shape({
-      push: React.PropTypes.func.isRequired
+    params: PropTypes.object,
+    history: PropTypes.shape({
+      push: PropTypes.func.isRequired
     })
   },
 

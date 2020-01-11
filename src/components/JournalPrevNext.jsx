@@ -5,6 +5,9 @@
  */
 
 const React = require('react');
+const createClass = require('create-react-class');
+const PropTypes = require('prop-types');
+
 const Link = require('react-router').Link;
 
 /**
@@ -23,50 +26,68 @@ function getPrevNextPart(tripId, targetId, icon, className,
   let icon1 = null;
   let icon2 = null;
   if (className === 'prevlink') {
-    icon1 = React.DOM.i(
-      {
-        className: 'fa ' + icon
-      }
-    );
+    icon1 = <i className={'fa ' + icon} />;
+    // icon1 = React.DOM.i(
+    //   {
+    //     className: 'fa ' + icon
+    //   }
+    // );
   } else {
-    icon2 = React.DOM.i(
-      {
-        className: 'fa ' + icon
-      }
-    );
+    icon2 = <i className={'fa ' + icon} />;
+    // icon2 = React.DOM.i(
+    //   {
+    //     className: 'fa ' + icon
+    //   }
+    // );
   }
   if (targetId) {
-    return React.DOM.span(
-      {
-        className: className
-      },
-      React.createElement(
-        Link,
-        {
-          to: '/journal/' + tripId + '/' + targetId
-        },
-        icon1, icon1,
-        ' ' + label + ' ',
-        icon2, icon2
-      )
+    return (
+      <span className={className}>
+        <Link to={'/journal/' + tripId + '/' + targetId}>
+          {icon1}
+          {' ' + label + ' '}
+          {icon2}
+        </Link>
+      </span>
     );
   }
-  return React.DOM.span(
-    {
-      className: className
-    },
-    defaultLabel
+  // if (targetId) {
+  //   return React.DOM.span(
+  //     {
+  //       className: className
+  //     },
+  //     React.createElement(
+  //       Link,
+  //       {
+  //         to: '/journal/' + tripId + '/' + targetId
+  //       },
+  //       icon1, icon1,
+  //       ' ' + label + ' ',
+  //       icon2, icon2
+  //     )
+  //   );
+  // }
+  return (
+    <span className={className}>
+      {defaultLabel}
+    </span>
   );
+  // return React.DOM.span(
+  //   {
+  //     className: className
+  //   },
+  //   defaultLabel
+  // );
 }
 
-const JournalPrevNext = React.createClass({
+const JournalPrevNext = createClass({
   displayName: 'JournalPrevNext',
 
   propTypes: {
-    tripId: React.PropTypes.string.isRequired,
-    prevId: React.PropTypes.string,
-    nextId: React.PropTypes.string,
-    nr: React.PropTypes.number.isRequired
+    tripId: PropTypes.string.isRequired,
+    prevId: PropTypes.string,
+    nextId: PropTypes.string,
+    nr: PropTypes.number.isRequired
   },
 
   render: function() {

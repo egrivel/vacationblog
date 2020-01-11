@@ -1,14 +1,16 @@
 'use strict';
 
 const React = require('react');
+const createClass = require('create-react-class');
+const PropTypes = require('prop-types');
 
 const Formrow = require('./Formrow.jsx');
 
-const ButtonBar = React.createClass({
+const ButtonBar = createClass({
   displayName: 'ButtonBar',
 
   propTypes: {
-    buttons: React.PropTypes.array.isRequired
+    buttons: PropTypes.array.isRequired
   },
 
   render: function() {

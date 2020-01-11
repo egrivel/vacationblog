@@ -1,16 +1,18 @@
 'use strict';
 
 const React = require('react');
+const createClass = require('create-react-class');
+const PropTypes = require('prop-types');
 
 const Formrow = require('./Formrow.jsx');
 
-const Display = React.createClass({
+const Display = createClass({
   displayName: 'Display',
 
   propTypes: {
-    fieldId: React.PropTypes.string.isRequired,
-    label: React.PropTypes.string.isRequired,
-    value: React.PropTypes.string
+    fieldId: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+    value: PropTypes.string
   },
 
   defaultProps: {
