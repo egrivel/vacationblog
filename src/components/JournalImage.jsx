@@ -1,6 +1,8 @@
 'use strict';
 
 const React = require('react');
+const createClass = require('create-react-class');
+const PropTypes = require('prop-types');
 
 const UserStore = require('../stores/UserStore');
 const MediaStore = require('../stores/MediaStore');
@@ -40,16 +42,16 @@ function _getMediaInfo(tripId, mediaId) {
   return result;
 }
 
-const JournalImage = React.createClass({
+const JournalImage = createClass({
   displayName: 'JournalImage',
 
   propTypes: {
-    tripId: React.PropTypes.string,
-    mediaId: React.PropTypes.string,
-    className: React.PropTypes.string,
-    offset: React.PropTypes.number,
-    format: React.PropTypes.string,
-    canEdit: React.PropTypes.bool
+    tripId: PropTypes.string,
+    mediaId: PropTypes.string,
+    className: PropTypes.string,
+    offset: PropTypes.number,
+    format: PropTypes.string,
+    canEdit: PropTypes.bool
   },
 
   getInitialState: function() {

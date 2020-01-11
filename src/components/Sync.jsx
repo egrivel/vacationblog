@@ -1,6 +1,7 @@
 'use strict';
 
 const React = require('react');
+const createClass = require('create-react-class');
 
 const storeMixin = require('./StoreMixin');
 const Textbox = require('./standard/Textbox.jsx');
@@ -12,7 +13,7 @@ const MenuAction = require('../actions/MenuAction');
 const MenuStore = require('../stores/MenuStore');
 const UserStore = require('../stores/UserStore');
 
-const Sync = React.createClass({
+const Sync = createClass({
   displayName: 'Sync',
 
   mixins: [storeMixin()],

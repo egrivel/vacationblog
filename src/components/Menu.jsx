@@ -1,13 +1,16 @@
 'use strict';
 
 const React = require('react');
+const createClass = require('create-react-class');
+const PropTypes = require('prop-types');
+
 const MenuList = require('./MenuList.jsx');
 
-const Menu = React.createClass({
+const Menu = createClass({
   displayName: 'Menu',
 
   propTypes: {
-    menuData: React.PropTypes.array
+    menuData: PropTypes.array
   },
 
   render: function() {

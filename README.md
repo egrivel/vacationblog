@@ -150,3 +150,33 @@ HTML format in the `coverage/lcov-report` folder.
 ## Attributions
 
 Default site banner: Silver Bay, New York. Photographed July 11, 2014 by Eric Grivel. To the extent possible under law, Eric Grivel has waived all copyright and related or neighboring rights to this Photo #20140711-123441. This work is published from: United States.
+
+
+## Dependencies
+
+January 2020 upgrade: dependencies to use.
+ - react: React 16
+ - react-dom: needed for React
+ - prop-types: React prop types
+ - webpack: to bundle application
+ - webpack-cli: command line interface for webpack
+ - lodash: general utilities
+ - @babel/core: core for babel
+ - babel-loader: webpack loader for babel
+ - @babel/preset-env: babel presets
+ - @babel/polyfill: babel polyfilling
+ - @babel/plugin-transform-react-jsx
+ - moment, moment-timezone: date/time calculations
+
+Dependencies installed that need to be reviewed if they need to be updated:
+ - flux
+ - create-react-class: temporarily until refactored to React components
+ - react-router: needed for React, downgraded to ^3.0.0 from ^5.0.0 in order
+   for code to be compatible
+
+Configuring babel
+ - .babelrc
+ - webpack.config.js
+
+Commands
+ - npm run build

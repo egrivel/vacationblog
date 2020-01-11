@@ -6,6 +6,8 @@
  */
 
 const React = require('react');
+const createClass = require('create-react-class');
+const PropTypes = require('prop-types');
 
 const MediaStore = require('../stores/MediaStore');
 const MediaAction = require('../actions/MediaAction');
@@ -74,24 +76,34 @@ function _standardParagraph(parent, tripId, text, mediaId, canEdit) {
     </span>
   );
   const value = utils.buildTextNode('span', 'value', 'value', text);
-  const clear = React.DOM.span(
-    {
-      key: 'clear',
-      className: 'clear'
-    }
-  );
+  const clear = <span key="clear" className="clear" />;
+  // const clear = React.DOM.span(
+  //   {
+  //     key: 'clear',
+  //     className: 'clear'
+  //   }
+  // );
 
-  return React.DOM.div(
-    null,
-    React.DOM.div(
-      {
-        className: 'img-text'
-      },
-      label,
-      value,
-      clear
-    )
+  return (
+    <div>
+      <div className="img-text">
+        {label}
+        {value}
+        {clear}
+      </div>
+    </div>
   );
+  // return React.DOM.div(
+  //   null,
+  //   React.DOM.div(
+  //     {
+  //       className: 'img-text'
+  //     },
+  //     label,
+  //     value,
+  //     clear
+  //   )
+  // );
 }
 
 /**
@@ -363,13 +375,19 @@ function _paragraphMultipleImages(parent, tripId, text, images, canEdit) {
     currentImg += 2;
   }
 
-  const realResult = React.DOM.div(
-    {className: 'result'},
-    textPart,
-    result,
-    null // parent.buildModal()
+  return (
+    <div className="result">
+      {textPart}
+      {result}
+    </div>
   );
-  return realResult;
+  // const realResult = React.DOM.div(
+  //   {className: 'result'},
+  //   textPart,
+  //   result,
+  //   null // parent.buildModal()
+  // );
+  // return realResult;
 }
 
 /**
@@ -399,16 +417,16 @@ function _paragraphSingleImage(parent, tripId, mediaId, canEdit) {
   );
 }
 
-const JournalParagraph = React.createClass({
+const JournalParagraph = createClass({
   displayName: 'JournalParagraph',
 
   propTypes: {
     // need trip ID to get media info
-    tripId: React.PropTypes.string.isRequired,
-    tripActive: React.PropTypes.string.isRequired,
+    tripId: PropTypes.string.isRequired,
+    tripActive: PropTypes.string.isRequired,
     // canEdit to know whether to allow editing on media
-    canEdit: React.PropTypes.bool,
-    text: React.PropTypes.string.isRequired
+    canEdit: PropTypes.bool,
+    text: PropTypes.string.isRequired
   },
 
   // Handling dynamic sizing of images in modal: set the event handler to

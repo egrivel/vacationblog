@@ -67,6 +67,8 @@
  */
 
 const React = require('react');
+const createClass = require('create-react-class');
+const PropTypes = require('prop-types');
 
 const storeMixin = require('./StoreMixin');
 
@@ -81,7 +83,7 @@ const UserAction = require('../actions/UserAction');
 const UserStore = require('../stores/UserStore');
 const FacebookStore = require('../stores/FacebookStore');
 
-const Login = React.createClass({
+const Login = createClass({
   displayName: 'Login',
 
   stores: [UserStore, FacebookStore],
@@ -89,11 +91,11 @@ const Login = React.createClass({
   mixins: [storeMixin()],
 
   propTypes: {
-    onClose: React.PropTypes.func.isRequired
+    onClose: PropTypes.func.isRequired
   },
 
   contextTypes: {
-    router: React.PropTypes.object
+    router: PropTypes.object
   },
 
   _getStateFromStores: function() {

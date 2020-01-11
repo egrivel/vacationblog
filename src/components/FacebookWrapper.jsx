@@ -1,6 +1,7 @@
 'use strict';
 
 const React = require('react');
+const createClass = require('create-react-class');
 const Link = require('react-router').Link;
 
 const storeMixin = require('./StoreMixin');
@@ -11,7 +12,7 @@ const FacebookStore = require('../stores/FacebookStore');
 const UserStore = require('../stores/UserStore');
 
 // The FacebookWrapper component handles the facebook interactions...
-const FacebookWrapper = React.createClass({
+const FacebookWrapper = createClass({
   mixins: [storeMixin()],
 
   stores: [UserStore, FacebookStore],

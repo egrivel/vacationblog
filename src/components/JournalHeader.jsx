@@ -5,27 +5,29 @@
  */
 
 const React = require('react');
+const createClass = require('create-react-class');
+const PropTypes = require('prop-types');
 const Link = require('react-router').Link;
 const utils = require('./utils');
 
-const JournalHeader = React.createClass({
+const JournalHeader = createClass({
   displayName: 'JournalHeader',
 
   propTypes: {
-    tripId: React.PropTypes.string,
-    journalId: React.PropTypes.string,
-    title: React.PropTypes.string,
-    editCallback: React.PropTypes.func,
-    date: React.PropTypes.string,
-    userName: React.PropTypes.string,
-    created: React.PropTypes.string,
-    profileImg: React.PropTypes.string,
-    map: React.PropTypes.string,
-    dispMap: React.PropTypes.bool
+    tripId: PropTypes.string,
+    journalId: PropTypes.string,
+    title: PropTypes.string,
+    editCallback: PropTypes.func,
+    date: PropTypes.string,
+    userName: PropTypes.string,
+    created: PropTypes.string,
+    profileImg: PropTypes.string,
+    map: PropTypes.string,
+    dispMap: PropTypes.bool
   },
 
   contextTypes: {
-    router: React.PropTypes.object
+    router: PropTypes.object
   },
 
   // Handling dynamic sizing of images in modal: set the event handler to

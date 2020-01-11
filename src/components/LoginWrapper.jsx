@@ -1,6 +1,8 @@
 'use strict';
 
 const React = require('react');
+const createClass = require('create-react-class');
+const PropTypes = require('prop-types');
 
 const Welcome = require('./Welcome.jsx');
 
@@ -12,13 +14,13 @@ const UserAction = require('../actions/UserAction');
  * function.
  */
 
-const LoginWrapper = React.createClass({
+const LoginWrapper = createClass({
   displayName: 'LoginWrapper',
 
   propTypes: {
-    params: React.PropTypes.object,
-    history: React.PropTypes.shape({
-      push: React.PropTypes.func.isRequired
+    params: PropTypes.object,
+    history: PropTypes.shape({
+      push: PropTypes.func.isRequired
     })
   },
 

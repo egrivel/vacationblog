@@ -1,17 +1,19 @@
 'use strict';
 
 const React = require('react');
+const createClass = require('create-react-class');
+const PropTypes = require('prop-types');
 
 const Formrow = require('./Formrow.jsx');
 
-const Checkbox = React.createClass({
+const Checkbox = createClass({
   displayName: 'Checkbox',
 
   propTypes: {
-    fieldId: React.PropTypes.string.isRequired,
-    label: React.PropTypes.string.isRequired,
-    selected: React.PropTypes.bool,
-    onChange: React.PropTypes.func.isRequired
+    fieldId: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+    selected: PropTypes.bool,
+    onChange: PropTypes.func.isRequired
   },
 
   _onChange: function(event) {

@@ -1,6 +1,8 @@
 'use strict';
 
 const React = require('react');
+const createClass = require('create-react-class');
+const PropTypes = require('prop-types');
 
 const FacebookWrapper = require('./FacebookWrapper.jsx');
 const Header = require('./Header.jsx');
@@ -14,11 +16,11 @@ const Footer = require('./Footer.jsx');
  * content, it will default to a trip description page. This is the initial
  * view when someone enters the site.
  */
-const App = React.createClass({
+const App = createClass({
   displayName: 'App',
 
   propTypes: {
-    children: React.PropTypes.object
+    children: PropTypes.object
   },
 
   render: function() {

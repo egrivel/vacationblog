@@ -1,12 +1,14 @@
 'use strict';
 
 const React = require('react');
+const createClass = require('create-react-class');
+const PropTypes = require('prop-types');
 
 const CommentAction = require('../actions/CommentAction');
 const CommentStore = require('../stores/CommentStore');
 const storeMixin = require('./StoreMixin');
 
-const CommentEdit = React.createClass({
+const CommentEdit = createClass({
   displayName: 'CommentEdit',
 
   mixins: [storeMixin()],
@@ -14,9 +16,9 @@ const CommentEdit = React.createClass({
   stores: [CommentStore],
 
   propTypes: {
-    tripId: React.PropTypes.string.isRequired,
-    referenceId: React.PropTypes.string.isRequired,
-    commentId: React.PropTypes.string
+    tripId: PropTypes.string.isRequired,
+    referenceId: PropTypes.string.isRequired,
+    commentId: PropTypes.string
   },
 
   _getStateFromStores: function() {

@@ -1,17 +1,19 @@
 'use strict';
 
 const React = require('react');
+const createClass = require('create-react-class');
+const PropTypes = require('prop-types');
 
 const Formrow = require('./Formrow.jsx');
 
-const Textbox = React.createClass({
+const Textbox = createClass({
   displayName: 'Textbox',
 
   propTypes: {
-    fieldId: React.PropTypes.string.isRequired,
-    label: React.PropTypes.string.isRequired,
-    value: React.PropTypes.string,
-    onChange: React.PropTypes.func.isRequired
+    fieldId: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+    value: PropTypes.string,
+    onChange: PropTypes.func.isRequired
   },
 
   _onChange: function(event) {

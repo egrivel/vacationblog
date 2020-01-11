@@ -6,6 +6,8 @@
  */
 
 const React = require('react');
+const createClass = require('create-react-class');
+const PropTypes = require('prop-types');
 
 const UserStore = require('../stores/UserStore');
 const CommentStore = require('../stores/CommentStore');
@@ -18,12 +20,12 @@ const CommentEdit = require('./CommentEdit.jsx');
 // Declare variables that will be used later
 let CommentList = null;
 
-const CommentParagraph = React.createClass({
+const CommentParagraph = createClass({
   displayName: 'CommentParagraph',
 
   propTypes: {
-    text: React.PropTypes.string.isRequired,
-    parKey: React.PropTypes.string
+    text: PropTypes.string.isRequired,
+    parKey: PropTypes.string
   },
 
   render: function() {
@@ -40,22 +42,22 @@ const CommentParagraph = React.createClass({
   }
 });
 
-const Comment = React.createClass({
+const Comment = createClass({
   displayName: 'Comment',
 
   propTypes: {
-    tripId: React.PropTypes.string.isRequired,
-    tripActive: React.PropTypes.string.isRequired,
-    referenceId: React.PropTypes.string.isRequired,
-    commentId: React.PropTypes.string,
-    created: React.PropTypes.string,
-    commentText: React.PropTypes.string,
-    deleted: React.PropTypes.string,
-    userId: React.PropTypes.string,
-    userName: React.PropTypes.string,
-    comments: React.PropTypes.array,
-    loggedInUserId: React.PropTypes.string,
-    canEdit: React.PropTypes.bool.isRequired
+    tripId: PropTypes.string.isRequired,
+    tripActive: PropTypes.string.isRequired,
+    referenceId: PropTypes.string.isRequired,
+    commentId: PropTypes.string,
+    created: PropTypes.string,
+    commentText: PropTypes.string,
+    deleted: PropTypes.string,
+    userId: PropTypes.string,
+    userName: PropTypes.string,
+    comments: PropTypes.array,
+    loggedInUserId: PropTypes.string,
+    canEdit: PropTypes.bool.isRequired
   },
 
   _startEditing: function(event) {
@@ -182,27 +184,37 @@ const Comment = React.createClass({
       });
     }
 
-    return React.DOM.div(
-      {
-        className: 'commentBlock'
-      },
-      header,
-      commentBody,
-      newComment,
-      feedback,
-      list);
+    return (
+      <div className="commentBlock">
+        {header}
+        {commentBody}
+        {newComment}
+        {feedback}
+        {list}
+      </div>
+    );
+
+    // return React.DOM.div(
+    //   {
+    //     className: 'commentBlock'
+    //   },
+    //   header,
+    //   commentBody,
+    //   newComment,
+    //   feedback,
+    //   list);
   }
 });
 
-CommentList = React.createClass({
+CommentList = createClass({
   displayName: 'CommentList',
 
   propTypes: {
-    comments: React.PropTypes.array.isRequired,
-    tripId: React.PropTypes.string.isRequired,
-    tripActive: React.PropTypes.string.isRequired,
-    referenceId: React.PropTypes.string,
-    loggedInUserId: React.PropTypes.string
+    comments: PropTypes.array.isRequired,
+    tripId: PropTypes.string.isRequired,
+    tripActive: PropTypes.string.isRequired,
+    referenceId: PropTypes.string,
+    loggedInUserId: PropTypes.string
   },
 
   render: function() {
@@ -240,13 +252,18 @@ CommentList = React.createClass({
         }
       );
     }
-    return React.DOM.div(
-      {
-        className: 'comments',
-        key: 'comment-list-' + this.props.referenceId
-      },
-      commentList
+    return (
+      <div className="comments" key={'comment-list-' + this.props.referenceId}>
+        {commentList}
+      </div>
     );
+    // return React.DOM.div(
+    //   {
+    //     className: 'comments',
+    //     key: 'comment-list-' + this.props.referenceId
+    //   },
+    //   commentList
+    // );
   }
 });
 

@@ -19,6 +19,8 @@
 /* global window */
 
 const React = require('react');
+const createClass = require('create-react-class');
+const PropTypes = require('prop-types');
 const Link = require('react-router').Link;
 
 const TripStore = require('../stores/TripStore');
@@ -40,7 +42,7 @@ const JournalHeader = require('./JournalHeader.jsx');
 const JournalPrevNext = require('./JournalPrevNext.jsx');
 const utils = require('./utils');
 
-const JournalEntry = React.createClass({
+const JournalEntry = createClass({
   displayName: 'JournalEntry',
 
   stores: [TripStore, JournalStore, UserStore, CommentStore, MediaStore],
@@ -48,16 +50,16 @@ const JournalEntry = React.createClass({
   mixins: [storeMixin()],
 
   propTypes: {
-    tripId: React.PropTypes.string.isRequired,
-    journalId: React.PropTypes.string.isRequired,
-    dispMap: React.PropTypes.bool,
-    history: React.PropTypes.shape({
-      push: React.PropTypes.func.isRequired
+    tripId: PropTypes.string.isRequired,
+    journalId: PropTypes.string.isRequired,
+    dispMap: PropTypes.bool,
+    history: PropTypes.shape({
+      push: PropTypes.func.isRequired
     })
   },
 
   contextTypes: {
-    router: React.PropTypes.object.isRequired
+    router: PropTypes.object.isRequired
   },
 
   /**

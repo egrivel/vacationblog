@@ -1,21 +1,23 @@
 'use strict';
 
 const React = require('react');
+const createClass = require('create-react-class');
+const PropTypes = require('prop-types');
 
 const Formrow = require('./Formrow.jsx');
 
-const Radiolist = React.createClass({
+const Radiolist = createClass({
   displayName: 'Radiolist',
 
   propTypes: {
-    fieldId: React.PropTypes.string.isRequired,
-    label: React.PropTypes.string.isRequired,
-    value: React.PropTypes.string,
-    list: React.PropTypes.arrayOf(React.PropTypes.shape({
-      value: React.PropTypes.string.isRequired,
-      label: React.PropTypes.string.isRequired
+    fieldId: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+    value: PropTypes.string,
+    list: PropTypes.arrayOf(PropTypes.shape({
+      value: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired
     })).isRequired,
-    onChange: React.PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired
   },
 
   defaultProps: {

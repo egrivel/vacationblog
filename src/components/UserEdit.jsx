@@ -2,6 +2,8 @@
 
 const _ = require('lodash');
 const React = require('react');
+const createClass = require('create-react-class');
+const PropTypes = require('prop-types');
 
 const ButtonBar = require('./standard/ButtonBar.jsx');
 const Display = require('./standard/Display.jsx');
@@ -14,7 +16,7 @@ const storeMixin = require('./StoreMixin');
 const UserStore = require('../stores/UserStore');
 const UserAction = require('../actions/UserAction');
 
-const UserEdit = React.createClass({
+const UserEdit = createClass({
   displayName: 'User Edit',
 
   mixins: [storeMixin()],
@@ -22,13 +24,13 @@ const UserEdit = React.createClass({
   stores: [UserStore],
 
   propTypes: {
-    params: React.PropTypes.shape({
-      userId: React.PropTypes.string.isRequired
+    params: PropTypes.shape({
+      userId: PropTypes.string.isRequired
     })
   },
 
   contextTypes: {
-    router: React.PropTypes.object.isRequired
+    router: PropTypes.object.isRequired
   },
 
   componentWillMount: function() {

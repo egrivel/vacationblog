@@ -2,6 +2,8 @@
 
 const _ = require('lodash');
 const React = require('react');
+const createClass = require('create-react-class');
+const PropTypes = require('prop-types');
 
 const storeMixin = require('./StoreMixin');
 const TripStore = require('../stores/TripStore');
@@ -16,7 +18,7 @@ const Display = require('./standard/Display.jsx');
 const TripEditContrib = require('./TripEditContrib.jsx');
 const TripSelectContrib = require('./TripSelectContrib.jsx');
 
-const TripEdit = React.createClass({
+const TripEdit = createClass({
   displayName: 'Trip Edit',
 
   mixins: [storeMixin()],
@@ -24,11 +26,11 @@ const TripEdit = React.createClass({
   stores: [TripStore, UserStore],
 
   propTypes: {
-    params: React.PropTypes.object
+    params: PropTypes.object
   },
 
   contextTypes: {
-    router: React.PropTypes.object
+    router: PropTypes.object
   },
 
   componentWillMount: function() {
