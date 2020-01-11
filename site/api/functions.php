@@ -16,32 +16,31 @@ function fillCommentItem($item, $object) {
 }
 
 function fillMediaItem($item, $object) {
-   global $adams_ip;
-   $item['tripId'] = $object->getTripId();
-   $item['mediaId'] = $object->getMediaId();
-   $item['created'] = $object->getCreated();
-   $item['updated'] = $object->getUpdated();
-   $item['type'] = $object->getType();
-   $item['caption'] = $object->getCaption();
-   $item['timestamp'] = $object->getTimestamp();
-   $item['location'] = $object->getLocation();
-   $item['width'] = $object->getWidth();
-   $item['height'] = $object->getHeight();
-   $item['deleted'] = $object->getDeleted();
+  global $adams_ip;
+  $item['tripId'] = $object->getTripId();
+  $item['mediaId'] = $object->getMediaId();
+  $item['created'] = $object->getCreated();
+  $item['updated'] = $object->getUpdated();
+  $item['type'] = $object->getType();
+  $item['caption'] = $object->getCaption();
+  $item['timestamp'] = $object->getTimestamp();
+  $item['location'] = $object->getLocation();
+  $item['width'] = $object->getWidth();
+  $item['height'] = $object->getHeight();
+  $item['deleted'] = $object->getDeleted();
 
-   $mediaId = $item['mediaId'];
+  $mediaId = $item['mediaId'];
 
-   // $url = "http://photos-egrivel.rhcloud.com/phimg?large=$mediaId";
-   $url = "https://photos.grivel.net/phimg.php?large=$mediaId";
-   if ($item['location'] === 'local') {
-     $url = "/cgi-bin/photos/phimg?large=$mediaId";
-   } else if ($item['location'] === 'grivel') {
-      $url = "https://egrivel.net/blogphotos/$mediaId.jpg";
-//      $url = "api/image.php?imageid=$mediaId";
-   }
-   $item['url'] = $url;
+  $url = "https://photos.grivel.net/phimg?large=$mediaId";
+  if ($item['location'] === 'local') {
+    $url = "/cgi-bin/photos/phimg?large=$mediaId";
+  } else if ($item['location'] === 'grivel') {
+    $url = "https://vacationblog.grivel.net/blogphotos/$mediaId.jpg";
+    $url = "api/image.php?imageid=$mediaId";
+  }
+  $item['url'] = $url;
 
-   return $item;
+  return $item;
 }
 
 function addMediaIfNotExist($tripId, $mediaId) {
