@@ -6,7 +6,7 @@
  */
 
 const React = require('react');
-const createClass = require('create-react-class');
+const createReactClass = require('create-react-class');
 const PropTypes = require('prop-types');
 
 const UserStore = require('../stores/UserStore');
@@ -20,7 +20,7 @@ const CommentEdit = require('./CommentEdit.jsx');
 // Declare variables that will be used later
 let CommentList = null;
 
-const CommentParagraph = createClass({
+const CommentParagraph = createReactClass({
   displayName: 'CommentParagraph',
 
   propTypes: {
@@ -42,7 +42,7 @@ const CommentParagraph = createClass({
   }
 });
 
-const Comment = createClass({
+const Comment = createReactClass({
   displayName: 'Comment',
 
   propTypes: {
@@ -206,7 +206,7 @@ const Comment = createClass({
   }
 });
 
-CommentList = createClass({
+CommentList = createReactClass({
   displayName: 'CommentList',
 
   propTypes: {

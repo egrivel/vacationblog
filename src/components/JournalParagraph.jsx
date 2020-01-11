@@ -6,7 +6,7 @@
  */
 
 const React = require('react');
-const createClass = require('create-react-class');
+const createReactClass = require('create-react-class');
 const PropTypes = require('prop-types');
 
 const MediaStore = require('../stores/MediaStore');
@@ -417,7 +417,7 @@ function _paragraphSingleImage(parent, tripId, mediaId, canEdit) {
   );
 }
 
-const JournalParagraph = createClass({
+const JournalParagraph = createReactClass({
   displayName: 'JournalParagraph',
 
   propTypes: {

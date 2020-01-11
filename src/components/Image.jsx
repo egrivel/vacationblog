@@ -7,13 +7,13 @@
 
 const _ = require('lodash');
 const React = require('react');
-const createClass = require('create-react-class');
+const createReactClass = require('create-react-class');
 const PropTypes = require('prop-types');
 
 const utils = require('./utils');
 const Orientation = utils.orientation;
 
-const Image = createClass({
+const Image = createReactClass({
   displayName: 'Image',
 
   propTypes: {

@@ -5,7 +5,7 @@
  */
 
 const React = require('react');
-const createClass = require('create-react-class');
+const createReactClass = require('create-react-class');
 const PropTypes = require('prop-types');
 
 const Link = require('react-router').Link;
@@ -80,7 +80,7 @@ function getPrevNextPart(tripId, targetId, icon, className,
   // );
 }
 
-const JournalPrevNext = createClass({
+const JournalPrevNext = createReactClass({
   displayName: 'JournalPrevNext',
 
   propTypes: {

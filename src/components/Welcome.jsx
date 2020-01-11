@@ -1,15 +1,13 @@
-'use strict';
+import React from 'react';
+import createReactClass from 'create-react-class';
 
-const React = require('react');
-const createClass = require('create-react-class');
+import storeMixin from './StoreMixin';
+import TripAction from '../actions/TripAction';
+import TripStore from '../stores/TripStore';
+import MenuAction from '../actions/MenuAction';
+import MenuStore from '../stores/MenuStore';
 
-const storeMixin = require('./StoreMixin');
-const TripAction = require('../actions/TripAction');
-const TripStore = require('../stores/TripStore');
-const MenuAction = require('../actions/MenuAction');
-const MenuStore = require('../stores/MenuStore');
-
-const Welcome = createClass({
+const Welcome = createReactClass({
   displayName: 'Welcome',
 
   mixins: [storeMixin()],
@@ -70,4 +68,4 @@ const Welcome = createClass({
   }
 });
 
-module.exports = Welcome;
+export default Welcome;

@@ -1,13 +1,13 @@
 'use strict';
 
 const React = require('react');
-const createClass = require('create-react-class');
+const createReactClass = require('create-react-class');
 
 const TripStore = require('../stores/TripStore');
 
 const storeMixin = require('./StoreMixin');
 
-const Footer = createClass({
+const Footer = createReactClass({
   displayName: 'Footer',
 
   stores: [TripStore],

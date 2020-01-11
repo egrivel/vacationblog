@@ -1,9 +1,9 @@
 'use strict';
 
 const React = require('react');
-const createClass = require('create-react-class');
+const createReactClass = require('create-react-class');
 
-const Search = createClass({
+const Search = createReactClass({
   displayName: 'Search',
 
   render: function() {

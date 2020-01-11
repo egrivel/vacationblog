@@ -2,10 +2,10 @@
 
 const _ = require('lodash');
 const React = require('react');
-const createClass = require('create-react-class');
+const createReactClass = require('create-react-class');
 const PropTypes = require('prop-types');
 
-const TripSelectContrib = createClass({
+const TripSelectContrib = createReactClass({
   displayName: 'Trip Select Contrib',
 
   propTypes: {

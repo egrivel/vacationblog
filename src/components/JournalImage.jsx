@@ -1,7 +1,7 @@
 'use strict';
 
 const React = require('react');
-const createClass = require('create-react-class');
+const createReactClass = require('create-react-class');
 const PropTypes = require('prop-types');
 
 const UserStore = require('../stores/UserStore');
@@ -42,7 +42,7 @@ function _getMediaInfo(tripId, mediaId) {
   return result;
 }
 
-const JournalImage = createClass({
+const JournalImage = createReactClass({
   displayName: 'JournalImage',
 
   propTypes: {

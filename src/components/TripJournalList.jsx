@@ -2,7 +2,7 @@
 
 const _ = require('lodash');
 const React = require('react');
-const createClass = require('create-react-class');
+const createReactClass = require('create-react-class');
 const PropTypes = require('prop-types');
 const moment = require('moment-timezone');
 
@@ -11,7 +11,7 @@ const TripAction = require('../actions/TripAction');
 const TripStore = require('../stores/TripStore');
 const utils = require('./utils');
 
-const TripJournalList = createClass({
+const TripJournalList = createReactClass({
   displayName: 'Trip Journal List',
 
   mixins: [storeMixin()],

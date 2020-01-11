@@ -1,7 +1,7 @@
 'use strict';
 
 const React = require('react');
-const createClass = require('create-react-class');
+const createReactClass = require('create-react-class');
 const PropTypes = require('prop-types');
 const Link = require('react-router').Link;
 
@@ -86,7 +86,7 @@ function _startReadingLink(tripId, journalId) {
   // );
 }
 
-const TripDescription = createClass({
+const TripDescription = createReactClass({
   displayName: 'TripDescription',
 
   propTypes: {

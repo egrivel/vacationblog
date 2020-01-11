@@ -19,7 +19,7 @@
 /* global window */
 
 const React = require('react');
-const createClass = require('create-react-class');
+const createReactClass = require('create-react-class');
 const PropTypes = require('prop-types');
 const Link = require('react-router').Link;
 
@@ -42,7 +42,7 @@ const JournalHeader = require('./JournalHeader.jsx');
 const JournalPrevNext = require('./JournalPrevNext.jsx');
 const utils = require('./utils');
 
-const JournalEntry = createClass({
+const JournalEntry = createReactClass({
   displayName: 'JournalEntry',
 
   stores: [TripStore, JournalStore, UserStore, CommentStore, MediaStore],

@@ -1,7 +1,7 @@
 'use strict';
 
 const React = require('react');
-const createClass = require('create-react-class');
+const createReactClass = require('create-react-class');
 const PropTypes = require('prop-types');
 
 const ButtonBar = require('./standard/ButtonBar.jsx');
@@ -16,7 +16,7 @@ const UserAction = require('../actions/UserAction');
 const MenuAction = require('../actions/MenuAction');
 const MenuStore = require('../stores/MenuStore');
 
-const Preferences = createClass({
+const Preferences = createReactClass({
   displayName: 'Preferences',
 
   mixins: [storeMixin()],

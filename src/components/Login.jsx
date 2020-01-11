@@ -67,7 +67,7 @@
  */
 
 const React = require('react');
-const createClass = require('create-react-class');
+const createReactClass = require('create-react-class');
 const PropTypes = require('prop-types');
 
 const storeMixin = require('./StoreMixin');
@@ -83,7 +83,7 @@ const UserAction = require('../actions/UserAction');
 const UserStore = require('../stores/UserStore');
 const FacebookStore = require('../stores/FacebookStore');
 
-const Login = createClass({
+const Login = createReactClass({
   displayName: 'Login',
 
   stores: [UserStore, FacebookStore],

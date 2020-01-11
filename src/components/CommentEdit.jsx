@@ -1,14 +1,14 @@
 'use strict';
 
 const React = require('react');
-const createClass = require('create-react-class');
+const createReactClass = require('create-react-class');
 const PropTypes = require('prop-types');
 
 const CommentAction = require('../actions/CommentAction');
 const CommentStore = require('../stores/CommentStore');
 const storeMixin = require('./StoreMixin');
 
-const CommentEdit = createClass({
+const CommentEdit = createReactClass({
   displayName: 'CommentEdit',
 
   mixins: [storeMixin()],

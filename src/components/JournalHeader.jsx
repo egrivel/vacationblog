@@ -5,12 +5,12 @@
  */
 
 const React = require('react');
-const createClass = require('create-react-class');
+const createReactClass = require('create-react-class');
 const PropTypes = require('prop-types');
 const Link = require('react-router').Link;
 const utils = require('./utils');
 
-const JournalHeader = createClass({
+const JournalHeader = createReactClass({
   displayName: 'JournalHeader',
 
   propTypes: {

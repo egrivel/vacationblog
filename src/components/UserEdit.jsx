@@ -2,7 +2,7 @@
 
 const _ = require('lodash');
 const React = require('react');
-const createClass = require('create-react-class');
+const createReactClass = require('create-react-class');
 const PropTypes = require('prop-types');
 
 const ButtonBar = require('./standard/ButtonBar.jsx');
@@ -16,7 +16,7 @@ const storeMixin = require('./StoreMixin');
 const UserStore = require('../stores/UserStore');
 const UserAction = require('../actions/UserAction');
 
-const UserEdit = createClass({
+const UserEdit = createReactClass({
   displayName: 'User Edit',
 
   mixins: [storeMixin()],

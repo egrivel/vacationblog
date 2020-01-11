@@ -21,13 +21,16 @@
     "@babel/polyfill": "^7.7.0",
     "@babel/preset-env": "^7.7.7",
     "babel-loader": "^8.0.6",
+    "eslint": "^6.8.0",
+    "eslint-plugin-react": "^7.17.0",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.10.1"
   },
   "scripts": {
     "build": "webpack --no-color",
-    "dev": "webpack-dev-server"
+    "dev": "webpack-dev-server",
+    "eslint": "eslint src/**/*.js src/**/*.jsx"
   },
   "author": "Eric Grivel",
   "license": "ISC"

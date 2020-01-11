@@ -2,7 +2,7 @@
 
 const _ = require('lodash');
 const React = require('react');
-const createClass = require('create-react-class');
+const createReactClass = require('create-react-class');
 const PropTypes = require('prop-types');
 
 const storeMixin = require('./StoreMixin');
@@ -18,7 +18,7 @@ const Display = require('./standard/Display.jsx');
 const TripEditContrib = require('./TripEditContrib.jsx');
 const TripSelectContrib = require('./TripSelectContrib.jsx');
 
-const TripEdit = createClass({
+const TripEdit = createReactClass({
   displayName: 'Trip Edit',
 
   mixins: [storeMixin()],

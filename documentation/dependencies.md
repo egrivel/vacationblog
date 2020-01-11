@@ -6,7 +6,7 @@ runtime and dev dependencies) in package.json and the reason they are here.
 ### Runtime Dependencies
 
 - **create-react-class**: Temporary dependency to facilitate in the transition
-  from `React.createClass` to creating React objects.
+  from `React.createReactClass` to creating React objects.
 - **flux**: Used for the `flux` architecture; this may be factored out some
   time soon.
 - **lodash**: General utility functions.
@@ -26,7 +26,9 @@ runtime and dev dependencies) in package.json and the reason they are here.
 - **@babel/preset-env**: Definition that defines which Babel functionality
   to use.
 - **babel-loader**: Connection between Webpack and Babel.
-- **webpack**: builder for JavaScript projects.
+- **eslint**: Lint tool.
+- **eslint-plugin-react**: React plugin for eslint.
+- **webpack**: Builder for JavaScript projects.
 - **webpack-cli**: Webpack command line interface (starts Webpack).
 - **webpack-dev-server**: Webpack tool to create a local server to serve the
   development version, with auto-refresh.

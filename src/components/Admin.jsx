@@ -1,13 +1,13 @@
 'use strict';
 
 const React = require('react');
-const createClass = require('create-react-class');
+const createReactClass = require('create-react-class');
 
 const MenuAction = require('../actions/MenuAction');
 const MenuStore = require('../stores/MenuStore');
 const UserStore = require('../stores/UserStore');
 
-const Admin = createClass({
+const Admin = createReactClass({
   displayName: 'Admin',
 
   componentDidMount: function() {

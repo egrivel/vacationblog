@@ -1,7 +1,7 @@
 'use strict';
 
 const React = require('react');
-const createClass = require('create-react-class');
+const createReactClass = require('create-react-class');
 const PropTypes = require('prop-types');
 
 const UserStore = require('../stores/UserStore');
@@ -9,7 +9,7 @@ const FeedbackStore = require('../stores/FeedbackStore');
 const FeedbackAction = require('../actions/FeedbackAction');
 const storeMixin = require('./StoreMixin');
 
-const Feedback = createClass({
+const Feedback = createReactClass({
   displayName: 'Feedback',
 
   stores: [FeedbackStore, UserStore],

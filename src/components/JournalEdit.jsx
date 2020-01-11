@@ -2,7 +2,7 @@
 
 const _ = require('lodash');
 const React = require('react');
-const createClass = require('create-react-class');
+const createReactClass = require('create-react-class');
 const PropTypes = require('prop-types');
 
 const moment = require('moment');
@@ -18,7 +18,7 @@ const MenuAction = require('../actions/MenuAction');
 const MenuStore = require('../stores/MenuStore');
 const JournalAction = require('../actions/JournalAction');
 
-const JournalEdit = createClass({
+const JournalEdit = createReactClass({
   displayName: 'Journal Edit',
 
   mixins: [storeMixin()],

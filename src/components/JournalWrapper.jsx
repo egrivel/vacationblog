@@ -1,7 +1,7 @@
 'use strict';
 
 const React = require('react');
-const createClass = require('create-react-class');
+const createReactClass = require('create-react-class');
 const PropTypes = require('prop-types');
 
 const JournalStore = require('../stores/JournalStore');
@@ -21,7 +21,7 @@ const utils = require('../utils');
  * to display.
  */
 
-const JournalWrapper = createClass({
+const JournalWrapper = createReactClass({
   displayName: 'JournalWrapper',
 
   propTypes: {
