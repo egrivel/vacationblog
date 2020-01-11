@@ -37,7 +37,7 @@ const JournalAction = {
       const item = list[i];
       if (item.indexOf(']') > 0) {
         const data = item.substring(0, item.indexOf(']')).trim();
-        if (data.match(/^[\d\-abc]+(\s+[\+\-]\d+)?$/)) {
+        if (data.match(/^[\d\-abc]+(\s+[+-]\d+)?$/)) {
           const img = data.substring(0, item.indexOf(' ')).trim();
           if (img.match(/^[\d\-abc]+$/)) {
             // this is a valid image ID for a panorama

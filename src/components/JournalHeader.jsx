@@ -33,7 +33,6 @@ const JournalHeader = createReactClass({
   // Handling dynamic sizing of images in modal: set the event handler to
   // update size upon resizing
   componentDidMount: function() {
-    /* global window */
     window.addEventListener('resize', this._sizeMapFrame, false);
   },
 

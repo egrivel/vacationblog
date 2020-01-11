@@ -24,7 +24,7 @@ const LoginWrapper = createReactClass({
     })
   },
 
-  componentWillMount: function() {
+  componentDidMount: function() {
     let targetState = UserStore.constants.LOGIN;
     if (this.props.params.target) {
       if (this.props.params.target === 'conf') {

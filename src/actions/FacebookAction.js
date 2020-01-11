@@ -4,9 +4,9 @@
  * Trip Actions. This is a set of actions regarding trips, including the list
  * of contributors to a trip ("trip users").
  */
+/* global FB */
 
 import AppDispatcher from '../AppDispatcher';
-import utils from './utils';
 import FacebookActionTypes from './FacebookActionTypes';
 
 let _isLoadingStatus = false;
@@ -68,7 +68,7 @@ const FacebookAction = {
   },
 
   logout: function() {
-    FB.logout(function(response) {
+    FB.logout(function() {
       // Nothing to do
     });
   },

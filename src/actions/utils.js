@@ -1,6 +1,6 @@
 'use strict';
 
-/* global XMLHttpRequest */
+// /* global XMLHttpRequest */
 
 const utils = {
   getAsync: function getAsync(url, callback) {
@@ -28,4 +28,3 @@ const utils = {
 };
 
 export default utils;
-

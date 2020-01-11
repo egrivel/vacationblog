@@ -21,7 +21,7 @@ const Feedback = createReactClass({
     referenceId: PropTypes.string
   },
 
-  componentWillMount: function() {
+  componentDidMount: function() {
     if (this.props.tripId && this.props.referenceId) {
       FeedbackAction.loadData(this.props.tripId, this.props.referenceId);
     }

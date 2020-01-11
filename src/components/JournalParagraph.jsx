@@ -432,7 +432,6 @@ const JournalParagraph = createReactClass({
   // Handling dynamic sizing of images in modal: set the event handler to
   // update size upon resizing
   componentDidMount: function() {
-    /* global window */
     window.addEventListener('resize', this._sizeModalImg, false);
   },
 
@@ -457,7 +456,6 @@ const JournalParagraph = createReactClass({
   _sizeModalImg: function() {
     if (this.state && this.state.modal && this.state.modal !== '') {
       // The modal is displayed. Get the image
-      /* global document */
       const containerElement = document.getElementById('the-modal');
       const imgElement = document.getElementById('the-modal-image');
       if (containerElement && imgElement) {

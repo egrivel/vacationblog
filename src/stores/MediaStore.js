@@ -35,6 +35,11 @@ const MediaStore = assign({}, GenericStore, {
   },
 
   _storeCallback: function(action) {
+    let count;
+    let list;
+    let updateCount;
+    let index;
+
     switch (action.type) {
       case MediaActionTypes.MEDIA_LOADING:
         _mediaStatus[action.data.mediaId] = 'loading';
@@ -42,7 +47,7 @@ const MediaStore = assign({}, GenericStore, {
 
       case MediaActionTypes.MEDIA_DATA:
         _mediaStatus[action.data.mediaId] = 'loaded';
-        const index = action.data.tripId + '|' + action.data.mediaId;
+        index = action.data.tripId + '|' + action.data.mediaId;
         if (!_.isEqual(_mediaData[index], action.data)) {
           _mediaData[index] = action.data;
           MediaStore.emitChange();
@@ -50,9 +55,9 @@ const MediaStore = assign({}, GenericStore, {
         break;
 
       case MediaActionTypes.MEDIA_BULK_DATA:
-        const count = action.data.count;
-        const list = action.data.list;
-        let updateCount = 0;
+        count = action.data.count;
+        list = action.data.list;
+        updateCount = 0;
         for (let i = 0; i < count; i++) {
           const id = list[i].tripId + '|' + list[i].mediaId;
           if (!_mediaData[id] || !_.isEqual(_mediaData[id], list[i])) {

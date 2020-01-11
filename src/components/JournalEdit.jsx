@@ -199,7 +199,7 @@ const JournalEdit = createReactClass({
     let text = _.get(this.state.journalData, 'journalText', '');
     if (text) {
       text = String(text).replace(/&lf;/g, '\n\n');
-      text = text.replace(/\[IMG ([\w\-]+)\]/g, '[$1]');
+      text = text.replace(/\[IMG ([\w-]+)\]/g, '[$1]');
     }
 
     return (

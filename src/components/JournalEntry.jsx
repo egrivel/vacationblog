@@ -15,9 +15,6 @@
  * component.
  */
 
-// Add 'window' to the eslint globals for this file.
-/* global window */
-
 import React from 'react';
 import createReactClass from 'create-react-class';
 import PropTypes from 'prop-types';

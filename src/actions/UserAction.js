@@ -138,7 +138,7 @@ const UserAction = {
     });
   },
 
-  updateEmail: function(userId, newEmail) {
+  updateEmail: function(/* userId, newEmail */) {
     console.log('email change not implemented');
   },
 

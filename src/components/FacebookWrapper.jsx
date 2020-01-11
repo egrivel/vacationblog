@@ -57,7 +57,6 @@ const FacebookWrapper = createReactClass({
     const fbId = FacebookStore.getId();
     const fbName = FacebookStore.getName() || '';
     const fbStatus = FacebookStore.getStatus();
-    const isUserLoggedIn = UserStore.isUserLoggedIn();
     const userId = UserStore.getLoggedInUser();
     const userData = UserStore.getData(userId);
     const userName = userData ? userData.name : '';

@@ -1,6 +1,6 @@
 'use strict';
 
-const EventEmitter = require('events').EventEmitter;
+import {EventEmitter} from 'events';
 import assign from 'object-assign';
 
 const CHANGE_EVENT = 'change';

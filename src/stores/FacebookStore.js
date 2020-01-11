@@ -8,7 +8,6 @@
  *  - ID of the current trip.
  *  - All the attributes of the current trip.
  */
-import _ from 'lodash';
 import assign from 'object-assign';
 
 import AppDispatcher from '../AppDispatcher';
