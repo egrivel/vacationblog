@@ -5,7 +5,7 @@ temp
 dist
 vacationblog.ini
 package-lock.json
-site/js/boot.js
+site/app.js
 *.sublime-workspace
 *~
 .git

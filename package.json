@@ -22,18 +22,12 @@
     "@babel/preset-env": "^7.7.7",
     "babel-loader": "^8.0.6",
     "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10"
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.1"
   },
   "scripts": {
     "build": "webpack --no-color",
-    "test": "grunt test",
-    "coverage": "grunt coverage",
-    "eslint": "grunt eslint",
-    "check-files": "grunt check-files",
-    "all": "grunt all",
-    "deploy": "grunt deploy",
-    "browserify": "grunt build",
-    "browserify-prod": "NODE_ENV=production browserify -t reactify src/boot.js -o site/js/boot.js"
+    "dev": "webpack-dev-server"
   },
   "author": "Eric Grivel",
   "license": "ISC"

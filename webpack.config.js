@@ -1,13 +1,21 @@
+const path = require('path');
+
 module.exports = {
   entry: [
     '@babel/polyfill',
     './src/boot.js'
   ],
   output: {
-    path: __dirname + '/site/js',
-    filename: 'boot.js'
+    path: __dirname + '/site',
+    filename: 'app.js'
   },
   mode: 'development',
+  devServer: {
+    contentBase: 'site',
+    proxy: {
+      '/': 'http://localhost/vacationblog/site/'
+    }
+  },
   module: {
     rules: [
       {
