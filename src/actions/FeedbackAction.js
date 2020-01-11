@@ -1,12 +1,11 @@
 'use strict';
 
-const AppDispatcher = require('../AppDispatcher');
-const utils = require('./utils');
+import AppDispatcher from '../AppDispatcher';
+import utils from './utils';
+import FeedbackActionTypes from './FeedbackActionTypes';
 
 const FeedbackAction = {
-  Types: {
-    FEEDBACK_LOAD: 'FEEDBACK_LOAD'
-  },
+  Types: FeedbackActionTypes,
 
   _getCallback: function(tripId, referenceId) {
     return function(tripId, referenceId) {
@@ -108,4 +107,4 @@ const FeedbackAction = {
   }
 };
 
-module.exports = FeedbackAction;
+export default FeedbackAction;

@@ -1,11 +1,11 @@
 'use strict';
 
-const _ = require('lodash');
-const assign = require('object-assign');
+import _ from 'lodash';
+import assign from 'object-assign';
 
-const GenericStore = require('./GenericStore');
-const AppDispatcher = require('../AppDispatcher');
-const UserActionTypes = require('../actions/UserAction').Types;
+import GenericStore from './GenericStore';
+import AppDispatcher from '../AppDispatcher';
+import UserActionTypes from '../actions/UserActionTypes';
 
 let _userData = {};
 let _userEditData = {};
@@ -179,4 +179,4 @@ UserStore.dispatchToken = AppDispatcher.register(UserStore._storeCallback);
 // allowed.
 UserStore.setMaxListeners(100);
 
-module.exports = UserStore;
+export default UserStore;

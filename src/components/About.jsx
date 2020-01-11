@@ -1,10 +1,10 @@
 'use strict';
 
-const React = require('react');
-const createReactClass = require('create-react-class');
+import React from 'react';
+import createReactClass from 'create-react-class';
 
-const MenuAction = require('../actions/MenuAction');
-const MenuStore = require('../stores/MenuStore');
+import MenuAction from '../actions/MenuAction';
+import MenuStore from '../stores/MenuStore';
 
 const About = createReactClass({
   displayName: 'About',
@@ -59,4 +59,4 @@ const About = createReactClass({
   }
 });
 
-module.exports = About;
+export default About;

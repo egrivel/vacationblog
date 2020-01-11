@@ -5,17 +5,17 @@
  * call itself recursively to display comments to comments.
  */
 
-const React = require('react');
-const createReactClass = require('create-react-class');
-const PropTypes = require('prop-types');
+import React from 'react';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
 
-const UserStore = require('../stores/UserStore');
-const CommentStore = require('../stores/CommentStore');
-const CommentAction = require('../actions/CommentAction');
+import UserStore from '../stores/UserStore';
+import CommentStore from '../stores/CommentStore';
+import CommentAction from '../actions/CommentAction';
 
-const utils = require('./utils');
-const Feedback = require('./Feedback.jsx');
-const CommentEdit = require('./CommentEdit.jsx');
+import utils from './utils';
+import Feedback from './Feedback.jsx';
+import CommentEdit from './CommentEdit.jsx';
 
 // Declare variables that will be used later
 let CommentList = null;
@@ -267,4 +267,4 @@ CommentList = createReactClass({
   }
 });
 
-module.exports = CommentList;
+export default CommentList;

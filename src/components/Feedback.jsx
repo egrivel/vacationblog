@@ -1,13 +1,13 @@
 'use strict';
 
-const React = require('react');
-const createReactClass = require('create-react-class');
-const PropTypes = require('prop-types');
+import React from 'react';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
 
-const UserStore = require('../stores/UserStore');
-const FeedbackStore = require('../stores/FeedbackStore');
-const FeedbackAction = require('../actions/FeedbackAction');
-const storeMixin = require('./StoreMixin');
+import UserStore from '../stores/UserStore';
+import FeedbackStore from '../stores/FeedbackStore';
+import FeedbackAction from '../actions/FeedbackAction';
+import storeMixin from './StoreMixin';
 
 const Feedback = createReactClass({
   displayName: 'Feedback',
@@ -195,4 +195,4 @@ const Feedback = createReactClass({
   }
 });
 
-module.exports = Feedback;
+export default Feedback;

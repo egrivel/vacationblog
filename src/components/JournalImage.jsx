@@ -1,18 +1,18 @@
 'use strict';
 
-const React = require('react');
-const createReactClass = require('create-react-class');
-const PropTypes = require('prop-types');
+import React from 'react';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
 
-const UserStore = require('../stores/UserStore');
-const MediaStore = require('../stores/MediaStore');
-const MediaAction = require('../actions/MediaAction');
+import UserStore from '../stores/UserStore';
+import MediaStore from '../stores/MediaStore';
+import MediaAction from '../actions/MediaAction';
 
-const Image = require('./Image.jsx');
-const ButtonBar = require('./standard/ButtonBar.jsx');
-const Display = require('./standard/Display.jsx');
-const Textbox = require('./standard/Textbox.jsx');
-const utils = require('./utils');
+import Image from './Image.jsx';
+import ButtonBar from './standard/ButtonBar.jsx';
+import Display from './standard/Display.jsx';
+import Textbox from './standard/Textbox.jsx';
+import utils from './utils';
 const Orientation = utils.orientation;
 
 function _getMediaInfo(tripId, mediaId) {
@@ -307,4 +307,4 @@ const JournalImage = createReactClass({
   }
 });
 
-module.exports = JournalImage;
+export default JournalImage;

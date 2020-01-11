@@ -6,12 +6,12 @@
  * Provide information about the currently displayed journal entry.
  */
 
-const _ = require('lodash');
-const assign = require('object-assign');
+import _ from 'lodash';
+import assign from 'object-assign';
 
-const AppDispatcher = require('../AppDispatcher');
-const GenericStore = require('./GenericStore');
-const JournalActionTypes = require('../actions/JournalAction').Types;
+import AppDispatcher from '../AppDispatcher';
+import GenericStore from './GenericStore';
+import JournalActionTypes from '../actions/JournalActionTypes';
 
 // ---
 // All the data about the current journal.
@@ -52,4 +52,4 @@ const JournalStore = assign({}, GenericStore, {
 JournalStore.dispatchToken =
  AppDispatcher.register(JournalStore._storeCallback);
 
-module.exports = JournalStore;
+export default JournalStore;

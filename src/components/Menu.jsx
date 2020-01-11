@@ -1,10 +1,10 @@
 'use strict';
 
-const React = require('react');
-const createReactClass = require('create-react-class');
-const PropTypes = require('prop-types');
+import React from 'react';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
 
-const MenuList = require('./MenuList.jsx');
+import MenuList from './MenuList.jsx';
 
 const Menu = createReactClass({
   displayName: 'Menu',
@@ -23,4 +23,4 @@ const Menu = createReactClass({
   }
 });
 
-module.exports = Menu;
+export default Menu;

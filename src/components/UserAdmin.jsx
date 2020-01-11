@@ -1,13 +1,13 @@
 'use strict';
 
-const React = require('react');
-const createReactClass = require('create-react-class');
+import React from 'react';
+import createReactClass from 'create-react-class';
 
-const storeMixin = require('./StoreMixin');
-const UserStore = require('../stores/UserStore');
-const UserAction = require('../actions/UserAction');
-const MenuAction = require('../actions/MenuAction');
-const MenuStore = require('../stores/MenuStore');
+import storeMixin from './StoreMixin';
+import UserStore from '../stores/UserStore';
+import UserAction from '../actions/UserAction';
+import MenuAction from '../actions/MenuAction';
+import MenuStore from '../stores/MenuStore';
 
 const UserAdmin = createReactClass({
   displayName: 'User Admin',
@@ -60,4 +60,4 @@ const UserAdmin = createReactClass({
   }
 });
 
-module.exports = UserAdmin;
+export default UserAdmin;

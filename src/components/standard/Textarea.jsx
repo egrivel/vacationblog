@@ -1,10 +1,10 @@
 'use strict';
 
-const React = require('react');
-const createReactClass = require('create-react-class');
-const PropTypes = require('prop-types');
+import React from 'react';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
 
-const Formrow = require('./Formrow.jsx');
+import Formrow from './Formrow.jsx';
 
 const Textarea = createReactClass({
   displayName: 'Textarea',
@@ -42,4 +42,4 @@ const Textarea = createReactClass({
   }
 });
 
-module.exports = Textarea;
+export default Textarea;

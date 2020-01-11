@@ -4,11 +4,11 @@
  * Display the header for a journal entry.
  */
 
-const React = require('react');
-const createReactClass = require('create-react-class');
-const PropTypes = require('prop-types');
-const Link = require('react-router').Link;
-const utils = require('./utils');
+import React from 'react';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
+import {Link} from 'react-router';
+import utils from './utils';
 
 const JournalHeader = createReactClass({
   displayName: 'JournalHeader',
@@ -237,4 +237,4 @@ const JournalHeader = createReactClass({
   }
 });
 
-module.exports = JournalHeader;
+export default JournalHeader;

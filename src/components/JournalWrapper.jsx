@@ -1,15 +1,15 @@
 'use strict';
 
-const React = require('react');
-const createReactClass = require('create-react-class');
-const PropTypes = require('prop-types');
+import React from 'react';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
 
-const JournalStore = require('../stores/JournalStore');
-const TripStore = require('../stores/TripStore');
-const JournalAction = require('../actions/JournalAction');
-const TripAction = require('../actions/TripAction');
-const JournalEntry = require('./JournalEntry.jsx');
-const utils = require('../utils');
+import JournalStore from '../stores/JournalStore';
+import TripStore from '../stores/TripStore';
+import JournalAction from '../actions/JournalAction';
+import TripAction from '../actions/TripAction';
+import JournalEntry from './JournalEntry.jsx';
+import utils from '../utils';
 
 /**
  * Journal wrapper component. This component wraps a journal entry and
@@ -125,4 +125,4 @@ const JournalWrapper = createReactClass({
   }
 });
 
-module.exports = JournalWrapper;
+export default JournalWrapper;

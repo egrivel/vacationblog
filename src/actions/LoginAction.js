@@ -1,9 +1,9 @@
 'use strict';
 
-const UserAction = require('./UserAction');
-const UserStore = require('../stores/UserStore');
-const utils = require('./utils');
-const cookieUtils = require('../utils');
+import UserAction from './UserAction';
+import UserStore from '../stores/UserStore';
+import utils from './utils';
+import cookieUtils from '../utils';
 
 const LoginAction = {
   _doLoginCallback: function(response) {
@@ -241,4 +241,4 @@ const LoginAction = {
   }
 };
 
-module.exports = LoginAction;
+export default LoginAction;

@@ -1,8 +1,8 @@
 'use strict';
 
-const React = require('react');
-const createReactClass = require('create-react-class');
-const PropTypes = require('prop-types');
+import React from 'react';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
 
 const Formrow = createReactClass({
   displayName: 'Form row',
@@ -27,4 +27,4 @@ const Formrow = createReactClass({
   }
 });
 
-module.exports = Formrow;
+export default Formrow;

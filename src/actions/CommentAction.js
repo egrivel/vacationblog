@@ -1,16 +1,13 @@
 'use strict';
 
-const AppDispatcher = require('../AppDispatcher');
-const UserAction = require('./UserAction');
-const UserStore = require('../stores/UserStore');
-const utils = require('./utils');
+import AppDispatcher from '../AppDispatcher';
+import UserAction from './UserAction';
+import UserStore from '../stores/UserStore';
+import utils from './utils';
+import CommentActionTypes from './CommentActionTypes';
 
 const CommentAction = {
-  Types: {
-    COMMENT_DATA: 'COMMENT_DATA',
-    COMMENT_SET_EDITING: 'COMMENT_SET_EDITING',
-    COMMENT_SET_TEXT: 'COMMENT_SET_TEXT'
-  },
+  Types: CommentActionTypes,
 
   /**
    * Load all the comments for the specified item.
@@ -129,4 +126,4 @@ const CommentAction = {
   }
 };
 
-module.exports = CommentAction;
+export default CommentAction;

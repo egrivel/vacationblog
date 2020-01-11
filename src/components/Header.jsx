@@ -1,16 +1,16 @@
 'use strict';
 
-const React = require('react');
-const createReactClass = require('create-react-class');
+import React from 'react';
+import createReactClass from 'create-react-class';
 
-const Menu = require('./Menu.jsx');
-const Login = require('./Login.jsx');
-const TripStore = require('../stores/TripStore');
-const MenuStore = require('../stores/MenuStore');
-const UserStore = require('../stores/UserStore');
-const UserAction = require('../actions/UserAction');
+import Menu from './Menu.jsx';
+import Login from './Login.jsx';
+import TripStore from '../stores/TripStore';
+import MenuStore from '../stores/MenuStore';
+import UserStore from '../stores/UserStore';
+import UserAction from '../actions/UserAction';
 
-const storeMixin = require('./StoreMixin');
+import storeMixin from './StoreMixin';
 
 const Header = createReactClass({
   displayName: 'Header',
@@ -122,4 +122,4 @@ const Header = createReactClass({
   }
 });
 
-module.exports = Header;
+export default Header;

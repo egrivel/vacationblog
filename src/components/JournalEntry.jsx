@@ -18,29 +18,29 @@
 // Add 'window' to the eslint globals for this file.
 /* global window */
 
-const React = require('react');
-const createReactClass = require('create-react-class');
-const PropTypes = require('prop-types');
-const Link = require('react-router').Link;
+import React from 'react';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
+import {Link} from 'react-router';
 
-const TripStore = require('../stores/TripStore');
-const JournalStore = require('../stores/JournalStore');
-const UserStore = require('../stores/UserStore');
-const CommentStore = require('../stores/CommentStore');
-const MediaStore = require('../stores/MediaStore');
-const storeMixin = require('./StoreMixin');
-const MenuAction = require('../actions/MenuAction');
-const MenuStore = require('../stores/MenuStore');
+import TripStore from '../stores/TripStore';
+import JournalStore from '../stores/JournalStore';
+import UserStore from '../stores/UserStore';
+import CommentStore from '../stores/CommentStore';
+import MediaStore from '../stores/MediaStore';
+import storeMixin from './StoreMixin';
+import MenuAction from '../actions/MenuAction';
+import MenuStore from '../stores/MenuStore';
 
-const CommentAction = require('../actions/CommentAction');
+import CommentAction from '../actions/CommentAction';
 
-const JournalParagraph = require('./JournalParagraph.jsx');
-const CommentList = require('./CommentList.jsx');
-const CommentEdit = require('./CommentEdit.jsx');
-const Feedback = require('./Feedback.jsx');
-const JournalHeader = require('./JournalHeader.jsx');
-const JournalPrevNext = require('./JournalPrevNext.jsx');
-const utils = require('./utils');
+import JournalParagraph from './JournalParagraph.jsx';
+import CommentList from './CommentList.jsx';
+import CommentEdit from './CommentEdit.jsx';
+import Feedback from './Feedback.jsx';
+import JournalHeader from './JournalHeader.jsx';
+import JournalPrevNext from './JournalPrevNext.jsx';
+import utils from './utils';
 
 const JournalEntry = createReactClass({
   displayName: 'JournalEntry',
@@ -329,4 +329,4 @@ const JournalEntry = createReactClass({
   }
 });
 
-module.exports = JournalEntry;
+export default JournalEntry;

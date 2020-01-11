@@ -1,13 +1,13 @@
 'use strict';
 
-const React = require('react');
-const createReactClass = require('create-react-class');
+import React from 'react';
+import createReactClass from 'create-react-class';
 
-const storeMixin = require('./StoreMixin');
-const TripStore = require('../stores/TripStore');
-const MenuAction = require('../actions/MenuAction');
-const MenuStore = require('../stores/MenuStore');
-const UserStore = require('../stores/UserStore');
+import storeMixin from './StoreMixin';
+import TripStore from '../stores/TripStore';
+import MenuAction from '../actions/MenuAction';
+import MenuStore from '../stores/MenuStore';
+import UserStore from '../stores/UserStore';
 
 const TripAdmin = createReactClass({
   displayName: 'Trip Admin',
@@ -58,4 +58,4 @@ const TripAdmin = createReactClass({
   }
 });
 
-module.exports = TripAdmin;
+export default TripAdmin;

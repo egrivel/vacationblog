@@ -1,22 +1,22 @@
 'use strict';
 
-const _ = require('lodash');
-const React = require('react');
-const createReactClass = require('create-react-class');
-const PropTypes = require('prop-types');
+import _ from 'lodash';
+import React from 'react';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
 
-const storeMixin = require('./StoreMixin');
-const TripStore = require('../stores/TripStore');
-const UserStore = require('../stores/UserStore');
+import storeMixin from './StoreMixin';
+import TripStore from '../stores/TripStore';
+import UserStore from '../stores/UserStore';
 
-const TripAction = require('../actions/TripAction');
-const UserAction = require('../actions/UserAction');
+import TripAction from '../actions/TripAction';
+import UserAction from '../actions/UserAction';
 
-const ButtonBar = require('./standard/ButtonBar.jsx');
-const Display = require('./standard/Display.jsx');
+import ButtonBar from './standard/ButtonBar.jsx';
+import Display from './standard/Display.jsx';
 
-const TripEditContrib = require('./TripEditContrib.jsx');
-const TripSelectContrib = require('./TripSelectContrib.jsx');
+import TripEditContrib from './TripEditContrib.jsx';
+import TripSelectContrib from './TripSelectContrib.jsx';
 
 const TripEdit = createReactClass({
   displayName: 'Trip Edit',
@@ -33,7 +33,7 @@ const TripEdit = createReactClass({
     router: PropTypes.object
   },
 
-  componentWillMount: function() {
+  componentDidMount: function() {
     const tripId = this.props.params.tripId;
     if (tripId && (tripId !== '_new')) {
       TripAction.loadEditTrip(tripId);
@@ -597,4 +597,4 @@ const TripEdit = createReactClass({
   }
 });
 
-module.exports = TripEdit;
+export default TripEdit;

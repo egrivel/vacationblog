@@ -1,11 +1,11 @@
 'use strict';
 
-const _ = require('lodash');
-const assign = require('object-assign');
+import _ from 'lodash';
+import assign from 'object-assign';
 
-const GenericStore = require('./GenericStore');
-const AppDispatcher = require('../AppDispatcher');
-const MediaActionTypes = require('../actions/MediaAction').Types;
+import GenericStore from './GenericStore';
+import AppDispatcher from '../AppDispatcher';
+import MediaActionTypes from '../actions/MediaActionTypes';
 
 let _mediaData = {};
 let _mediaStatus = {};
@@ -74,4 +74,4 @@ const MediaStore = assign({}, GenericStore, {
 
 MediaStore.dispatchToken = AppDispatcher.register(MediaStore._storeCallback);
 
-module.exports = MediaStore;
+export default MediaStore;

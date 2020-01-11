@@ -8,12 +8,12 @@
  *  - ID of the current trip.
  *  - All the attributes of the current trip.
  */
-const _ = require('lodash');
-const assign = require('object-assign');
+import _ from 'lodash';
+import assign from 'object-assign';
 
-const AppDispatcher = require('../AppDispatcher');
-const GenericStore = require('./GenericStore');
-const TripActionTypes = require('../actions/TripAction').Types;
+import AppDispatcher from '../AppDispatcher';
+import GenericStore from './GenericStore';
+import TripActionTypes from '../actions/TripActionTypes';
 
 // ---
 // Ordered list of all the trips in the whole system. This list is
@@ -214,4 +214,4 @@ const TripStore = assign({}, GenericStore, {
 
 TripStore.dispatchToken = AppDispatcher.register(TripStore._storeCallback);
 
-module.exports = TripStore;
+export default TripStore;

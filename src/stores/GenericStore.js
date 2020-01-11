@@ -1,7 +1,7 @@
 'use strict';
 
 const EventEmitter = require('events').EventEmitter;
-const assign = require('object-assign');
+import assign from 'object-assign';
 
 const CHANGE_EVENT = 'change';
 
@@ -27,4 +27,4 @@ const GenericStore = assign({}, EventEmitter.prototype, {
   }
 });
 
-module.exports = GenericStore;
+export default GenericStore;

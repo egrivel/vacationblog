@@ -1,18 +1,17 @@
 'use strict';
 
-const AppDispatcher = require('../AppDispatcher');
-const utils = require('./utils');
+import AppDispatcher from '../AppDispatcher';
+import utils from './utils';
 
-const TripAction = require('./TripAction');
-const CommentAction = require('./CommentAction');
-const MediaAction = require('./MediaAction');
-const UserAction = require('./UserAction');
-const MediaStore = require('../stores/MediaStore');
+import TripAction from './TripAction';
+import CommentAction from './CommentAction';
+import MediaAction from './MediaAction';
+import UserAction from './UserAction';
+import MediaStore from '../stores/MediaStore';
+import JournalActionTypes from './JournalActionTypes';
 
 const JournalAction = {
-  Types: {
-    JOURNAL_DATA: 'JOURNAL_DATA'
-  },
+  Types: JournalActionTypes,
 
   _getMediaFromText: function(text) {
     if (!text) {
@@ -145,4 +144,4 @@ const JournalAction = {
   }
 };
 
-module.exports = JournalAction;
+export default JournalAction;

@@ -1,13 +1,11 @@
 'use strict';
 
-const AppDispatcher = require('../AppDispatcher');
+import AppDispatcher from '../AppDispatcher';
+
+import MenuActionTypes from './MenuActionTypes';
 
 const MenuAction = {
-  Types: {
-    MENU_SELECT: 'MENU_SELECT',
-    MENU_UNSELECT: 'MENU_UNSELECT',
-    MENU_VISIBLE: 'MENU_VISIBLE'
-  },
+  Types: MenuActionTypes,
   selectItem: function(id) {
     AppDispatcher.dispatch({
       type: this.Types.MENU_SELECT,
@@ -35,4 +33,4 @@ const MenuAction = {
   }
 };
 
-module.exports = MenuAction;
+export default MenuAction;

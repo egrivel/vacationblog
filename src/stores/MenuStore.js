@@ -1,11 +1,11 @@
 'use strict';
 
-const assign = require('object-assign');
-const AppDispatcher = require('../AppDispatcher');
-const MenuActionTypes = require('../actions/MenuAction').Types;
-const UserActionTypes = require('../actions/UserAction').Types;
-const GenericStore = require('./GenericStore');
-const UserStore = require('./UserStore');
+import assign from 'object-assign';
+import AppDispatcher from '../AppDispatcher';
+import MenuActionTypes from '../actions/MenuActionTypes';
+import UserActionTypes from '../actions/UserActionTypes';
+import GenericStore from './GenericStore';
+import UserStore from './UserStore';
 
 const menuIds = {
   HOME: 'm1',
@@ -155,4 +155,4 @@ const MenuStore = assign({}, GenericStore, {
 
 MenuStore.dispatchToken = AppDispatcher.register(MenuStore._storeCallback);
 
-module.exports = MenuStore;
+export default MenuStore;

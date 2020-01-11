@@ -5,20 +5,15 @@
  * of contributors to a trip ("trip users").
  */
 
-const AppDispatcher = require('../AppDispatcher');
-const utils = require('./utils');
+import AppDispatcher from '../AppDispatcher';
+import utils from './utils';
+import FacebookActionTypes from './FacebookActionTypes';
 
 let _isLoadingStatus = false;
 let _isLoadingDetails = false;
 
 const FacebookAction = {
-  Types: {
-    FB_AVAILABLE: 'FB_AVAILABLE',
-    FB_CLEAR: 'FB_CLEAR',
-    FB_DATA: 'FB_DATA',
-    FB_EMAIL: 'FB_EMAIL',
-    FB_STATUS: 'FB_STATUS'
-  },
+  Types: FacebookActionTypes,
 
   getStatus: function() {
     if (typeof FB !== 'undefined' && !_isLoadingStatus) {
@@ -86,4 +81,4 @@ const FacebookAction = {
   }
 };
 
-module.exports = FacebookAction;
+export default FacebookAction;

@@ -1,22 +1,22 @@
 'use strict';
 
-const _ = require('lodash');
-const React = require('react');
-const createReactClass = require('create-react-class');
-const PropTypes = require('prop-types');
+import _ from 'lodash';
+import React from 'react';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
 
-const moment = require('moment');
+import moment from 'moment';
 
-const Textbox = require('./standard/Textbox.jsx');
-const Textarea = require('./standard/Textarea.jsx');
-const ButtonBar = require('./standard/ButtonBar.jsx');
+import Textbox from './standard/Textbox.jsx';
+import Textarea from './standard/Textarea.jsx';
+import ButtonBar from './standard/ButtonBar.jsx';
 
-const storeMixin = require('./StoreMixin');
-const TripStore = require('../stores/TripStore');
-const JournalStore = require('../stores/JournalStore');
-const MenuAction = require('../actions/MenuAction');
-const MenuStore = require('../stores/MenuStore');
-const JournalAction = require('../actions/JournalAction');
+import storeMixin from './StoreMixin';
+import TripStore from '../stores/TripStore';
+import JournalStore from '../stores/JournalStore';
+import MenuAction from '../actions/MenuAction';
+import MenuStore from '../stores/MenuStore';
+import JournalAction from '../actions/JournalAction';
 
 const JournalEdit = createReactClass({
   displayName: 'Journal Edit',
@@ -292,4 +292,4 @@ const JournalEdit = createReactClass({
   }
 });
 
-module.exports = JournalEdit;
+export default JournalEdit;

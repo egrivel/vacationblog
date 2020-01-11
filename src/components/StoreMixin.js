@@ -72,4 +72,4 @@ function StoreMixin() {
   return Mixin;
 }
 
-module.exports = StoreMixin;
+export default StoreMixin;

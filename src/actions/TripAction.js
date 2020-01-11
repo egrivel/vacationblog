@@ -5,17 +5,12 @@
  * of contributors to a trip ("trip users").
  */
 
-const AppDispatcher = require('../AppDispatcher');
-const utils = require('./utils');
+import AppDispatcher from '../AppDispatcher';
+import utils from './utils';
+import TripActionTypes from './TripActionTypes';
 
 const TripAction = {
-  Types: {
-    TRIP_SET_CURRENT: 'TRIP_SET_CURRENT',
-    TRIP_LOAD_LIST: 'TRIP_LOAD_LIST',
-    TRIP_LOAD_DATA: 'TRIP_LOAD_DATA',
-    TRIP_LOAD_USERLIST: 'TRIP_LOAD_USERLIST',
-    TRIP_LOAD_JOURNALS: 'TRIP_LOAD_JOURNALS'
-  },
+  Types: TripActionTypes,
 
   /**
    * Initial trip load. This function will do an initial load to
@@ -209,4 +204,4 @@ const TripAction = {
   }
 };
 
-module.exports = TripAction;
+export default TripAction;

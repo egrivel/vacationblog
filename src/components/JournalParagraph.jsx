@@ -5,15 +5,15 @@
  * text and/or media.
  */
 
-const React = require('react');
-const createReactClass = require('create-react-class');
-const PropTypes = require('prop-types');
+import React from 'react';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
 
-const MediaStore = require('../stores/MediaStore');
-const MediaAction = require('../actions/MediaAction');
-const JournalImage = require('./JournalImage.jsx');
+import MediaStore from '../stores/MediaStore';
+import MediaAction from '../actions/MediaAction';
+import JournalImage from './JournalImage.jsx';
 
-const utils = require('./utils');
+import utils from './utils';
 const Orientation = utils.orientation;
 
 /**
@@ -550,7 +550,7 @@ const JournalParagraph = createReactClass({
     const images = [];
     let imageCount = 0;
 
-    const pano = text.match(/^\s*\[PANO ([\d\-abc]+)(\s+[+\-]\d+)?\]\s*$/);
+    const pano = text.match(/^\s*\[PANO ([\d\-abc]+)(\s+[+-]\d+)?\]\s*$/);
     if (pano) {
       return this._renderPanorama(tripId, pano[1], pano[2], this.props.canEdit);
     }
@@ -597,4 +597,4 @@ const JournalParagraph = createReactClass({
   }
 });
 
-module.exports = JournalParagraph;
+export default JournalParagraph;

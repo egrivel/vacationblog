@@ -1,6 +1,6 @@
 'use strict';
 
-const utils = require('./utils');
+import utils from './utils';
 
 const NotificationAction = {
   sendNotification: function(subject, text) {
@@ -18,4 +18,4 @@ const NotificationAction = {
   }
 };
 
-module.exports = NotificationAction;
+export default NotificationAction;

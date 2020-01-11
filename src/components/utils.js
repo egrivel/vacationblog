@@ -11,8 +11,8 @@
  *    of that object.
  */
 
-const React = require('react');
-const moment = require('moment-timezone');
+import React from 'react';
+import moment from 'moment-timezone';
 
 function _replaceEntities(text) {
   text = text.replace(/&aacute;/g, '\u00e1');
@@ -322,4 +322,4 @@ const utils = {
   }
 };
 
-module.exports = utils;
+export default utils;

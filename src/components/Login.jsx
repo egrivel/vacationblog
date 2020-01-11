@@ -66,22 +66,22 @@
  *    to actually log in
  */
 
-const React = require('react');
-const createReactClass = require('create-react-class');
-const PropTypes = require('prop-types');
+import React from 'react';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
 
-const storeMixin = require('./StoreMixin');
+import storeMixin from './StoreMixin';
 
-const Textbox = require('./standard/Textbox.jsx');
-const Password = require('./standard/Password.jsx');
-const Checkbox = require('./standard/Checkbox.jsx');
-const ButtonBar = require('./standard/ButtonBar.jsx');
+import Textbox from './standard/Textbox.jsx';
+import Password from './standard/Password.jsx';
+import Checkbox from './standard/Checkbox.jsx';
+import ButtonBar from './standard/ButtonBar.jsx';
 
-const LoginAction = require('../actions/LoginAction');
-const FacebookAction = require('../actions/FacebookAction');
-const UserAction = require('../actions/UserAction');
-const UserStore = require('../stores/UserStore');
-const FacebookStore = require('../stores/FacebookStore');
+import LoginAction from '../actions/LoginAction';
+import FacebookAction from '../actions/FacebookAction';
+import UserAction from '../actions/UserAction';
+import UserStore from '../stores/UserStore';
+import FacebookStore from '../stores/FacebookStore';
 
 const Login = createReactClass({
   displayName: 'Login',
@@ -211,7 +211,7 @@ const Login = createReactClass({
     if (!userId || !name || !email || !password || !password2) {
       UserAction.setLoginFormError(
         'You need to enter all the information on this screen.');
-    } else if (preg_match('/[^A-Za-z0-9.\\-]/', $userId)) {
+    } else if (userId.match(/[^A-Za-z0-9.\\-]/)) {
       UserAction.setLoginForError(
         'User name can only have letters, digits, periods and dashes.');
     } else if (password.length < 6) {
@@ -353,7 +353,7 @@ const Login = createReactClass({
     );
   },
 
-  _fbLogin: function(event) {
+  _fbLogin: function() {
     FB.login(function(response) {
       if (response.status === 'connected') {
         LoginAction.doFacebookLogin(response.authResponse.userID)
@@ -761,4 +761,4 @@ const Login = createReactClass({
   }
 });
 
-module.exports = Login;
+export default Login;

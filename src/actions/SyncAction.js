@@ -1,13 +1,11 @@
 'use strict';
 
-const AppDispatcher = require('../AppDispatcher');
-const utils = require('./utils');
+import AppDispatcher from '../AppDispatcher';
+import utils from './utils';
+import SyncActionTypes from './SyncActionTypes';
 
 const SyncAction = {
-  Types: {
-    SYNC_UPDATE_INFO: 'SYNC_UPDATE_INFO',
-    SYNC_SET_MESSAGE: 'SYNC_SET_MESSAGE'
-  },
+  Types: SyncActionTypes,
 
   updateInfo: function(info) {
     AppDispatcher.dispatch({
@@ -35,4 +33,4 @@ const SyncAction = {
   }
 };
 
-module.exports = SyncAction;
+export default SyncAction;

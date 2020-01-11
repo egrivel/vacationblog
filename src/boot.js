@@ -1,29 +1,29 @@
 const React = require('react');
-const ReactDOM = require('react-dom');
+import ReactDOM from 'react-dom';
 const Router = require('react-router').Router;
 const hashHistory = require('react-router').hashHistory;
 
-const App = require('./components/App.jsx');
-const Welcome = require('./components/Welcome.jsx');
-const TripDescription = require('./components/TripDescription.jsx');
-const TripEdit = require('./components/TripEdit.jsx');
-const TripAdmin = require('./components/TripAdmin.jsx');
-const UserEdit = require('./components/UserEdit.jsx');
-const UserAdmin = require('./components/UserAdmin.jsx');
-const JournalWrapper = require('./components/JournalWrapper.jsx');
-const JournalEdit = require('./components/JournalEdit.jsx');
-const Search = require('./components/Search.jsx');
-const Preferences = require('./components/Preferences.jsx');
-const Sync = require('./components/Sync.jsx');
-const Admin = require('./components/Admin.jsx');
-const About = require('./components/About.jsx');
-const LoginWrapper = require('./components/LoginWrapper.jsx');
-const Notification = require('./components/Notification.jsx');
+import App from './components/App.jsx';
+import Welcome from './components/Welcome.jsx';
+import TripDescription from './components/TripDescription.jsx';
+import TripEdit from './components/TripEdit.jsx';
+import TripAdmin from './components/TripAdmin.jsx';
+import UserEdit from './components/UserEdit.jsx';
+import UserAdmin from './components/UserAdmin.jsx';
+import JournalWrapper from './components/JournalWrapper.jsx';
+import JournalEdit from './components/JournalEdit.jsx';
+import Search from './components/Search.jsx';
+import Preferences from './components/Preferences.jsx';
+import Sync from './components/Sync.jsx';
+import Admin from './components/Admin.jsx';
+import About from './components/About.jsx';
+import LoginWrapper from './components/LoginWrapper.jsx';
+import Notification from './components/Notification.jsx';
 
-const TripAction = require('./actions/TripAction');
-const UserAction = require('./actions/UserAction');
+import TripAction from './actions/TripAction';
+import UserAction from './actions/UserAction';
 
-const utils = require('./utils');
+import utils from './utils';
 
 const routes = {
   path: '/',

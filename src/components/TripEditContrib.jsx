@@ -1,9 +1,9 @@
 'use strict';
 
-const _ = require('lodash');
-const React = require('react');
-const createReactClass = require('create-react-class');
-const PropTypes = require('prop-types');
+import _ from 'lodash';
+import React from 'react';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
 
 const TripEditContrib = createReactClass({
   displayName: 'Trip Edit Contrib',
@@ -85,4 +85,4 @@ const TripEditContrib = createReactClass({
   }
 });
 
-module.exports = TripEditContrib;
+export default TripEditContrib;

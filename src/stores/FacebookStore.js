@@ -8,12 +8,12 @@
  *  - ID of the current trip.
  *  - All the attributes of the current trip.
  */
-const _ = require('lodash');
-const assign = require('object-assign');
+import _ from 'lodash';
+import assign from 'object-assign';
 
-const AppDispatcher = require('../AppDispatcher');
-const GenericStore = require('./GenericStore');
-const FacebookActionTypes = require('../actions/FacebookAction').Types;
+import AppDispatcher from '../AppDispatcher';
+import GenericStore from './GenericStore';
+import FacebookActionTypes from '../actions/FacebookActionTypes';
 
 let _facebookAvailable = false;
 let _facebookEmail;
@@ -76,4 +76,4 @@ const FacebookStore = assign({}, GenericStore, {
 
 FacebookStore.dispatchToken = AppDispatcher.register(FacebookStore._storeCallback);
 
-module.exports = FacebookStore;
+export default FacebookStore;
