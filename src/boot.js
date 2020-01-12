@@ -2,6 +2,7 @@ const React = require('react');
 import ReactDOM from 'react-dom';
 const Router = require('react-router').Router;
 const hashHistory = require('react-router').hashHistory;
+import {hot} from 'react-hot-loader/root';
 
 import App from './components/App.jsx';
 import Welcome from './components/Welcome.jsx';
@@ -52,7 +53,7 @@ const routes = {
 };
 
 /* global document */
-ReactDOM.render(
+const root = ReactDOM.render(
   React.createElement(Router,
     {
       routes: routes,
@@ -95,3 +96,5 @@ if (lastEntryCookie) {
     window.location = location;
   }
 }
+
+export default hot(root);
