@@ -19,7 +19,7 @@ describe('actions/UserAction', function() {
 
     beforeEach(function() {
       userLoadedStub = sinon.stub(UserAction, '_userLoaded');
-      asyncStub = sinon.stub(utils, 'getAsync', function(url, callback) {
+      asyncStub = sinon.stub(utils, 'getAsync').callsFake(function(url, callback) {
         callback(JSON.stringify(testData));
       });
     });

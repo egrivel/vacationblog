@@ -17,7 +17,7 @@ describe('actions/MediaAction', function() {
 
     beforeEach(function() {
       mediaLoadedStub = sinon.stub(MediaAction, '_mediaLoaded');
-      asyncStub = sinon.stub(utils, 'getAsync', function(url, callback) {
+      asyncStub = sinon.stub(utils, 'getAsync').callsFake(function(url, callback) {
         callback(JSON.stringify(testData));
       });
     });
@@ -58,7 +58,7 @@ describe('actions/MediaAction', function() {
 
     beforeEach(function() {
       bulkMediaLoadedStub = sinon.stub(MediaAction, '_bulkMediaLoaded');
-      asyncStub = sinon.stub(utils, 'getAsync', function(url, callback) {
+      asyncStub = sinon.stub(utils, 'getAsync').callsFake(function(url, callback) {
         callback(JSON.stringify(testData));
       });
     });

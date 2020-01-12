@@ -52,10 +52,11 @@ describe('actions/TripAction', function() {
       data: 'more data'
     };
 
+
     beforeEach(function() {
       tripLoadedStub = sinon.stub(TripAction, '_tripLoaded');
       setCurrentTripStub = sinon.stub(TripAction, 'setCurrentTrip');
-      asyncStub = sinon.stub(utils, 'getAsync', function(url, callback) {
+      asyncStub = sinon.stub(utils, 'getAsync').callsFake(function(url, callback) {
         callback(JSON.stringify(testData));
       });
     });
@@ -102,7 +103,7 @@ describe('actions/TripAction', function() {
 
     beforeEach(function() {
       tripLoadedStub = sinon.stub(TripAction, '_tripLoaded');
-      asyncStub = sinon.stub(utils, 'getAsync', function(url, callback) {
+      asyncStub = sinon.stub(utils, 'getAsync').callsFake(function(url, callback) {
         callback(JSON.stringify(testData));
       });
     });
@@ -141,7 +142,7 @@ describe('actions/TripAction', function() {
 
     beforeEach(function() {
       tripListLoadedStub = sinon.stub(TripAction, '_tripListLoaded');
-      asyncStub = sinon.stub(utils, 'getAsync', function(url, callback) {
+      asyncStub = sinon.stub(utils, 'getAsync').callsFake(function(url, callback) {
         callback(JSON.stringify(testData));
       });
     });

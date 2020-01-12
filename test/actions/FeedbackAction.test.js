@@ -23,11 +23,11 @@ describe('actions/FeedbackAction', function() {
       list: 'list1'
     };
 
-    asyncPostStub = sinon.stub(utils, 'postAsync',
+    asyncPostStub = sinon.stub(utils, 'postAsync').callsFake(
       function(url, data, cb) {
         cb();
       });
-    asyncGetStub = sinon.stub(utils, 'getAsync',
+    asyncGetStub = sinon.stub(utils, 'getAsync').callsFake(
       function(url, cb) {
         cb(JSON.stringify(testData));
       });
@@ -76,7 +76,7 @@ describe('actions/FeedbackAction', function() {
       FeedbackAction.loadData(testTripId, testRefId);
       expect(dispatchStub.callCount).to.be.equal(1);
       expect(dispatchStub.args[0].length).to.be.equal(1);
-      expect(dispatchStub.args[0][0].type).to.be.exit;
+      expect(dispatchStub.args[0][0].list).to.exist;
       expect(dispatchStub.args[0][0].type)
         .to.be.equal(FeedbackAction.Types.FEEDBACK_LOAD);
     });
@@ -85,7 +85,7 @@ describe('actions/FeedbackAction', function() {
       FeedbackAction.loadData(testTripId, testRefId);
       expect(dispatchStub.callCount).to.be.equal(1);
       expect(dispatchStub.args[0].length).to.be.equal(1);
-      expect(dispatchStub.args[0][0].tripId).to.be.exit;
+      expect(dispatchStub.args[0][0].list).to.exist;
       expect(dispatchStub.args[0][0].tripId).to.be.equal(testData.tripId);
     });
 
@@ -93,7 +93,7 @@ describe('actions/FeedbackAction', function() {
       FeedbackAction.loadData(testTripId, testRefId);
       expect(dispatchStub.callCount).to.be.equal(1);
       expect(dispatchStub.args[0].length).to.be.equal(1);
-      expect(dispatchStub.args[0][0].referenceId).to.be.exit;
+      expect(dispatchStub.args[0][0].list).to.exist;
       expect(dispatchStub.args[0][0].referenceId).to.be.equal(
         testData.referenceId);
     });
@@ -102,7 +102,7 @@ describe('actions/FeedbackAction', function() {
       FeedbackAction.loadData(testTripId, testRefId);
       expect(dispatchStub.callCount).to.be.equal(1);
       expect(dispatchStub.args[0].length).to.be.equal(1);
-      expect(dispatchStub.args[0][0].list).to.be.exit;
+      expect(dispatchStub.args[0][0].list).to.exist;
       expect(dispatchStub.args[0][0].list).to.be.equal(testData.list);
     });
   });

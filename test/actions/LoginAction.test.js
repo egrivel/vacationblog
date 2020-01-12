@@ -1,5 +1,3 @@
-'use strict';
-
 // use the global 'document' for cookies testing
 /* global document */
 
@@ -22,7 +20,7 @@ describe('actions/LoginAction', function() {
     testUserId = 'test-user';
     testPassword = 'testPassword';
 
-    asyncPostStub = sinon.stub(utils, 'postAsync',
+    asyncPostStub = sinon.stub(utils, 'postAsync').callsFake(
       function(url, data, cb) {
         cb();
       });
@@ -31,9 +29,7 @@ describe('actions/LoginAction', function() {
   });
 
   afterEach(function() {
-    loadUserStub.restore();
-    setLoggedInUserStub.restore();
-    asyncPostStub.restore();
+    sinon.restore();
   });
 
   describe('#doLogin', function() {
@@ -48,12 +44,12 @@ describe('actions/LoginAction', function() {
     });
 
     it('sets login user ID', function() {
-      if (LoginAction.loginUserId) {
-        delete LoginAction.loginUserId;
+      if (LoginAction.userId) {
+        delete LoginAction.userId;
       }
       LoginAction.doLogin(testUserId, testPassword);
-      expect(LoginAction.loginUserId).to.exist;
-      expect(LoginAction.loginUserId).to.be.equal(testUserId);
+      expect(LoginAction.userId).to.exist;
+      expect(LoginAction.userId).to.be.equal(testUserId);
     });
 
     it('posts data', function() {
@@ -92,6 +88,7 @@ describe('actions/LoginAction', function() {
 
   describe('#_doLoginCallback', function() {
     let response;
+    let responseNoUserId;
     let testAuthId;
 
     beforeEach(function() {
@@ -104,8 +101,14 @@ describe('actions/LoginAction', function() {
       }
       testAuthId = 'auth-ID';
       response = JSON.stringify({
+        authId: testAuthId,
         resultCode: '200',
-        authId: testAuthId
+        userId: testUserId
+      });
+      // Not even sure what this would mean?
+      responseNoUserId = JSON.stringify({
+        authId: testAuthId,
+        resultCode: '200'
       });
     });
 
@@ -118,13 +121,13 @@ describe('actions/LoginAction', function() {
 
     it('calls setLoggedInUser when user ID is set', function() {
       expect(document.cookie).to.be.equal('');
-      LoginAction.loginUserId = testUserId;
+      LoginAction.userId = testUserId;
       LoginAction._doLoginCallback(response);
       expect(setLoggedInUserStub.callCount).to.be.equal(1);
     });
 
     it('calls setLoggedInUser with user ID', function() {
-      LoginAction.loginUserId = testUserId;
+      LoginAction.userId = testUserId;
       LoginAction._doLoginCallback(response);
       expect(setLoggedInUserStub.callCount).to.be.equal(1);
       expect(setLoggedInUserStub.args[0].length).to.be.equal(1);
@@ -132,25 +135,25 @@ describe('actions/LoginAction', function() {
     });
 
     it('blanks out setLoggedInUser without user ID', function() {
-      if (LoginAction.loginUserId) {
-        delete LoginAction.loginUserId;
+      if (LoginAction.userId) {
+        delete LoginAction.userId;
       }
       // If there is no user ID when the callback gets executed, it will
       // explicitly set the logged in user to a blank string
-      LoginAction._doLoginCallback(response);
+      LoginAction._doLoginCallback(responseNoUserId);
       expect(setLoggedInUserStub.callCount).to.be.equal(1);
       expect(setLoggedInUserStub.args[0].length).to.be.equal(1);
       expect(setLoggedInUserStub.args[0][0]).to.be.equal('');
     });
 
     it('calls loadUser when user ID is set', function() {
-      LoginAction.loginUserId = testUserId;
+      LoginAction.userId = testUserId;
       LoginAction._doLoginCallback(response);
       expect(loadUserStub.callCount).to.be.equal(1);
     });
 
     it('calls loadUser with user ID', function() {
-      LoginAction.loginUserId = testUserId;
+      LoginAction.userId = testUserId;
       LoginAction._doLoginCallback(response);
       expect(loadUserStub.callCount).to.be.equal(1);
       expect(loadUserStub.args[0].length).to.be.equal(1);
@@ -158,10 +161,10 @@ describe('actions/LoginAction', function() {
     });
 
     it('does not call loadUser without user ID', function() {
-      if (LoginAction.loginUserId) {
-        delete LoginAction.loginUserId;
+      if (LoginAction.userId) {
+        delete LoginAction.userId;
       }
-      LoginAction._doLoginCallback(response);
+      LoginAction._doLoginCallback(responseNoUserId);
       expect(loadUserStub.callCount).to.be.equal(0);
     });
 
@@ -170,7 +173,7 @@ describe('actions/LoginAction', function() {
         resultCode: '404',
         authId: testAuthId
       });
-      LoginAction.loginUserId = testUserId;
+      LoginAction.userId = testUserId;
       expect(document.cookie).to.be.equal('', 'before');
       LoginAction._doLoginCallback(response);
       expect(document.cookie).to.be.equal('', 'after');
@@ -179,14 +182,18 @@ describe('actions/LoginAction', function() {
     });
 
     it('response without authId blanks cookie', function() {
+      // Set up the test by making sure a cookie is set first
+      LoginAction._doLoginCallback(response);
+      expect(document.cookie).to.contain('blogAuthId', 'before');
+      expect(setLoggedInUserStub.callCount).to.be.equal(1);
+
       response = JSON.stringify({
         resultCode: '200'
       });
-      LoginAction.loginUserId = testUserId;
-      expect(document.cookie).to.be.equal('', 'before');
+      LoginAction.userId = testUserId;
       LoginAction._doLoginCallback(response);
-      expect(document.cookie).to.be.equal('blogAuthId=', 'after');
-      expect(setLoggedInUserStub.callCount).to.be.equal(1);
+      expect(document.cookie).to.not.contain('blogAuthId', 'after');
+      expect(setLoggedInUserStub.callCount).to.be.equal(2);
       expect(loadUserStub.callCount).to.be.equal(1);
     });
   });

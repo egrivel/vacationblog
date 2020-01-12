@@ -29,7 +29,7 @@ describe('actions/CommentAction', function() {
 
     beforeEach(function() {
       commentsLoadedStub = sinon.stub(CommentAction, '_commentsLoaded');
-      asyncStub = sinon.stub(utils, 'getAsync', function(url, callback) {
+      asyncStub = sinon.stub(utils, 'getAsync').callsFake(function(url, callback) {
         callback(JSON.stringify(testData));
       });
     });
@@ -111,7 +111,7 @@ describe('actions/CommentAction', function() {
       let count;
       recursivelyLoadedStub =
         sinon.stub(CommentAction, '_recursiveCommentsLoaded');
-      asyncStub = sinon.stub(utils, 'getAsync', function(url, callback) {
+      asyncStub = sinon.stub(utils, 'getAsync').callsFake(function(url, callback) {
         if (count < 10) {
           count++;
           testData.commentId = 'comment-' + count;
@@ -169,7 +169,7 @@ describe('actions/CommentAction', function() {
       const testReference1 = 'test-reference-1';
 
       beforeEach(function() {
-        asyncStub = sinon.stub(utils, 'getAsync', function(url, callback) {
+        asyncStub = sinon.stub(utils, 'getAsync').callsFake(function(url, callback) {
           if (count < 10) {
             count++;
             testData.count = 1;

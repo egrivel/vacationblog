@@ -1,5 +1,3 @@
-'use strict';
-
 import AppDispatcher from '../AppDispatcher';
 import utils from './utils';
 import FeedbackActionTypes from './FeedbackActionTypes';
@@ -7,17 +5,11 @@ import FeedbackActionTypes from './FeedbackActionTypes';
 const FeedbackAction = {
   Types: FeedbackActionTypes,
 
-  _getCallback: function(tripId, referenceId) {
-    return function(tripId, referenceId) {
-      this.loadData(tripId, referenceId);
-    }.bind(this, tripId, referenceId);
-  },
-
-  loadData: function(tripId, referenceId) {
+  loadData: (tripId, referenceId) => {
     let url = 'api/getFeedback.php?';
     url += 'tripId=' + encodeURIComponent(tripId);
     url += '&referenceId=' + encodeURIComponent(referenceId);
-    utils.getAsync(url, function(response) {
+    utils.getAsync(url, (response) => {
       const data = JSON.parse(response);
       AppDispatcher.dispatch({
         type: FeedbackAction.Types.FEEDBACK_LOAD,
@@ -38,7 +30,7 @@ const FeedbackAction = {
     data.type = 'like';
     data.deleted = 'N';
     utils.postAsync(url, data,
-      this._getCallback(tripId, referenceId));
+      () => FeedbackAction.loadData(tripId, referenceId));
   },
 
   clearLike: function(tripId, referenceId, userId) {
@@ -51,7 +43,7 @@ const FeedbackAction = {
     data.type = 'like';
     data.deleted = 'Y';
     utils.postAsync(url, data,
-      this._getCallback(tripId, referenceId));
+      () => FeedbackAction.loadData(tripId, referenceId));
   },
 
   setPlus: function(tripId, referenceId, userId) {
@@ -64,7 +56,7 @@ const FeedbackAction = {
     data.type = 'plus';
     data.deleted = 'N';
     utils.postAsync(url, data,
-      this._getCallback(tripId, referenceId));
+      () => FeedbackAction.loadData(tripId, referenceId));
   },
 
   clearPlus: function(tripId, referenceId, userId) {
@@ -77,7 +69,7 @@ const FeedbackAction = {
     data.type = 'plus';
     data.deleted = 'Y';
     utils.postAsync(url, data,
-      this._getCallback(tripId, referenceId));
+      () => FeedbackAction.loadData(tripId, referenceId));
   },
 
   setSmile: function(tripId, referenceId, userId) {
@@ -90,7 +82,7 @@ const FeedbackAction = {
     data.type = 'smile';
     data.deleted = 'N';
     utils.postAsync(url, data,
-      this._getCallback(tripId, referenceId));
+      () => FeedbackAction.loadData(tripId, referenceId));
   },
 
   clearSmile: function(tripId, referenceId, userId) {
@@ -103,7 +95,7 @@ const FeedbackAction = {
     data.type = 'smile';
     data.deleted = 'Y';
     utils.postAsync(url, data,
-      this._getCallback(tripId, referenceId));
+      () => FeedbackAction.loadData(tripId, referenceId));
   }
 };
 
