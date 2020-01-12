@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Display one or more comments to a given item. This component will
  * call itself recursively to display comments to comments.
@@ -56,8 +54,7 @@ const Comment = createReactClass({
     userId: PropTypes.string,
     userName: PropTypes.string,
     comments: PropTypes.array,
-    loggedInUserId: PropTypes.string,
-    canEdit: PropTypes.bool.isRequired
+    loggedInUserId: PropTypes.string
   },
 
   _startEditing: function(event) {
@@ -69,6 +66,7 @@ const Comment = createReactClass({
     event.stopPropagation();
   },
 
+  // eslint-disable-next-line complexity
   render: function render() {
     const tripId = this.props.tripId;
     const tripActive = this.props.tripActive;
@@ -110,8 +108,13 @@ const Comment = createReactClass({
       } else {
         newComment = (
           <div className="commentEdit">
-            <a href="#" onClick={this._startEditing} className="addComment"
-              data-trip-id={tripId} data-reference-id={commentId}>
+            <a
+              href="#"
+              onClick={this._startEditing}
+              className="addComment"
+              data-trip-id={tripId}
+              data-reference-id={commentId}
+            >
               Add a comment
             </a>
           </div>
@@ -132,8 +135,12 @@ const Comment = createReactClass({
       if (!CommentStore.isEditing('', '', commentId)) {
         commentEdit = (
           <div className="commentEdit">
-            <button onClick={this._startEditing} className="addComment"
-              data-trip-id={tripId} data-comment-id={commentId}>
+            <button
+              onClick={this._startEditing}
+              className="addComment"
+              data-trip-id={tripId}
+              data-comment-id={commentId}
+            >
               Edit
             </button>
           </div>
@@ -168,11 +175,15 @@ const Comment = createReactClass({
     let commentBody = '';
     if (CommentStore.isEditing('', '', commentId)) {
       commentBody = (
-        <CommentEdit tripId={tripId} commentId={commentId}
-          referenceId={referenceId} key={'c-' + tripId + '-' + commentId}/>
+        <CommentEdit
+          tripId={tripId}
+          commentId={commentId}
+          referenceId={referenceId}
+          key={'c-' + tripId + '-' + commentId}
+        />
       );
     } else {
-      commentBody = parList.map(function(par) {
+      commentBody = parList.map((par) => {
         parCount++;
         const parKey = 'p-' + parCount;
         return React.createElement(CommentParagraph, {
@@ -253,7 +264,10 @@ CommentList = createReactClass({
       );
     }
     return (
-      <div className="comments" key={'comment-list-' + this.props.referenceId}>
+      <div
+        className="comments"
+        key={'comment-list-' + this.props.referenceId}
+      >
         {commentList}
       </div>
     );
