@@ -90,6 +90,7 @@ describe('components/standard/Droplist', () => {
       component.find('select').simulate('change', testEvent);
       expect(onChangeStub.callCount).toBe(1);
       expect(onChangeStub.args[0][0]).toBe(testItemValue1);
+      expect(onChangeStub.args[0][1]).toBe(testFieldId);
     });
   });
 });

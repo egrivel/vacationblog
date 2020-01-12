@@ -102,6 +102,7 @@ describe('components/standard/Checkbox', () => {
       expect(onChangeStub.callCount).toBe(1);
       // Expect that the new selection value is false
       expect(onChangeStub.args[0][0]).toBe(false);
+      expect(onChangeStub.args[0][1]).toBe(testFieldId);
     });
 
     it('selected, click label', () => {
@@ -117,6 +118,7 @@ describe('components/standard/Checkbox', () => {
       expect(onChangeStub.callCount).toBe(1);
       // Expect that the new selection value is false
       expect(onChangeStub.args[0][0]).toBe(false);
+      expect(onChangeStub.args[0][1]).toBe(testFieldId);
     });
   });
 });
