@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/standard/Display renders with label and value 1`] = `
+exports[`components/standard/Display #render renders with label and value 1`] = `
 <div>
   <div
     className="formLabel"
@@ -17,7 +17,7 @@ exports[`components/standard/Display renders with label and value 1`] = `
 </div>
 `;
 
-exports[`components/standard/Display renders with label but no value 1`] = `
+exports[`components/standard/Display #render renders with label but no value 1`] = `
 <div>
   <div
     className="formLabel"

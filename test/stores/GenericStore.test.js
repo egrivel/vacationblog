@@ -1,5 +1,5 @@
 
-const expect = require('chai').expect;
+import {expect} from 'chai';
 import sinon from 'sinon';
 
 import GenericStore from '../../src/stores/GenericStore';

@@ -1,15 +1,10 @@
-'use strict';
-
 import React from 'react';
-import createReactClass from 'create-react-class';
 import PropTypes from 'prop-types';
 
 import Formrow from './Formrow.jsx';
 
-const Droplist = createReactClass({
-  displayName: 'Droplist',
-
-  propTypes: {
+class Droplist extends React.Component {
+  static propTypes = {
     fieldId: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
     value: PropTypes.string,
@@ -18,13 +13,13 @@ const Droplist = createReactClass({
       label: PropTypes.string.isRequired
     })).isRequired,
     onChange: PropTypes.func.isRequired
-  },
+  }
 
-  _onChange: function(event) {
+  _onChange(event) {
     this.props.onChange(event.target.value, this.props.fieldId);
-  },
+  }
 
-  render: function() {
+  render() {
     const options = [];
     let value = this.props.value;
     if (!value) {
@@ -57,6 +52,6 @@ const Droplist = createReactClass({
       </Formrow>
     );
   }
-});
+}
 
 export default Droplist;

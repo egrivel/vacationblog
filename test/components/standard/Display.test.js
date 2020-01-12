@@ -14,24 +14,26 @@ describe('components/standard/Display', () => {
   const testLabel = 'Test Label';
   const testValue = 'Test Value';
 
-  test('renders with label and value', () => {
-    const render = renderer.create(
-      <Display
-        fieldId={testFieldId}
-        label={testLabel}
-        value={testValue}
-      />
-    );
-    expect(render.toJSON()).toMatchSnapshot();
-  });
+  describe('#render', () => {
+    test('renders with label and value', () => {
+      const render = renderer.create(
+        <Display
+          fieldId={testFieldId}
+          label={testLabel}
+          value={testValue}
+        />
+      );
+      expect(render.toJSON()).toMatchSnapshot();
+    });
 
-  test('renders with label but no value', () => {
-    const render = renderer.create(
-      <Display
-        fieldId={testFieldId}
-        label={testLabel}
-      />
-    );
-    expect(render.toJSON()).toMatchSnapshot();
+    test('renders with label but no value', () => {
+      const render = renderer.create(
+        <Display
+          fieldId={testFieldId}
+          label={testLabel}
+        />
+      );
+      expect(render.toJSON()).toMatchSnapshot();
+    });
   });
 });

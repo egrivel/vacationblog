@@ -14,22 +14,24 @@ describe('components/standard/Formrow', () => {
   const testLabelFor = 'test-label-for';
   const testContent = <span>This is some <em>test</em> content.</span>;
 
-  test('renders with label and value', () => {
-    const render = renderer.create(
-      <Formrow
-        label={testLabel}
-        labelFor={testLabelFor}
-      >
-        {testContent}
-      </Formrow>
-    );
-    expect(render.toJSON()).toMatchSnapshot();
-  });
+  describe('#render', () => {
+    test('renders with label and value', () => {
+      const render = renderer.create(
+        <Formrow
+          label={testLabel}
+          labelFor={testLabelFor}
+        >
+          {testContent}
+        </Formrow>
+      );
+      expect(render.toJSON()).toMatchSnapshot();
+    });
 
-  test('renders with label but no value', () => {
-    const render = renderer.create(
-      <Formrow />
-    );
-    expect(render.toJSON()).toMatchSnapshot();
+    test('renders with label but no value', () => {
+      const render = renderer.create(
+        <Formrow />
+      );
+      expect(render.toJSON()).toMatchSnapshot();
+    });
   });
 });

@@ -10,33 +10,35 @@ import ButtonBar from '../../../src/components/standard/ButtonBar';
  * multiple buttons, they are separated by a space.
  */
 describe('components/standard/ButtonBar', () => {
-  test('renders single button', () => {
-    const buttonList = [
-      {
-        label: 'Test Label',
-        onClick: sinon.stub()
-      }
-    ];
-    const render = renderer.create(
-      <ButtonBar buttons={buttonList} />
-    );
-    expect(render.toJSON()).toMatchSnapshot();
-  });
+  describe('#render', () => {
+    test('renders single button', () => {
+      const buttonList = [
+        {
+          label: 'Test Label',
+          onClick: sinon.stub()
+        }
+      ];
+      const render = renderer.create(
+        <ButtonBar buttons={buttonList} />
+      );
+      expect(render.toJSON()).toMatchSnapshot();
+    });
 
-  test('renders multiple buttons', () => {
-    const buttonList = [
-      {
-        label: 'Test Label 1',
-        onClick: sinon.stub()
-      },
-      {
-        label: 'Test Label 2',
-        onClick: sinon.stub()
-      }
-    ];
-    const render = renderer.create(
-      <ButtonBar buttons={buttonList} />
-    );
-    expect(render.toJSON()).toMatchSnapshot();
+    test('renders multiple buttons', () => {
+      const buttonList = [
+        {
+          label: 'Test Label 1',
+          onClick: sinon.stub()
+        },
+        {
+          label: 'Test Label 2',
+          onClick: sinon.stub()
+        }
+      ];
+      const render = renderer.create(
+        <ButtonBar buttons={buttonList} />
+      );
+      expect(render.toJSON()).toMatchSnapshot();
+    });
   });
 });

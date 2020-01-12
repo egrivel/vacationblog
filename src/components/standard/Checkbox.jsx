@@ -1,52 +1,47 @@
-'use strict';
-
 import React from 'react';
-import createReactClass from 'create-react-class';
 import PropTypes from 'prop-types';
 
 import Formrow from './Formrow.jsx';
 
-const Checkbox = createReactClass({
-  displayName: 'Checkbox',
-
-  propTypes: {
+class Checkbox extends React.Component {
+  static propTypes = {
     fieldId: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
     selected: PropTypes.bool,
     onChange: PropTypes.func.isRequired
-  },
+  }
 
-  _onChange: function(event) {
+  _onChange(event) {
     this.props.onChange(event.target.checked, this.props.fieldId);
-  },
+  }
 
-  _toggleValue: function() {
+  _toggleValue() {
     this.props.onChange(!this.props.selected, this.props.fieldId);
-  },
+  }
 
-  render: function() {
-    const selected = this.props.selected;
+  render() {
+    const {fieldId, label, selected} = this.props;
     return (
       <Formrow
-        key={'k-' + this.props.fieldId + selected}
+        key={'k-' + fieldId + selected}
       >
         <label
           className="checkbox"
-          htmlFor={this.props.fieldId}
-          onClick={this._toggleValue}
+          htmlFor={fieldId}
+          onClick={() => this._toggleValue()}
         >
           <input
             type="checkbox"
-            id={this.props.fieldId}
+            id={fieldId}
             value="Y"
             checked={selected}
-            onChange={this._onChange}
+            onChange={event => this._onChange(event)}
           />
-          {this.props.label}
+          {label}
         </label>
       </Formrow>
     );
   }
-});
+}
 
 export default Checkbox;

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/standard/ButtonBar renders multiple buttons 1`] = `
+exports[`components/standard/ButtonBar #render renders multiple buttons 1`] = `
 <div>
   <div
     className="formLabel"
@@ -29,7 +29,7 @@ exports[`components/standard/ButtonBar renders multiple buttons 1`] = `
 </div>
 `;
 
-exports[`components/standard/ButtonBar renders single button 1`] = `
+exports[`components/standard/ButtonBar #render renders single button 1`] = `
 <div>
   <div
     className="formLabel"
