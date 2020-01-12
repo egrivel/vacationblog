@@ -7,12 +7,12 @@ class Droplist extends React.Component {
   static propTypes = {
     fieldId: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
-    value: PropTypes.string,
     list: PropTypes.arrayOf(PropTypes.shape({
-      value: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired
+      label: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired
     })).isRequired,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    value: PropTypes.string
   }
 
   _onChange(event) {
@@ -21,12 +21,11 @@ class Droplist extends React.Component {
 
   render() {
     const options = [];
-    let value = this.props.value;
-    if (!value) {
-      value = '';
-    }
-    for (let i = 0; i < this.props.list.length; i++) {
-      const item = this.props.list[i];
+    const value = this.props.value || '';
+    const {list} = this.props;
+
+    for (let i = 0; i < list.length; i++) {
+      const item = list[i];
       options.push(
         <option
           key={'o-' + i}
@@ -36,6 +35,7 @@ class Droplist extends React.Component {
         </option>
       );
     }
+
     return (
       <Formrow
         key={'k-' + this.props.fieldId}
@@ -44,7 +44,7 @@ class Droplist extends React.Component {
       >
         <select
           id={this.props.fieldId}
-          onChange={this._onChange}
+          onChange={event => this._onChange(event)}
           value={value}
         >
           {options}
