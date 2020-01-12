@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 
 import MediaStore from '../stores/MediaStore';
 import MediaAction from '../actions/MediaAction';
-import JournalImage from './JournalImage.jsx';
+import JournalImage from './JournalImage';
 
 import utils from './utils';
 const Orientation = utils.orientation;

@@ -4,9 +4,9 @@ import React from 'react';
 import createReactClass from 'create-react-class';
 
 import storeMixin from './StoreMixin';
-import Textbox from './standard/Textbox.jsx';
-import Password from './standard/Password.jsx';
-import ButtonBar from './standard/ButtonBar.jsx';
+import Textbox from './standard/Textbox';
+import Password from './standard/Password';
+import ButtonBar from './standard/ButtonBar';
 import SyncStore from '../stores/SyncStore';
 import SyncAction from '../actions/SyncAction';
 import MenuAction from '../actions/MenuAction';

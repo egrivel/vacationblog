@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Formrow from './Formrow.jsx';
+import Formrow from './Formrow';
 
 class ButtonBar extends React.Component {
   static propTypes = {

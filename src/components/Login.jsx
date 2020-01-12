@@ -74,10 +74,10 @@ import PropTypes from 'prop-types';
 
 import storeMixin from './StoreMixin';
 
-import Textbox from './standard/Textbox.jsx';
-import Password from './standard/Password.jsx';
-import Checkbox from './standard/Checkbox.jsx';
-import ButtonBar from './standard/ButtonBar.jsx';
+import Textbox from './standard/Textbox';
+import Password from './standard/Password';
+import Checkbox from './standard/Checkbox';
+import ButtonBar from './standard/ButtonBar';
 
 import LoginAction from '../actions/LoginAction';
 import FacebookAction from '../actions/FacebookAction';

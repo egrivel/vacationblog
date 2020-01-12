@@ -7,9 +7,9 @@ import PropTypes from 'prop-types';
 
 import moment from 'moment';
 
-import Textbox from './standard/Textbox.jsx';
-import Textarea from './standard/Textarea.jsx';
-import ButtonBar from './standard/ButtonBar.jsx';
+import Textbox from './standard/Textbox';
+import Textarea from './standard/Textarea';
+import ButtonBar from './standard/ButtonBar';
 
 import storeMixin from './StoreMixin';
 import TripStore from '../stores/TripStore';

@@ -3,8 +3,8 @@
 import React from 'react';
 import createReactClass from 'create-react-class';
 
-import Menu from './Menu.jsx';
-import Login from './Login.jsx';
+import Menu from './Menu';
+import Login from './Login';
 import TripStore from '../stores/TripStore';
 import MenuStore from '../stores/MenuStore';
 import UserStore from '../stores/UserStore';

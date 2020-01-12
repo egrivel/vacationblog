@@ -8,10 +8,10 @@ import UserStore from '../stores/UserStore';
 import MediaStore from '../stores/MediaStore';
 import MediaAction from '../actions/MediaAction';
 
-import Image from './Image.jsx';
-import ButtonBar from './standard/ButtonBar.jsx';
-import Display from './standard/Display.jsx';
-import Textbox from './standard/Textbox.jsx';
+import Image from './Image';
+import ButtonBar from './standard/ButtonBar';
+import Display from './standard/Display';
+import Textbox from './standard/Textbox';
 import utils from './utils';
 const Orientation = utils.orientation;
 

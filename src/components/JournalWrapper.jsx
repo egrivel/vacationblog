@@ -8,7 +8,7 @@ import JournalStore from '../stores/JournalStore';
 import TripStore from '../stores/TripStore';
 import JournalAction from '../actions/JournalAction';
 import TripAction from '../actions/TripAction';
-import JournalEntry from './JournalEntry.jsx';
+import JournalEntry from './JournalEntry';
 import utils from '../utils';
 
 /**

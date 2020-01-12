@@ -12,11 +12,11 @@ import UserStore from '../stores/UserStore';
 import TripAction from '../actions/TripAction';
 import UserAction from '../actions/UserAction';
 
-import ButtonBar from './standard/ButtonBar.jsx';
-import Display from './standard/Display.jsx';
+import ButtonBar from './standard/ButtonBar';
+import Display from './standard/Display';
 
-import TripEditContrib from './TripEditContrib.jsx';
-import TripSelectContrib from './TripSelectContrib.jsx';
+import TripEditContrib from './TripEditContrib';
+import TripSelectContrib from './TripSelectContrib';
 
 const TripEdit = createReactClass({
   displayName: 'Trip Edit',
