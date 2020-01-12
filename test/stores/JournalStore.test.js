@@ -16,39 +16,39 @@ const testJournal2 = {
   journalText: 'journal text 2'
 };
 
-describe('stores/JournalStore', function() {
-  beforeEach(function() {
+describe('stores/JournalStore', () => {
+  beforeEach(() => {
     JournalStore.removeAllListeners();
     JournalStore._reset();
   });
 
-  afterEach(function() {
+  afterEach(() => {
     JournalStore.removeAllListeners();
   });
 
   // Behavior of an uninitialized trip store
-  describe('without journals loaded', function() {
-    describe('#getData', function() {
-      it('returns empty object when uninitialized', function() {
+  describe('without journals loaded', () => {
+    describe('#getData', () => {
+      it('returns empty object when uninitialized', () => {
         expect(JournalStore.getData()).to.deep.equal({});
       });
     });
   });
 
-  describe('with journals loaded', function() {
-    beforeEach(function() {
+  describe('with journals loaded', () => {
+    beforeEach(() => {
       JournalStore._storeCallback({
         type: JournalActionTypes.JOURNAL_DATA,
         data: testJournal1
       });
     });
 
-    describe('#getData', function() {
-      it('returns loaded journal', function() {
+    describe('#getData', () => {
+      it('returns loaded journal', () => {
         expect(JournalStore.getData()).to.deep.eql(testJournal1);
       });
 
-      it('new journal is available after it was loaded', function() {
+      it('new journal is available after it was loaded', () => {
         // journal 2 is not yet there
         expect(JournalStore.getData()).to.deep.eql(testJournal1);
 
@@ -63,7 +63,7 @@ describe('stores/JournalStore', function() {
         expect(JournalStore.getData()).to.deep.eql(testJournal2);
       });
 
-      it('setting existing journal does not emit change', function() {
+      it('setting existing journal does not emit change', () => {
         const cb = sinon.spy();
         JournalStore.addChangeListener(cb);
 
@@ -76,7 +76,7 @@ describe('stores/JournalStore', function() {
       });
 
       it('setting existing journal with new content does emit change',
-        function() {
+        () => {
           const cb = sinon.spy();
           JournalStore.addChangeListener(cb);
 
@@ -90,7 +90,7 @@ describe('stores/JournalStore', function() {
         }
       );
 
-      it('setting new journal does emit change', function() {
+      it('setting new journal does emit change', () => {
         const cb = sinon.spy();
         JournalStore.addChangeListener(cb);
 
@@ -104,7 +104,7 @@ describe('stores/JournalStore', function() {
         JournalStore.removeChangeListener(cb);
       });
 
-      it('sending different action does not emit change', function() {
+      it('sending different action does not emit change', () => {
         const cb = sinon.spy();
         JournalStore.addChangeListener(cb);
 

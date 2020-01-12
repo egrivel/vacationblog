@@ -1,4 +1,3 @@
-'use strict';
 
 const expect = require('chai').expect;
 import sinon from 'sinon';
@@ -8,38 +7,38 @@ import AppDispatcher from '../../src/AppDispatcher';
 import CommentAction from '../../src/actions/CommentAction';
 import UserAction from '../../src/actions/UserAction';
 
-describe('actions/CommentAction', function() {
+describe('actions/CommentAction', () => {
   let loadUserStub;
 
-  beforeEach(function() {
+  beforeEach(() => {
     // Comment actions load users, when needed. Stub out this function.
     loadUserStub = sinon.stub(UserAction, 'loadUser');
   });
 
-  afterEach(function() {
+  afterEach(() => {
     loadUserStub.restore();
   });
 
-  describe('#loadComments', function() {
+  describe('#loadComments', () => {
     let asyncStub;
     let commentsLoadedStub;
     const testData = {
       test1: 'data1'
     };
 
-    beforeEach(function() {
+    beforeEach(() => {
       commentsLoadedStub = sinon.stub(CommentAction, '_commentsLoaded');
-      asyncStub = sinon.stub(utils, 'getAsync').callsFake(function(url, callback) {
+      asyncStub = sinon.stub(utils, 'getAsync').callsFake((url, callback) => {
         callback(JSON.stringify(testData));
       });
     });
 
-    afterEach(function() {
+    afterEach(() => {
       asyncStub.restore();
       commentsLoadedStub.restore();
     });
 
-    it('calls API with trip and comment ID', function() {
+    it('calls API with trip and comment ID', () => {
       const testTripId = 'trip1';
       const testRefId = 'ref1';
       CommentAction.loadComments(testTripId, testRefId);
@@ -50,7 +49,7 @@ describe('actions/CommentAction', function() {
       expect(asyncStub.args[0][0]).to.contain('referenceId=' + testRefId);
     });
 
-    it('calls _commentsLoaded with right params', function() {
+    it('calls _commentsLoaded with right params', () => {
       const testTripId = 'trip1';
       const testRefId = 'ref1';
       CommentAction.loadComments(testTripId, testRefId);
@@ -62,17 +61,17 @@ describe('actions/CommentAction', function() {
     });
   });
 
-  describe('#_commentsLoaded', function() {
+  describe('#_commentsLoaded', () => {
     let dispatchStub;
-    beforeEach(function() {
+    beforeEach(() => {
       dispatchStub = sinon.stub(AppDispatcher, 'dispatch');
     });
 
-    afterEach(function() {
+    afterEach(() => {
       dispatchStub.restore();
     });
 
-    it('dispatch is called with right info', function() {
+    it('dispatch is called with right info', () => {
       const testTripId = 'trip1';
       const testRefId = 'ref1';
       const data = {
@@ -94,7 +93,7 @@ describe('actions/CommentAction', function() {
     });
   });
 
-  describe('#recursivelyLoadComments', function() {
+  describe('#recursivelyLoadComments', () => {
     let asyncStub;
     let recursivelyLoadedStub;
     let testData;
@@ -107,11 +106,11 @@ describe('actions/CommentAction', function() {
     const testCommentId1 = 'test-comment-1';
     const testCommentId2 = 'test-comment-2';
 
-    beforeEach(function() {
+    beforeEach(() => {
       let count;
       recursivelyLoadedStub =
         sinon.stub(CommentAction, '_recursiveCommentsLoaded');
-      asyncStub = sinon.stub(utils, 'getAsync').callsFake(function(url, callback) {
+      asyncStub = sinon.stub(utils, 'getAsync').callsFake((url, callback) => {
         if (count < 10) {
           count++;
           testData.commentId = 'comment-' + count;
@@ -137,12 +136,12 @@ describe('actions/CommentAction', function() {
       CommentAction.recursivelyLoadComments(testTripId, testRefId);
     });
 
-    afterEach(function() {
+    afterEach(() => {
       asyncStub.restore();
       recursivelyLoadedStub.restore();
     });
 
-    it('calls API with the right parameters', function() {
+    it('calls API with the right parameters', () => {
       expect(asyncStub.callCount).to.be.equal(1);
       expect(asyncStub.args[0].length).to.be.equal(2);
       expect(asyncStub.args[0][0]).to.match(/^api\/getComment.php\?/);
@@ -150,7 +149,7 @@ describe('actions/CommentAction', function() {
       expect(asyncStub.args[0][0]).to.contain('referenceId=' + testRefId);
     });
 
-    it('calls _recursivelyCommentsLoaded with result value', function() {
+    it('calls _recursivelyCommentsLoaded with result value', () => {
       expect(recursivelyLoadedStub.callCount).to.be.equal(1);
       expect(recursivelyLoadedStub.args[0].length).to.be.equal(3);
       expect(recursivelyLoadedStub.args[0][0]).to.be.equal(testTripId);
@@ -159,8 +158,8 @@ describe('actions/CommentAction', function() {
     });
   });
 
-  describe('#_recursivelyCommentsLoaded', function() {
-    describe('calls API', function() {
+  describe('#_recursivelyCommentsLoaded', () => {
+    describe('calls API', () => {
       let asyncStub;
       let dispatchStub;
       let testData;
@@ -168,8 +167,8 @@ describe('actions/CommentAction', function() {
       const testTrip1 = 'test-trip-1';
       const testReference1 = 'test-reference-1';
 
-      beforeEach(function() {
-        asyncStub = sinon.stub(utils, 'getAsync').callsFake(function(url, callback) {
+      beforeEach(() => {
+        asyncStub = sinon.stub(utils, 'getAsync').callsFake((url, callback) => {
           if (count < 10) {
             count++;
             testData.count = 1;
@@ -189,12 +188,12 @@ describe('actions/CommentAction', function() {
         count = 0;
       });
 
-      afterEach(function() {
+      afterEach(() => {
         dispatchStub.restore();
         asyncStub.restore();
       });
 
-      it('with the right parameters', function() {
+      it('with the right parameters', () => {
         CommentAction.recursivelyLoadComments(testTrip1, testReference1);
 
         expect(asyncStub.callCount).to.be.equal(11);
@@ -207,16 +206,16 @@ describe('actions/CommentAction', function() {
         for (j = 1; j <= 10; j++) {
           expect(asyncStub.args[j].length).to.be.equal(2);
           expect(asyncStub.args[j][0]).to.match(/^api\/getComment.php\?/,
-                                               'URL for call ' + j);
+            'URL for call ' + j);
           expect(asyncStub.args[j][0]).to.contain('tripId=' + testTrip1,
-                                                 'tripId for call ' + j);
+            'tripId for call ' + j);
           expect(asyncStub.args[j][0]).to.contain(
             'referenceId=comment-' + j, 'expect comment-' + j);
         }
       });
     });
 
-    describe('calls loadUserData', function() {
+    describe('calls loadUserData', () => {
       let asyncStub;
       let dispatchStub;
       let testData;
@@ -228,7 +227,7 @@ describe('actions/CommentAction', function() {
       const testCommentId1 = 'test-comment-1';
       const testCommentId2 = 'test-comment-2';
 
-      beforeEach(function() {
+      beforeEach(() => {
         dispatchStub = sinon.stub(AppDispatcher, 'dispatch');
         asyncStub = sinon.stub(utils, 'getAsync');
         testData = {
@@ -248,12 +247,12 @@ describe('actions/CommentAction', function() {
           testReference1, testData);
       });
 
-      afterEach(function() {
+      afterEach(() => {
         dispatchStub.restore();
         asyncStub.restore();
       });
 
-      it('with the right parameters', function() {
+      it('with the right parameters', () => {
         expect(loadUserStub.callCount).to.be.equal(2);
         expect(loadUserStub.args[0].length).to.be.equal(1);
         expect(loadUserStub.args[0][0]).to.be.equal(testUserId1);

@@ -1,4 +1,3 @@
-'use strict';
 
 /**
  * Creating a store mixin.

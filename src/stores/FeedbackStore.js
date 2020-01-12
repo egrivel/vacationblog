@@ -1,5 +1,3 @@
-'use strict';
-
 import _ from 'lodash';
 import assign from 'object-assign';
 
@@ -19,11 +17,8 @@ let FeedbackStore = {};
  * @param {String} userId - user who likes the item
  * @return {String} ID for the item.
  */
-function _makeId(tripId, referenceId, userId) {
-  if (!userId) {
-    userId = '';
-  }
-  return tripId + ':' + referenceId + ':' + userId;
+function _makeId(tripId, referenceId, userId = '') {
+  return tripId + ':' + referenceId + ':' + serId;
 }
 
 /**
@@ -133,10 +128,7 @@ FeedbackStore = assign({}, GenericStore, {
     return doesSmile;
   },
 
-  getLikeList: function(tripId, referenceId, userId) {
-    if (!userId) {
-      userId = '';
-    }
+  getLikeList: function(tripId, referenceId, userId = '') {
     let result = '';
     const itemId = _makeId(tripId, referenceId);
     const list = _data[itemId];
@@ -154,10 +146,7 @@ FeedbackStore = assign({}, GenericStore, {
     return result;
   },
 
-  getPlusList: function(tripId, referenceId, userId) {
-    if (!userId) {
-      userId = '';
-    }
+  getPlusList: function(tripId, referenceId, userId = '') {
     let result = '';
     const itemId = _makeId(tripId, referenceId);
     const list = _data[itemId];
@@ -175,10 +164,7 @@ FeedbackStore = assign({}, GenericStore, {
     return result;
   },
 
-  getSmileList: function(tripId, referenceId, userId) {
-    if (!userId) {
-      userId = '';
-    }
+  getSmileList: function(tripId, referenceId, userId = '') {
     let result = '';
     const itemId = _makeId(tripId, referenceId);
     const list = _data[itemId];

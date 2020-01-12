@@ -71,7 +71,7 @@ function findObjectWithProperty(obj, key, value) {
   }
 
   let returnValue = null;
-  _.forEach(obj, function(item) {
+  _.forEach(obj, (item) => {
     if (typeof item === 'object') {
       if (findObjectWithProperty(item, key, value)) {
         returnValue = item;
@@ -82,28 +82,28 @@ function findObjectWithProperty(obj, key, value) {
   return returnValue;
 }
 
-describe('stores/CommentStore', function() {
-  beforeEach(function() {
+describe('stores/CommentStore', () => {
+  beforeEach(() => {
     CommentStore.removeAllListeners();
     CommentStore._reset();
   });
 
-  afterEach(function() {
+  afterEach(() => {
     CommentStore.removeAllListeners();
   });
 
   // Behavior of an uninitialized trip store
-  describe('without comments loaded', function() {
-    describe('#getList', function() {
-      it('returns empty list when uninitialized', function() {
+  describe('without comments loaded', () => {
+    describe('#getList', () => {
+      it('returns empty list when uninitialized', () => {
         expect(CommentStore.getList(testTripId1, testReferenceId1))
           .to.deep.eql([]);
       });
     });
   });
 
-  describe('with comments loaded', function() {
-    beforeEach(function() {
+  describe('with comments loaded', () => {
+    beforeEach(() => {
       CommentStore._storeCallback({
         type: CommentActionTypes.COMMENT_DATA,
         data: {
@@ -112,12 +112,12 @@ describe('stores/CommentStore', function() {
       });
     });
 
-    describe('#getList', function() {
-      it('returns undefined without arguments', function() {
+    describe('#getList', () => {
+      it('returns undefined without arguments', () => {
         expect(CommentStore.getList()).to.deep.eql(undefined);
       });
 
-      it('returns undefined with invalid arguments', function() {
+      it('returns undefined with invalid arguments', () => {
         expect(CommentStore.getList(testTripId1)).to.deep.eql(undefined);
         expect(CommentStore.getList(testTripId1, null))
           .to.deep.eql(undefined);
@@ -125,17 +125,17 @@ describe('stores/CommentStore', function() {
           .to.deep.eql(undefined);
       });
 
-      it('returns empty list requesting non-loaded data', function() {
+      it('returns empty list requesting non-loaded data', () => {
         expect(CommentStore.getList(testTripId1, testReferenceId2))
           .to.deep.eql([]);
       });
 
-      it('returns loaded comment', function() {
+      it('returns loaded comment', () => {
         expect(CommentStore.getList(testTripId1, testReferenceId1))
           .to.deep.eql([testComment1]);
       });
 
-      it('new comment is available after it was loaded', function() {
+      it('new comment is available after it was loaded', () => {
         // comment 2 is not yet there
         expect(CommentStore.getList(testTripId1, testReferenceId2))
           .to.deep.eql([]);
@@ -154,8 +154,8 @@ describe('stores/CommentStore', function() {
       });
     });
 
-    describe('#getRecursiveList', function() {
-      beforeEach(function() {
+    describe('#getRecursiveList', () => {
+      beforeEach(() => {
         CommentStore._storeCallback({
           type: CommentActionTypes.COMMENT_DATA,
           data: {
@@ -194,14 +194,14 @@ describe('stores/CommentStore', function() {
         });
       });
 
-      describe('using reference id 1', function() {
+      describe('using reference id 1', () => {
         let result;
-        beforeEach(function() {
+        beforeEach(() => {
           result =
             CommentStore.getRecursiveList(testTripId1, testReferenceId1);
         });
 
-        it('should get comment 1', function() {
+        it('should get comment 1', () => {
           expect(result).to.exist;
           const obj =
             findObjectWithProperty(result, 'commentText',
@@ -209,7 +209,7 @@ describe('stores/CommentStore', function() {
           expect(obj).to.not.be.null;
         });
 
-        it('should not get comment 2', function() {
+        it('should not get comment 2', () => {
           expect(result).to.exist;
           const obj =
             findObjectWithProperty(result, 'commentText',
@@ -217,7 +217,7 @@ describe('stores/CommentStore', function() {
           expect(obj).to.be.null;
         });
 
-        it('should get comment 3', function() {
+        it('should get comment 3', () => {
           expect(result).to.exist;
           const obj =
             findObjectWithProperty(result, 'commentText',
@@ -225,7 +225,7 @@ describe('stores/CommentStore', function() {
           expect(obj).to.not.be.null;
         });
 
-        it('should get comment 4', function() {
+        it('should get comment 4', () => {
           expect(result).to.exist;
           const obj =
             findObjectWithProperty(result, 'commentText',
@@ -233,7 +233,7 @@ describe('stores/CommentStore', function() {
           expect(obj).to.not.be.null;
         });
 
-        it('should get comment 5', function() {
+        it('should get comment 5', () => {
           expect(result).to.exist;
           const obj =
             findObjectWithProperty(result, 'commentText',
@@ -241,7 +241,7 @@ describe('stores/CommentStore', function() {
           expect(obj).to.not.be.null;
         });
 
-        it('should get comment 6', function() {
+        it('should get comment 6', () => {
           expect(result).to.exist;
           const obj =
             findObjectWithProperty(result, 'commentText',
@@ -250,14 +250,14 @@ describe('stores/CommentStore', function() {
         });
       });
 
-      describe('using reference id 2', function() {
+      describe('using reference id 2', () => {
         let result;
-        beforeEach(function() {
+        beforeEach(() => {
           result =
             CommentStore.getRecursiveList(testTripId1, testReferenceId2);
         });
 
-        it('should not get comment 1', function() {
+        it('should not get comment 1', () => {
           expect(result).to.exist;
           const obj =
             findObjectWithProperty(result, 'commentText',
@@ -265,7 +265,7 @@ describe('stores/CommentStore', function() {
           expect(obj).to.be.null;
         });
 
-        it('should get comment 2', function() {
+        it('should get comment 2', () => {
           expect(result).to.exist;
           const obj =
             findObjectWithProperty(result, 'commentText',
@@ -273,7 +273,7 @@ describe('stores/CommentStore', function() {
           expect(obj).to.not.be.null;
         });
 
-        it('should not get comment 3', function() {
+        it('should not get comment 3', () => {
           expect(result).to.exist;
           const obj =
             findObjectWithProperty(result, 'commentText',
@@ -281,7 +281,7 @@ describe('stores/CommentStore', function() {
           expect(obj).to.be.null;
         });
 
-        it('should not get comment 4', function() {
+        it('should not get comment 4', () => {
           expect(result).to.exist;
           const obj =
             findObjectWithProperty(result, 'commentText',
@@ -289,7 +289,7 @@ describe('stores/CommentStore', function() {
           expect(obj).to.be.null;
         });
 
-        it('should not get comment 5', function() {
+        it('should not get comment 5', () => {
           expect(result).to.exist;
           const obj =
             findObjectWithProperty(result, 'commentText',
@@ -297,7 +297,7 @@ describe('stores/CommentStore', function() {
           expect(obj).to.be.null;
         });
 
-        it('should not get comment 6', function() {
+        it('should not get comment 6', () => {
           expect(result).to.exist;
           const obj =
             findObjectWithProperty(result, 'commentText',
@@ -307,8 +307,8 @@ describe('stores/CommentStore', function() {
       });
     });
 
-    describe('#emitChange', function() {
-      it('setting without data does not emit change', function() {
+    describe('#emitChange', () => {
+      it('setting without data does not emit change', () => {
         const cb = sinon.spy();
         CommentStore.addChangeListener(cb);
 
@@ -319,7 +319,7 @@ describe('stores/CommentStore', function() {
         expect(cb.callCount).to.be.equal(0);
       });
 
-      it('setting existing comment does not emit change', function() {
+      it('setting existing comment does not emit change', () => {
         const cb = sinon.spy();
         CommentStore.addChangeListener(cb);
 
@@ -333,7 +333,7 @@ describe('stores/CommentStore', function() {
         expect(cb.callCount).to.be.equal(0);
       });
 
-      it('setting comment with new text does emit change', function() {
+      it('setting comment with new text does emit change', () => {
         const cb = sinon.spy();
         CommentStore.addChangeListener(cb);
 
@@ -348,7 +348,7 @@ describe('stores/CommentStore', function() {
         expect(cb.callCount).to.be.equal(1);
       });
 
-      it('setting new comment does emit change', function() {
+      it('setting new comment does emit change', () => {
         const cb = sinon.spy();
         CommentStore.addChangeListener(cb);
 
@@ -362,7 +362,7 @@ describe('stores/CommentStore', function() {
         expect(cb.callCount).to.be.equal(1);
       });
 
-      it('unknown action does not emit change', function() {
+      it('unknown action does not emit change', () => {
         const cb = sinon.spy();
         CommentStore.addChangeListener(cb);
 

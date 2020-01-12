@@ -1,4 +1,3 @@
-'use strict';
 
 import AppDispatcher from '../AppDispatcher';
 import utils from './utils';
@@ -9,7 +8,7 @@ const UserAction = {
 
   loadLoggedInUser: function() {
     const url = 'api/getUser.php';
-    utils.getAsync(url, function(response) {
+    utils.getAsync(url, (response) => {
       const data = JSON.parse(response);
       UserAction._userLoaded(data);
       UserAction.setLoggedInUser(data.userId);
@@ -18,7 +17,7 @@ const UserAction = {
 
   loadUser: function loadUser(userId) {
     const url = 'api/getUser.php?userId=' + userId;
-    utils.getAsync(url, function(response) {
+    utils.getAsync(url, (response) => {
       const data = JSON.parse(response);
       UserAction._userLoaded(data);
     });
@@ -38,9 +37,10 @@ const UserAction = {
     if (data.password && (data.password.length >= 6)) {
       submitData.password = data.password;
     }
-    utils.postAsync(url, submitData, function(response) {
+    utils.postAsync(url, submitData, (response) => {
       const responseData = JSON.parse(response, true);
       if (!responseData.resultCode || (responseData.resultCode !== '200')) {
+        // eslint-disable-next-line no-console
         console.log('Got response ' + response);
       }
     });
@@ -62,7 +62,7 @@ const UserAction = {
 
   loadAllUsers: function() {
     const url = 'api/findUsers.php';
-    utils.getAsync(url, function(response) {
+    utils.getAsync(url, (response) => {
       const data = JSON.parse(response);
       AppDispatcher.dispatch({
         type: UserAction.Types.USER_SET_LIST,
@@ -130,15 +130,17 @@ const UserAction = {
       name: name,
       notification: notification
     };
-    utils.postAsync(url, submitData, function(response) {
+    utils.postAsync(url, submitData, (response) => {
       const responseData = JSON.parse(response, true);
       if (!responseData.resultCode || (responseData.resultCode !== '200')) {
+        // eslint-disable-next-line no-console
         console.log('Got response ' + response);
       }
     });
   },
 
   updateEmail: function(/* userId, newEmail */) {
+    // eslint-disable-next-line no-console
     console.log('email change not implemented');
   },
 
@@ -148,9 +150,10 @@ const UserAction = {
       userId: userId,
       password: password
     };
-    utils.postAsync(url, submitData, function(response) {
+    utils.postAsync(url, submitData, (response) => {
       const responseData = JSON.parse(response, true);
       if (!responseData.resultCode || (responseData.resultCode !== '200')) {
+        // eslint-disable-next-line no-console
         console.log('Got response ' + response);
       }
     });

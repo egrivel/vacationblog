@@ -1,25 +1,20 @@
-'use strict';
-
 import React from 'react';
-import createReactClass from 'create-react-class';
 import PropTypes from 'prop-types';
 
 import Formrow from './Formrow.jsx';
 
-const Display = createReactClass({
-  displayName: 'Display',
-
-  propTypes: {
+class Display extends React.Component {
+  static propTypes = {
     fieldId: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
     value: PropTypes.string
-  },
+  };
 
-  defaultProps: {
+  static defaultProps = {
     value: ''
-  },
+  }
 
-  render: function() {
+  render() {
     return (
       <Formrow
         key={'k-' + this.props.fieldId}
@@ -31,6 +26,6 @@ const Display = createReactClass({
       </Formrow>
     );
   }
-});
+}
 
 export default Display;

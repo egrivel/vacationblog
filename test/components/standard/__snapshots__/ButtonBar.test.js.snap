@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/standard/ButtonBar renders multiple buttons 1`] = `
+<div>
+  <div
+    className="formLabel"
+  >
+    
+  </div>
+  <div
+    className="formValue"
+  >
+    <div>
+      <button
+        onClick={[Function]}
+        type="submit"
+      >
+        Test Label 1
+      </button>
+       
+      <button
+        onClick={[Function]}
+        type="submit"
+      >
+        Test Label 2
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`components/standard/ButtonBar renders single button 1`] = `
+<div>
+  <div
+    className="formLabel"
+  >
+    
+  </div>
+  <div
+    className="formValue"
+  >
+    <div>
+      <button
+        onClick={[Function]}
+        type="submit"
+      >
+        Test Label
+      </button>
+    </div>
+  </div>
+</div>
+`;

@@ -1,4 +1,3 @@
-'use strict';
 
 /**
  * Trip Actions. This is a set of actions regarding trips, including the list
@@ -19,7 +18,7 @@ const TripAction = {
    */
   initialLoadTrip: function() {
     const url = 'api/getTrip.php?current';
-    utils.getAsync(url, function(response) {
+    utils.getAsync(url, (response) => {
       const data = JSON.parse(response);
       const tripId = data.tripId;
       TripAction.setCurrentTrip(tripId);
@@ -35,7 +34,7 @@ const TripAction = {
   loadTrip: function(id) {
     const url = 'api/getTrip.php?tripId=' + id;
 
-    utils.getAsync(url, function(response) {
+    utils.getAsync(url, (response) => {
       const data = JSON.parse(response);
       TripAction._tripLoaded(data);
     });
@@ -61,7 +60,7 @@ const TripAction = {
       });
       TripAction.loadTrip(id);
     } else {
-      TripAction.initialLoadTrip()
+      TripAction.initialLoadTrip();
     }
   },
 
@@ -72,7 +71,7 @@ const TripAction = {
    */
   loadTripUsers: function(id) {
     const url = 'api/getTripUser.php?tripId=' + id;
-    utils.getAsync(url, function(response) {
+    utils.getAsync(url, (response) => {
       const data = JSON.parse(response);
       TripAction._tripUserLoaded(data);
     });
@@ -87,7 +86,7 @@ const TripAction = {
 
   loadTripJournals: function(id) {
     const url = 'api/getJournal.php?tripId=' + id;
-    utils.getAsync(url, function(response) {
+    utils.getAsync(url, (response) => {
       const data = JSON.parse(response);
       AppDispatcher.dispatch({
         type: TripAction.Types.TRIP_LOAD_JOURNALS,
@@ -106,7 +105,7 @@ const TripAction = {
   loadEditTrip: function(id) {
     const url = 'api/getTrip.php?tripId=' + id;
 
-    utils.getAsync(url, function(response) {
+    utils.getAsync(url, (response) => {
       const data = JSON.parse(response);
       TripAction._editTripLoaded(data);
     });
@@ -121,7 +120,7 @@ const TripAction = {
    */
   loadEditTripUser: function(id) {
     const url = 'api/getTripUser.php?tripId=' + id;
-    utils.getAsync(url, function(response) {
+    utils.getAsync(url, (response) => {
       const data = JSON.parse(response);
       TripAction._tripUserLoaded(data);
     });
@@ -144,7 +143,7 @@ const TripAction = {
 
   loadTripList: function() {
     const url = 'api/findTrip.php';
-    utils.getAsync(url, function(response) {
+    utils.getAsync(url, (response) => {
       const data = JSON.parse(response);
       TripAction._tripListLoaded(data.resultSet);
     });
@@ -167,7 +166,7 @@ const TripAction = {
 
   saveTrip: function(data) {
     const url = 'api/putTrip.php';
-    utils.postAsync(url, data, function() {
+    utils.postAsync(url, data, () => {
       AppDispatcher.dispatch({
         type: TripAction.Types.TRIP_LOAD_DATA,
         data: data
@@ -184,7 +183,7 @@ const TripAction = {
     sendObj.profileImg = data.profileImg;
     sendObj.message = data.message;
     sendObj.deleted = 'N';
-    utils.postAsync(url, sendObj, function() {
+    utils.postAsync(url, sendObj, () => {
       TripAction.loadTripUsers(data.tripId);
     });
   },
@@ -198,7 +197,7 @@ const TripAction = {
     sendObj.profileImg = data.profileImg;
     sendObj.message = data.message;
     sendObj.deleted = 'Y';
-    utils.postAsync(url, sendObj, function() {
+    utils.postAsync(url, sendObj, () => {
       TripAction.loadTripUsers(data.tripId);
     });
   }

@@ -1,4 +1,3 @@
-'use strict';
 
 const expect = require('chai').expect;
 import sinon from 'sinon';
@@ -7,22 +6,22 @@ import utils from '../../src/actions/utils';
 import AppDispatcher from '../../src/AppDispatcher';
 import TripAction from '../../src/actions/TripAction';
 
-describe('actions/TripAction', function() {
-  describe('#setCurrentTrip', function() {
+describe('actions/TripAction', () => {
+  describe('#setCurrentTrip', () => {
     let dispatchStub;
     let loadTripStub;
 
-    beforeEach(function() {
+    beforeEach(() => {
       dispatchStub = sinon.stub(AppDispatcher, 'dispatch');
       loadTripStub = sinon.stub(TripAction, 'loadTrip');
     });
 
-    afterEach(function() {
+    afterEach(() => {
       loadTripStub.restore();
       dispatchStub.restore();
     });
 
-    it('dispatch is called with right info', function() {
+    it('dispatch is called with right info', () => {
       const testTripId = 'trip-1';
       TripAction.setCurrentTrip(testTripId);
 
@@ -32,7 +31,7 @@ describe('actions/TripAction', function() {
       expect(action.data).to.be.equal(testTripId);
     });
 
-    it('loads the current trip data', function() {
+    it('loads the current trip data', () => {
       const testTripId = 'trip-1';
 
       TripAction.setCurrentTrip(testTripId);
@@ -42,7 +41,7 @@ describe('actions/TripAction', function() {
     });
   });
 
-  describe('#initialLoadTrip', function() {
+  describe('#initialLoadTrip', () => {
     const firstTripId = 'trip-1';
     let asyncStub;
     let setCurrentTripStub;
@@ -52,22 +51,21 @@ describe('actions/TripAction', function() {
       data: 'more data'
     };
 
-
-    beforeEach(function() {
+    beforeEach(() => {
       tripLoadedStub = sinon.stub(TripAction, '_tripLoaded');
       setCurrentTripStub = sinon.stub(TripAction, 'setCurrentTrip');
-      asyncStub = sinon.stub(utils, 'getAsync').callsFake(function(url, callback) {
+      asyncStub = sinon.stub(utils, 'getAsync').callsFake((url, callback) => {
         callback(JSON.stringify(testData));
       });
     });
 
-    afterEach(function() {
+    afterEach(() => {
       asyncStub.restore();
       setCurrentTripStub.restore();
       tripLoadedStub.restore();
     });
 
-    it('calls API with current trip', function() {
+    it('calls API with current trip', () => {
       TripAction.initialLoadTrip();
 
       expect(asyncStub.args.length).to.be.equal(1);
@@ -75,7 +73,7 @@ describe('actions/TripAction', function() {
       expect(asyncStub.args[0][0]).to.be.equal('api/getTrip.php?current');
     });
 
-    it('calls setCurrentTrip with trip ID', function() {
+    it('calls setCurrentTrip with trip ID', () => {
       TripAction.initialLoadTrip();
 
       expect(setCurrentTripStub.args.length).to.be.equal(1);
@@ -83,7 +81,7 @@ describe('actions/TripAction', function() {
       expect(setCurrentTripStub.args[0][0]).to.be.equal(firstTripId);
     });
 
-    it('calls _tripLoaded with data', function() {
+    it('calls _tripLoaded with data', () => {
       TripAction.initialLoadTrip();
 
       expect(tripLoadedStub.args.length).to.be.equal(1);
@@ -92,7 +90,7 @@ describe('actions/TripAction', function() {
     });
   });
 
-  describe('#loadTrip', function() {
+  describe('#loadTrip', () => {
     const testTripId = 'trip-1';
     let asyncStub;
     let tripLoadedStub;
@@ -101,19 +99,19 @@ describe('actions/TripAction', function() {
       data: 'more data'
     };
 
-    beforeEach(function() {
+    beforeEach(() => {
       tripLoadedStub = sinon.stub(TripAction, '_tripLoaded');
-      asyncStub = sinon.stub(utils, 'getAsync').callsFake(function(url, callback) {
+      asyncStub = sinon.stub(utils, 'getAsync').callsFake((url, callback) => {
         callback(JSON.stringify(testData));
       });
     });
 
-    afterEach(function() {
+    afterEach(() => {
       asyncStub.restore();
       tripLoadedStub.restore();
     });
 
-    it('calls API with trip ID', function() {
+    it('calls API with trip ID', () => {
       TripAction.loadTrip(testTripId);
 
       expect(asyncStub.args.length).to.be.equal(1);
@@ -122,7 +120,7 @@ describe('actions/TripAction', function() {
                                                testTripId);
     });
 
-    it('calls _tripLoaded with data', function() {
+    it('calls _tripLoaded with data', () => {
       TripAction.loadTrip(testTripId);
 
       expect(tripLoadedStub.args.length).to.be.equal(1);
@@ -131,7 +129,7 @@ describe('actions/TripAction', function() {
     });
   });
 
-  describe('#loadTripList', function() {
+  describe('#loadTripList', () => {
     let asyncStub;
     let tripListLoadedStub;
     const testData = {
@@ -140,19 +138,19 @@ describe('actions/TripAction', function() {
       ]
     };
 
-    beforeEach(function() {
+    beforeEach(() => {
       tripListLoadedStub = sinon.stub(TripAction, '_tripListLoaded');
-      asyncStub = sinon.stub(utils, 'getAsync').callsFake(function(url, callback) {
+      asyncStub = sinon.stub(utils, 'getAsync').callsFake((url, callback) => {
         callback(JSON.stringify(testData));
       });
     });
 
-    afterEach(function() {
+    afterEach(() => {
       asyncStub.restore();
       tripListLoadedStub.restore();
     });
 
-    it('calls API with trip ID', function() {
+    it('calls API with trip ID', () => {
       TripAction.loadTripList();
 
       expect(asyncStub.args.length).to.be.equal(1);
@@ -160,7 +158,7 @@ describe('actions/TripAction', function() {
       expect(asyncStub.args[0][0]).to.be.equal('api/findTrip.php');
     });
 
-    it('calls _tripListLoaded with data', function() {
+    it('calls _tripListLoaded with data', () => {
       TripAction.loadTripList();
 
       expect(tripListLoadedStub.args.length).to.be.equal(1);
@@ -169,18 +167,18 @@ describe('actions/TripAction', function() {
     });
   });
 
-  describe('#_tripLoaded', function() {
+  describe('#_tripLoaded', () => {
     let dispatchStub;
 
-    beforeEach(function() {
+    beforeEach(() => {
       dispatchStub = sinon.stub(AppDispatcher, 'dispatch');
     });
 
-    afterEach(function() {
+    afterEach(() => {
       dispatchStub.restore();
     });
 
-    it('dispatch is called with right info', function() {
+    it('dispatch is called with right info', () => {
       const data = {
         data: 'some data'
       };
@@ -193,18 +191,18 @@ describe('actions/TripAction', function() {
     });
   });
 
-  describe('#tripListLoaded', function() {
+  describe('#tripListLoaded', () => {
     let dispatchStub;
 
-    beforeEach(function() {
+    beforeEach(() => {
       dispatchStub = sinon.stub(AppDispatcher, 'dispatch');
     });
 
-    afterEach(function() {
+    afterEach(() => {
       dispatchStub.restore();
     });
 
-    it('dispatch is called with right info', function() {
+    it('dispatch is called with right info', () => {
       const data = {
         data: 'some data'
       };

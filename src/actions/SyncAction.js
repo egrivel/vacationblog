@@ -1,4 +1,3 @@
-'use strict';
 
 import AppDispatcher from '../AppDispatcher';
 import utils from './utils';
@@ -23,7 +22,7 @@ const SyncAction = {
     const sendObj = {};
     sendObj.site = site;
     sendObj.password = password;
-    utils.postAsync(url, sendObj, function(response) {
+    utils.postAsync(url, sendObj, (response) => {
       AppDispatcher.dispatch({
         type: SyncAction.Types.SYNC_SET_MESSAGE,
         message: 'Called ' + site + ' which responded with "' +

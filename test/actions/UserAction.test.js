@@ -1,4 +1,3 @@
-'use strict';
 
 const expect = require('chai').expect;
 import sinon from 'sinon';
@@ -7,8 +6,8 @@ import utils from '../../src/actions/utils';
 import AppDispatcher from '../../src/AppDispatcher';
 import UserAction from '../../src/actions/UserAction';
 
-describe('actions/UserAction', function() {
-  describe('#loadUser', function() {
+describe('actions/UserAction', () => {
+  describe('#loadUser', () => {
     const testUserId = 'user-1';
     let asyncStub;
     let userLoadedStub;
@@ -17,19 +16,19 @@ describe('actions/UserAction', function() {
       data: 'more data'
     };
 
-    beforeEach(function() {
+    beforeEach(() => {
       userLoadedStub = sinon.stub(UserAction, '_userLoaded');
-      asyncStub = sinon.stub(utils, 'getAsync').callsFake(function(url, callback) {
+      asyncStub = sinon.stub(utils, 'getAsync').callsFake((url, callback) => {
         callback(JSON.stringify(testData));
       });
     });
 
-    afterEach(function() {
+    afterEach(() => {
       asyncStub.restore();
       userLoadedStub.restore();
     });
 
-    it('calls API with user ID', function() {
+    it('calls API with user ID', () => {
       UserAction.loadUser(testUserId);
 
       expect(asyncStub.args.length).to.be.equal(1);
@@ -38,7 +37,7 @@ describe('actions/UserAction', function() {
                                                testUserId);
     });
 
-    it('calls _userLoaded with data', function() {
+    it('calls _userLoaded with data', () => {
       UserAction.loadUser(testUserId);
 
       expect(userLoadedStub.args.length).to.be.equal(1);
@@ -47,18 +46,18 @@ describe('actions/UserAction', function() {
     });
   });
 
-  describe('#_userLoaded', function() {
+  describe('#_userLoaded', () => {
     let dispatchStub;
 
-    beforeEach(function() {
+    beforeEach(() => {
       dispatchStub = sinon.stub(AppDispatcher, 'dispatch');
     });
 
-    afterEach(function() {
+    afterEach(() => {
       dispatchStub.restore();
     });
 
-    it('dispatch is called with right info', function() {
+    it('dispatch is called with right info', () => {
       const data = {
         data: 'some data'
       };
@@ -71,18 +70,18 @@ describe('actions/UserAction', function() {
     });
   });
 
-  describe('#setLoggedInUser', function() {
+  describe('#setLoggedInUser', () => {
     let dispatchStub;
 
-    beforeEach(function() {
+    beforeEach(() => {
       dispatchStub = sinon.stub(AppDispatcher, 'dispatch');
     });
 
-    afterEach(function() {
+    afterEach(() => {
       dispatchStub.restore();
     });
 
-    it('dispatch is called with right info', function() {
+    it('dispatch is called with right info', () => {
       const testUserId = 'test-user';
       UserAction.setLoggedInUser(testUserId);
 

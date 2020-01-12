@@ -1,4 +1,3 @@
-'use strict';
 
 const expect = require('chai').expect;
 import sinon from 'sinon';
@@ -7,18 +6,18 @@ import MenuStore from '../../src/stores/MenuStore';
 import MenuActionTypes from '../../src/actions/MenuActionTypes';
 import TripActionTypes from '../../src/actions/TripActionTypes';
 
-describe('stores/MenuStore', function() {
-  beforeEach(function() {
+describe('stores/MenuStore', () => {
+  beforeEach(() => {
     MenuStore.removeAllListeners();
   });
 
-  afterEach(function() {
+  afterEach(() => {
     MenuStore.removeAllListeners();
   });
 
-  describe('without trips loaded', function() {
-    describe('#getData', function() {
-      it('returns Home top-level item', function() {
+  describe('without trips loaded', () => {
+    describe('#getData', () => {
+      it('returns Home top-level item', () => {
         const data = MenuStore.getData();
 
         expect(data.length).to.be.at.least(1);
@@ -30,7 +29,7 @@ describe('stores/MenuStore', function() {
         expect(data[0].submenu).to.not.exist;
       });
 
-      it('returns Trip top-level item', function() {
+      it('returns Trip top-level item', () => {
         const data = MenuStore.getData();
 
         expect(data.length).to.be.at.least(2);
@@ -42,7 +41,7 @@ describe('stores/MenuStore', function() {
         expect(data[1].submenu).to.not.exist;
       });
 
-      it('returns Search top-level item', function() {
+      it('returns Search top-level item', () => {
         const data = MenuStore.getData();
 
         expect(data.length).to.be.at.least(3);
@@ -54,7 +53,7 @@ describe('stores/MenuStore', function() {
         expect(data[2].submenu).to.not.exist;
       });
 
-      it('returns Preferences (1) top-level item', function() {
+      it('returns Preferences (1) top-level item', () => {
         const data = MenuStore.getData();
 
         expect(data.length).to.be.at.least(4);
@@ -66,7 +65,7 @@ describe('stores/MenuStore', function() {
         expect(data[3].submenu).to.not.exist;
       });
 
-      it('returns Admin top-level item', function() {
+      it('returns Admin top-level item', () => {
         const data = MenuStore.getData();
 
         expect(data.length).to.be.at.least(5);
@@ -78,7 +77,7 @@ describe('stores/MenuStore', function() {
         expect(data[4].submenu).to.not.exist;
       });
 
-      it('returns About top-level item', function() {
+      it('returns About top-level item', () => {
         const data = MenuStore.getData();
 
         expect(data.length).to.be.at.least(6);
@@ -91,8 +90,8 @@ describe('stores/MenuStore', function() {
       });
     });
 
-    describe('select action', function() {
-      it('selects indicated item', function() {
+    describe('select action', () => {
+      it('selects indicated item', () => {
         let data = MenuStore.getData();
         const id = data[0].id;
 
@@ -105,7 +104,7 @@ describe('stores/MenuStore', function() {
         expect(data[0].selected).to.equal(true);
       });
 
-      it('deselects previously selected item', function() {
+      it('deselects previously selected item', () => {
         let data = MenuStore.getData();
         const id1 = data[0].id;
         const id2 = data[1].id;
@@ -129,7 +128,7 @@ describe('stores/MenuStore', function() {
         expect(data[0].selected).to.equal(false);
       });
 
-      it('selecting unselected item emits change', function() {
+      it('selecting unselected item emits change', () => {
         const cb = sinon.spy();
         MenuStore.addChangeListener(cb);
 
@@ -145,7 +144,7 @@ describe('stores/MenuStore', function() {
         MenuStore.removeChangeListener(cb);
       });
 
-      it('selecting selected item DOES emit change', function() {
+      it('selecting selected item DOES emit change', () => {
         const cb = sinon.spy();
         MenuStore.addChangeListener(cb);
 
@@ -171,8 +170,8 @@ describe('stores/MenuStore', function() {
     });
 
     // making items visible has been commented out in the store
-    describe.skip('visible action', function() {
-      it('make visible indicated item', function() {
+    describe.skip('visible action', () => {
+      it('make visible indicated item', () => {
         let data = MenuStore.getData();
         const id = data[0].id;
 
@@ -188,7 +187,7 @@ describe('stores/MenuStore', function() {
         expect(data[0].visible).to.equal(true);
       });
 
-      it('make visible invisible item emits change', function() {
+      it('make visible invisible item emits change', () => {
         const cb = sinon.stub();
         MenuStore.addChangeListener(cb);
 
@@ -206,7 +205,7 @@ describe('stores/MenuStore', function() {
         MenuStore.removeChangeListener(cb);
       });
 
-      it('make visible visible item does not emit change', function() {
+      it('make visible visible item does not emit change', () => {
         const cb = sinon.stub();
         MenuStore.addChangeListener(cb);
 
@@ -238,16 +237,16 @@ describe('stores/MenuStore', function() {
 
   // The menu store doesn't listen to trip actions, this whole section
   // of tests probably needs to be re-designed
-  describe.skip('load trips', function() {
-    describe('without trip data', function() {
-      beforeEach(function() {
+  describe.skip('load trips', () => {
+    describe('without trip data', () => {
+      beforeEach(() => {
         MenuStore._storeCallback({
           type: TripActionTypes.TRIP_LOAD_LIST,
           data: null
         });
       });
 
-      it('Menu contains dummy trip', function() {
+      it('Menu contains dummy trip', () => {
         const data = MenuStore.getData();
 
         // all four items on the top-level should still be there.
@@ -257,7 +256,7 @@ describe('stores/MenuStore', function() {
       });
     });
 
-    describe('with trip data', function() {
+    describe('with trip data', () => {
       const tripList = [
         {
           tripId: 'trip-1',
@@ -268,14 +267,14 @@ describe('stores/MenuStore', function() {
           name: 'Test Trip 2'
         }
       ];
-      beforeEach(function() {
+      beforeEach(() => {
         MenuStore._storeCallback({
           type: TripActionTypes.TRIP_LOAD_LIST,
           data: tripList
         });
       });
 
-      it('Menu contains first trip', function() {
+      it('Menu contains first trip', () => {
         const data = MenuStore.getData();
 
         expect(data.length).to.be.at.least(1);
@@ -292,7 +291,7 @@ describe('stores/MenuStore', function() {
                                                    tripList[0].tripId);
       });
 
-      it('Menu contains second trip', function() {
+      it('Menu contains second trip', () => {
         const data = MenuStore.getData();
 
         expect(data.length).to.be.at.least(1);
@@ -309,7 +308,7 @@ describe('stores/MenuStore', function() {
                                                    tripList[1].tripId);
       });
 
-      it('selects indicated item', function() {
+      it('selects indicated item', () => {
         let data = MenuStore.getData();
 
         // select the first trip
@@ -337,7 +336,7 @@ describe('stores/MenuStore', function() {
         expect(data[0].submenu[1].selected).to.equal(true);
       });
 
-      it('select non-trip item', function() {
+      it('select non-trip item', () => {
         let data = MenuStore.getData();
 
         // select the first trip
@@ -351,7 +350,7 @@ describe('stores/MenuStore', function() {
         expect(data[1].selected).to.equal(true);
       });
 
-      it('make visible indicated item', function() {
+      it('make visible indicated item', () => {
         let data = MenuStore.getData();
 
         // select the first trip
@@ -385,7 +384,7 @@ describe('stores/MenuStore', function() {
         expect(data[0].submenu[1].visible).to.equal(true);
       });
 
-      it('make visible non-trip item', function() {
+      it('make visible non-trip item', () => {
         let data = MenuStore.getData();
 
         // select the first trip
@@ -403,7 +402,7 @@ describe('stores/MenuStore', function() {
         expect(data[1].visible).to.equal(true);
       });
 
-      it('making visible item emits change', function() {
+      it('making visible item emits change', () => {
         const cb = sinon.spy();
         MenuStore.addChangeListener(cb);
 
@@ -422,17 +421,17 @@ describe('stores/MenuStore', function() {
         MenuStore.removeChangeListener(cb);
       });
 
-      describe('removing trip data', function() {
-        beforeEach(function() {
+      describe('removing trip data', () => {
+        beforeEach(() => {
           MenuStore._storeCallback({
             type: TripActionTypes.TRIP_LOAD_LIST,
             data: null
           });
         });
 
-        it('Menu contains dummy trip', function() {
+        it('Menu contains dummy trip', () => {
           const data = MenuStore.getData();
-          expect(JSON.stringify(data)).to.be.equal("");
+          expect(JSON.stringify(data)).to.be.equal('');
 
           // all four items on the top-level should still be there.
           expect(data.length).to.be.equal(4);
@@ -443,7 +442,7 @@ describe('stores/MenuStore', function() {
     });
   });
 
-  it('random action does not emit change', function() {
+  it('random action does not emit change', () => {
     const cb = sinon.spy();
     MenuStore.addChangeListener(cb);
 

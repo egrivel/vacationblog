@@ -1,4 +1,3 @@
-'use strict';
 
 import utils from './utils';
 
@@ -9,9 +8,10 @@ const NotificationAction = {
       subject: subject,
       text: text
     };
-    utils.postAsync(url, submitData, function(response) {
+    utils.postAsync(url, submitData, (response) => {
       const responseData = JSON.parse(response, true);
       if (!responseData.resultCode || (responseData.resultCode !== '200')) {
+        // eslint-disable-next-line no-console
         console.log('Got response ' + response);
       }
     });

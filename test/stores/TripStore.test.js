@@ -1,4 +1,3 @@
-'use strict';
 
 const expect = require('chai').expect;
 import sinon from 'sinon';
@@ -24,26 +23,26 @@ const testTripData2 = {
   tripText: 'trip text 2'
 };
 
-describe('stores/TripStore', function() {
+describe('stores/TripStore', () => {
   // Always have the trip store available
-  beforeEach(function() {
+  beforeEach(() => {
     TripStore.removeAllListeners();
     TripStore._reset();
   });
 
-  afterEach(function() {
+  afterEach(() => {
     TripStore.removeAllListeners();
   });
 
   // Behavior of an uninitialized trip store
-  describe('without current trip set', function() {
-    describe('#getCurrentTripId', function() {
-      it('returns blank when uninitialized', function() {
+  describe('without current trip set', () => {
+    describe('#getCurrentTripId', () => {
+      it('returns blank when uninitialized', () => {
         expect(TripStore.getCurrentTripId()).to.equal('');
       });
 
-      describe('action: set current trip', function() {
-        it('works on uninitialized store', function() {
+      describe('action: set current trip', () => {
+        it('works on uninitialized store', () => {
           const cb = sinon.spy();
           TripStore.addChangeListener(cb);
 
@@ -60,20 +59,20 @@ describe('stores/TripStore', function() {
       });
     });
 
-    describe('#getTripData', function() {
-      it('returns empty object when uninitialized', function() {
+    describe('#getTripData', () => {
+      it('returns empty object when uninitialized', () => {
         expect(TripStore.getTripData()).to.deep.equal({});
       });
 
       // Without a trip ID, loading data should not work. Any load data
       // action should be totally ignored.
-      describe('action: load data', function() {
-        it('fails on uninitialized store', function() {
+      describe('action: load data', () => {
+        it('fails on uninitialized store', () => {
           const cb = sinon.spy();
           TripStore.addChangeListener(cb);
 
           TripStore._storeCallback({
-            type: TripActionTypes.TRIP_LOAD_DATA,
+            type: TripActionTypes.TRIP_LOAD_DATA
           });
           expect(cb.callCount).to.be.equal(0);
           expect(TripStore.getTripData()).to.deep.equal({});
@@ -83,13 +82,13 @@ describe('stores/TripStore', function() {
       });
     });
 
-    describe('#getTripList', function() {
-      it('returns empty list uninitialized', function() {
+    describe('#getTripList', () => {
+      it('returns empty list uninitialized', () => {
         expect(TripStore.getTripList()).to.deep.equal([]);
       });
 
-      describe('action: load list', function() {
-        it('works on uninitialized store', function() {
+      describe('action: load list', () => {
+        it('works on uninitialized store', () => {
           const cb = sinon.spy();
           TripStore.addChangeListener(cb);
 
@@ -108,20 +107,20 @@ describe('stores/TripStore', function() {
   });
 
   // Trip store initialized with a current trip
-  describe('with current trip set', function() {
-    beforeEach(function() {
+  describe('with current trip set', () => {
+    beforeEach(() => {
       TripStore._storeCallback({
         type: TripActionTypes.TRIP_SET_CURRENT,
         data: testTripId1
       });
     });
 
-    describe('#getCurrentTripId', function() {
-      it('returns current trip', function() {
+    describe('#getCurrentTripId', () => {
+      it('returns current trip', () => {
         expect(TripStore.getCurrentTripId()).to.equal(testTripId1);
       });
 
-      it('returns new trip when updated', function() {
+      it('returns new trip when updated', () => {
         TripStore._storeCallback({
           type: TripActionTypes.TRIP_SET_CURRENT,
           data: testTripId2
@@ -129,8 +128,8 @@ describe('stores/TripStore', function() {
         expect(TripStore.getCurrentTripId()).to.equal(testTripId2);
       });
 
-      describe('action: set current trip', function() {
-        it('changing current trip emits change', function() {
+      describe('action: set current trip', () => {
+        it('changing current trip emits change', () => {
           const cb = sinon.spy();
 
           // Start listening to the callback
@@ -162,19 +161,19 @@ describe('stores/TripStore', function() {
       });
     });
 
-    describe('#getTripData', function() {
-      beforeEach(function() {
+    describe('#getTripData', () => {
+      beforeEach(() => {
         TripStore._storeCallback({
           type: TripActionTypes.TRIP_LOAD_DATA,
           data: testTripData1
         });
       });
 
-      it('returns data when initialized', function() {
+      it('returns data when initialized', () => {
         expect(TripStore.getTripData()).to.deep.eql(testTripData1);
       });
 
-      it('returns new data when updated', function() {
+      it('returns new data when updated', () => {
         // second data packet is with same trip Id but different data
 
         // initially, the data is trip data 1, not trip data 2
@@ -195,8 +194,8 @@ describe('stores/TripStore', function() {
         expect(TripStore.getTripData()).to.deep.eql(testTripData);
       });
 
-      describe('action: load data', function() {
-        it('data is not updated if not for the right tripId', function() {
+      describe('action: load data', () => {
+        it('data is not updated if not for the right tripId', () => {
           // data packet is with different trip ID
 
           TripStore._storeCallback({
@@ -210,7 +209,7 @@ describe('stores/TripStore', function() {
           expect(TripStore.getTripData()).to.not.deep.eql(testTripData2);
         });
 
-        it('emits change if new data is set', function() {
+        it('emits change if new data is set', () => {
           const cb = sinon.spy();
 
           // Start listening to the callback
@@ -256,20 +255,20 @@ describe('stores/TripStore', function() {
       });
     });
 
-    describe('#getTripList', function() {
-      beforeEach(function() {
+    describe('#getTripList', () => {
+      beforeEach(() => {
         TripStore._storeCallback({
           type: TripActionTypes.TRIP_LOAD_LIST,
           data: testTripList
         });
       });
 
-      it('returns trip list', function() {
+      it('returns trip list', () => {
         expect(TripStore.getTripList()).to.deep.eql(testTripList);
       });
 
-      describe('action: load list', function() {
-        it('returns new trip list when updated', function() {
+      describe('action: load list', () => {
+        it('returns new trip list when updated', () => {
           const cb = sinon.spy();
           TripStore.addChangeListener(cb);
 

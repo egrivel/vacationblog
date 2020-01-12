@@ -1,4 +1,3 @@
-'use strict';
 
 /**
  * Trip Actions. This is a set of actions regarding trips, including the list
@@ -17,7 +16,7 @@ const FacebookAction = {
 
   getStatus: function() {
     if (typeof FB !== 'undefined' && !_isLoadingStatus) {
-      setTimeout(function() {
+      setTimeout(() => {
         AppDispatcher.dispatch({
           type: FacebookAction.Types.FB_STATUS,
           data: 'loading'
@@ -25,7 +24,7 @@ const FacebookAction = {
       }, 0);
       _isLoadingStatus = true;
 
-      FB.getLoginStatus(function(response) {
+      FB.getLoginStatus((response) => {
         _isLoadingStatus = false;
         if (response && response.status) {
           AppDispatcher.dispatch({
@@ -47,7 +46,7 @@ const FacebookAction = {
   loadDetails: function() {
     if (!_isLoadingDetails) {
       _isLoadingDetails = true;
-      FB.api('/me', function(response) {
+      FB.api('/me', (response) => {
         _isLoadingDetails = false;
         if (response && response.name) {
           AppDispatcher.dispatch({
@@ -68,7 +67,7 @@ const FacebookAction = {
   },
 
   logout: function() {
-    FB.logout(function() {
+    FB.logout(() => {
       // Nothing to do
     });
   },

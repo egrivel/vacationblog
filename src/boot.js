@@ -52,7 +52,7 @@ const routes = {
   ]
 };
 
-/* global document */
+// eslint-disable-next-line react/no-render-return-value
 const root = ReactDOM.render(
   React.createElement(Router,
     {

@@ -1,21 +1,23 @@
-'use strict';
-
 import React from 'react';
-import createReactClass from 'create-react-class';
 import PropTypes from 'prop-types';
 
 import Formrow from './Formrow.jsx';
 
-const ButtonBar = createReactClass({
-  displayName: 'ButtonBar',
+class ButtonBar extends React.Component {
+  static propTypes = {
+    buttons: PropTypes.arrayOf(
+      PropTypes.shape({
+        onClick: PropTypes.func.isRequired,
+        label: PropTypes.string.isRequired
+      })
+    ).isRequired
+  }
 
-  propTypes: {
-    buttons: PropTypes.array.isRequired
-  },
+  render() {
+    const {buttons} = this.props;
 
-  render: function() {
     const buttonList = [];
-    for (let i = 0; i < this.props.buttons.length; i++) {
+    for (let i = 0; i < buttons.length; i++) {
       if (i) {
         buttonList.push(' ');
       }
@@ -23,9 +25,9 @@ const ButtonBar = createReactClass({
         <button
           type="submit"
           key={'b-' + i}
-          onClick={this.props.buttons[i].onClick}
+          onClick={buttons[i].onClick}
         >
-          {this.props.buttons[i].label}
+          {buttons[i].label}
         </button>
       );
     }
@@ -39,6 +41,6 @@ const ButtonBar = createReactClass({
       </Formrow>
     );
   }
-});
+}
 
 export default ButtonBar;

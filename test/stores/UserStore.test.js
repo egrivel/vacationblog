@@ -1,4 +1,3 @@
-'use strict';
 
 const expect = require('chai').expect;
 import sinon from 'sinon';
@@ -20,26 +19,26 @@ const testUser2 = {
   property: 'test prop 2'
 };
 
-describe('stores/UserStore', function() {
-  beforeEach(function() {
+describe('stores/UserStore', () => {
+  beforeEach(() => {
     UserStore.removeAllListeners();
     UserStore._reset();
   });
 
-  afterEach(function() {
+  afterEach(() => {
     UserStore.removeAllListeners();
   });
 
   // Behavior of an uninitialized user store
-  describe('without users loaded', function() {
-    describe('#getData', function() {
-      it('returns undefined when uninitialized', function() {
+  describe('without users loaded', () => {
+    describe('#getData', () => {
+      it('returns undefined when uninitialized', () => {
         expect(UserStore.getData()).to.equal(undefined);
       });
     });
   });
 
-  describe('with test user loaded', function() {
+  describe('with test user loaded', () => {
     let cb;
 
     const userAction1 = {
@@ -55,39 +54,39 @@ describe('stores/UserStore', function() {
       data: testUser1
     };
 
-    beforeEach(function() {
+    beforeEach(() => {
       cb = sinon.spy();
       UserStore.addChangeListener(cb);
     });
 
-    afterEach(function() {
+    afterEach(() => {
       UserStore.removeChangeListener(cb);
     });
 
-    it('Loaded user data is returned', function() {
+    it('Loaded user data is returned', () => {
       UserStore._storeCallback(userAction1);
       expect(UserStore.getData(testUserId1)).to.deep.eql(testUser1);
     });
 
-    it('Other than loaded user is undefined', function() {
+    it('Other than loaded user is undefined', () => {
       UserStore._storeCallback(userAction1);
       expect(UserStore.getData(testUserId2)).to.equal(undefined);
     });
 
-    it('Multiple users are kept separate', function() {
+    it('Multiple users are kept separate', () => {
       UserStore._storeCallback(userAction1);
       UserStore._storeCallback(userAction2);
       expect(UserStore.getData(testUserId1)).to.deep.eql(testUser1);
       expect(UserStore.getData(testUserId2)).to.deep.eql(testUser2);
     });
 
-    it('Loading user for the first time emits change', function() {
+    it('Loading user for the first time emits change', () => {
       expect(cb.callCount).to.be.equal(0);
       UserStore._storeCallback(userAction1);
       expect(cb.callCount).to.be.equal(1);
     });
 
-    it('Re-loading user does not emit change', function() {
+    it('Re-loading user does not emit change', () => {
       expect(cb.callCount).to.be.equal(0);
       UserStore._storeCallback(userAction1);
       expect(cb.callCount).to.be.equal(1);
@@ -95,7 +94,7 @@ describe('stores/UserStore', function() {
       expect(cb.callCount).to.be.equal(1);
     });
 
-    it('Loading second user emits change', function() {
+    it('Loading second user emits change', () => {
       expect(cb.callCount).to.be.equal(0);
       UserStore._storeCallback(userAction1);
       expect(cb.callCount).to.be.equal(1);
@@ -103,7 +102,7 @@ describe('stores/UserStore', function() {
       expect(cb.callCount).to.be.equal(2);
     });
 
-    it('Random action does not emit change', function() {
+    it('Random action does not emit change', () => {
       expect(cb.callCount).to.be.equal(0);
       UserStore._storeCallback(randomAction);
       expect(cb.callCount).to.be.equal(0);

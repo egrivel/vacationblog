@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/standard/Display renders with label and value 1`] = `
+<div>
+  <div
+    className="formLabel"
+  >
+    Test Label
+  </div>
+  <div
+    className="formValue"
+  >
+    <span>
+      Test Value
+    </span>
+  </div>
+</div>
+`;
+
+exports[`components/standard/Display renders with label but no value 1`] = `
+<div>
+  <div
+    className="formLabel"
+  >
+    Test Label
+  </div>
+  <div
+    className="formValue"
+  >
+    <span>
+      
+    </span>
+  </div>
+</div>
+`;
