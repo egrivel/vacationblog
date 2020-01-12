@@ -1,22 +1,22 @@
 'use strict';
 
-const _ = require('lodash');
-const React = require('react');
-const createClass = require('create-react-class');
-const PropTypes = require('prop-types');
+import _ from 'lodash';
+import React from 'react';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
 
-const ButtonBar = require('./standard/ButtonBar.jsx');
-const Display = require('./standard/Display.jsx');
-const Droplist = require('./standard/Droplist.jsx');
-const Password = require('./standard/Password.jsx');
-const Radiolist = require('./standard/Radiolist.jsx');
-const Textbox = require('./standard/Textbox.jsx');
+import ButtonBar from './standard/ButtonBar.jsx';
+import Display from './standard/Display.jsx';
+import Droplist from './standard/Droplist.jsx';
+import Password from './standard/Password.jsx';
+import Radiolist from './standard/Radiolist.jsx';
+import Textbox from './standard/Textbox.jsx';
 
-const storeMixin = require('./StoreMixin');
-const UserStore = require('../stores/UserStore');
-const UserAction = require('../actions/UserAction');
+import storeMixin from './StoreMixin';
+import UserStore from '../stores/UserStore';
+import UserAction from '../actions/UserAction';
 
-const UserEdit = createClass({
+const UserEdit = createReactClass({
   displayName: 'User Edit',
 
   mixins: [storeMixin()],
@@ -33,17 +33,14 @@ const UserEdit = createClass({
     router: PropTypes.object.isRequired
   },
 
-  componentWillMount: function() {
+  componentDidMount: function() {
     UserAction.initEdit(this.props.params.userId);
     const userData = UserStore.getEditData(this.props.params.userId);
     if (!userData || !userData.userId) {
       UserAction.loadUser(this.props.params.userId);
     }
-  },
-
-  // Why do we need this componentDidMount? It seems like the getInitialState
+  // Why do we need this in componentDidMount? It seems like the getInitialState
   // call from the store mixin isn't working...
-  componentDidMount: function() {
     this.setState(this._getStateFromStores());
   },
 
@@ -192,4 +189,4 @@ const UserEdit = createClass({
   }
 });
 
-module.exports = UserEdit;
+export default UserEdit;

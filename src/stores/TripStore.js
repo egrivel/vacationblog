@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Trip Store
  *
@@ -8,12 +6,12 @@
  *  - ID of the current trip.
  *  - All the attributes of the current trip.
  */
-const _ = require('lodash');
-const assign = require('object-assign');
+import _ from 'lodash';
+import assign from 'object-assign';
 
-const AppDispatcher = require('../AppDispatcher');
-const GenericStore = require('./GenericStore');
-const TripActionTypes = require('../actions/TripAction').Types;
+import AppDispatcher from '../AppDispatcher';
+import GenericStore from './GenericStore';
+import TripActionTypes from '../actions/TripActionTypes';
 
 // ---
 // Ordered list of all the trips in the whole system. This list is
@@ -122,11 +120,12 @@ const TripStore = assign({}, GenericStore, {
    * - updated: datetime when the trip record was updated.
    */
   getTripData: function(tripId) {
-    if (!tripId) {
-      tripId = _currentTripId;
+    let actualTripId = tripId;
+    if (!actualTripId) {
+      actualTripId = _currentTripId;
     }
-    if (tripId && _tripData[tripId]) {
-      return _tripData[tripId];
+    if (actualTripId && _tripData[actualTripId]) {
+      return _tripData[actualTripId];
     }
     return {};
   },
@@ -159,13 +158,14 @@ const TripStore = assign({}, GenericStore, {
     return [];
   },
 
+  // eslint-disable-next-line complexity
   _storeCallback: function(action) {
     switch (action.type) {
       case TripActionTypes.TRIP_LOAD_DATA:
         if (action.data && action.data.tripId) {
           _tripData[action.data.tripId] = action.data;
           if (action.data.tripId && action.data.name) {
-            _tripList = _tripList.map(function(item) {
+            _tripList = _tripList.map((item) => {
               if (item.tripId === action.data.tripId) {
                 item.name = action.data.name;
               }
@@ -214,4 +214,4 @@ const TripStore = assign({}, GenericStore, {
 
 TripStore.dispatchToken = AppDispatcher.register(TripStore._storeCallback);
 
-module.exports = TripStore;
+export default TripStore;

@@ -4,13 +4,13 @@
  * Display the header for a journal entry.
  */
 
-const React = require('react');
-const createClass = require('create-react-class');
-const PropTypes = require('prop-types');
-const Link = require('react-router').Link;
-const utils = require('./utils');
+import React from 'react';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
+import {Link} from 'react-router';
+import utils from './utils';
 
-const JournalHeader = createClass({
+const JournalHeader = createReactClass({
   displayName: 'JournalHeader',
 
   propTypes: {
@@ -33,7 +33,6 @@ const JournalHeader = createClass({
   // Handling dynamic sizing of images in modal: set the event handler to
   // update size upon resizing
   componentDidMount: function() {
-    /* global window */
     window.addEventListener('resize', this._sizeMapFrame, false);
   },
 
@@ -237,4 +236,4 @@ const JournalHeader = createClass({
   }
 });
 
-module.exports = JournalHeader;
+export default JournalHeader;

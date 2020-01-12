@@ -125,7 +125,7 @@ function getMediaUrl() {
     </script>
     <div id="fb-root"></div>
     <div id='react-root'>
-      <script src='js/boot.js'></script>
+      <script src='app.js'></script>
     </div>
   </body>
 </html>

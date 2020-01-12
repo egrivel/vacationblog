@@ -1,20 +1,11 @@
 'use strict';
 
-const AppDispatcher = require('../AppDispatcher');
-const utils = require('./utils');
+import AppDispatcher from '../AppDispatcher';
+import utils from './utils';
+import UserActionTypes from './UserActionTypes';
 
 const UserAction = {
-  Types: {
-    USER_SET_DATA: 'USER_SET_DATA',
-    USER_SET_LOGGED_IN: 'USER_SET_LOGGED_IN',
-    USER_SET_LOGIN_LOGIN_STATE: 'USER_SET_LOGIN_LOGIN_STATE',
-    USER_SET_LOGIN_FORM_ERROR: 'USER_SET_LOGIN_FORM_ERROR',
-    USER_SET_LIST: 'USER_SET_LIST',
-    USER_SET_TEMP_CODE: 'USER_SET_TEMP_CODE',
-    USER_INIT_EDIT: 'USER_INIT_EDIT',
-    USER_SET_EDIT: 'USER_SET_EDIT',
-    USER_CLEAR_EDIT: 'USER_CLEAR_EDIT'
-  },
+  Types: UserActionTypes,
 
   loadLoggedInUser: function() {
     const url = 'api/getUser.php';
@@ -147,7 +138,7 @@ const UserAction = {
     });
   },
 
-  updateEmail: function(userId, newEmail) {
+  updateEmail: function(/* userId, newEmail */) {
     console.log('email change not implemented');
   },
 
@@ -166,4 +157,4 @@ const UserAction = {
   }
 };
 
-module.exports = UserAction;
+export default UserAction;

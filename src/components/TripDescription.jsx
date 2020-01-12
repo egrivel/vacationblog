@@ -1,19 +1,19 @@
 'use strict';
 
-const React = require('react');
-const createClass = require('create-react-class');
-const PropTypes = require('prop-types');
-const Link = require('react-router').Link;
+import React from 'react';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
+import {Link} from 'react-router';
 
-const TripAction = require('../actions/TripAction');
-const TripStore = require('../stores/TripStore');
-const UserStore = require('../stores/UserStore');
-const MenuAction = require('../actions/MenuAction');
-const MenuStore = require('../stores/MenuStore');
+import TripAction from '../actions/TripAction';
+import TripStore from '../stores/TripStore';
+import UserStore from '../stores/UserStore';
+import MenuAction from '../actions/MenuAction';
+import MenuStore from '../stores/MenuStore';
 
-const TripJournalList = require('./TripJournalList.jsx');
-const utils = require('./utils');
-const cookieUtils = require('../utils');
+import TripJournalList from './TripJournalList.jsx';
+import utils from './utils';
+import cookieUtils from '../utils';
 
 /**
  * Get the state from the stores.
@@ -86,7 +86,7 @@ function _startReadingLink(tripId, journalId) {
   // );
 }
 
-const TripDescription = createClass({
+const TripDescription = createReactClass({
   displayName: 'TripDescription',
 
   propTypes: {
@@ -252,4 +252,4 @@ const TripDescription = createClass({
   }
 });
 
-module.exports = TripDescription;
+export default TripDescription;

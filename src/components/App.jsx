@@ -1,13 +1,13 @@
 'use strict';
 
-const React = require('react');
-const createClass = require('create-react-class');
-const PropTypes = require('prop-types');
+import React from 'react';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
 
-const FacebookWrapper = require('./FacebookWrapper.jsx');
-const Header = require('./Header.jsx');
-const Welcome = require('./Welcome.jsx');
-const Footer = require('./Footer.jsx');
+import FacebookWrapper from './FacebookWrapper.jsx';
+import Header from './Header.jsx';
+import Welcome from './Welcome.jsx';
+import Footer from './Footer.jsx';
 
 /**
  * The application object renders the framework of the application, which
@@ -16,7 +16,7 @@ const Footer = require('./Footer.jsx');
  * content, it will default to a trip description page. This is the initial
  * view when someone enters the site.
  */
-const App = createClass({
+const App = createReactClass({
   displayName: 'App',
 
   propTypes: {
@@ -41,4 +41,4 @@ const App = createClass({
   }
 });
 
-module.exports = App;
+export default App;

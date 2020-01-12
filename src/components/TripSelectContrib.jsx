@@ -1,11 +1,11 @@
 'use strict';
 
-const _ = require('lodash');
-const React = require('react');
-const createClass = require('create-react-class');
-const PropTypes = require('prop-types');
+import _ from 'lodash';
+import React from 'react';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
 
-const TripSelectContrib = createClass({
+const TripSelectContrib = createReactClass({
   displayName: 'Trip Select Contrib',
 
   propTypes: {
@@ -95,4 +95,4 @@ const TripSelectContrib = createClass({
   }
 });
 
-module.exports = TripSelectContrib;
+export default TripSelectContrib;

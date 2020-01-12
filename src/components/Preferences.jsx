@@ -1,22 +1,22 @@
 'use strict';
 
-const React = require('react');
-const createClass = require('create-react-class');
-const PropTypes = require('prop-types');
+import React from 'react';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
 
-const ButtonBar = require('./standard/ButtonBar.jsx');
-const Display = require('./standard/Display.jsx');
-const Password = require('./standard/Password.jsx');
-const Radiolist = require('./standard/Radiolist.jsx');
-const Textbox = require('./standard/Textbox.jsx');
+import ButtonBar from './standard/ButtonBar.jsx';
+import Display from './standard/Display.jsx';
+import Password from './standard/Password.jsx';
+import Radiolist from './standard/Radiolist.jsx';
+import Textbox from './standard/Textbox.jsx';
 
-const storeMixin = require('./StoreMixin');
-const UserStore = require('../stores/UserStore');
-const UserAction = require('../actions/UserAction');
-const MenuAction = require('../actions/MenuAction');
-const MenuStore = require('../stores/MenuStore');
+import storeMixin from './StoreMixin';
+import UserStore from '../stores/UserStore';
+import UserAction from '../actions/UserAction';
+import MenuAction from '../actions/MenuAction';
+import MenuStore from '../stores/MenuStore';
 
-const Preferences = createClass({
+const Preferences = createReactClass({
   displayName: 'Preferences',
 
   mixins: [storeMixin()],
@@ -299,4 +299,4 @@ const Preferences = createClass({
   }
 });
 
-module.exports = Preferences;
+export default Preferences;

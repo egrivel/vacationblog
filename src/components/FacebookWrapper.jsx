@@ -1,18 +1,16 @@
 'use strict';
 
-const React = require('react');
-const createClass = require('create-react-class');
-const Link = require('react-router').Link;
+import createReactClass from 'create-react-class';
 
-const storeMixin = require('./StoreMixin');
+import storeMixin from './StoreMixin';
 
-const FacebookAction = require('../actions/FacebookAction');
-const LoginAction = require('../actions/LoginAction');
-const FacebookStore = require('../stores/FacebookStore');
-const UserStore = require('../stores/UserStore');
+import FacebookAction from '../actions/FacebookAction';
+import LoginAction from '../actions/LoginAction';
+import FacebookStore from '../stores/FacebookStore';
+import UserStore from '../stores/UserStore';
 
 // The FacebookWrapper component handles the facebook interactions...
-const FacebookWrapper = createClass({
+const FacebookWrapper = createReactClass({
   mixins: [storeMixin()],
 
   stores: [UserStore, FacebookStore],
@@ -20,7 +18,7 @@ const FacebookWrapper = createClass({
   _getStateFromStores: function() {
     const status = FacebookStore.getStatus();
     const name = FacebookStore.getName();
-    const email = FacebookStore.getEmail();;
+    const email = FacebookStore.getEmail();
     const loginErrorMessage = UserStore.getFormErrorMessage();
 
     return {
@@ -59,7 +57,6 @@ const FacebookWrapper = createClass({
     const fbId = FacebookStore.getId();
     const fbName = FacebookStore.getName() || '';
     const fbStatus = FacebookStore.getStatus();
-    const isUserLoggedIn = UserStore.isUserLoggedIn();
     const userId = UserStore.getLoggedInUser();
     const userData = UserStore.getData(userId);
     const userName = userData ? userData.name : '';
@@ -95,4 +92,4 @@ const FacebookWrapper = createClass({
   }
 });
 
-module.exports = FacebookWrapper;
+export default FacebookWrapper;

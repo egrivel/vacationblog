@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Comment store.
  *
@@ -17,12 +15,12 @@
  *  - deleted (Y/N)
  */
 
-const _ = require('lodash');
-const assign = require('object-assign');
+import _ from 'lodash';
+import assign from 'object-assign';
 
-const AppDispatcher = require('../AppDispatcher');
-const GenericStore = require('./GenericStore');
-const CommentActionTypes = require('../actions/CommentAction').Types;
+import AppDispatcher from '../AppDispatcher';
+import GenericStore from './GenericStore';
+import CommentActionTypes from '../actions/CommentActionTypes';
 
 // ---
 // Comment structure. The _commentData is indexed by the tripId / referenceId
@@ -145,7 +143,7 @@ const CommentStore = assign({}, GenericStore, {
    * comment element has its own 'comments' list. This
    */
   getRecursiveList: function(tripId, referenceId) {
-    const result = this.getList(tripId, referenceId);
+    const result = CommentStore.getList(tripId, referenceId);
     if (result) {
       for (let i = 0; i < result.length; i++) {
         const list = CommentStore.getRecursiveList(tripId, result[i].commentId);
@@ -192,11 +190,15 @@ const CommentStore = assign({}, GenericStore, {
     return '';
   },
 
+  // eslint-disable-next-line complexity
   _storeCallback: function(action) {
     let index;
+    let isChanged;
+    let value;
+
     switch (action.type) {
       case CommentActionTypes.COMMENT_DATA:
-        let isChanged = false;
+        isChanged = false;
         if (action.data && action.data.list) {
           for (let i = 0; action.data.list[i]; i++) {
             isChanged |= _setData(action.data.list[i]);
@@ -208,7 +210,7 @@ const CommentStore = assign({}, GenericStore, {
         break;
 
       case CommentActionTypes.COMMENT_SET_EDITING:
-        let value = false;
+        value = false;
         if (action.value) {
           value = true;
         }
@@ -247,4 +249,4 @@ const CommentStore = assign({}, GenericStore, {
 CommentStore.dispatchToken =
   AppDispatcher.register(CommentStore._storeCallback);
 
-module.exports = CommentStore;
+export default CommentStore;

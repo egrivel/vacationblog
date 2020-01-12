@@ -1,11 +1,11 @@
 'use strict';
 
-const _ = require('lodash');
-const assign = require('object-assign');
+import _ from 'lodash';
+import assign from 'object-assign';
 
-const AppDispatcher = require('../AppDispatcher');
-const GenericStore = require('./GenericStore');
-const FeedbackActionTypes = require('../actions/FeedbackAction').Types;
+import AppDispatcher from '../AppDispatcher';
+import GenericStore from './GenericStore';
+import FeedbackActionTypes from '../actions/FeedbackActionTypes';
 
 const _data = {};
 
@@ -215,4 +215,4 @@ FeedbackStore.dispatchToken =
 // set the limit high!
 FeedbackStore.setMaxListeners(100);
 
-module.exports = FeedbackStore;
+export default FeedbackStore;

@@ -1,19 +1,15 @@
-'use strict';
+import AppDispatcher from '../AppDispatcher';
+import utils from './utils';
 
-const AppDispatcher = require('../AppDispatcher');
-const utils = require('./utils');
-
-const TripAction = require('./TripAction');
-const CommentAction = require('./CommentAction');
-const MediaAction = require('./MediaAction');
-const UserAction = require('./UserAction');
-const MediaStore = require('../stores/MediaStore');
+import TripAction from './TripAction';
+import CommentAction from './CommentAction';
+import MediaAction from './MediaAction';
+import UserAction from './UserAction';
+import MediaStore from '../stores/MediaStore';
+import JournalActionTypes from './JournalActionTypes';
 
 const JournalAction = {
-  Types: {
-    JOURNAL_DATA: 'JOURNAL_DATA'
-  },
-
+  // eslint-disable-next-line complexity
   _getMediaFromText: function(text) {
     if (!text) {
       return null;
@@ -38,7 +34,7 @@ const JournalAction = {
       const item = list[i];
       if (item.indexOf(']') > 0) {
         const data = item.substring(0, item.indexOf(']')).trim();
-        if (data.match(/^[\d\-abc]+(\s+[\+\-]\d+)?$/)) {
+        if (data.match(/^[\d\-abc]+(\s+[+-]\d+)?$/)) {
           const img = data.substring(0, item.indexOf(' ')).trim();
           if (img.match(/^[\d\-abc]+$/)) {
             // this is a valid image ID for a panorama
@@ -51,9 +47,10 @@ const JournalAction = {
     return images;
   },
 
+  // eslint-disable-next-line complexity
   _journalLoaded: function(data) {
     AppDispatcher.dispatch({
-      type: this.Types.JOURNAL_DATA,
+      type: JournalActionTypes.JOURNAL_DATA,
       data: data
     });
 
@@ -70,7 +67,7 @@ const JournalAction = {
 
     const journalText = data.journalText;
     if (tripId && journalId && journalText) {
-      const mediaList = this._getMediaFromText(journalText);
+      const mediaList = JournalAction._getMediaFromText(journalText);
       if (mediaList && mediaList.length) {
         let i;
         for (i = 0; i < mediaList.length; i++) {
@@ -92,7 +89,7 @@ const JournalAction = {
     } else {
       url += '&journalId=' + journalId;
     }
-    utils.getAsync(url, function(response) {
+    utils.getAsync(url, (response) => {
       const data = JSON.parse(response);
       JournalAction._journalLoaded(data);
     });
@@ -118,7 +115,7 @@ const JournalAction = {
       journalTitle: journalData.journalTitle,
       journalText: journalData.journalText
     };
-    utils.postAsync(url, data, function(response) {
+    utils.postAsync(url, data, (response) => {
       const data = JSON.parse(response);
       if (data.resultCode === 200) {
         // do something???
@@ -136,7 +133,7 @@ const JournalAction = {
       journalTitle: journalData.journalTitle,
       journalText: journalData.journalText
     };
-    utils.postAsync(url, data, function(response) {
+    utils.postAsync(url, data, (response) => {
       const data = JSON.parse(response);
       if (data.resultCode === 200) {
         // do something???
@@ -145,4 +142,4 @@ const JournalAction = {
   }
 };
 
-module.exports = JournalAction;
+export default JournalAction;

@@ -1,26 +1,24 @@
-'use strict';
-
 /**
  * Display one or more comments to a given item. This component will
  * call itself recursively to display comments to comments.
  */
 
-const React = require('react');
-const createClass = require('create-react-class');
-const PropTypes = require('prop-types');
+import React from 'react';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
 
-const UserStore = require('../stores/UserStore');
-const CommentStore = require('../stores/CommentStore');
-const CommentAction = require('../actions/CommentAction');
+import UserStore from '../stores/UserStore';
+import CommentStore from '../stores/CommentStore';
+import CommentAction from '../actions/CommentAction';
 
-const utils = require('./utils');
-const Feedback = require('./Feedback.jsx');
-const CommentEdit = require('./CommentEdit.jsx');
+import utils from './utils';
+import Feedback from './Feedback.jsx';
+import CommentEdit from './CommentEdit.jsx';
 
 // Declare variables that will be used later
 let CommentList = null;
 
-const CommentParagraph = createClass({
+const CommentParagraph = createReactClass({
   displayName: 'CommentParagraph',
 
   propTypes: {
@@ -42,7 +40,7 @@ const CommentParagraph = createClass({
   }
 });
 
-const Comment = createClass({
+const Comment = createReactClass({
   displayName: 'Comment',
 
   propTypes: {
@@ -56,8 +54,7 @@ const Comment = createClass({
     userId: PropTypes.string,
     userName: PropTypes.string,
     comments: PropTypes.array,
-    loggedInUserId: PropTypes.string,
-    canEdit: PropTypes.bool.isRequired
+    loggedInUserId: PropTypes.string
   },
 
   _startEditing: function(event) {
@@ -69,6 +66,7 @@ const Comment = createClass({
     event.stopPropagation();
   },
 
+  // eslint-disable-next-line complexity
   render: function render() {
     const tripId = this.props.tripId;
     const tripActive = this.props.tripActive;
@@ -110,8 +108,13 @@ const Comment = createClass({
       } else {
         newComment = (
           <div className="commentEdit">
-            <a href="#" onClick={this._startEditing} className="addComment"
-              data-trip-id={tripId} data-reference-id={commentId}>
+            <a
+              href="#"
+              onClick={this._startEditing}
+              className="addComment"
+              data-trip-id={tripId}
+              data-reference-id={commentId}
+            >
               Add a comment
             </a>
           </div>
@@ -132,8 +135,12 @@ const Comment = createClass({
       if (!CommentStore.isEditing('', '', commentId)) {
         commentEdit = (
           <div className="commentEdit">
-            <button onClick={this._startEditing} className="addComment"
-              data-trip-id={tripId} data-comment-id={commentId}>
+            <button
+              onClick={this._startEditing}
+              className="addComment"
+              data-trip-id={tripId}
+              data-comment-id={commentId}
+            >
               Edit
             </button>
           </div>
@@ -168,11 +175,15 @@ const Comment = createClass({
     let commentBody = '';
     if (CommentStore.isEditing('', '', commentId)) {
       commentBody = (
-        <CommentEdit tripId={tripId} commentId={commentId}
-          referenceId={referenceId} key={'c-' + tripId + '-' + commentId}/>
+        <CommentEdit
+          tripId={tripId}
+          commentId={commentId}
+          referenceId={referenceId}
+          key={'c-' + tripId + '-' + commentId}
+        />
       );
     } else {
-      commentBody = parList.map(function(par) {
+      commentBody = parList.map((par) => {
         parCount++;
         const parKey = 'p-' + parCount;
         return React.createElement(CommentParagraph, {
@@ -206,7 +217,7 @@ const Comment = createClass({
   }
 });
 
-CommentList = createClass({
+CommentList = createReactClass({
   displayName: 'CommentList',
 
   propTypes: {
@@ -253,7 +264,10 @@ CommentList = createClass({
       );
     }
     return (
-      <div className="comments" key={'comment-list-' + this.props.referenceId}>
+      <div
+        className="comments"
+        key={'comment-list-' + this.props.referenceId}
+      >
         {commentList}
       </div>
     );
@@ -267,4 +281,4 @@ CommentList = createClass({
   }
 });
 
-module.exports = CommentList;
+export default CommentList;

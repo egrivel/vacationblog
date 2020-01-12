@@ -4,11 +4,11 @@
  * The previous / next line in journal entries.
  */
 
-const React = require('react');
-const createClass = require('create-react-class');
-const PropTypes = require('prop-types');
+import React from 'react';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
 
-const Link = require('react-router').Link;
+import {Link} from 'react-router';
 
 /**
  * Build a 'previous' or 'next' link.
@@ -80,7 +80,7 @@ function getPrevNextPart(tripId, targetId, icon, className,
   // );
 }
 
-const JournalPrevNext = createClass({
+const JournalPrevNext = createReactClass({
   displayName: 'JournalPrevNext',
 
   propTypes: {
@@ -108,4 +108,4 @@ const JournalPrevNext = createClass({
   }
 });
 
-module.exports = JournalPrevNext;
+export default JournalPrevNext;

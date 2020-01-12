@@ -1,20 +1,20 @@
 'use strict';
 
-const React = require('react');
-const createClass = require('create-react-class');
-const PropTypes = require('prop-types');
+import React from 'react';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
 
-const Welcome = require('./Welcome.jsx');
+import Welcome from './Welcome.jsx';
 
-const UserStore = require('../stores/UserStore');
-const UserAction = require('../actions/UserAction');
+import UserStore from '../stores/UserStore';
+import UserAction from '../actions/UserAction';
 
 /**
  * Login Wrapper. This is a wrapper to support external links to the login
  * function.
  */
 
-const LoginWrapper = createClass({
+const LoginWrapper = createReactClass({
   displayName: 'LoginWrapper',
 
   propTypes: {
@@ -24,7 +24,7 @@ const LoginWrapper = createClass({
     })
   },
 
-  componentWillMount: function() {
+  componentDidMount: function() {
     let targetState = UserStore.constants.LOGIN;
     if (this.props.params.target) {
       if (this.props.params.target === 'conf') {
@@ -41,4 +41,4 @@ const LoginWrapper = createClass({
   }
 });
 
-module.exports = LoginWrapper;
+export default LoginWrapper;

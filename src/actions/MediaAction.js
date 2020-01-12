@@ -1,14 +1,11 @@
 'use strict';
 
-const AppDispatcher = require('../AppDispatcher');
-const utils = require('./utils');
+import AppDispatcher from '../AppDispatcher';
+import utils from './utils';
+import MediaActionTypes from './MediaActionTypes';
 
 const MediaAction = {
-  Types: {
-    MEDIA_DATA: 'MEDIA_DATA',
-    MEDIA_BULK_DATA: 'MEDIA_BULK_DATA',
-    MEDIA_LOADING: 'MEDIA_LOADING'
-  },
+  Types: MediaActionTypes,
 
   loadMedia: function(tripId, mediaId) {
     setTimeout(function() {AppDispatcher.dispatch({
@@ -77,4 +74,4 @@ const MediaAction = {
   }
 };
 
-module.exports = MediaAction;
+export default MediaAction;

@@ -1,17 +1,16 @@
-'use strict';
+import UserStore from '../stores/UserStore';
+import cookieUtils from '../utils';
 
-const UserAction = require('./UserAction');
-const UserStore = require('../stores/UserStore');
-const utils = require('./utils');
-const cookieUtils = require('../utils');
+import UserAction from './UserAction';
+import utils from './utils';
 
 const LoginAction = {
-  _doLoginCallback: function(response) {
+  _doLoginCallback: (response) => {
     const data = JSON.parse(response);
     if (data.resultCode === '200') {
       const authId = data.authId;
       if (authId) {
-        if (this.stayLoggedIn) {
+        if (LoginAction.stayLoggedIn) {
           cookieUtils.setCookie(cookieUtils.cookies.AUTH, authId, 1000);
         } else {
           cookieUtils.setCookie(cookieUtils.cookies.AUTH, authId);
@@ -22,18 +21,17 @@ const LoginAction = {
 
       if (data.userId) {
         if (data.userId === 'j.tong') {
-          UserAction.setLoginState(UserStore.constants.LOGIN_SUCCESS);
-          UserAction.setLoggedInUser(data.userId);
-          UserAction.loadUser(data.userId);
-          // Login is success, but remove the message after a few seconds
-          setTimeout(function() {
+          // Login is success, give a message but remove after few seconds
+          setTimeout(() => {
             UserAction.setLoginState(UserStore.constants.NONE);
           }, 4000);
+          UserAction.setLoginState(UserStore.constants.LOGIN_SUCCESS);
         } else {
+          // Other users do not get a message at all
           UserAction.setLoginState(UserStore.constants.NONE);
-          UserAction.setLoggedInUser(data.userId);
-          UserAction.loadUser(data.userId);
         }
+        UserAction.setLoggedInUser(data.userId);
+        UserAction.loadUser(data.userId);
       } else {
         UserAction.setLoggedInUser('');
       }
@@ -72,7 +70,7 @@ const LoginAction = {
     if (errorMessage) {
       UserAction.setLoginFormError(errorMessage);
     } else {
-      UserAction.setTempCode(this.userId, data.tempCode);
+      UserAction.setTempCode(LoginAction.userId, data.tempCode);
       UserAction.setLoginState(UserStore.constants.CONFIRM_REG);
     }
   },
@@ -100,7 +98,8 @@ const LoginAction = {
     }
   },
 
-  _doConfirmRegCallback: function(response) {
+  // eslint-disable-next-line complexity
+  _doConfirmRegCallback: (response) => {
     const data = JSON.parse(response);
     let errorMessage = 'Something went wrong...';
     if (data && data.status) {
@@ -120,8 +119,8 @@ const LoginAction = {
     }
     if (errorMessage) {
       UserAction.setLoginFormError(errorMessage);
-    } else if (this.userId && this.password) {
-      this.doLogin(this.userId, this.password);
+    } else if (LoginAction.userId && LoginAction.password) {
+      LoginAction.doLogin(LoginAction.userId, LoginAction.password);
     } else {
       UserAction.setLoginState(UserStore.constants.LOGIN);
       UserAction.setLoginFormError(
@@ -129,6 +128,7 @@ const LoginAction = {
     }
   },
 
+  // eslint-disable-next-line complexity
   _doConfirmPwdCallback: function(response) {
     const data = JSON.parse(response);
     let errorMessage = 'Something went wrong...';
@@ -149,7 +149,7 @@ const LoginAction = {
       UserAction.setLoginFormError(errorMessage);
     } else {
       UserAction.setLoginState(UserStore.constants.NONE);
-      LoginAction.doLogin(this.userId, this.password);
+      LoginAction.doLogin(LoginAction.userId, LoginAction.password);
     }
   },
 
@@ -160,9 +160,9 @@ const LoginAction = {
       userId: userId,
       password: password
     };
-    this.userId = userId;
-    this.stayLoggedIn = stayLoggedIn;
-    utils.postAsync(url, data, this._doLoginCallback.bind(this));
+    LoginAction.userId = userId;
+    LoginAction.stayLoggedIn = stayLoggedIn;
+    utils.postAsync(url, data, LoginAction._doLoginCallback.bind(this));
   },
 
   doFacebookLogin: function(fbUserId, fbName, fbEmail) {
@@ -176,19 +176,20 @@ const LoginAction = {
       name: fbName,
       email: fbEmail
     };
-    this.userId = userId;
+    LoginAction.userId = userId;
     // facebook users never stay logged in; when they come back, they
     // are auto-logged-in if they're still logged into facebook.
-    this.stayLoggedIn = false;
-    utils.postAsync(url, data, this._doLoginCallback.bind(this));
+    LoginAction.stayLoggedIn = false;
+    utils.postAsync(url, data, LoginAction._doLoginCallback.bind(this));
   },
 
   doLogout: function() {
     const url = 'api/logout.php';
-    this.userId = '';
-    utils.getAsync(url, this._doLoginCallback.bind(this));
+    LoginAction.userId = '';
+    utils.getAsync(url, LoginAction._doLoginCallback.bind(this));
   },
 
+  // eslint-disable-next-line max-params
   doRegister: function(userId, name, email, password, notification) {
     const url = 'api/login.php';
     const data = {
@@ -199,8 +200,8 @@ const LoginAction = {
       password: password,
       notification: notification ? 'Y' : 'N'
     };
-    this.userId = userId;
-    utils.postAsync(url, data, this._doRegisterCallback.bind(this));
+    LoginAction.userId = userId;
+    utils.postAsync(url, data, LoginAction._doRegisterCallback.bind(this));
   },
 
   doRetrieve: function(userId, email) {
@@ -210,9 +211,9 @@ const LoginAction = {
       userId: userId,
       email: email
     };
-    this.userId = userId;
-    this.email = email;
-    utils.postAsync(url, data, this._doRetrieveCallback.bind(this));
+    LoginAction.userId = userId;
+    LoginAction.email = email;
+    utils.postAsync(url, data, LoginAction._doRetrieveCallback.bind(this));
   },
 
   doConfirmReg: function(userId, confCode, password) {
@@ -222,9 +223,9 @@ const LoginAction = {
       userId: userId,
       confCode: confCode
     };
-    this.userId = userId;
-    this.password = password;
-    utils.postAsync(url, data, this._doConfirmRegCallback.bind(this));
+    LoginAction.userId = userId;
+    LoginAction.password = password;
+    utils.postAsync(url, data, LoginAction._doConfirmRegCallback.bind(this));
   },
 
   doConfirmPwd: function(userId, confCode, password) {
@@ -235,10 +236,10 @@ const LoginAction = {
       confCode: confCode,
       password: password
     };
-    this.userId = userId;
-    this.password = password;
-    utils.postAsync(url, data, this._doConfirmPwdCallback.bind(this));
+    LoginAction.userId = userId;
+    LoginAction.password = password;
+    utils.postAsync(url, data, LoginAction._doConfirmPwdCallback.bind(this));
   }
 };
 
-module.exports = LoginAction;
+export default LoginAction;

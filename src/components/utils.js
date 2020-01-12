@@ -11,8 +11,8 @@
  *    of that object.
  */
 
-const React = require('react');
-const moment = require('moment-timezone');
+import React from 'react';
+import moment from 'moment-timezone';
 
 function _replaceEntities(text) {
   text = text.replace(/&aacute;/g, '\u00e1');
@@ -172,8 +172,11 @@ function _recursivelyGetNodes(text, count) {
       const href = open;
       end = text.toUpperCase().indexOf('[/LINK]');
       if (end > 0) {
+        // Note: using rel="noopener noreferrer" to prevent a potentiall
+        // security problem, see
+        // https://mathiasbynens.github.io/rel-noopener/
         nodes.push(
-          <a href={href} target="_blank" key={count}>
+          <a href={href} target="_blank" rel="noopener noreferrer" key={count}>
             {_recursivelyGetNodes(text.substring(0, end), count + 1)}
           </a>
         );
@@ -183,8 +186,11 @@ function _recursivelyGetNodes(text, count) {
         nodes.push(_recursivelyGetNodes(text.substring(end + 7),
                                        count + 1));
       } else {
+        // Note: using rel="noopener noreferrer" to prevent a potentiall
+        // security problem, see
+        // https://mathiasbynens.github.io/rel-noopener/
         nodes.push(
-          <a href={href} target="_blank" key={count}>
+          <a href={href} target="_blank" rel="noopener noreferrer" key={count}>
             {_recursivelyGetNodes(text, count + 1)}
           </a>
         );
@@ -322,4 +328,4 @@ const utils = {
   }
 };
 
-module.exports = utils;
+export default utils;

@@ -1,12 +1,12 @@
 'use strict';
 
-const React = require('react');
-const createClass = require('create-react-class');
-const PropTypes = require('prop-types');
+import React from 'react';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
 
-const Formrow = require('./Formrow.jsx');
+import Formrow from './Formrow.jsx';
 
-const Password = createClass({
+const Password = createReactClass({
   displayName: 'Password',
 
   propTypes: {
@@ -45,4 +45,4 @@ const Password = createClass({
   }
 });
 
-module.exports = Password;
+export default Password;

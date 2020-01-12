@@ -1,17 +1,17 @@
 'use strict';
 
-const _ = require('lodash');
-const React = require('react');
-const createClass = require('create-react-class');
-const PropTypes = require('prop-types');
-const moment = require('moment-timezone');
+import _ from 'lodash';
+import React from 'react';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
+import moment from 'moment-timezone';
 
-const storeMixin = require('./StoreMixin');
-const TripAction = require('../actions/TripAction');
-const TripStore = require('../stores/TripStore');
-const utils = require('./utils');
+import storeMixin from './StoreMixin';
+import TripAction from '../actions/TripAction';
+import TripStore from '../stores/TripStore';
+import utils from './utils';
 
-const TripJournalList = createClass({
+const TripJournalList = createReactClass({
   displayName: 'Trip Journal List',
 
   mixins: [storeMixin()],
@@ -143,4 +143,4 @@ const TripJournalList = createClass({
   }
 });
 
-module.exports = TripJournalList;
+export default TripJournalList;

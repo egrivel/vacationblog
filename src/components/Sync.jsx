@@ -1,19 +1,19 @@
 'use strict';
 
-const React = require('react');
-const createClass = require('create-react-class');
+import React from 'react';
+import createReactClass from 'create-react-class';
 
-const storeMixin = require('./StoreMixin');
-const Textbox = require('./standard/Textbox.jsx');
-const Password = require('./standard/Password.jsx');
-const ButtonBar = require('./standard/ButtonBar.jsx');
-const SyncStore = require('../stores/SyncStore');
-const SyncAction = require('../actions/SyncAction');
-const MenuAction = require('../actions/MenuAction');
-const MenuStore = require('../stores/MenuStore');
-const UserStore = require('../stores/UserStore');
+import storeMixin from './StoreMixin';
+import Textbox from './standard/Textbox.jsx';
+import Password from './standard/Password.jsx';
+import ButtonBar from './standard/ButtonBar.jsx';
+import SyncStore from '../stores/SyncStore';
+import SyncAction from '../actions/SyncAction';
+import MenuAction from '../actions/MenuAction';
+import MenuStore from '../stores/MenuStore';
+import UserStore from '../stores/UserStore';
 
-const Sync = createClass({
+const Sync = createReactClass({
   displayName: 'Sync',
 
   mixins: [storeMixin()],
@@ -107,4 +107,4 @@ const Sync = createClass({
   }
 });
 
-module.exports = Sync;
+export default Sync;

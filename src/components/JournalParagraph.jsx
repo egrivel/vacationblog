@@ -5,15 +5,15 @@
  * text and/or media.
  */
 
-const React = require('react');
-const createClass = require('create-react-class');
-const PropTypes = require('prop-types');
+import React from 'react';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
 
-const MediaStore = require('../stores/MediaStore');
-const MediaAction = require('../actions/MediaAction');
-const JournalImage = require('./JournalImage.jsx');
+import MediaStore from '../stores/MediaStore';
+import MediaAction from '../actions/MediaAction';
+import JournalImage from './JournalImage.jsx';
 
-const utils = require('./utils');
+import utils from './utils';
 const Orientation = utils.orientation;
 
 /**
@@ -417,7 +417,7 @@ function _paragraphSingleImage(parent, tripId, mediaId, canEdit) {
   );
 }
 
-const JournalParagraph = createClass({
+const JournalParagraph = createReactClass({
   displayName: 'JournalParagraph',
 
   propTypes: {
@@ -432,7 +432,6 @@ const JournalParagraph = createClass({
   // Handling dynamic sizing of images in modal: set the event handler to
   // update size upon resizing
   componentDidMount: function() {
-    /* global window */
     window.addEventListener('resize', this._sizeModalImg, false);
   },
 
@@ -457,7 +456,6 @@ const JournalParagraph = createClass({
   _sizeModalImg: function() {
     if (this.state && this.state.modal && this.state.modal !== '') {
       // The modal is displayed. Get the image
-      /* global document */
       const containerElement = document.getElementById('the-modal');
       const imgElement = document.getElementById('the-modal-image');
       if (containerElement && imgElement) {
@@ -550,7 +548,7 @@ const JournalParagraph = createClass({
     const images = [];
     let imageCount = 0;
 
-    const pano = text.match(/^\s*\[PANO ([\d\-abc]+)(\s+[+\-]\d+)?\]\s*$/);
+    const pano = text.match(/^\s*\[PANO ([\d\-abc]+)(\s+[+-]\d+)?\]\s*$/);
     if (pano) {
       return this._renderPanorama(tripId, pano[1], pano[2], this.props.canEdit);
     }
@@ -597,4 +595,4 @@ const JournalParagraph = createClass({
   }
 });
 
-module.exports = JournalParagraph;
+export default JournalParagraph;

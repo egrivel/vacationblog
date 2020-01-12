@@ -5,15 +5,15 @@
  * focuses on the display of a single image.
  */
 
-const _ = require('lodash');
-const React = require('react');
-const createClass = require('create-react-class');
-const PropTypes = require('prop-types');
+import _ from 'lodash';
+import React from 'react';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
 
-const utils = require('./utils');
+import utils from './utils';
 const Orientation = utils.orientation;
 
-const Image = createClass({
+const Image = createReactClass({
   displayName: 'Image',
 
   propTypes: {
@@ -88,4 +88,4 @@ const Image = createClass({
   }
 });
 
-module.exports = Image;
+export default Image;

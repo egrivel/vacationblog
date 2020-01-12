@@ -1,14 +1,14 @@
 'use strict';
 
-const React = require('react');
-const createClass = require('create-react-class');
-const PropTypes = require('prop-types');
+import React from 'react';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
 
-const CommentAction = require('../actions/CommentAction');
-const CommentStore = require('../stores/CommentStore');
-const storeMixin = require('./StoreMixin');
+import CommentAction from '../actions/CommentAction';
+import CommentStore from '../stores/CommentStore';
+import storeMixin from './StoreMixin';
 
-const CommentEdit = createClass({
+const CommentEdit = createReactClass({
   displayName: 'CommentEdit',
 
   mixins: [storeMixin()],
@@ -99,4 +99,4 @@ const CommentEdit = createClass({
   }
 });
 
-module.exports = CommentEdit;
+export default CommentEdit;

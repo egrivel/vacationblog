@@ -1,11 +1,11 @@
 'use strict';
 
-const assign = require('object-assign');
+import assign from 'object-assign';
 
-const AppDispatcher = require('../AppDispatcher');
-const GenericStore = require('./GenericStore');
+import AppDispatcher from '../AppDispatcher';
+import GenericStore from './GenericStore';
 
-const SyncActionTypes = require('../actions/SyncAction').Types;
+import SyncActionTypes from '../actions/SyncActionTypes';
 
 let _info = {};
 
@@ -42,4 +42,4 @@ const SyncStore = assign({}, GenericStore, {
 
 SyncStore.dispatchToken = AppDispatcher.register(SyncStore._storeCallback);
 
-module.exports = SyncStore;
+export default SyncStore;

@@ -1,12 +1,12 @@
 'use strict';
 
-const React = require('react');
-const createClass = require('create-react-class');
-const PropTypes = require('prop-types');
+import React from 'react';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
 
-const Formrow = require('./Formrow.jsx');
+import Formrow from './Formrow.jsx';
 
-const Textbox = createClass({
+const Textbox = createReactClass({
   displayName: 'Textbox',
 
   propTypes: {
@@ -43,4 +43,4 @@ const Textbox = createClass({
   }
 });
 
-module.exports = Textbox;
+export default Textbox;

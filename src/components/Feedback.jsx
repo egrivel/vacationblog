@@ -1,15 +1,15 @@
 'use strict';
 
-const React = require('react');
-const createClass = require('create-react-class');
-const PropTypes = require('prop-types');
+import React from 'react';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
 
-const UserStore = require('../stores/UserStore');
-const FeedbackStore = require('../stores/FeedbackStore');
-const FeedbackAction = require('../actions/FeedbackAction');
-const storeMixin = require('./StoreMixin');
+import UserStore from '../stores/UserStore';
+import FeedbackStore from '../stores/FeedbackStore';
+import FeedbackAction from '../actions/FeedbackAction';
+import storeMixin from './StoreMixin';
 
-const Feedback = createClass({
+const Feedback = createReactClass({
   displayName: 'Feedback',
 
   stores: [FeedbackStore, UserStore],
@@ -21,7 +21,7 @@ const Feedback = createClass({
     referenceId: PropTypes.string
   },
 
-  componentWillMount: function() {
+  componentDidMount: function() {
     if (this.props.tripId && this.props.referenceId) {
       FeedbackAction.loadData(this.props.tripId, this.props.referenceId);
     }
@@ -195,4 +195,4 @@ const Feedback = createClass({
   }
 });
 
-module.exports = Feedback;
+export default Feedback;

@@ -1,13 +1,13 @@
 'use strict';
 
-const React = require('react');
-const createClass = require('create-react-class');
+import React from 'react';
+import createReactClass from 'create-react-class';
 
-const TripStore = require('../stores/TripStore');
+import TripStore from '../stores/TripStore';
 
-const storeMixin = require('./StoreMixin');
+import storeMixin from './StoreMixin';
 
-const Footer = createClass({
+const Footer = createReactClass({
   displayName: 'Footer',
 
   stores: [TripStore],
@@ -102,4 +102,4 @@ const Footer = createClass({
   }
 });
 
-module.exports = Footer;
+export default Footer;

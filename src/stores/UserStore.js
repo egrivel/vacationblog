@@ -1,11 +1,9 @@
-'use strict';
+import _ from 'lodash';
+import assign from 'object-assign';
 
-const _ = require('lodash');
-const assign = require('object-assign');
-
-const GenericStore = require('./GenericStore');
-const AppDispatcher = require('../AppDispatcher');
-const UserActionTypes = require('../actions/UserAction').Types;
+import GenericStore from './GenericStore';
+import AppDispatcher from '../AppDispatcher';
+import UserActionTypes from '../actions/UserActionTypes';
 
 let _userData = {};
 let _userEditData = {};
@@ -108,6 +106,7 @@ const UserStore = assign({}, GenericStore, {
     return _userList;
   },
 
+  // eslint-disable-next-line complexity
   _storeCallback: function(action) {
     let userId;
     switch (action.type) {
@@ -179,4 +178,4 @@ UserStore.dispatchToken = AppDispatcher.register(UserStore._storeCallback);
 // allowed.
 UserStore.setMaxListeners(100);
 
-module.exports = UserStore;
+export default UserStore;

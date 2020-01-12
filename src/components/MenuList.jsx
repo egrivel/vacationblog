@@ -1,10 +1,10 @@
 'use strict';
 
-const React = require('react');
-const createClass = require('create-react-class');
-const PropTypes = require('prop-types');
+import React from 'react';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
 
-const MenuList = createClass({
+const MenuList = createReactClass({
   displayName: 'MenuList',
 
   propTypes: {
@@ -21,7 +21,7 @@ const MenuList = createClass({
     event.preventDefault();
   },
 
-  _selectMenu: function(event) {
+  _selectMenu: function() {
     this.setState({open: false});
     // Note: in this case we WANT the default to happen...
   },
@@ -67,4 +67,4 @@ const MenuList = createClass({
   }
 });
 
-module.exports = MenuList;
+export default MenuList;

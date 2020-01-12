@@ -4,21 +4,16 @@
  * Trip Actions. This is a set of actions regarding trips, including the list
  * of contributors to a trip ("trip users").
  */
+/* global FB */
 
-const AppDispatcher = require('../AppDispatcher');
-const utils = require('./utils');
+import AppDispatcher from '../AppDispatcher';
+import FacebookActionTypes from './FacebookActionTypes';
 
 let _isLoadingStatus = false;
 let _isLoadingDetails = false;
 
 const FacebookAction = {
-  Types: {
-    FB_AVAILABLE: 'FB_AVAILABLE',
-    FB_CLEAR: 'FB_CLEAR',
-    FB_DATA: 'FB_DATA',
-    FB_EMAIL: 'FB_EMAIL',
-    FB_STATUS: 'FB_STATUS'
-  },
+  Types: FacebookActionTypes,
 
   getStatus: function() {
     if (typeof FB !== 'undefined' && !_isLoadingStatus) {
@@ -73,7 +68,7 @@ const FacebookAction = {
   },
 
   logout: function() {
-    FB.logout(function(response) {
+    FB.logout(function() {
       // Nothing to do
     });
   },
@@ -86,4 +81,4 @@ const FacebookAction = {
   }
 };
 
-module.exports = FacebookAction;
+export default FacebookAction;

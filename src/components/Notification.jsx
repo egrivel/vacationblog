@@ -1,16 +1,16 @@
 'use strict';
 
-const React = require('react');
-const createClass = require('create-react-class');
-const PropTypes = require('prop-types');
+import React from 'react';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
 
-const ButtonBar = require('./standard/ButtonBar.jsx');
-const Textbox = require('./standard/Textbox.jsx');
-const Textarea = require('./standard/Textarea.jsx');
+import ButtonBar from './standard/ButtonBar.jsx';
+import Textbox from './standard/Textbox.jsx';
+import Textarea from './standard/Textarea.jsx';
 
-const NotificationAction = require('../actions/NotificationAction');
+import NotificationAction from '../actions/NotificationAction';
 
-const Notification = createClass({
+const Notification = createReactClass({
   contextTypes: {
     router: PropTypes.object.isRequired
   },
@@ -99,4 +99,4 @@ const Notification = createClass({
   }
 });
 
-module.exports = Notification;
+export default Notification;

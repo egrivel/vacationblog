@@ -1,9 +1,9 @@
 'use strict';
 
-const React = require('react');
-const createClass = require('create-react-class');
+import React from 'react';
+import createReactClass from 'create-react-class';
 
-const Search = createClass({
+const Search = createReactClass({
   displayName: 'Search',
 
   render: function() {
@@ -15,4 +15,4 @@ const Search = createClass({
   }
 });
 
-module.exports = Search;
+export default Search;
