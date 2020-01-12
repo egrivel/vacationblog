@@ -1,16 +1,16 @@
 'use strict';
 
 const expect = require('chai').expect;
-const sinon = require('sinon');
-const React = require('react');
-const ReactDOM = require('react-dom');
-const TestUtils = require('react-addons-test-utils');
+import sinon from 'sinon';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import TestUtils from 'react-addons-test-utils';
 
-const UserStore = require('../../src/stores/UserStore');
-const FeedbackStore = require('../../src/stores/FeedbackStore');
-const FeedbackAction = require('../../src/actions/FeedbackAction');
+import UserStore from '../../src/stores/UserStore';
+import FeedbackStore from '../../src/stores/FeedbackStore';
+import FeedbackAction from '../../src/actions/FeedbackAction';
 
-const Feedback = require('../../src/components/Feedback.jsx');
+import Feedback from '../../src/components/Feedback.jsx';
 
 /**
  * Get the count value for the Facebook feedback.

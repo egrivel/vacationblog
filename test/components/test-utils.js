@@ -1,11 +1,11 @@
 'use strict';
 
 const expect = require('chai').expect;
-const sinon = require('sinon');
+import sinon from 'sinon';
 
-const ReactDOMServer = require('react-dom/server');
+import ReactDOMServer from 'react-dom/server';
 
-const utils = require('../../src/components/utils');
+import utils from '../../src/components/utils';
 
 /**
  * Test for a single entity

@@ -1,9 +1,9 @@
 'use strict';
 
 const expect = require('chai').expect;
-const sinon = require('sinon');
+import sinon from 'sinon';
 
-const GenericStore = require('../../src/stores/GenericStore');
+import GenericStore from '../../src/stores/GenericStore';
 
 describe('stores/GenericStore', function() {
   beforeEach(function() {

@@ -1,13 +1,13 @@
 'use strict';
 
 const expect = require('chai').expect;
-const sinon = require('sinon');
-const React = require('react');
-const TestUtils = require('react-addons-test-utils');
+import sinon from 'sinon';
+import React from 'react';
+import TestUtils from 'react-addons-test-utils';
 
-const TripStore = require('../../src/stores/TripStore');
-const MenuStore = require('../../src/stores/MenuStore');
-const Header = require('../../src/components/Header.jsx');
+import TripStore from '../../src/stores/TripStore';
+import MenuStore from '../../src/stores/MenuStore';
+import Header from '../../src/components/Header.jsx';
 
 describe('components/Header', function() {
   const defaultBanner = 'default-banner.png';

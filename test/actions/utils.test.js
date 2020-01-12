@@ -1,9 +1,9 @@
 'use strict';
 
 const expect = require('chai').expect;
-const sinon = require('sinon');
+import sinon from 'sinon';
 
-const utils = require('../../src/actions/utils');
+import utils from '../../src/actions/utils';
 
 describe('actions/utils', function() {
   let xhr;

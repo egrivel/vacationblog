@@ -1,9 +1,9 @@
 'use strict';
 
 const expect = require('chai').expect;
-const sinon = require('sinon');
+import sinon from 'sinon';
 
-const MenuStore = require('../../src/stores/MenuStore');
+import MenuStore from '../../src/stores/MenuStore';
 const MenuActionTypes = require('../../src/actions/MenuAction').Types;
 const TripActionTypes = require('../../src/actions/TripAction').Types;
 

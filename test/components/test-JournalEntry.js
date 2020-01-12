@@ -1,17 +1,17 @@
 'use strict';
 
 const expect = require('chai').expect;
-const sinon = require('sinon');
-const React = require('react');
-const ReactDOMServer = require('react-dom/server');
-const TestUtils = require('react-addons-test-utils');
+import sinon from 'sinon';
+import React from 'react';
+import ReactDOMServer from 'react-dom/server';
+import TestUtils from 'react-addons-test-utils';
 
-const JournalEntry = require('../../src/components/JournalEntry.jsx');
-const FeedbackAction = require('../../src/actions/FeedbackAction');
+import JournalEntry from '../../src/components/JournalEntry.jsx';
+import FeedbackAction from '../../src/actions/FeedbackAction';
 
-const JournalStore = require('../../src/stores/JournalStore');
-const UserStore = require('../../src/stores/UserStore');
-const CommentStore = require('../../src/stores/CommentStore');
+import JournalStore from '../../src/stores/JournalStore';
+import UserStore from '../../src/stores/UserStore';
+import CommentStore from '../../src/stores/CommentStore';
 
 describe('components/JournalEntry', function() {
   let getJournalDataStub;

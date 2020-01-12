@@ -1,10 +1,10 @@
 'use strict';
 
 const expect = require('chai').expect;
-const React = require('react');
-const TestUtils = require('react-addons-test-utils');
+import React from 'react';
+import TestUtils from 'react-addons-test-utils';
 
-const About = require('../../src/components/About.jsx');
+import About from '../../src/components/About.jsx';
 
 describe('components/About', function() {
   describe('#render', function() {

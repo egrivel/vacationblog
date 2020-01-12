@@ -1,14 +1,14 @@
 'use strict';
 
 const expect = require('chai').expect;
-const sinon = require('sinon');
-const React = require('react');
-const TestUtils = require('react-addons-test-utils');
+import sinon from 'sinon';
+import React from 'react';
+import TestUtils from 'react-addons-test-utils';
 
-const JournalWrapper = require('../../src/components/JournalWrapper.jsx');
-const JournalAction = require('../../src/actions/JournalAction');
-const FeedbackAction = require('../../src/actions/FeedbackAction');
-const JournalStore = require('../../src/stores/JournalStore');
+import JournalWrapper from '../../src/components/JournalWrapper.jsx';
+import JournalAction from '../../src/actions/JournalAction';
+import FeedbackAction from '../../src/actions/FeedbackAction';
+import JournalStore from '../../src/stores/JournalStore';
 
 describe('components/JournalWrapper', function() {
   let loadJournalStub;

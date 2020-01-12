@@ -1,11 +1,11 @@
 'use strict';
 
 const expect = require('chai').expect;
-const sinon = require('sinon');
+import sinon from 'sinon';
 
-const utils = require('../../src/actions/utils');
-const AppDispatcher = require('../../src/AppDispatcher');
-const MediaAction = require('../../src/actions/MediaAction');
+import utils from '../../src/actions/utils';
+import AppDispatcher from '../../src/AppDispatcher';
+import MediaAction from '../../src/actions/MediaAction';
 
 describe('actions/MediaAction', function() {
   describe('#loadMedia', function() {

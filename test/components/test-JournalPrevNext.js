@@ -1,13 +1,12 @@
 'use strict';
 
-const sinon = require('sinon');
+import sinon from 'sinon';
 const expect = require('chai').expect;
-const React = require('react');
+import React from 'react';
 // var ReactDOMServer = require('react-dom/server');
-const TestUtils = require('react-addons-test-utils');
+import TestUtils from 'react-addons-test-utils';
 
-const JournalPrevNext =
-  require('../../src/components/JournalPrevNext.jsx');
+import JournalPrevNext from '../../src/components/JournalPrevNext.jsx';
 
 describe('components/JournalPrevNext', function() {
   const testTripId1 = 'test-trip-1';

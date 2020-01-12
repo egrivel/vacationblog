@@ -1,12 +1,12 @@
 'use strict';
 
 const expect = require('chai').expect;
-const sinon = require('sinon');
-const React = require('react');
-const TestUtils = require('react-addons-test-utils');
+import sinon from 'sinon';
+import React from 'react';
+import TestUtils from 'react-addons-test-utils';
 
-const TripStore = require('../../src/stores/TripStore');
-const Footer = require('../../src/components/Footer.jsx');
+import TripStore from '../../src/stores/TripStore';
+import Footer from '../../src/components/Footer.jsx';
 
 describe('components/Footer', function() {
   const standardFooter = 'Website design \u00a92015-16 by Eric Grivel.';

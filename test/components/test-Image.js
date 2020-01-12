@@ -1,12 +1,12 @@
 'use strict';
 
-const _ = require('lodash');
-const sinon = require('sinon');
+import _ from 'lodash';
+import sinon from 'sinon';
 const expect = require('chai').expect;
-const React = require('react');
-const TestUtils = require('react-addons-test-utils');
+import React from 'react';
+import TestUtils from 'react-addons-test-utils';
 
-const Image = require('../../src/components/Image.jsx');
+import Image from '../../src/components/Image.jsx';
 const Orientation = require('../../src/components/utils').orientation;
 
 describe('components/Image', function() {

@@ -1,10 +1,10 @@
 'use strict';
 
 const expect = require('chai').expect;
-const sinon = require('sinon');
+import sinon from 'sinon';
 
 const UserActionTypes = require('../../src/actions/UserAction').Types;
-const UserStore = require('../../src/stores/UserStore');
+import UserStore from '../../src/stores/UserStore';
 
 const testUserId1 = 'test-user-1';
 const testUserId2 = 'test-user-2';

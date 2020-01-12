@@ -3,14 +3,14 @@
 /* global window */
 
 const expect = require('chai').expect;
-const sinon = require('sinon');
-const React = require('react');
-const ReactDOM = require('react-dom');
-const TestUtils = require('react-addons-test-utils');
+import sinon from 'sinon';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import TestUtils from 'react-addons-test-utils';
 
-const Menu = require('../../src/components/Menu.jsx');
-const MenuAction = require('../../src/actions/MenuAction');
-const FeedbackAction = require('../../src/actions/FeedbackAction');
+import Menu from '../../src/components/Menu.jsx';
+import MenuAction from '../../src/actions/MenuAction';
+import FeedbackAction from '../../src/actions/FeedbackAction';
 
 describe('components/Menu', function() {
   let menuData;

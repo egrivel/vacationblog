@@ -4,11 +4,11 @@
 /* global document */
 
 const expect = require('chai').expect;
-const sinon = require('sinon');
+import sinon from 'sinon';
 
-const utils = require('../../src/actions/utils');
-const LoginAction = require('../../src/actions/LoginAction');
-const UserAction = require('../../src/actions/UserAction');
+import utils from '../../src/actions/utils';
+import LoginAction from '../../src/actions/LoginAction';
+import UserAction from '../../src/actions/UserAction';
 
 describe('actions/LoginAction', function() {
   let asyncPostStub;

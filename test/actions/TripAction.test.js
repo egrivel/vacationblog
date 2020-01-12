@@ -1,11 +1,11 @@
 'use strict';
 
 const expect = require('chai').expect;
-const sinon = require('sinon');
+import sinon from 'sinon';
 
-const utils = require('../../src/actions/utils');
-const AppDispatcher = require('../../src/AppDispatcher');
-const TripAction = require('../../src/actions/TripAction');
+import utils from '../../src/actions/utils';
+import AppDispatcher from '../../src/AppDispatcher';
+import TripAction from '../../src/actions/TripAction';
 
 describe('actions/TripAction', function() {
   describe('#setCurrentTrip', function() {

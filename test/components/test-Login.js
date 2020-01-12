@@ -1,12 +1,12 @@
 'use strict';
 
-const _ = require('lodash');
+import _ from 'lodash';
 
 const expect = require('chai').expect;
-const React = require('react');
-const TestUtils = require('react-addons-test-utils');
+import React from 'react';
+import TestUtils from 'react-addons-test-utils';
 
-const Login = require('../../src/components/Login.jsx');
+import Login from '../../src/components/Login.jsx';
 
 describe('components/Login', function() {
   describe('#render', function() {

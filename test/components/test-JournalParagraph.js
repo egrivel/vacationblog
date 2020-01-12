@@ -1,14 +1,14 @@
 'use strict';
 
 const expect = require('chai').expect;
-const sinon = require('sinon');
-const React = require('react');
+import sinon from 'sinon';
+import React from 'react';
 // var ReactDOM = require('react-dom');
-const ReactDOMServer = require('react-dom/server');
-const TestUtils = require('react-addons-test-utils');
+import ReactDOMServer from 'react-dom/server';
+import TestUtils from 'react-addons-test-utils';
 
-const JournalParagraph = require('../../src/components/JournalParagraph.jsx');
-const MediaStore = require('../../src/stores/MediaStore');
+import JournalParagraph from '../../src/components/JournalParagraph.jsx';
+import MediaStore from '../../src/stores/MediaStore';
 
 describe('components/JournalParagraph', function() {
   let mediaDataStub;

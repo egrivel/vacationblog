@@ -1,10 +1,10 @@
 'use strict';
 
 const expect = require('chai').expect;
-const sinon = require('sinon');
+import sinon from 'sinon';
 
 const MediaActionTypes = require('../../src/actions/MediaAction').Types;
-const MediaStore = require('../../src/stores/MediaStore');
+import MediaStore from '../../src/stores/MediaStore';
 
 const testTripId1 = '-test-trip-1';
 const testMediaId1 = '-test-media-1';

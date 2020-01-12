@@ -1,11 +1,11 @@
 'use strict';
 
 const expect = require('chai').expect;
-const sinon = require('sinon');
+import sinon from 'sinon';
 
-const utils = require('../../src/actions/utils');
-const AppDispatcher = require('../../src/AppDispatcher');
-const UserAction = require('../../src/actions/UserAction');
+import utils from '../../src/actions/utils';
+import AppDispatcher from '../../src/AppDispatcher';
+import UserAction from '../../src/actions/UserAction';
 
 describe('actions/UserAction', function() {
   describe('#loadUser', function() {

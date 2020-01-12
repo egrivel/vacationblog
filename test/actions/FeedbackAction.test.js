@@ -1,11 +1,11 @@
 'use strict';
 
 const expect = require('chai').expect;
-const sinon = require('sinon');
+import sinon from 'sinon';
 
-const utils = require('../../src/actions/utils');
-const AppDispatcher = require('../../src/AppDispatcher');
-const FeedbackAction = require('../../src/actions/FeedbackAction');
+import utils from '../../src/actions/utils';
+import AppDispatcher from '../../src/AppDispatcher';
+import FeedbackAction from '../../src/actions/FeedbackAction';
 
 describe('actions/FeedbackAction', function() {
   let asyncPostStub;

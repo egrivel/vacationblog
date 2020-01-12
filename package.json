@@ -39,7 +39,7 @@
   "scripts": {
     "build": "webpack --mode development",
     "dev": "webpack-dev-server --mode development",
-    "test": "jest",
+    "test": "jest --no-color",
     "coverage": "jest --coverage",
     "test-watch": "jest --watch",
     "coverage-watch": "jest --coverage --watch",

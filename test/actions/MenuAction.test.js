@@ -1,10 +1,10 @@
 'use strict';
 
 const expect = require('chai').expect;
-const sinon = require('sinon');
+import sinon from 'sinon';
 
-const AppDispatcher = require('../../src/AppDispatcher');
-const MenuAction = require('../../src/actions/MenuAction');
+import AppDispatcher from '../../src/AppDispatcher';
+import MenuAction from '../../src/actions/MenuAction';
 
 describe('actions/MenuAction', function() {
   let dispatchStub;

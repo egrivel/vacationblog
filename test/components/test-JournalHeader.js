@@ -1,12 +1,12 @@
 'use strict';
 
-const sinon = require('sinon');
+import sinon from 'sinon';
 const expect = require('chai').expect;
-const React = require('react');
-const ReactDOMServer = require('react-dom/server');
-const TestUtils = require('react-addons-test-utils');
+import React from 'react';
+import ReactDOMServer from 'react-dom/server';
+import TestUtils from 'react-addons-test-utils';
 
-const JournalHeader = require('../../src/components/JournalHeader.jsx');
+import JournalHeader from '../../src/components/JournalHeader.jsx';
 
 describe('components/JournalHeader', function() {
   const testTitle1 = 'test title 1';

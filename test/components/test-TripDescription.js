@@ -3,15 +3,15 @@
 /* global document */
 
 const expect = require('chai').expect;
-const sinon = require('sinon');
-const React = require('react');
-const ReactDOM = require('react-dom');
-const ReactDOMServer = require('react-dom/server');
-const TestUtils = require('react-addons-test-utils');
+import sinon from 'sinon';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import ReactDOMServer from 'react-dom/server';
+import TestUtils from 'react-addons-test-utils';
 
-const TripStore = require('../../src/stores/TripStore');
-const TripAction = require('../../src/actions/TripAction');
-const TripDescription = require('../../src/components/TripDescription.jsx');
+import TripStore from '../../src/stores/TripStore';
+import TripAction from '../../src/actions/TripAction';
+import TripDescription from '../../src/components/TripDescription.jsx';
 
 /**
  * Create a trip description element.

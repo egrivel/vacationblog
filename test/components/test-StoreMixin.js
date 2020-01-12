@@ -6,9 +6,9 @@
 // -----
 
 const expect = require('chai').expect;
-const sinon = require('sinon');
+import sinon from 'sinon';
 
-const storeMixin = require('../../src/components/StoreMixin');
+import storeMixin from '../../src/components/StoreMixin';
 
 describe('components/StoreMixin', function() {
   let Mixin;

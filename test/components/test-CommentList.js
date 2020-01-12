@@ -1,14 +1,14 @@
 'use strict';
 
 const expect = require('chai').expect;
-const sinon = require('sinon');
-const React = require('react');
-const ReactDOMServer = require('react-dom/server');
-const TestUtils = require('react-addons-test-utils');
+import sinon from 'sinon';
+import React from 'react';
+import ReactDOMServer from 'react-dom/server';
+import TestUtils from 'react-addons-test-utils';
 
-const CommentList = require('../../src/components/CommentList.jsx');
+import CommentList from '../../src/components/CommentList.jsx';
 
-const UserStore = require('../../src/stores/UserStore');
+import UserStore from '../../src/stores/UserStore';
 
 describe('components/CommentList', function() {
   let getUserDataStub;

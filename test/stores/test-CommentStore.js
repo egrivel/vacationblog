@@ -1,11 +1,11 @@
 'use strict';
 
-const _ = require('lodash');
+import _ from 'lodash';
 const expect = require('chai').expect;
-const sinon = require('sinon');
+import sinon from 'sinon';
 
 const CommentActionTypes = require('../../src/actions/CommentAction').Types;
-const CommentStore = require('../../src/stores/CommentStore');
+import CommentStore from '../../src/stores/CommentStore';
 
 const testTripId1 = '-test-trip-1';
 const testReferenceId1 = '-test-reference-1';

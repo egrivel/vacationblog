@@ -1,9 +1,9 @@
 'use strict';
 
 const expect = require('chai').expect;
-const sinon = require('sinon');
+import sinon from 'sinon';
 
-const TripStore = require('../../src/stores/TripStore');
+import TripStore from '../../src/stores/TripStore';
 const TripActionTypes = require('../../src/actions/TripAction').Types;
 
 const testTripId1 = '-test-trip-1';
