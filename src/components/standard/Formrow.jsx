@@ -9,16 +9,18 @@ class Formrow extends React.Component {
   };
 
   render() {
+    const {label, labelFor, children} = this.props;
+
     return (
       <div>
         <div
           className="formLabel"
-          htmlFor={this.props.labelFor}
+          htmlFor={labelFor}
         >
-          {this.props.label}
+          {label}
         </div>
         <div className="formValue">
-          {this.props.children}
+          {children}
         </div>
       </div>
     );

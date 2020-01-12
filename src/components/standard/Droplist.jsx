@@ -15,14 +15,13 @@ class Droplist extends React.Component {
     value: PropTypes.string
   }
 
-  _onChange(event) {
-    this.props.onChange(event.target.value, this.props.fieldId);
+  static defaultProps = {
+    value: ''
   }
 
   render() {
     const options = [];
-    const value = this.props.value || '';
-    const {list} = this.props;
+    const {fieldId, label, list, onChange, value} = this.props;
 
     for (let i = 0; i < list.length; i++) {
       const item = list[i];
@@ -38,13 +37,13 @@ class Droplist extends React.Component {
 
     return (
       <Formrow
-        key={'k-' + this.props.fieldId}
-        label={this.props.label}
-        labelFor={this.props.fieldId}
+        key={'k-' + fieldId}
+        label={label}
+        labelFor={fieldId}
       >
         <select
-          id={this.props.fieldId}
-          onChange={event => this._onChange(event)}
+          id={fieldId}
+          onChange={event => onChange(event.target.value, fieldId)}
           value={value}
         >
           {options}

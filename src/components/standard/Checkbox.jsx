@@ -7,20 +7,12 @@ class Checkbox extends React.Component {
   static propTypes = {
     fieldId: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
-    selected: PropTypes.bool,
-    onChange: PropTypes.func.isRequired
-  }
-
-  _onChange(event) {
-    this.props.onChange(event.target.checked, this.props.fieldId);
-  }
-
-  _toggleValue() {
-    this.props.onChange(!this.props.selected, this.props.fieldId);
+    onChange: PropTypes.func.isRequired,
+    selected: PropTypes.bool
   }
 
   render() {
-    const {fieldId, label, selected} = this.props;
+    const {fieldId, label, onChange, selected} = this.props;
     return (
       <Formrow
         key={'k-' + fieldId + selected}
@@ -28,14 +20,14 @@ class Checkbox extends React.Component {
         <label
           className="checkbox"
           htmlFor={fieldId}
-          onClick={() => this._toggleValue()}
+          onClick={() => onChange(!selected, fieldId)}
         >
           <input
             type="checkbox"
             id={fieldId}
             value="Y"
             checked={selected}
-            onChange={event => this._onChange(event)}
+            onChange={event => onChange(event.target.checked, fieldId)}
           />
           {label}
         </label>
