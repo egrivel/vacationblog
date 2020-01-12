@@ -3,7 +3,7 @@
 const expect = require('chai').expect;
 import sinon from 'sinon';
 
-const UserActionTypes = require('../../src/actions/UserAction').Types;
+import UserActionTypes from '../../src/actions/UserActionTypes';
 import UserStore from '../../src/stores/UserStore';
 
 const testUserId1 = 'test-user-1';

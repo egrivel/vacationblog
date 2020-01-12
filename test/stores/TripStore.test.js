@@ -4,7 +4,7 @@ const expect = require('chai').expect;
 import sinon from 'sinon';
 
 import TripStore from '../../src/stores/TripStore';
-const TripActionTypes = require('../../src/actions/TripAction').Types;
+import TripActionTypes from '../../src/actions/TripActionTypes';
 
 const testTripId1 = '-test-trip-1';
 const testTripId2 = '-test-trip-2';
@@ -74,10 +74,9 @@ describe('stores/TripStore', function() {
 
           TripStore._storeCallback({
             type: TripActionTypes.TRIP_LOAD_DATA,
-            data: testTripData1
           });
           expect(cb.callCount).to.be.equal(0);
-          expect(TripStore.getTripData()).to.deep.eql({});
+          expect(TripStore.getTripData()).to.deep.equal({});
 
           TripStore.removeChangeListener(cb);
         });
@@ -216,6 +215,7 @@ describe('stores/TripStore', function() {
 
           // Start listening to the callback
           TripStore.addChangeListener(cb);
+          expect(cb.callCount).to.be.equal(0);
 
           // create a different data object to test behavior
           const testData = {
@@ -230,26 +230,26 @@ describe('stores/TripStore', function() {
           });
           expect(cb.callCount).to.be.equal(1);
 
-          // Loading again with the same data does not emit change
+          // Loading again with the same data also emits a change
           TripStore._storeCallback({
             type: TripActionTypes.TRIP_LOAD_DATA,
             data: testData
           });
-          expect(cb.callCount).to.be.equal(1);
+          expect(cb.callCount).to.be.equal(2);
 
-          // Loading with a different tripId does not emit change
+          // Loading with a different tripId again emits a change
           TripStore._storeCallback({
             type: TripActionTypes.TRIP_LOAD_DATA,
             data: testTripData2
           });
-          expect(cb.callCount).to.be.equal(1);
+          expect(cb.callCount).to.be.equal(3);
 
           // Unknown action does not emit change
           TripStore._storeCallback({
             type: 'foo',
             data: testTripData2
           });
-          expect(cb.callCount).to.be.equal(1);
+          expect(cb.callCount).to.be.equal(3);
 
           TripStore.removeChangeListener(cb);
         });

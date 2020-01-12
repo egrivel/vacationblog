@@ -1,10 +1,8 @@
-'use strict';
-
 import _ from 'lodash';
 const expect = require('chai').expect;
 import sinon from 'sinon';
 
-const CommentActionTypes = require('../../src/actions/CommentAction').Types;
+import CommentActionTypes from '../../src/actions/CommentActionTypes';
 import CommentStore from '../../src/stores/CommentStore';
 
 const testTripId1 = '-test-trip-1';

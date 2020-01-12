@@ -1,10 +1,8 @@
-'use strict';
-
 const expect = require('chai').expect;
 import sinon from 'sinon';
 
 import JournalStore from '../../src/stores/JournalStore';
-const JournalActionTypes = require('../../src/actions/JournalAction').Types;
+import JournalActionTypes from '../../src/actions/JournalActionTypes';
 
 const testTripId1 = '-test-trip-1';
 

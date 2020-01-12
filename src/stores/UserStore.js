@@ -1,5 +1,3 @@
-'use strict';
-
 import _ from 'lodash';
 import assign from 'object-assign';
 
@@ -108,6 +106,7 @@ const UserStore = assign({}, GenericStore, {
     return _userList;
   },
 
+  // eslint-disable-next-line complexity
   _storeCallback: function(action) {
     let userId;
     switch (action.type) {

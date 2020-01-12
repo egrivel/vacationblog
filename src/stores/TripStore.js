@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Trip Store
  *
@@ -122,11 +120,12 @@ const TripStore = assign({}, GenericStore, {
    * - updated: datetime when the trip record was updated.
    */
   getTripData: function(tripId) {
-    if (!tripId) {
-      tripId = _currentTripId;
+    let actualTripId = tripId;
+    if (!actualTripId) {
+      actualTripId = _currentTripId;
     }
-    if (tripId && _tripData[tripId]) {
-      return _tripData[tripId];
+    if (actualTripId && _tripData[actualTripId]) {
+      return _tripData[actualTripId];
     }
     return {};
   },
@@ -159,13 +158,14 @@ const TripStore = assign({}, GenericStore, {
     return [];
   },
 
+  // eslint-disable-next-line complexity
   _storeCallback: function(action) {
     switch (action.type) {
       case TripActionTypes.TRIP_LOAD_DATA:
         if (action.data && action.data.tripId) {
           _tripData[action.data.tripId] = action.data;
           if (action.data.tripId && action.data.name) {
-            _tripList = _tripList.map(function(item) {
+            _tripList = _tripList.map((item) => {
               if (item.tripId === action.data.tripId) {
                 item.name = action.data.name;
               }

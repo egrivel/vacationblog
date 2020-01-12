@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Comment store.
  *
@@ -145,7 +143,7 @@ const CommentStore = assign({}, GenericStore, {
    * comment element has its own 'comments' list. This
    */
   getRecursiveList: function(tripId, referenceId) {
-    const result = this.getList(tripId, referenceId);
+    const result = CommentStore.getList(tripId, referenceId);
     if (result) {
       for (let i = 0; i < result.length; i++) {
         const list = CommentStore.getRecursiveList(tripId, result[i].commentId);
@@ -192,6 +190,7 @@ const CommentStore = assign({}, GenericStore, {
     return '';
   },
 
+  // eslint-disable-next-line complexity
   _storeCallback: function(action) {
     let index;
     let isChanged;

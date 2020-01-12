@@ -3,7 +3,7 @@
 const expect = require('chai').expect;
 import sinon from 'sinon';
 
-const MediaActionTypes = require('../../src/actions/MediaAction').Types;
+import MediaActionTypes from '../../src/actions/MediaActionTypes';
 import MediaStore from '../../src/stores/MediaStore';
 
 const testTripId1 = '-test-trip-1';

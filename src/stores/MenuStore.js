@@ -1,5 +1,3 @@
-'use strict';
-
 import assign from 'object-assign';
 import AppDispatcher from '../AppDispatcher';
 import MenuActionTypes from '../actions/MenuActionTypes';

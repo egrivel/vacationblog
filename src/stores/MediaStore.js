@@ -1,5 +1,3 @@
-'use strict';
-
 import _ from 'lodash';
 import assign from 'object-assign';
 
@@ -13,6 +11,7 @@ let _mediaStatus = {};
 const MediaStore = assign({}, GenericStore, {
   _reset: function() {
     _mediaData = {};
+    _mediaStatus = {};
   },
 
   /**
@@ -34,6 +33,7 @@ const MediaStore = assign({}, GenericStore, {
     _mediaStatus[mediaId] = 'loading';
   },
 
+  // eslint-disable-next-line complexity
   _storeCallback: function(action) {
     let count;
     let list;
