@@ -33,6 +33,6 @@ class Textbox extends React.Component {
       </Formrow>
     );
   }
-};
+}
 
 export default Textbox;

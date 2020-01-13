@@ -1,62 +1,48 @@
-'use strict';
-
 import React from 'react';
-import createReactClass from 'create-react-class';
 import PropTypes from 'prop-types';
 
 import Formrow from './Formrow';
 
-const Radiolist = createReactClass({
-  displayName: 'Radiolist',
-
-  propTypes: {
+class Radiolist extends React.Component {
+  static propTypes = {
     fieldId: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
-    value: PropTypes.string,
     list: PropTypes.arrayOf(PropTypes.shape({
-      value: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired
+      label: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired
     })).isRequired,
-    onChange: PropTypes.func.isRequired
-  },
+    onChange: PropTypes.func.isRequired,
+    value: PropTypes.string
+  }
 
-  defaultProps: {
+  static defaultProps = {
     value: ''
-  },
+  }
 
-  getInitialState: function() {
-    return {value: this.props.value};
-  },
+  render() {
+    const {fieldId, label, list, onChange, value} = this.props;
 
-  componentWillReceiveProps: function(nextProps) {
-    this.setState({value: nextProps.value});
-  },
-
-  _onChange: function(event) {
-    this.props.onChange(event.target.value, this.props.fieldId);
-  },
-
-  render: function() {
     const options = [];
-    for (let i = 0; i < this.props.list.length; i++) {
-      const item = this.props.list[i];
+    for (let i = 0; i < list.length; i++) {
+      const item = list[i];
       let checked = false;
-      if (item.value === this.props.value) {
+      if (item.value === value) {
         checked = true;
       }
       options.push(
         <label
           className="radiobutton"
-          htmlFor={this.props.fieldId + '-' + i}
+          htmlFor={fieldId + '-' + i}
           key={'r-' + i}
+          onClick={event => onChange(event.target.value, fieldId)}
         >
           <input
-            id={this.props.fieldId + '-' + i}
-            name={this.props.fieldId}
+            id={fieldId + '-' + i}
+            name={fieldId}
             type="radio"
             value={item.value}
             checked={checked}
-            onChange={this._onChange}
+            onClick={event => onChange(event.target.value, fieldId)}
           />
           {item.label + ' '}
         </label>
@@ -64,9 +50,9 @@ const Radiolist = createReactClass({
     }
     return (
       <Formrow
-        key={'k-' + this.props.fieldId}
-        label={this.props.label}
-        labelFor={this.props.fieldId}
+        key={'k-' + fieldId}
+        label={label}
+        labelFor={fieldId}
       >
         <span className="radioList">
           {options}
@@ -74,6 +60,6 @@ const Radiolist = createReactClass({
       </Formrow>
     );
   }
-});
+}
 
 export default Radiolist;
