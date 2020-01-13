@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/standard/Textarea #render renders with a value 1`] = `
+<div>
+  <div
+    className="formLabel"
+    htmlFor="test-field-id"
+  >
+    Test Label
+  </div>
+  <div
+    className="formValue"
+  >
+    <textarea
+      cols={60}
+      id="test-field-id"
+      onChange={[Function]}
+      rows={10}
+      value="This is the changed test value"
+    />
+  </div>
+</div>
+`;
+
+exports[`components/standard/Textarea #render renders without a value 1`] = `
+<div>
+  <div
+    className="formLabel"
+    htmlFor="test-field-id"
+  >
+    Test Label
+  </div>
+  <div
+    className="formValue"
+  >
+    <textarea
+      cols={60}
+      id="test-field-id"
+      onChange={[Function]}
+      rows={10}
+      value=""
+    />
+  </div>
+</div>
+`;
