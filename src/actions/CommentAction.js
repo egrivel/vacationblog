@@ -1,4 +1,3 @@
-'use strict';
 
 import AppDispatcher from '../AppDispatcher';
 import UserAction from './UserAction';
@@ -19,7 +18,7 @@ const CommentAction = {
       'tripId=' + encodeURIComponent(tripId) +
       '&referenceId=' + encodeURIComponent(referenceId);
 
-    utils.getAsync(url, function(response) {
+    utils.getAsync(url, (response) => {
       const data = JSON.parse(response);
       CommentAction._commentsLoaded(tripId, referenceId, data);
     });
@@ -55,7 +54,7 @@ const CommentAction = {
     const url = 'api/getComment.php?' +
       'tripId=' + encodeURIComponent(tripId) +
       '&referenceId=' + encodeURIComponent(referenceId);
-    utils.getAsync(url, function(response) {
+    utils.getAsync(url, (response) => {
       const data = JSON.parse(response);
       CommentAction._recursiveCommentsLoaded(tripId, referenceId, data);
     });
@@ -97,7 +96,7 @@ const CommentAction = {
       commentId: commentId,
       commentText: text
     };
-    utils.postAsync('api/putComment.php', data, function(response) {
+    utils.postAsync('api/putComment.php', data, (response) => {
       const data = JSON.parse(response);
       if (data.resultCode === '200') {
         CommentAction.recursivelyLoadComments(tripId, referenceId);

@@ -1,52 +1,39 @@
-'use strict';
-
 import React from 'react';
-import createReactClass from 'create-react-class';
 import PropTypes from 'prop-types';
 
-import Formrow from './Formrow.jsx';
+import Formrow from './Formrow';
 
-const Checkbox = createReactClass({
-  displayName: 'Checkbox',
-
-  propTypes: {
+class Checkbox extends React.Component {
+  static propTypes = {
     fieldId: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
-    selected: PropTypes.bool,
-    onChange: PropTypes.func.isRequired
-  },
+    onChange: PropTypes.func.isRequired,
+    selected: PropTypes.bool
+  }
 
-  _onChange: function(event) {
-    this.props.onChange(event.target.checked, this.props.fieldId);
-  },
-
-  _toggleValue: function() {
-    this.props.onChange(!this.props.selected, this.props.fieldId);
-  },
-
-  render: function() {
-    const selected = this.props.selected;
+  render() {
+    const {fieldId, label, onChange, selected} = this.props;
     return (
       <Formrow
-        key={'k-' + this.props.fieldId + selected}
+        key={'k-' + fieldId + selected}
       >
         <label
           className="checkbox"
-          htmlFor={this.props.fieldId}
-          onClick={this._toggleValue}
+          htmlFor={fieldId}
+          onClick={() => onChange(!selected, fieldId)}
         >
           <input
             type="checkbox"
-            id={this.props.fieldId}
+            id={fieldId}
             value="Y"
             checked={selected}
-            onChange={this._onChange}
+            onChange={event => onChange(event.target.checked, fieldId)}
           />
-          {this.props.label}
+          {label}
         </label>
       </Formrow>
     );
   }
-});
+}
 
 export default Checkbox;

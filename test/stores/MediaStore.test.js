@@ -1,4 +1,3 @@
-'use strict';
 
 const expect = require('chai').expect;
 import sinon from 'sinon';
@@ -22,36 +21,36 @@ const testMedia2 = {
   mediaText: 'media text 2'
 };
 
-describe('stores/MediaStore', function() {
+describe('stores/MediaStore', () => {
   // Always have the media store available
-  beforeEach(function() {
+  beforeEach(() => {
     MediaStore.removeAllListeners();
     MediaStore._reset();
   });
 
   // Behavior of an uninitialized media store
-  describe('without medias loaded', function() {
-    describe('#getData', function() {
-      it('returns undefined when uninitialized', function() {
+  describe('without medias loaded', () => {
+    describe('#getData', () => {
+      it('returns undefined when uninitialized', () => {
         expect(MediaStore.getData()).to.equal(undefined);
       });
     });
   });
 
-  describe('with media loaded', function() {
-    beforeEach(function() {
+  describe('with media loaded', () => {
+    beforeEach(() => {
       MediaStore._storeCallback({
         type: MediaActionTypes.MEDIA_DATA,
         data: testMedia1
       });
     });
 
-    describe('#getData', function() {
-      it('returns undefined without arguments', function() {
+    describe('#getData', () => {
+      it('returns undefined without arguments', () => {
         expect(MediaStore.getData()).to.deep.eql(undefined);
       });
 
-      it('returns undefined with invalid arguments', function() {
+      it('returns undefined with invalid arguments', () => {
         expect(MediaStore.getData(testTripId1)).to.deep.eql(undefined);
         expect(MediaStore.getData(testTripId1, null))
           .to.deep.eql(undefined);
@@ -59,17 +58,17 @@ describe('stores/MediaStore', function() {
           .to.deep.eql(undefined);
       });
 
-      it('returns undefined requesting non-loaded data', function() {
+      it('returns undefined requesting non-loaded data', () => {
         expect(MediaStore.getData(testTripId1, testMediaId2))
           .to.deep.eql(undefined);
       });
 
-      it('returns loaded media', function() {
+      it('returns loaded media', () => {
         expect(MediaStore.getData(testTripId1, testMediaId1))
           .to.deep.eql(testMedia1);
       });
 
-      it('new media is available after it was loaded', function() {
+      it('new media is available after it was loaded', () => {
         // media 2 is not yet there
         expect(MediaStore.getData(testTripId1, testMediaId2))
           .to.deep.eql(undefined);
@@ -85,19 +84,19 @@ describe('stores/MediaStore', function() {
           .to.deep.eql(testMedia2);
       });
 
-      describe('checking change emitter', function() {
+      describe('checking change emitter', () => {
         let cb;
 
-        beforeEach(function() {
+        beforeEach(() => {
           cb = sinon.spy();
           MediaStore.addChangeListener(cb);
         });
 
-        afterEach(function() {
+        afterEach(() => {
           MediaStore.removeChangeListener(cb);
         });
 
-        it('setting existing media does not emit change', function() {
+        it('setting existing media does not emit change', () => {
           MediaStore._storeCallback({
             type: MediaActionTypes.MEDIA_DATA,
             data: testMedia1
@@ -105,7 +104,7 @@ describe('stores/MediaStore', function() {
           expect(cb.callCount).to.be.equal(0);
         });
 
-        it('setting new media does emit change', function() {
+        it('setting new media does emit change', () => {
           MediaStore._storeCallback({
             type: MediaActionTypes.MEDIA_DATA,
             data: testMedia2
@@ -113,7 +112,7 @@ describe('stores/MediaStore', function() {
           expect(cb.callCount).to.be.equal(1);
         });
 
-        it('random action does notemit change', function() {
+        it('random action does notemit change', () => {
           MediaStore._storeCallback({
             type: 'foo',
             data: testMedia2
@@ -124,7 +123,7 @@ describe('stores/MediaStore', function() {
     });
   });
 
-  describe('Loading media in bulk', function() {
+  describe('Loading media in bulk', () => {
     const mediaItem1 = {
       tripId: testTripId1,
       mediaId: testMediaId1,
@@ -148,7 +147,7 @@ describe('stores/MediaStore', function() {
       }
     };
 
-    it('data is set', function() {
+    it('data is set', () => {
       MediaStore._storeCallback(bulkAction);
 
       expect(MediaStore.getData(testTripId1, testMediaId1))
@@ -157,19 +156,19 @@ describe('stores/MediaStore', function() {
         .to.deep.eql(mediaItem2);
     });
 
-    describe('checking change emitter', function() {
+    describe('checking change emitter', () => {
       let cb;
 
-      beforeEach(function() {
+      beforeEach(() => {
         cb = sinon.spy();
         MediaStore.addChangeListener(cb);
       });
 
-      afterEach(function() {
+      afterEach(() => {
         MediaStore.removeChangeListener(cb);
       });
 
-      it('change emitter is called', function() {
+      it('change emitter is called', () => {
         // first call emits change
         expect(cb.callCount).to.be.equal(0);
         MediaStore._storeCallback(bulkAction);

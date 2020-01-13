@@ -1,4 +1,3 @@
-'use strict';
 
 const expect = require('chai').expect;
 import sinon from 'sinon';
@@ -7,7 +6,7 @@ import utils from '../../src/actions/utils';
 import AppDispatcher from '../../src/AppDispatcher';
 import FeedbackAction from '../../src/actions/FeedbackAction';
 
-describe('actions/FeedbackAction', function() {
+describe('actions/FeedbackAction', () => {
   let asyncPostStub;
   let asyncGetStub;
   let dispatchStub;
@@ -16,7 +15,7 @@ describe('actions/FeedbackAction', function() {
   const testUserId = 'user1';
   let testData;
 
-  beforeEach(function() {
+  beforeEach(() => {
     testData = {
       tripId: 'trip2',
       referenceId: 'ref2',
@@ -24,55 +23,55 @@ describe('actions/FeedbackAction', function() {
     };
 
     asyncPostStub = sinon.stub(utils, 'postAsync').callsFake(
-      function(url, data, cb) {
+      (url, data, cb) => {
         cb();
       });
     asyncGetStub = sinon.stub(utils, 'getAsync').callsFake(
-      function(url, cb) {
+      (url, cb) => {
         cb(JSON.stringify(testData));
       });
     dispatchStub = sinon.stub(AppDispatcher, 'dispatch');
   });
 
-  afterEach(function() {
+  afterEach(() => {
     dispatchStub.restore();
     asyncPostStub.restore();
     asyncGetStub.restore();
   });
 
-  describe('#loadData', function() {
-    it('gets data from server', function() {
+  describe('#loadData', () => {
+    it('gets data from server', () => {
       FeedbackAction.loadData(testTripId, testRefId);
       expect(asyncGetStub.callCount).to.be.equal(1);
     });
 
-    it('includes correct URL', function() {
+    it('includes correct URL', () => {
       FeedbackAction.loadData(testTripId, testRefId);
       expect(asyncGetStub.callCount).to.be.equal(1);
       expect(asyncGetStub.args[0].length).to.be.equal(2);
       expect(asyncGetStub.args[0][0]).to.contain('api/getFeedback.php?');
     });
 
-    it('includes trip ID', function() {
+    it('includes trip ID', () => {
       FeedbackAction.loadData(testTripId, testRefId);
       expect(asyncGetStub.callCount).to.be.equal(1);
       expect(asyncGetStub.args[0].length).to.be.equal(2);
       expect(asyncGetStub.args[0][0]).to.contain('tripId=' + testTripId);
     });
 
-    it('includes reference ID', function() {
+    it('includes reference ID', () => {
       FeedbackAction.loadData(testTripId, testRefId);
       expect(asyncGetStub.callCount).to.be.equal(1);
       expect(asyncGetStub.args[0].length).to.be.equal(2);
       expect(asyncGetStub.args[0][0]).to.contain('referenceId=' + testRefId);
     });
 
-    it('calls AppDispatcher', function() {
+    it('calls AppDispatcher', () => {
       FeedbackAction.loadData(testTripId, testRefId);
       expect(dispatchStub.callCount).to.be.equal(1);
     });
 
-    it('dispatched action type', function() {
+    it('dispatched action type', () => {
       FeedbackAction.loadData(testTripId, testRefId);
       expect(dispatchStub.callCount).to.be.equal(1);
       expect(dispatchStub.args[0].length).to.be.equal(1);
@@ -81,7 +80,7 @@ describe('actions/FeedbackAction', function() {
         .to.be.equal(FeedbackAction.Types.FEEDBACK_LOAD);
     });
 
-    it('dispatched action tripId', function() {
+    it('dispatched action tripId', () => {
       FeedbackAction.loadData(testTripId, testRefId);
       expect(dispatchStub.callCount).to.be.equal(1);
       expect(dispatchStub.args[0].length).to.be.equal(1);
@@ -89,7 +88,7 @@ describe('actions/FeedbackAction', function() {
       expect(dispatchStub.args[0][0].tripId).to.be.equal(testData.tripId);
     });
 
-    it('dispatched action referenceId', function() {
+    it('dispatched action referenceId', () => {
       FeedbackAction.loadData(testTripId, testRefId);
       expect(dispatchStub.callCount).to.be.equal(1);
       expect(dispatchStub.args[0].length).to.be.equal(1);
@@ -98,7 +97,7 @@ describe('actions/FeedbackAction', function() {
         testData.referenceId);
     });
 
-    it('dispatched action list', function() {
+    it('dispatched action list', () => {
       FeedbackAction.loadData(testTripId, testRefId);
       expect(dispatchStub.callCount).to.be.equal(1);
       expect(dispatchStub.args[0].length).to.be.equal(1);
@@ -107,32 +106,32 @@ describe('actions/FeedbackAction', function() {
     });
   });
 
-  describe('set/clear functions', function() {
+  describe('set/clear functions', () => {
     let loadDataStub;
 
-    beforeEach(function() {
+    beforeEach(() => {
       loadDataStub = sinon.stub(FeedbackAction, 'loadData');
     });
 
-    afterEach(function() {
+    afterEach(() => {
       loadDataStub.restore();
     });
 
-    describe('#setLike', function() {
-      describe('do the post', function() {
-        it('post to server', function() {
+    describe('#setLike', () => {
+      describe('do the post', () => {
+        it('post to server', () => {
           FeedbackAction.setLike(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
         });
 
-        it('correct URL', function() {
+        it('correct URL', () => {
           FeedbackAction.setLike(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
           expect(asyncPostStub.args[0].length).to.equal(3);
           expect(asyncPostStub.args[0][0]).to.equal('api/putFeedback.php');
         });
 
-        it('sends type like', function() {
+        it('sends type like', () => {
           FeedbackAction.setLike(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
           const data = asyncPostStub.args[0][1];
@@ -140,7 +139,7 @@ describe('actions/FeedbackAction', function() {
           expect(data.type).to.equal('like');
         });
 
-        it('sends deleted N', function() {
+        it('sends deleted N', () => {
           FeedbackAction.setLike(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
           const data = asyncPostStub.args[0][1];
@@ -148,7 +147,7 @@ describe('actions/FeedbackAction', function() {
           expect(data.deleted).to.equal('N');
         });
 
-        it('sends trip ID', function() {
+        it('sends trip ID', () => {
           FeedbackAction.setLike(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
           const data = asyncPostStub.args[0][1];
@@ -156,7 +155,7 @@ describe('actions/FeedbackAction', function() {
           expect(data.tripId).to.equal(testTripId);
         });
 
-        it('sends reference ID', function() {
+        it('sends reference ID', () => {
           FeedbackAction.setLike(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
           const data = asyncPostStub.args[0][1];
@@ -164,7 +163,7 @@ describe('actions/FeedbackAction', function() {
           expect(data.referenceId).to.equal(testRefId);
         });
 
-        it('sends user ID', function() {
+        it('sends user ID', () => {
           FeedbackAction.setLike(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
           const data = asyncPostStub.args[0][1];
@@ -173,20 +172,20 @@ describe('actions/FeedbackAction', function() {
         });
       });
 
-      describe('call loadData', function() {
-        it('makes the call', function() {
+      describe('call loadData', () => {
+        it('makes the call', () => {
           FeedbackAction.setLike(testTripId, testRefId, testUserId);
           expect(loadDataStub.callCount).to.be.equal(1);
         });
 
-        it('passes trip ID', function() {
+        it('passes trip ID', () => {
           FeedbackAction.setLike(testTripId, testRefId, testUserId);
           expect(loadDataStub.callCount).to.be.equal(1);
           expect(loadDataStub.args[0].length).to.equal(2);
           expect(loadDataStub.args[0][0]).to.equal(testTripId);
         });
 
-        it('passes reference ID', function() {
+        it('passes reference ID', () => {
           FeedbackAction.setLike(testTripId, testRefId, testUserId);
           expect(loadDataStub.callCount).to.be.equal(1);
           expect(loadDataStub.args[0].length).to.equal(2);
@@ -195,21 +194,21 @@ describe('actions/FeedbackAction', function() {
       });
     });
 
-    describe('#clearLike', function() {
-      describe('do the post', function() {
-        it('post to server', function() {
+    describe('#clearLike', () => {
+      describe('do the post', () => {
+        it('post to server', () => {
           FeedbackAction.clearLike(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
         });
 
-        it('correct URL', function() {
+        it('correct URL', () => {
           FeedbackAction.clearLike(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
           expect(asyncPostStub.args[0].length).to.equal(3);
           expect(asyncPostStub.args[0][0]).to.equal('api/putFeedback.php');
         });
 
-        it('sends type like', function() {
+        it('sends type like', () => {
           FeedbackAction.clearLike(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
           const data = asyncPostStub.args[0][1];
@@ -217,7 +216,7 @@ describe('actions/FeedbackAction', function() {
           expect(data.type).to.equal('like');
         });
 
-        it('sends deleted N', function() {
+        it('sends deleted N', () => {
           FeedbackAction.clearLike(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
           const data = asyncPostStub.args[0][1];
@@ -225,7 +224,7 @@ describe('actions/FeedbackAction', function() {
           expect(data.deleted).to.equal('Y');
         });
 
-        it('sends trip ID', function() {
+        it('sends trip ID', () => {
           FeedbackAction.clearLike(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
           const data = asyncPostStub.args[0][1];
@@ -233,7 +232,7 @@ describe('actions/FeedbackAction', function() {
           expect(data.tripId).to.equal(testTripId);
         });
 
-        it('sends reference ID', function() {
+        it('sends reference ID', () => {
           FeedbackAction.clearLike(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
           const data = asyncPostStub.args[0][1];
@@ -241,7 +240,7 @@ describe('actions/FeedbackAction', function() {
           expect(data.referenceId).to.equal(testRefId);
         });
 
-        it('sends user ID', function() {
+        it('sends user ID', () => {
           FeedbackAction.clearLike(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
           const data = asyncPostStub.args[0][1];
@@ -250,20 +249,20 @@ describe('actions/FeedbackAction', function() {
         });
       });
 
-      describe('call loadData', function() {
-        it('makes the call', function() {
+      describe('call loadData', () => {
+        it('makes the call', () => {
           FeedbackAction.clearLike(testTripId, testRefId, testUserId);
           expect(loadDataStub.callCount).to.be.equal(1);
         });
 
-        it('passes trip ID', function() {
+        it('passes trip ID', () => {
           FeedbackAction.clearLike(testTripId, testRefId, testUserId);
           expect(loadDataStub.callCount).to.be.equal(1);
           expect(loadDataStub.args[0].length).to.equal(2);
           expect(loadDataStub.args[0][0]).to.equal(testTripId);
         });
 
-        it('passes reference ID', function() {
+        it('passes reference ID', () => {
           FeedbackAction.clearLike(testTripId, testRefId, testUserId);
           expect(loadDataStub.callCount).to.be.equal(1);
           expect(loadDataStub.args[0].length).to.equal(2);
@@ -272,21 +271,21 @@ describe('actions/FeedbackAction', function() {
       });
     });
 
-    describe('#setPlus', function() {
-      describe('do the post', function() {
-        it('post to server', function() {
+    describe('#setPlus', () => {
+      describe('do the post', () => {
+        it('post to server', () => {
           FeedbackAction.setPlus(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
         });
 
-        it('correct URL', function() {
+        it('correct URL', () => {
           FeedbackAction.setPlus(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
           expect(asyncPostStub.args[0].length).to.equal(3);
           expect(asyncPostStub.args[0][0]).to.equal('api/putFeedback.php');
         });
 
-        it('sends type like', function() {
+        it('sends type like', () => {
           FeedbackAction.setPlus(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
           const data = asyncPostStub.args[0][1];
@@ -294,7 +293,7 @@ describe('actions/FeedbackAction', function() {
           expect(data.type).to.equal('plus');
         });
 
-        it('sends deleted N', function() {
+        it('sends deleted N', () => {
           FeedbackAction.setPlus(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
           const data = asyncPostStub.args[0][1];
@@ -302,7 +301,7 @@ describe('actions/FeedbackAction', function() {
           expect(data.deleted).to.equal('N');
         });
 
-        it('sends trip ID', function() {
+        it('sends trip ID', () => {
           FeedbackAction.setPlus(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
           const data = asyncPostStub.args[0][1];
@@ -310,7 +309,7 @@ describe('actions/FeedbackAction', function() {
           expect(data.tripId).to.equal(testTripId);
         });
 
-        it('sends reference ID', function() {
+        it('sends reference ID', () => {
           FeedbackAction.setPlus(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
           const data = asyncPostStub.args[0][1];
@@ -318,7 +317,7 @@ describe('actions/FeedbackAction', function() {
           expect(data.referenceId).to.equal(testRefId);
         });
 
-        it('sends user ID', function() {
+        it('sends user ID', () => {
           FeedbackAction.setPlus(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
           const data = asyncPostStub.args[0][1];
@@ -327,20 +326,20 @@ describe('actions/FeedbackAction', function() {
         });
       });
 
-      describe('call loadData', function() {
-        it('makes the call', function() {
+      describe('call loadData', () => {
+        it('makes the call', () => {
           FeedbackAction.setPlus(testTripId, testRefId, testUserId);
           expect(loadDataStub.callCount).to.be.equal(1);
         });
 
-        it('passes trip ID', function() {
+        it('passes trip ID', () => {
           FeedbackAction.setPlus(testTripId, testRefId, testUserId);
           expect(loadDataStub.callCount).to.be.equal(1);
           expect(loadDataStub.args[0].length).to.equal(2);
           expect(loadDataStub.args[0][0]).to.equal(testTripId);
         });
 
-        it('passes reference ID', function() {
+        it('passes reference ID', () => {
           FeedbackAction.setPlus(testTripId, testRefId, testUserId);
           expect(loadDataStub.callCount).to.be.equal(1);
           expect(loadDataStub.args[0].length).to.equal(2);
@@ -349,21 +348,21 @@ describe('actions/FeedbackAction', function() {
       });
     });
 
-    describe('#clearPlus', function() {
-      describe('do the post', function() {
-        it('post to server', function() {
+    describe('#clearPlus', () => {
+      describe('do the post', () => {
+        it('post to server', () => {
           FeedbackAction.clearPlus(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
         });
 
-        it('correct URL', function() {
+        it('correct URL', () => {
           FeedbackAction.clearPlus(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
           expect(asyncPostStub.args[0].length).to.equal(3);
           expect(asyncPostStub.args[0][0]).to.equal('api/putFeedback.php');
         });
 
-        it('sends type like', function() {
+        it('sends type like', () => {
           FeedbackAction.clearPlus(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
           const data = asyncPostStub.args[0][1];
@@ -371,7 +370,7 @@ describe('actions/FeedbackAction', function() {
           expect(data.type).to.equal('plus');
         });
 
-        it('sends deleted N', function() {
+        it('sends deleted N', () => {
           FeedbackAction.clearPlus(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
           const data = asyncPostStub.args[0][1];
@@ -379,7 +378,7 @@ describe('actions/FeedbackAction', function() {
           expect(data.deleted).to.equal('Y');
         });
 
-        it('sends trip ID', function() {
+        it('sends trip ID', () => {
           FeedbackAction.clearPlus(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
           const data = asyncPostStub.args[0][1];
@@ -387,7 +386,7 @@ describe('actions/FeedbackAction', function() {
           expect(data.tripId).to.equal(testTripId);
         });
 
-        it('sends reference ID', function() {
+        it('sends reference ID', () => {
           FeedbackAction.clearPlus(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
           const data = asyncPostStub.args[0][1];
@@ -395,7 +394,7 @@ describe('actions/FeedbackAction', function() {
           expect(data.referenceId).to.equal(testRefId);
         });
 
-        it('sends user ID', function() {
+        it('sends user ID', () => {
           FeedbackAction.clearPlus(testTripId, testRefId, testUserId);
           expect(asyncPostStub.callCount).to.be.equal(1);
           const data = asyncPostStub.args[0][1];
@@ -404,20 +403,20 @@ describe('actions/FeedbackAction', function() {
         });
       });
 
-      describe('call loadData', function() {
-        it('makes the call', function() {
+      describe('call loadData', () => {
+        it('makes the call', () => {
           FeedbackAction.clearPlus(testTripId, testRefId, testUserId);
           expect(loadDataStub.callCount).to.be.equal(1);
         });
 
-        it('passes trip ID', function() {
+        it('passes trip ID', () => {
           FeedbackAction.clearPlus(testTripId, testRefId, testUserId);
           expect(loadDataStub.callCount).to.be.equal(1);
           expect(loadDataStub.args[0].length).to.equal(2);
           expect(loadDataStub.args[0][0]).to.equal(testTripId);
         });
 
-        it('passes reference ID', function() {
+        it('passes reference ID', () => {
           FeedbackAction.clearPlus(testTripId, testRefId, testUserId);
           expect(loadDataStub.callCount).to.be.equal(1);
           expect(loadDataStub.args[0].length).to.equal(2);

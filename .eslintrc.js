@@ -167,12 +167,17 @@ var rules = {
 module.exports = {
   env: {
     browser: true,
-    jest: true
   },
   extends: [
     "eslint:recommended",
     "plugin:react/recommended"
   ],
+  overrides: [{
+    env: {
+      jest: true
+    },
+    files: ['**/*.test.js']
+  }],
   parser: "babel-eslint",
   parserOptions: {
     ecmaFeatures: {

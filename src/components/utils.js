@@ -1,4 +1,3 @@
-'use strict';
 
 /**
  * Common display utilities. These utilities can be used to render
@@ -14,7 +13,9 @@
 import React from 'react';
 import moment from 'moment-timezone';
 
-function _replaceEntities(text) {
+function _replaceEntities(inputText) {
+  let text = inputText;
+
   text = text.replace(/&aacute;/g, '\u00e1');
   text = text.replace(/&agrave;/g, '\u00e0');
 
@@ -73,8 +74,10 @@ function _replaceEntities(text) {
  * @return {array} list of React elements.
  * @private
  */
-function _recursivelyGetNodes(text, count) {
+// eslint-disable-next-line complexity
+function _recursivelyGetNodes(inputText, count) {
   const nodes = [];
+  let text = inputText;
   let end;
 
   if (text.indexOf('[') < 0) {
@@ -100,7 +103,7 @@ function _recursivelyGetNodes(text, count) {
       //                         _recursivelyGetNodes(text.substring(4, end),
       //                                            count + 1)));
       nodes.push(_recursivelyGetNodes(text.substring(end + 5),
-                                    count + 1));
+        count + 1));
     } else {
       nodes.push(
         <em key={count}>
@@ -123,7 +126,7 @@ function _recursivelyGetNodes(text, count) {
       //                             _recursivelyGetNodes(text.substring(3, end),
       //                                                 count + 1)));
       nodes.push(_recursivelyGetNodes(text.substring(end + 4),
-                                    count + 1));
+        count + 1));
     } else {
       nodes.push(
         <strong key={count}>
@@ -146,7 +149,7 @@ function _recursivelyGetNodes(text, count) {
       //                        _recursivelyGetNodes(text.substring(3, end),
       //                                             count + 1)));
       nodes.push(_recursivelyGetNodes(text.substring(end + 4),
-                                    count + 1));
+        count + 1));
     } else {
       nodes.push(
         <u key={count}>
@@ -176,7 +179,12 @@ function _recursivelyGetNodes(text, count) {
         // security problem, see
         // https://mathiasbynens.github.io/rel-noopener/
         nodes.push(
-          <a href={href} target="_blank" rel="noopener noreferrer" key={count}>
+          <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            key={count}
+          >
             {_recursivelyGetNodes(text.substring(0, end), count + 1)}
           </a>
         );
@@ -184,13 +192,18 @@ function _recursivelyGetNodes(text, count) {
         //                        _recursivelyGetNodes(text.substring(0, end),
         //                                           count + 1)));
         nodes.push(_recursivelyGetNodes(text.substring(end + 7),
-                                       count + 1));
+          count + 1));
       } else {
         // Note: using rel="noopener noreferrer" to prevent a potentiall
         // security problem, see
         // https://mathiasbynens.github.io/rel-noopener/
         nodes.push(
-          <a href={href} target="_blank" rel="noopener noreferrer" key={count}>
+          <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            key={count}
+          >
             {_recursivelyGetNodes(text, count + 1)}
           </a>
         );
@@ -214,7 +227,10 @@ function _recursivelyGetNodes(text, count) {
     if (open) {
       const src = open.trim();
       nodes.push(
-        <img src={'media/' + src} keys={count} />
+        <img
+          src={'media/' + src}
+          keys={count}
+        />
       );
       // nodes.push(React.DOM.img(
       //   {src: 'media/' + src, key: count}
@@ -239,12 +255,12 @@ const utils = {
 
   buildTextNode: function(type, className, key, text) {
     const nodes = _recursivelyGetNodes(text, 0);
-    if (className === '') {
-      className = null;
-    }
     if (type === 'p') {
       return (
-        <p className={className} key={key}>{nodes}</p>
+        <p
+          className={className || null}
+          key={key}
+        >{nodes}</p>
       );
       // return React.DOM.p(
       //   {
@@ -255,7 +271,10 @@ const utils = {
       // );
     } else if (type === 'span') {
       return (
-        <span className={className} key={key}>{nodes}</span>
+        <span
+          className={className || null}
+          key={key}
+        >{nodes}</span>
       );
       // return React.DOM.span(
       //   {
@@ -287,12 +306,12 @@ const utils = {
       // to local time (the moment library will take care of DST)
       // Note: default to the American 12-hour time format. Allow
       // users to select a 24-hour time format in the future.
-      const m = moment.utc(date);
+      const momentObj = moment.utc(date);
       // const result = moment.tz(m, moment.tz.guess())
       //   .format('dddd MMMM D YYYY h:mm:ssa z');
       // Use the "LTS" string in moment to generate a format that will
       // be 12 or 24 hour depending on the user's locale's conventions.
-      const result = moment.tz(m, moment.tz.guess())
+      const result = moment.tz(momentObj, moment.tz.guess())
         .format('dddd MMMM D YYYY LTS z');
       return result;
     } else if (date.length === 19) {
@@ -301,12 +320,12 @@ const utils = {
       // to local time (the moment library will take care of DST)
       // Note: default to the American 12-hour time format. Allow
       // users to select a 24-hour time format in the future.
-      const m = moment.utc(date);
+      const momentObj = moment.utc(date);
       // const result = moment.tz(m, moment.tz.guess())
       //   .format('dddd MMMM D YYYY h:mm:ssa z');
       // Use the "LTS" string in moment to generate a format that will
       // be 12 or 24 hour depending on the user's locale's conventions.
-      const result = moment.tz(m, moment.tz.guess())
+      const result = moment.tz(momentObj, moment.tz.guess())
         .format('dddd MMMM D YYYY LTS z');
       return result;
     }
@@ -315,8 +334,8 @@ const utils = {
   },
 
   warning: function(text) {
-    console
-      .log(text);
+    // eslint-disable-next-line no-console
+    console.log(text);
   },
 
   splitText: function(text) {

@@ -31,12 +31,12 @@ import MenuStore from '../stores/MenuStore';
 
 import CommentAction from '../actions/CommentAction';
 
-import JournalParagraph from './JournalParagraph.jsx';
-import CommentList from './CommentList.jsx';
-import CommentEdit from './CommentEdit.jsx';
-import Feedback from './Feedback.jsx';
-import JournalHeader from './JournalHeader.jsx';
-import JournalPrevNext from './JournalPrevNext.jsx';
+import JournalParagraph from './JournalParagraph';
+import CommentList from './CommentList';
+import CommentEdit from './CommentEdit';
+import Feedback from './Feedback';
+import JournalHeader from './JournalHeader';
+import JournalPrevNext from './JournalPrevNext';
 import utils from './utils';
 
 const JournalEntry = createReactClass({

@@ -4,22 +4,22 @@ const Router = require('react-router').Router;
 const hashHistory = require('react-router').hashHistory;
 import {hot} from 'react-hot-loader/root';
 
-import App from './components/App.jsx';
-import Welcome from './components/Welcome.jsx';
-import TripDescription from './components/TripDescription.jsx';
-import TripEdit from './components/TripEdit.jsx';
-import TripAdmin from './components/TripAdmin.jsx';
-import UserEdit from './components/UserEdit.jsx';
-import UserAdmin from './components/UserAdmin.jsx';
-import JournalWrapper from './components/JournalWrapper.jsx';
-import JournalEdit from './components/JournalEdit.jsx';
-import Search from './components/Search.jsx';
-import Preferences from './components/Preferences.jsx';
-import Sync from './components/Sync.jsx';
-import Admin from './components/Admin.jsx';
-import About from './components/About.jsx';
-import LoginWrapper from './components/LoginWrapper.jsx';
-import Notification from './components/Notification.jsx';
+import App from './components/App';
+import Welcome from './components/Welcome';
+import TripDescription from './components/TripDescription';
+import TripEdit from './components/TripEdit';
+import TripAdmin from './components/TripAdmin';
+import UserEdit from './components/UserEdit';
+import UserAdmin from './components/UserAdmin';
+import JournalWrapper from './components/JournalWrapper';
+import JournalEdit from './components/JournalEdit';
+import Search from './components/Search';
+import Preferences from './components/Preferences';
+import Sync from './components/Sync';
+import Admin from './components/Admin';
+import About from './components/About';
+import LoginWrapper from './components/LoginWrapper';
+import Notification from './components/Notification';
 
 import TripAction from './actions/TripAction';
 import UserAction from './actions/UserAction';
@@ -52,7 +52,7 @@ const routes = {
   ]
 };
 
-/* global document */
+// eslint-disable-next-line react/no-render-return-value
 const root = ReactDOM.render(
   React.createElement(Router,
     {

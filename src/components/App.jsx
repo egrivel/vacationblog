@@ -4,10 +4,10 @@ import React from 'react';
 import createReactClass from 'create-react-class';
 import PropTypes from 'prop-types';
 
-import FacebookWrapper from './FacebookWrapper.jsx';
-import Header from './Header.jsx';
-import Welcome from './Welcome.jsx';
-import Footer from './Footer.jsx';
+import FacebookWrapper from './FacebookWrapper';
+import Header from './Header';
+import Welcome from './Welcome';
+import Footer from './Footer';
 
 /**
  * The application object renders the framework of the application, which

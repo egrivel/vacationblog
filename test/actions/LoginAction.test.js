@@ -1,6 +1,3 @@
-// use the global 'document' for cookies testing
-/* global document */
-
 const expect = require('chai').expect;
 import sinon from 'sinon';
 
@@ -8,7 +5,7 @@ import utils from '../../src/actions/utils';
 import LoginAction from '../../src/actions/LoginAction';
 import UserAction from '../../src/actions/UserAction';
 
-describe('actions/LoginAction', function() {
+describe('actions/LoginAction', () => {
   let asyncPostStub;
   let setLoggedInUserStub;
   let loadUserStub;
@@ -16,34 +13,34 @@ describe('actions/LoginAction', function() {
   let testUserId;
   let testPassword;
 
-  beforeEach(function() {
+  beforeEach(() => {
     testUserId = 'test-user';
     testPassword = 'testPassword';
 
     asyncPostStub = sinon.stub(utils, 'postAsync').callsFake(
-      function(url, data, cb) {
+      (url, data, cb) => {
         cb();
       });
     setLoggedInUserStub = sinon.stub(UserAction, 'setLoggedInUser');
     loadUserStub = sinon.stub(UserAction, 'loadUser');
   });
 
-  afterEach(function() {
+  afterEach(() => {
     sinon.restore();
   });
 
-  describe('#doLogin', function() {
+  describe('#doLogin', () => {
     let doLoginCallbackStub;
 
-    beforeEach(function() {
+    beforeEach(() => {
       doLoginCallbackStub = sinon.stub(LoginAction, '_doLoginCallback');
     });
 
-    afterEach(function() {
+    afterEach(() => {
       doLoginCallbackStub.restore();
     });
 
-    it('sets login user ID', function() {
+    it('sets login user ID', () => {
       if (LoginAction.userId) {
         delete LoginAction.userId;
       }
@@ -52,19 +49,19 @@ describe('actions/LoginAction', function() {
       expect(LoginAction.userId).to.be.equal(testUserId);
     });
 
-    it('posts data', function() {
+    it('posts data', () => {
       LoginAction.doLogin(testUserId, testPassword);
       expect(asyncPostStub.callCount).to.be.equal(1);
     });
 
-    it('calls right URL', function() {
+    it('calls right URL', () => {
       LoginAction.doLogin(testUserId, testPassword);
       expect(asyncPostStub.callCount).to.be.equal(1);
       expect(asyncPostStub.args[0].length).to.be.equal(3);
       expect(asyncPostStub.args[0][0]).to.be.equal('api/login.php');
     });
 
-    it('passes user ID', function() {
+    it('passes user ID', () => {
       LoginAction.doLogin(testUserId, testPassword);
       expect(asyncPostStub.callCount).to.be.equal(1);
       expect(asyncPostStub.args[0].length).to.be.equal(3);
@@ -72,7 +69,7 @@ describe('actions/LoginAction', function() {
       expect(asyncPostStub.args[0][1].userId).to.be.equal(testUserId);
     });
 
-    it('passes password', function() {
+    it('passes password', () => {
       LoginAction.doLogin(testUserId, testPassword);
       expect(asyncPostStub.callCount).to.be.equal(1);
       expect(asyncPostStub.args[0].length).to.be.equal(3);
@@ -80,18 +77,18 @@ describe('actions/LoginAction', function() {
       expect(asyncPostStub.args[0][1].password).to.be.equal(testPassword);
     });
 
-    it('calls callback', function() {
+    it('calls callback', () => {
       LoginAction.doLogin(testUserId, testPassword);
       expect(doLoginCallbackStub.callCount).to.be.equal(1);
     });
   });
 
-  describe('#_doLoginCallback', function() {
+  describe('#_doLoginCallback', () => {
     let response;
     let responseNoUserId;
     let testAuthId;
 
-    beforeEach(function() {
+    beforeEach(() => {
       // erase all cookies... note that the only way to erase a cookie in
       // JavaScript is to set it to an expiration date in the past.
       const cookies = document.cookie.split(';');
@@ -112,21 +109,21 @@ describe('actions/LoginAction', function() {
       });
     });
 
-    it('sets document cookie', function() {
+    it('sets document cookie', () => {
       expect(document.cookie).to.be.equal('');
       LoginAction._doLoginCallback(response);
       expect(document.cookie).to.contain('blogAuthId');
       expect(document.cookie).to.contain(testAuthId);
     });
 
-    it('calls setLoggedInUser when user ID is set', function() {
+    it('calls setLoggedInUser when user ID is set', () => {
       expect(document.cookie).to.be.equal('');
       LoginAction.userId = testUserId;
       LoginAction._doLoginCallback(response);
       expect(setLoggedInUserStub.callCount).to.be.equal(1);
     });
 
-    it('calls setLoggedInUser with user ID', function() {
+    it('calls setLoggedInUser with user ID', () => {
       LoginAction.userId = testUserId;
       LoginAction._doLoginCallback(response);
       expect(setLoggedInUserStub.callCount).to.be.equal(1);
@@ -134,7 +131,7 @@ describe('actions/LoginAction', function() {
       expect(setLoggedInUserStub.args[0][0]).to.be.equal(testUserId);
     });
 
-    it('blanks out setLoggedInUser without user ID', function() {
+    it('blanks out setLoggedInUser without user ID', () => {
       if (LoginAction.userId) {
         delete LoginAction.userId;
       }
@@ -146,13 +143,13 @@ describe('actions/LoginAction', function() {
       expect(setLoggedInUserStub.args[0][0]).to.be.equal('');
     });
 
-    it('calls loadUser when user ID is set', function() {
+    it('calls loadUser when user ID is set', () => {
       LoginAction.userId = testUserId;
       LoginAction._doLoginCallback(response);
       expect(loadUserStub.callCount).to.be.equal(1);
     });
 
-    it('calls loadUser with user ID', function() {
+    it('calls loadUser with user ID', () => {
       LoginAction.userId = testUserId;
       LoginAction._doLoginCallback(response);
       expect(loadUserStub.callCount).to.be.equal(1);
@@ -160,7 +157,7 @@ describe('actions/LoginAction', function() {
       expect(loadUserStub.args[0][0]).to.be.equal(testUserId);
     });
 
-    it('does not call loadUser without user ID', function() {
+    it('does not call loadUser without user ID', () => {
       if (LoginAction.userId) {
         delete LoginAction.userId;
       }
@@ -168,7 +165,7 @@ describe('actions/LoginAction', function() {
       expect(loadUserStub.callCount).to.be.equal(0);
     });
 
-    it('error result does not do anything', function() {
+    it('error result does not do anything', () => {
       response = JSON.stringify({
         resultCode: '404',
         authId: testAuthId
@@ -181,7 +178,7 @@ describe('actions/LoginAction', function() {
       expect(loadUserStub.callCount).to.be.equal(0);
     });
 
-    it('response without authId blanks cookie', function() {
+    it('response without authId blanks cookie', () => {
       // Set up the test by making sure a cookie is set first
       LoginAction._doLoginCallback(response);
       expect(document.cookie).to.contain('blogAuthId', 'before');

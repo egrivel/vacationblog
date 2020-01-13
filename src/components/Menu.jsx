@@ -4,7 +4,7 @@ import React from 'react';
 import createReactClass from 'create-react-class';
 import PropTypes from 'prop-types';
 
-import MenuList from './MenuList.jsx';
+import MenuList from './MenuList';
 
 const Menu = createReactClass({
   displayName: 'Menu',

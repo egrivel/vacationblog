@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/standard/Formrow #render renders with label and value 1`] = `
+<div>
+  <div
+    className="formLabel"
+    htmlFor="test-label-for"
+  >
+    Test Label
+  </div>
+  <div
+    className="formValue"
+  >
+    <span>
+      This is some 
+      <em>
+        test
+      </em>
+       content.
+    </span>
+  </div>
+</div>
+`;
+
+exports[`components/standard/Formrow #render renders with label but no value 1`] = `
+<div>
+  <div
+    className="formLabel"
+  />
+  <div
+    className="formValue"
+  />
+</div>
+`;

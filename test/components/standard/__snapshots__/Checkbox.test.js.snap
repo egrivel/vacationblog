@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/standard/Checkbox #render renders checked 1`] = `
+<div>
+  <div
+    className="formLabel"
+  />
+  <div
+    className="formValue"
+  >
+    <label
+      className="checkbox"
+      htmlFor="test-field-id"
+      onClick={[Function]}
+    >
+      <input
+        checked={true}
+        id="test-field-id"
+        onChange={[Function]}
+        type="checkbox"
+        value="Y"
+      />
+      Test Label
+    </label>
+  </div>
+</div>
+`;
+
+exports[`components/standard/Checkbox #render renders unchecked 1`] = `
+<div>
+  <div
+    className="formLabel"
+  />
+  <div
+    className="formValue"
+  >
+    <label
+      className="checkbox"
+      htmlFor="test-field-id"
+      onClick={[Function]}
+    >
+      <input
+        id="test-field-id"
+        onChange={[Function]}
+        type="checkbox"
+        value="Y"
+      />
+      Test Label
+    </label>
+  </div>
+</div>
+`;

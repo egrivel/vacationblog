@@ -1,4 +1,3 @@
-'use strict';
 
 import AppDispatcher from '../AppDispatcher';
 import utils from './utils';
@@ -8,14 +7,16 @@ const MediaAction = {
   Types: MediaActionTypes,
 
   loadMedia: function(tripId, mediaId) {
-    setTimeout(function() {AppDispatcher.dispatch({
-      type: MediaAction.Types.MEDIA_LOADING,
-      data: {
-        mediaId: mediaId
-      }
-    })}, 0);
+    setTimeout(() => {
+      AppDispatcher.dispatch({
+        type: MediaAction.Types.MEDIA_LOADING,
+        data: {
+          mediaId: mediaId
+        }
+      });
+    }, 0);
     const url = 'api/getMedia.php?tripId=' + tripId + '&mediaId=' + mediaId;
-    utils.getAsync(url, function(response) {
+    utils.getAsync(url, (response) => {
       const data = JSON.parse(response);
       MediaAction._mediaLoaded(data);
     });
@@ -30,7 +31,7 @@ const MediaAction = {
       listString += list[i];
     }
     const url = 'api/getMedia.php?tripId=' + tripId + '&list=' + listString;
-    utils.getAsync(url, function(response) {
+    utils.getAsync(url, (response) => {
       const data = JSON.parse(response);
       MediaAction._bulkMediaLoaded(data);
     });
@@ -51,9 +52,10 @@ const MediaAction = {
       data: submitData
     });
     const url = 'api/putMedia.php';
-    utils.postAsync(url, submitData, function(response) {
+    utils.postAsync(url, submitData, (response) => {
       const responseData = JSON.parse(response, true);
       if (!responseData.resultCode || (responseData.resultCode !== '200')) {
+        // eslint-disable-next-line no-console
         console.log('Got response ' + response);
       }
     });

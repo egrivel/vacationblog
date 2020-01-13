@@ -1,4 +1,3 @@
-'use strict';
 
 const expect = require('chai').expect;
 import sinon from 'sinon';
@@ -6,18 +5,18 @@ import sinon from 'sinon';
 import AppDispatcher from '../../src/AppDispatcher';
 import MenuAction from '../../src/actions/MenuAction';
 
-describe('actions/MenuAction', function() {
+describe('actions/MenuAction', () => {
   let dispatchStub;
-  beforeEach(function() {
+  beforeEach(() => {
     dispatchStub = sinon.stub(AppDispatcher, 'dispatch');
   });
 
-  afterEach(function() {
+  afterEach(() => {
     dispatchStub.restore();
   });
 
-  describe('#selectItem', function() {
-    it('dispatch is called with the right info', function() {
+  describe('#selectItem', () => {
+    it('dispatch is called with the right info', () => {
       const testMenuId = 'menu1';
       const data = {
         id: testMenuId
@@ -32,8 +31,8 @@ describe('actions/MenuAction', function() {
     });
   });
 
-  describe('#visibleItem', function() {
-    it('dispatch is called with the right info for visible=true', function() {
+  describe('#visibleItem', () => {
+    it('dispatch is called with the right info for visible=true', () => {
       const testMenuId = 'menu1';
       const testVisible = true;
       const data = {
@@ -49,7 +48,7 @@ describe('actions/MenuAction', function() {
       expect(action.data).to.be.deep.eql(data);
     });
 
-    it('dispatch is called with the right info for visible=false', function() {
+    it('dispatch is called with the right info for visible=false', () => {
       const testMenuId = 'menu1';
       const testVisible = false;
       const data = {

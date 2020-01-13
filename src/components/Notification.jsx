@@ -4,9 +4,9 @@ import React from 'react';
 import createReactClass from 'create-react-class';
 import PropTypes from 'prop-types';
 
-import ButtonBar from './standard/ButtonBar.jsx';
-import Textbox from './standard/Textbox.jsx';
-import Textarea from './standard/Textarea.jsx';
+import ButtonBar from './standard/ButtonBar';
+import Textbox from './standard/Textbox';
+import Textarea from './standard/Textarea';
 
 import NotificationAction from '../actions/NotificationAction';
 

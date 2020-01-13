@@ -11,7 +11,7 @@ import UserStore from '../stores/UserStore';
 import MenuAction from '../actions/MenuAction';
 import MenuStore from '../stores/MenuStore';
 
-import TripJournalList from './TripJournalList.jsx';
+import TripJournalList from './TripJournalList';
 import utils from './utils';
 import cookieUtils from '../utils';
 

@@ -12,8 +12,8 @@ import CommentStore from '../stores/CommentStore';
 import CommentAction from '../actions/CommentAction';
 
 import utils from './utils';
-import Feedback from './Feedback.jsx';
-import CommentEdit from './CommentEdit.jsx';
+import Feedback from './Feedback';
+import CommentEdit from './CommentEdit';
 
 // Declare variables that will be used later
 let CommentList = null;

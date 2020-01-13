@@ -26,7 +26,8 @@ Needed to transform fancy JavaScript to plain JavaScript.
 
 - `@babel/cli`: Babel command line.
 - `@babel/core`: Base Babel application.
-- `@babel/plugin-transform-runtime`: needed to support async/await
+- `@babel/plugin-proposal-class-properties`: Supporting static props (propTypes, defaultProps) on React components.
+- `@babel/plugin-transform-runtime`: needed to support async/await.
 - `@babel/preset-env`: Transform ES6 into traditional JavaScript.
 - `@babel/preset-react`: Transfrom JSX into plain JavaScript.
 
@@ -58,6 +59,7 @@ Test runner
 - `babel-jest`: To connect Babel and Jest.
 - `enzyme`: Used by Jest to test interactions with React components;
 - `enzyme-adapter-react-16`: Needed for Enzyme with React 16.
+- `sinon`: testing with React
 - `react-test-renderer`: Used to create snapshots.
 
 

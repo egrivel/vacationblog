@@ -1,4 +1,3 @@
-'use strict';
 
 const expect = require('chai').expect;
 import sinon from 'sinon';
@@ -11,37 +10,37 @@ import CommentAction from '../../src/actions/CommentAction';
 import MediaAction from '../../src/actions/MediaAction';
 import UserAction from '../../src/actions/UserAction';
 
-describe('actions/JournalAction', function() {
+describe('actions/JournalAction', () => {
   let loadUserStub;
 
-  beforeEach(function() {
+  beforeEach(() => {
     loadUserStub = sinon.stub(UserAction, 'loadUser');
   });
 
-  afterEach(function() {
+  afterEach(() => {
     sinon.restore();
   });
 
-  describe('#loadJournal', function() {
+  describe('#loadJournal', () => {
     let asyncStub;
     let journalLoadedStub;
     const testData = {
       test1: 'data1'
     };
 
-    beforeEach(function() {
+    beforeEach(() => {
       journalLoadedStub = sinon.stub(JournalAction, '_journalLoaded');
-      asyncStub = sinon.stub(utils, 'getAsync').callsFake(function(url, callback) {
+      asyncStub = sinon.stub(utils, 'getAsync').callsFake((url, callback) => {
         callback(JSON.stringify(testData));
       });
     });
 
-    afterEach(function() {
+    afterEach(() => {
       asyncStub.restore();
       journalLoadedStub.restore();
     });
 
-    it('calls API with trip and journal ID', function() {
+    it('calls API with trip and journal ID', () => {
       const testTripId = 'trip1';
       const testJournalId = 'ref1';
       JournalAction.loadJournal(testTripId, testJournalId);
@@ -54,7 +53,7 @@ describe('actions/JournalAction', function() {
       expect(asyncStub.args[1][0]).to.contain('journalId=' + testJournalId);
     });
 
-    it('calls API with trip ID and latest when no journal ID', function() {
+    it('calls API with trip ID and latest when no journal ID', () => {
       const testTripId = 'trip1';
       JournalAction.loadJournal(testTripId);
       // This results in two calls, one to read the trip data, the other
@@ -66,7 +65,7 @@ describe('actions/JournalAction', function() {
       expect(asyncStub.args[1][0]).to.contain('latest');
     });
 
-    it('calls _journalLoaded with right params', function() {
+    it('calls _journalLoaded with right params', () => {
       const testTripId = 'trip1';
       const testJournalId = 'journal1';
       JournalAction.loadJournal(testTripId, testJournalId);
@@ -75,7 +74,7 @@ describe('actions/JournalAction', function() {
     });
   });
 
-  describe('#_journalLoaded', function() {
+  describe('#_journalLoaded', () => {
     let dispatchStub;
     let commentLoadStub;
     let getMediaFromTextStub;
@@ -86,24 +85,24 @@ describe('actions/JournalAction', function() {
     const testJournalText1 = 'test of the journal text';
     let testMediaList = null;
 
-    beforeEach(function() {
+    beforeEach(() => {
       dispatchStub = sinon.stub(AppDispatcher, 'dispatch');
       commentLoadStub = sinon.stub(CommentAction, 'recursivelyLoadComments');
       getMediaFromTextStub = sinon.stub(JournalAction, '_getMediaFromText').callsFake(
-        function() {
+        () => {
           return testMediaList;
         });
       mediaLoadStub = sinon.stub(MediaAction, 'loadMedia');
     });
 
-    afterEach(function() {
+    afterEach(() => {
       mediaLoadStub.restore();
       getMediaFromTextStub.restore();
       commentLoadStub.restore();
       dispatchStub.restore();
     });
 
-    it('dispatch is called with right info', function() {
+    it('dispatch is called with right info', () => {
       const data = {
         tripId: testTripId1,
         journalId: testJournalId1,
@@ -116,8 +115,8 @@ describe('actions/JournalAction', function() {
       expect(action.data).to.be.deep.eql(data);
     });
 
-    describe('recursivelyLoadComments', function() {
-      it('is called with right info', function() {
+    describe('recursivelyLoadComments', () => {
+      it('is called with right info', () => {
         const data = {
           tripId: testTripId1,
           journalId: testJournalId1,
@@ -130,7 +129,7 @@ describe('actions/JournalAction', function() {
         expect(commentLoadStub.args[0][1]).to.be.equal(testJournalId1);
       });
 
-      it('is not called without trip ID', function() {
+      it('is not called without trip ID', () => {
         const data = {
           journalId: testJournalId1,
           journalText: testJournalText1
@@ -139,7 +138,7 @@ describe('actions/JournalAction', function() {
         expect(commentLoadStub.callCount).to.be.equal(0);
       });
 
-      it('is not called without journal ID', function() {
+      it('is not called without journal ID', () => {
         const data = {
           tripId: testTripId1,
           journalText: testJournalText1
@@ -149,8 +148,8 @@ describe('actions/JournalAction', function() {
       });
     });
 
-    describe('loadUser', function() {
-      it('is called with the right info', function() {
+    describe('loadUser', () => {
+      it('is called with the right info', () => {
         const testUser1 = 'test-user-1';
         const data = {
           userId: testUser1,
@@ -164,7 +163,7 @@ describe('actions/JournalAction', function() {
         expect(loadUserStub.args[0][0]).to.be.equal(testUser1);
       });
 
-      it('is not called without user ID', function() {
+      it('is not called without user ID', () => {
         const data = {
           tripId: testTripId1,
           journalId: testJournalId1,
@@ -175,8 +174,8 @@ describe('actions/JournalAction', function() {
       });
     });
 
-    describe('getMediaFromText', function() {
-      it('is called with the right parameters', function() {
+    describe('getMediaFromText', () => {
+      it('is called with the right parameters', () => {
         const data = {
           tripId: testTripId1,
           journalId: testJournalId1,
@@ -188,7 +187,7 @@ describe('actions/JournalAction', function() {
         expect(getMediaFromTextStub.args[0][0]).to.be.equal(testJournalText1);
       });
 
-      it('is not called without a trip ID', function() {
+      it('is not called without a trip ID', () => {
         const data = {
           journalId: testJournalId1,
           journalText: testJournalText1
@@ -197,7 +196,7 @@ describe('actions/JournalAction', function() {
         expect(getMediaFromTextStub.callCount).to.be.equal(0);
       });
 
-      it('is not called without a journal ID', function() {
+      it('is not called without a journal ID', () => {
         const data = {
           tripId: testTripId1,
           journalText: testJournalText1
@@ -206,7 +205,7 @@ describe('actions/JournalAction', function() {
         expect(getMediaFromTextStub.callCount).to.be.equal(0);
       });
 
-      it('is not called without a trip text', function() {
+      it('is not called without a trip text', () => {
         const data = {
           tripId: testTripId1,
           journalId: testJournalId1
@@ -216,12 +215,12 @@ describe('actions/JournalAction', function() {
       });
     });
 
-    describe('loadMedia', function() {
-      beforeEach(function() {
+    describe('loadMedia', () => {
+      beforeEach(() => {
         testMediaList = ['image-1', 'image-2', 'image-3'];
       });
 
-      it('is called with right info', function() {
+      it('is called with right info', () => {
         const data = {
           tripId: testTripId1,
           journalId: testJournalId1,
@@ -240,7 +239,7 @@ describe('actions/JournalAction', function() {
         expect(mediaLoadStub.args[2][1]).to.be.equal(testMediaList[2]);
       });
 
-      it('is not called without a trip ID', function() {
+      it('is not called without a trip ID', () => {
         const data = {
           journalId: testJournalId1,
           journalText: testJournalText1
@@ -249,7 +248,7 @@ describe('actions/JournalAction', function() {
         expect(mediaLoadStub.callCount).to.be.equal(0);
       });
 
-      it('is not called without a journal ID', function() {
+      it('is not called without a journal ID', () => {
         const data = {
           tripId: testTripId1,
           journalText: testJournalText1
@@ -258,7 +257,7 @@ describe('actions/JournalAction', function() {
         expect(mediaLoadStub.callCount).to.be.equal(0);
       });
 
-      it('is not called without a trip text', function() {
+      it('is not called without a trip text', () => {
         const data = {
           tripId: testTripId1,
           journalId: testJournalId1
@@ -270,12 +269,12 @@ describe('actions/JournalAction', function() {
 
     // It looks like recursively loaded comments is commented out in the source,
     // so skip this test.
-    describe.skip('recursivelyLoadComments for media', function() {
-      beforeEach(function() {
+    describe.skip('recursivelyLoadComments for media', () => {
+      beforeEach(() => {
         testMediaList = ['image-1', 'image-2', 'image-3'];
       });
 
-      it('is called with right info', function() {
+      it('is called with right info', () => {
         const data = {
           tripId: testTripId1,
           journalId: testJournalId1,
@@ -299,55 +298,55 @@ describe('actions/JournalAction', function() {
     });
   });
 
-  describe('#getMediaFromText', function() {
+  describe('#getMediaFromText', () => {
     const testImage1 = '111-222';
     const testImage2 = '3333-4444';
     const testText1 = 'This is a text without any images';
     const testText2 = 'test with [' + testImage1 + '] invalid image';
 
-    it('returns null without text', function() {
+    it('returns null without text', () => {
       const result = JournalAction._getMediaFromText();
       expect(result).to.be.null;
     });
 
-    it('returns empty array for text without images', function() {
+    it('returns empty array for text without images', () => {
       const result = JournalAction._getMediaFromText(testText1);
       expect(result).to.deep.eql([]);
     });
 
-    it('does not return invalid image', function() {
+    it('does not return invalid image', () => {
       const result = JournalAction._getMediaFromText(testText2);
       expect(result).to.deep.eql([]);
     });
 
-    describe('single image', function() {
+    describe('single image', () => {
       const testText3 = '[IMG ' + testImage1 + '] test with starting image';
       const testText4 = 'Test with ending image [IMG ' + testImage1 + ']';
       const testText5 = 'Test with [IMG ' + testImage1 + '] middle image';
       const testText6 = 'test with [IMG   ' + testImage1 + '  ] extra space';
 
-      it('returns single image from text, at start', function() {
+      it('returns single image from text, at start', () => {
         const result = JournalAction._getMediaFromText(testText3);
         expect(result).to.deep.eql([testImage1]);
       });
 
-      it('returns single image from text, at end', function() {
+      it('returns single image from text, at end', () => {
         const result = JournalAction._getMediaFromText(testText4);
         expect(result).to.deep.eql([testImage1]);
       });
 
-      it('returns single image from text, in middle', function() {
+      it('returns single image from text, in middle', () => {
         const result = JournalAction._getMediaFromText(testText5);
         expect(result).to.deep.eql([testImage1]);
       });
 
-      it('returns single image with extra space', function() {
+      it('returns single image with extra space', () => {
         const result = JournalAction._getMediaFromText(testText6);
         expect(result).to.deep.eql([testImage1]);
       });
     });
 
-    describe('returns multiple images from text', function() {
+    describe('returns multiple images from text', () => {
       const testText7 = '[IMG ' + testImage1 + '][IMG ' + testImage2 + ']';
       const testText8 = '[IMG ' + testImage1 +
         '] and some text [IMG ' + testImage2 + ']';
@@ -358,27 +357,27 @@ describe('actions/JournalAction', function() {
       const testText11 = 'this [IMG ' + testImage1 +
         '] is [IMG ' + testImage2 + '] stuff';
 
-      it('only images', function() {
+      it('only images', () => {
         const result = JournalAction._getMediaFromText(testText7);
         expect(result).to.deep.eql([testImage1, testImage2]);
       });
 
-      it('text in the middle', function() {
+      it('text in the middle', () => {
         const result = JournalAction._getMediaFromText(testText8);
         expect(result).to.deep.eql([testImage1, testImage2]);
       });
 
-      it('text at the front', function() {
+      it('text at the front', () => {
         const result = JournalAction._getMediaFromText(testText9);
         expect(result).to.deep.eql([testImage1, testImage2]);
       });
 
-      it('text at the end', function() {
+      it('text at the end', () => {
         const result = JournalAction._getMediaFromText(testText10);
         expect(result).to.deep.eql([testImage1, testImage2]);
       });
 
-      it('text everywhere', function() {
+      it('text everywhere', () => {
         const result = JournalAction._getMediaFromText(testText11);
         expect(result).to.deep.eql([testImage1, testImage2]);
       });

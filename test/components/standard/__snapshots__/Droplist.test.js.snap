@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/standard/Droplist #render renders checked 1`] = `
+<div>
+  <div
+    className="formLabel"
+    htmlFor="test-field-id"
+  >
+    Test Label
+  </div>
+  <div
+    className="formValue"
+  >
+    <select
+      id="test-field-id"
+      onChange={[Function]}
+      value="test-item-value-2"
+    >
+      <option
+        value="test-item-value-1"
+      >
+        Test Item Label 1
+      </option>
+      <option
+        value="test-item-value-2"
+      >
+        Test Item Label 2
+      </option>
+      <option
+        value="test-item-value-3"
+      >
+        Test Item Label 3
+      </option>
+    </select>
+  </div>
+</div>
+`;
+
+exports[`components/standard/Droplist #render renders without a value 1`] = `
+<div>
+  <div
+    className="formLabel"
+    htmlFor="test-field-id"
+  >
+    Test Label
+  </div>
+  <div
+    className="formValue"
+  >
+    <select
+      id="test-field-id"
+      onChange={[Function]}
+      value=""
+    >
+      <option
+        value="test-item-value-1"
+      >
+        Test Item Label 1
+      </option>
+      <option
+        value="test-item-value-2"
+      >
+        Test Item Label 2
+      </option>
+      <option
+        value="test-item-value-3"
+      >
+        Test Item Label 3
+      </option>
+    </select>
+  </div>
+</div>
+`;

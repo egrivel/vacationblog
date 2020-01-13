@@ -4,7 +4,7 @@ import React from 'react';
 import createReactClass from 'create-react-class';
 import PropTypes from 'prop-types';
 
-import Welcome from './Welcome.jsx';
+import Welcome from './Welcome';
 
 import UserStore from '../stores/UserStore';
 import UserAction from '../actions/UserAction';

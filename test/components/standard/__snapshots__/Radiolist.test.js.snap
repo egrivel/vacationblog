@@ -1,0 +1,129 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/standard/Radiolist #render renders checked 1`] = `
+<div>
+  <div
+    className="formLabel"
+    htmlFor="test-field-id"
+  >
+    Test Label
+  </div>
+  <div
+    className="formValue"
+  >
+    <span
+      className="radioList"
+    >
+      <label
+        className="radiobutton"
+        htmlFor="test-field-id-0"
+        onClick={[Function]}
+      >
+        <input
+          checked={false}
+          id="test-field-id-0"
+          name="test-field-id"
+          onClick={[Function]}
+          type="radio"
+          value="test-item-value-1"
+        />
+        Test Item Label 1 
+      </label>
+      <label
+        className="radiobutton"
+        htmlFor="test-field-id-1"
+        onClick={[Function]}
+      >
+        <input
+          checked={true}
+          id="test-field-id-1"
+          name="test-field-id"
+          onClick={[Function]}
+          type="radio"
+          value="test-item-value-2"
+        />
+        Test Item Label 2 
+      </label>
+      <label
+        className="radiobutton"
+        htmlFor="test-field-id-2"
+        onClick={[Function]}
+      >
+        <input
+          checked={false}
+          id="test-field-id-2"
+          name="test-field-id"
+          onClick={[Function]}
+          type="radio"
+          value="test-item-value-3"
+        />
+        Test Item Label 3 
+      </label>
+    </span>
+  </div>
+</div>
+`;
+
+exports[`components/standard/Radiolist #render renders without a value 1`] = `
+<div>
+  <div
+    className="formLabel"
+    htmlFor="test-field-id"
+  >
+    Test Label
+  </div>
+  <div
+    className="formValue"
+  >
+    <span
+      className="radioList"
+    >
+      <label
+        className="radiobutton"
+        htmlFor="test-field-id-0"
+        onClick={[Function]}
+      >
+        <input
+          checked={false}
+          id="test-field-id-0"
+          name="test-field-id"
+          onClick={[Function]}
+          type="radio"
+          value="test-item-value-1"
+        />
+        Test Item Label 1 
+      </label>
+      <label
+        className="radiobutton"
+        htmlFor="test-field-id-1"
+        onClick={[Function]}
+      >
+        <input
+          checked={false}
+          id="test-field-id-1"
+          name="test-field-id"
+          onClick={[Function]}
+          type="radio"
+          value="test-item-value-2"
+        />
+        Test Item Label 2 
+      </label>
+      <label
+        className="radiobutton"
+        htmlFor="test-field-id-2"
+        onClick={[Function]}
+      >
+        <input
+          checked={false}
+          id="test-field-id-2"
+          name="test-field-id"
+          onClick={[Function]}
+          type="radio"
+          value="test-item-value-3"
+        />
+        Test Item Label 3 
+      </label>
+    </span>
+  </div>
+</div>
+`;

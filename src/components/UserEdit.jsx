@@ -5,12 +5,12 @@ import React from 'react';
 import createReactClass from 'create-react-class';
 import PropTypes from 'prop-types';
 
-import ButtonBar from './standard/ButtonBar.jsx';
-import Display from './standard/Display.jsx';
-import Droplist from './standard/Droplist.jsx';
-import Password from './standard/Password.jsx';
-import Radiolist from './standard/Radiolist.jsx';
-import Textbox from './standard/Textbox.jsx';
+import ButtonBar from './standard/ButtonBar';
+import Display from './standard/Display';
+import Droplist from './standard/Droplist';
+import Password from './standard/Password';
+import Radiolist from './standard/Radiolist';
+import Textbox from './standard/Textbox';
 
 import storeMixin from './StoreMixin';
 import UserStore from '../stores/UserStore';

@@ -1,37 +1,30 @@
-'use strict';
-
 import React from 'react';
-import createReactClass from 'create-react-class';
 import PropTypes from 'prop-types';
 
-import Formrow from './Formrow.jsx';
+import Formrow from './Formrow';
 
-const Droplist = createReactClass({
-  displayName: 'Droplist',
-
-  propTypes: {
+class Droplist extends React.Component {
+  static propTypes = {
     fieldId: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
-    value: PropTypes.string,
     list: PropTypes.arrayOf(PropTypes.shape({
-      value: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired
+      label: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired
     })).isRequired,
-    onChange: PropTypes.func.isRequired
-  },
+    onChange: PropTypes.func.isRequired,
+    value: PropTypes.string
+  }
 
-  _onChange: function(event) {
-    this.props.onChange(event.target.value, this.props.fieldId);
-  },
+  static defaultProps = {
+    value: ''
+  }
 
-  render: function() {
+  render() {
     const options = [];
-    let value = this.props.value;
-    if (!value) {
-      value = '';
-    }
-    for (let i = 0; i < this.props.list.length; i++) {
-      const item = this.props.list[i];
+    const {fieldId, label, list, onChange, value} = this.props;
+
+    for (let i = 0; i < list.length; i++) {
+      const item = list[i];
       options.push(
         <option
           key={'o-' + i}
@@ -41,15 +34,16 @@ const Droplist = createReactClass({
         </option>
       );
     }
+
     return (
       <Formrow
-        key={'k-' + this.props.fieldId}
-        label={this.props.label}
-        labelFor={this.props.fieldId}
+        key={'k-' + fieldId}
+        label={label}
+        labelFor={fieldId}
       >
         <select
-          id={this.props.fieldId}
-          onChange={this._onChange}
+          id={fieldId}
+          onChange={event => onChange(event.target.value, fieldId)}
           value={value}
         >
           {options}
@@ -57,6 +51,6 @@ const Droplist = createReactClass({
       </Formrow>
     );
   }
-});
+}
 
 export default Droplist;
